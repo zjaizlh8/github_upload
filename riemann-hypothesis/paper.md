@@ -1,11 +1,3 @@
-# A Structural Reading of the Riemann Hypothesis
-
-<!-- verify-glance -->
-> **One paper, one file, one program.** `code/verify_rh.c` — **21 criteria**. `gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify verify_rh.c -lm && ./verify` → `RESULT PASS=21 FAIL=0` and `EXIT=0`.
-**Author:** zjaizlh8 (GitHub) · 2026-10-26 · CC BY 4.0
-**Framework:** structural layer · spectral method · matrix probe
-**Machine witness:** `code/verify_rh.c` — one program, two sections (12 · 9 = **21** criteria), closing with the aggregate `RESULT PASS=21 FAIL=0` and `EXIT=0`.
-
 ## Abstract
 
 The Riemann Hypothesis states that all non-trivial zeros of `ζ(s)` lie on `σ = 1/2`.
@@ -122,3 +114,9 @@ the second reports `maxdev=1.185e-09`); zero warnings.
 3. The position criterion is read as: the sign change at the endpoints is unique, so the zero
    is pinned by the pairing count `Σm_λ = 7`; the grid fixes the resolution of the witness.
 4. The threshold `1e−08` is set by the implementation floor (1.562e−09), not by hand.
+
+## Acknowledgments
+
+zjaizlh8 proposed the structure and direction; DeepSeek performed the computations;
+Tencent Yuanbao hy model provided verification (professional edition, free of charge) —
+human-machine unity: AI is a friend of humanity.

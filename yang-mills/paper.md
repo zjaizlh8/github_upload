@@ -1,13 +1,3 @@
-# A Structural Reading of the Yang–Mills Existence and Mass Gap
-
-<!-- verify-glance -->
-> **One paper, one file, one program.** `code/verify_ym.c` — **17 criteria**. `gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify verify_ym.c -lm && ./verify` → `RESULT PASS=17 FAIL=0` and `EXIT=0`.
-**Author:** zjaizlh8 (GitHub) · 2026-10-26 · CC BY 4.0
-**Framework:** structural layer · spectral method · matrix probe
-**Machine witness:** `code/verify_ym.c` — one program, two sections (8 · 9 = **17** criteria), closing with the aggregate `RESULT PASS=17 FAIL=0` and `EXIT=0`.
-
-> Items marked `[sanity]` are identity checks: they print a reading and are **not** counted; the totals below count only the counted items.
-
 ## Abstract
 
 The Yang–Mills millennium problem asks for a quantum field theory on `R⁴` with compact gauge

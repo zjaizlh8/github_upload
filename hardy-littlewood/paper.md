@@ -1,13 +1,3 @@
-# A Structural Reading of the Hardy–Littlewood Twin-Prime Conjecture
-
-<!-- verify-glance -->
-> **One paper, one file, one program.** `code/verify_hl.c` — **35 criteria**. `gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify verify_hl.c -lm && ./verify` → `RESULT PASS=35 FAIL=0` and `EXIT=0`.
-**Author:** zjaizlh8 (GitHub) · 2026-10-26 · CC BY 4.0
-**Framework:** structural layer · spectral method · matrix probe
-**Machine witness:** `code/verify_hl.c` — one program, four sections (11 · 9 · 6 · 9 = **35** criteria), closing with the aggregate `RESULT PASS=35 FAIL=0` and `EXIT=0`.
-
-> Items marked `[sanity]` are identity checks: they print a reading and are **not** counted; the totals below count only the counted items.
-
 ## Abstract
 
 The Hardy–Littlewood conjecture states
@@ -137,12 +127,6 @@ Expected: the four section subtotals print in order as `11 · 9 · 6 · 9`, then
    sign is read from the involution (`w = ±1`, parity of the couple count). Those are two
    different slots of the same table, and neither is inferred from the other.
 
-## Acknowledgments
-
-zjaizlh8 proposed the structure and direction; DeepSeek performed the computations;
-Tencent Yuanbao hy model provided verification (professional edition, free of charge) —
-human-machine unity: AI is a friend of humanity.
-
 ## Chapter: the twin-prime case (k = 2)
 
 > Twin primes are the `k = 2` case of Hardy–Littlewood; the constant `2C₂` and the Li₂ main term are the same, so this lives here as a chapter rather than a separate paper. The witness is the same `code/verify_hl.c` (segment 3–4).
@@ -255,7 +239,7 @@ This chapter rides on the same binary as the main note — sections 3 and 4 of
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hl.exe code/verify_hl.c && ./hl.exe
 ```
 
-Expected: the five-tier table plus `RESULT PASS=6 FAIL=0` (count) and `RESULT PASS=10 FAIL=0
+Expected: the five-tier table plus `RESULT PASS=6 FAIL=0` (count) and `RESULT PASS=9 FAIL=0
 maxdev=7.039249e-03` (tech, `k=9 fiber=1 fidelity=1 discriminability=0.888889`), then the
 file-wide `RESULT PASS=35 FAIL=0` and `EXIT=0`; zero compiler warnings.
 

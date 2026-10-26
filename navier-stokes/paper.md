@@ -1,11 +1,3 @@
-# A Structural Reading of Navier–Stokes Existence and Smoothness
-
-<!-- verify-glance -->
-> **One paper, one file, one program.** `code/verify_ns.c` — **19 criteria**. `gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify verify_ns.c -lm && ./verify` → `RESULT PASS=19 FAIL=0` and `EXIT=0`.
-**Author:** zjaizlh8 (GitHub) · 2026-10-26 · CC BY 4.0
-**Framework:** structural layer · spectral method · matrix probe
-**Machine witness:** `code/verify_ns.c` — one program, two sections (10 · 9 = **19** criteria), closing with the aggregate `RESULT PASS=19 FAIL=0` and `EXIT=0`.
-
 ## Abstract
 
 On `T³` with `ν > 0`, the incompressible Navier–Stokes system

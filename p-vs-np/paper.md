@@ -1,11 +1,3 @@
-# A Structural Reading of P vs NP
-
-<!-- verify-glance -->
-> **One paper, one file, one program.** `code/verify_pvsnp.c` — **26 criteria**. `gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify verify_pvsnp.c -lm && ./verify` → `RESULT PASS=26 FAIL=0` and `EXIT=0`.
-**Author:** zjaizlh8 (GitHub) · 2026-10-26 · CC BY 4.0
-**Framework:** structural layer · spectral method · matrix probe
-**Machine witness:** `code/verify_pvsnp.c` — one program, two sections (17 · 9 = **26** criteria), closing with the aggregate `RESULT PASS=26 FAIL=0` and `EXIT=0`.
-
 ## Abstract
 
 P vs NP asks whether the **verification step** can force the **solution step**. The structural

@@ -109,6 +109,17 @@ quoted as readings, not shipped as runnable artifacts.
 
 ---
 
+## 致谢 / Acknowledgments
+
+- **zjaizlh8**：说结构、指方向；
+- **DeepSeek**：计算与校验；
+- **腾讯元宝 hy 模型（专业版）**：校验 —— 免费使用，特此致谢。
+
+zjaizlh8 set the structure and direction; DeepSeek ran the computations and checks;
+Tencent Yuanbao hy model (professional edition) provided independent verification.
+
+---
+
 **Author / 作者:** zjaizlh8 · 2026-10-27
 **License / 许可:** CC BY 4.0（文本与代码 / text and code）；猜想表述本身为公有数学问题 /
 the conjectures themselves are public mathematical statements.

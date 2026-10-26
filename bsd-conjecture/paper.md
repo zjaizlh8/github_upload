@@ -1,13 +1,3 @@
-# A Structural Reading of the Birch–Swinnerton-Dyer Conjecture
-
-<!-- verify-glance -->
-> **One paper, one file, one program.** `code/verify_bsd.c` — **54 criteria**. `gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify verify_bsd.c -lm && ./verify` → `RESULT PASS=54 FAIL=0` and `EXIT=0`.
-**Author:** zjaizlh8 (GitHub) · 2026-10-26 · CC BY 4.0
-**Framework:** structural layer · spectral method · matrix probe
-**Machine witness:** `code/verify_bsd.c` — one program, five sections (12 · 13 · 10 · 10 · 9 = **54** criteria), closing with the aggregate `RESULT PASS=54 FAIL=0` and `EXIT=0`.
-
-> Items marked `[sanity]` are identity checks: they print a reading and are **not** counted; the totals below count only the counted items.
-
 ## Abstract
 
 The BSD conjecture states `ord_{s=1} L(E,s) = rank E(Q)`. The structural answer is the

@@ -1,13 +1,3 @@
-# A Structural Reading of the Hodge Conjecture
-
-<!-- verify-glance -->
-> **One paper, one file, one program.** `code/verify_hodge.c` — **18 criteria**. `gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify verify_hodge.c -lm && ./verify` → `RESULT PASS=18 FAIL=0` and `EXIT=0`.
-**Author:** zjaizlh8 (GitHub) · 2026-10-26 · CC BY 4.0
-**Framework:** structural layer · spectral method · matrix probe
-**Machine witness:** `code/verify_hodge.c` — one program, two sections (9 · 9 = **18** criteria), closing with the aggregate `RESULT PASS=18 FAIL=0` and `EXIT=0`.
-
-> Items marked `[sanity]` are identity checks: they print a reading and are **not** counted; the totals below count only the counted items.
-
 ## Abstract
 
 The Hodge conjecture states that rational Hodge classes — the `(p,p)` classes — are algebraic.
