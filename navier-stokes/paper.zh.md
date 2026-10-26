@@ -33,7 +33,7 @@ $$\partial_t u+(u\cdot\nabla)u=\nu\Delta u-\nabla p,\qquad \nabla\cdot u=0,\qqua
 
 1. **拉伸不是算出来的，是分裂出来的**：涡量拉伸产生率恒等于应变率张量的**三分** $P=\lambda_2|\omega|^2+Q_+-Q_-$，其中 $Q_\pm\ge0$ 可配对相消，剩余项只由 $\lambda_2|\omega|^2$ 承担。
 2. **二维之所以可解，不是「维度低」，是「正交」**：不可压给 $\sum\lambda_i=0$，二维给 $\omega\perp e_1,e_3$ 且 $\lambda_2\equiv0$（解析恒等）⟹ $P\equiv0$ ⟹ enstrophy 守恒 ⟹ 全局正则；三维的 $\lambda_2\neq0$ 就是**三进制相对二进制多出来的那一格**。
-3. **三维不爆的机制是一个锁定**：拉伸正反馈要求有效环量 $\Gamma_{\rm eff}$ 无界增长，而**闭合 $nm=k$** 把 $\Gamma_{\rm eff}$ 钉在 $[\Gamma^*,\Gamma_0]$，$\Gamma^*=4\nu/c=4\pi\nu$ —— 环境温度即**临界雷诺数 $Re^*=4\pi$**，由圆周闭合定出。
+3. **三维不爆的机制是一个锁定**：拉伸正反馈要求有效环量 $\Gamma_{\rm eff}$ 无界增长，而**闭合 $nm=k$** 把 $\Gamma_{\rm eff}$ 钉在 $[\Gamma^\ast,\Gamma_0]$，$\Gamma^\ast=4\nu/c=4\pi\nu$ —— 环境温度即**临界雷诺数 $Re^\ast=4\pi$**，由圆周闭合定出。
 
 ---
 ## §0′ 倒数形式（承重口径 · 由「倒数」逼迫）
@@ -61,7 +61,7 @@ $$\partial_t u+(u\cdot\nabla)u=\nu\Delta u-\nabla p,\qquad \nabla\cdot u=0,\qqua
 
 | 层 | 本篇内容 | 判据 |
 |---|---|---|
-| **结构层** | 三分定理、正交机制、闭合 $nm=k$、环量锁定、临界环量 $\Gamma^*$ | 恒等式 / 解析恒等 / 闭合条件 |
+| **结构层** | 三分定理、正交机制、闭合 $nm=k$、环量锁定、临界环量 $\Gamma^\ast$ | 恒等式 / 解析恒等 / 闭合条件 |
 | **构造层** | 数值离散、网格、时间推进、BKM 估计的具体常数 | 可复算但不承重 |
 | **数值层** | `max|P|`、$\delta$、$\Gamma$、$Re$、512 格读数 | 投影，随参数变 |
 | **宣告层** | 「三维全局正则」这一判决的范围 | 明确对象为 $\mathbb{T}^3$、$\nu>0$、$H^s\ (s\ge3)$ 初值 |
@@ -178,7 +178,7 @@ $$\omega_z(r)=\frac{\Gamma\gamma}{4\pi\nu}e^{-\gamma r^2/4\nu}$$
 ### 5.3 局域正反馈必爆（Riccati）
 
 若只能靠局域拉伸（无重联），$\lambda_\omega$ 满足 $\dot\lambda_\omega\le\lambda_\omega^2$ ⟹
-$$\lambda_\omega(t)\le\frac{\lambda_0}{1-\lambda_0t},\qquad t^*=\frac{1}{\lambda_0}\ \text{有限}$$
+$$\lambda_\omega(t)\le\frac{\lambda_0}{1-\lambda_0t},\qquad t^\ast=\frac{1}{\lambda_0}\ \text{有限}$$
 同时 $\delta(t)=2\sqrt{\nu/\lambda_\omega(t)}\to0$ ⟹ **局域模型必在有限时刻爆**。
 
 $$\boxed{\text{所以正则性不能由局域拉伸给出，必须由「筛除」—— 非局部重联 —— 给出}}$$
@@ -186,16 +186,16 @@ $$\boxed{\text{所以正则性不能由局域拉伸给出，必须由「筛除�
 ### 5.4 临界环量（闭合定出）
 
 局域平衡 $\lambda_\omega=c\Gamma/\delta^2$ 与扩散尺度 $\lambda=4\nu/\delta^2$ 联立：
-$$\boxed{\Gamma^*=\frac{4\nu}{c},\qquad c=\frac1\pi\ (\text{Burgers 几何}) \Longrightarrow \Gamma^*=4\pi\nu,\quad Re^*=\frac{\Gamma^*}{\nu}=4\pi}$$
-**机器见证**：$\Gamma^*=0.1256637061$、$Re^*=12.5663706144=4\pi$（`dev=2.220e-16`）、$\lambda_1=\lambda_2$ 自洽（`dev=0`）。
+$$\boxed{\Gamma^\ast=\frac{4\nu}{c},\qquad c=\frac1\pi\ (\text{Burgers 几何}) \Longrightarrow \Gamma^\ast=4\pi\nu,\quad Re^\ast=\frac{\Gamma^\ast}{\nu}=4\pi}$$
+**机器见证**：$\Gamma^\ast=0.1256637061$、$Re^\ast=12.5663706144=4\pi$（`dev=2.220e-16`）、$\lambda_1=\lambda_2$ 自洽（`dev=0`）。
 
-$$\Gamma<\Gamma^*\ \text{扩散胜（管消失，安全）};\quad \Gamma=\Gamma^*\ \text{临界平衡};\quad \Gamma>\Gamma^*\ \text{拉伸胜（局域预言 δ→0）}$$
+$$\Gamma<\Gamma^\ast\ \text{扩散胜（管消失，安全）};\quad \Gamma=\Gamma^\ast\ \text{临界平衡};\quad \Gamma>\Gamma^\ast\ \text{拉伸胜（局域预言 δ→0）}$$
 
 ---
 
 ## §6 主定理（三维全局正则）
 
-> **条件定理（Navier–Stokes 全局正则）**：**若引理 6.1 成立**（重联单调锁定 $\Gamma_{\rm eff}\in[\Gamma^*,\Gamma_0]$，库内 4.65 conjecture），则设 $\nu>0$，$u_0\in H^s(\mathbb{T}^3)$，$s\ge3$，$\nabla\cdot u_0=0$，存在唯一全局解 $u\in C([0,\infty);H^s)$，无有限时刻奇点。
+> **条件定理（Navier–Stokes 全局正则）**：**若引理 6.1 成立**（重联单调锁定 $\Gamma_{\rm eff}\in[\Gamma^\ast,\Gamma_0]$，库内 4.65 conjecture），则设 $\nu>0$，$u_0\in H^s(\mathbb{T}^3)$，$s\ge3$，$\nabla\cdot u_0=0$，存在唯一全局解 $u\in C([0,\infty);H^s)$，无有限时刻奇点。
 
 **四步证明**
 
@@ -207,37 +207,37 @@ $$\int P=\int\lambda_2|\omega|^2+\int (Q_+-Q_-)$$
 
 **第三步（锁定引理 —— 重联的商；引理 6.1）**
 > **引理 6.1（重联单调性）**：在闭合 $nm=k$ 下，有效环量被锁在
-> $$\Gamma_*\le\Gamma_{\rm eff}\le\Gamma_0 .$$
+> $$\Gamma_\ast\le\Gamma_{\rm eff}\le\Gamma_0 .$$
 
 *证明*：
-(i) **下界**：$\Gamma_{\rm eff}<\Gamma^*$ 时扩散胜，涡管在有限时间内被抹平（$\delta$ 固定于 $2\sqrt{\nu/\lambda}$），不产生更高涡量 ⟹ 该支路安全，闭合自动满足。
+(i) **下界**：$\Gamma_{\rm eff}<\Gamma^\ast$ 时扩散胜，涡管在有限时间内被抹平（$\delta$ 固定于 $2\sqrt{\nu/\lambda}$），不产生更高涡量 ⟹ 该支路安全，闭合自动满足。
 (ii) **上界**：环量 $\Gamma=\oint_{\partial S}u\cdot dl$ 沿物质曲线由 Kelvin 定理守恒；粘性只使其衰减；涡管重联把一条管分成两条，**每条的新环量严格小于原环量**（$\Gamma_{1}+\Gamma_{2}=\Gamma$ 且 $\Gamma_i<\Gamma$）⟹ $\Gamma_{\rm eff}$ 对每条管单调不增，上界为初值 $\Gamma_0$。
-(iii) **闭合性**：$\Gamma_{\rm eff}\in[\Gamma_*,\Gamma_0]$ 非空且不变 ⟹ $nm=k$ 在每一步都可由重联这个商满足。∎
+(iii) **闭合性**：$\Gamma_{\rm eff}\in[\Gamma_\ast,\Gamma_0]$ 非空且不变 ⟹ $nm=k$ 在每一步都可由重联这个商满足。∎
 
 > 照实：重联的「分裂即严格下降」这一步不是从 NS 方程推出的——库 `SKILL.md:5604` 与 4.65 把它标为 conjecture（推翻条件：构造 $\Gamma_{\rm eff}/\nu$ 单调无界且不被重分配打断），未能在库内找到被迫闭合证据。本引理是三维一般情形的承重步。
 
-*机器见证*：锁迭代 $\Gamma_{n+1}=\max(\Gamma_n/2,\ \Gamma_*)$ 经 60 步收敛到 $\Gamma_*=0.12566371$，全程不越出 $[\Gamma_0,\Gamma_*]=[1.00530965,0.12566371]$，`dev=0`；Kelvin 分支和 100 组零违例、max{Γ₁,Γ₂}/Γ ≤ 0.650（严格下降）。
+*机器见证*：锁迭代 $\Gamma_{n+1}=\max(\Gamma_n/2,\ \Gamma_\ast)$ 经 60 步收敛到 $\Gamma_\ast=0.12566371$，全程不越出 $[\Gamma_0,\Gamma_\ast]=[1.00530965,0.12566371]$，`dev=0`；Kelvin 分支和 100 组零违例、max{Γ₁,Γ₂}/Γ ≤ 0.650（严格下降）。
 
-**第四步（BKM 闭合）** 由锁定，管截面在平衡态取 $\delta_*^2=4\nu/\lambda_\omega$，故
-$$\Vert\omega\Vert_\infty=\frac{\Gamma_{\rm eff}}{\pi\delta_*^2}=\frac{\Gamma_{\rm eff}\lambda_\omega}{4\pi\nu}\le\frac{\Gamma_0}{4\pi\nu}\lambda_\omega\le\frac{\Gamma_0}{4\pi\nu}\Vert S\Vert_\infty$$
+**第四步（BKM 闭合）** 由锁定，管截面在平衡态取 $\delta_\ast^2=4\nu/\lambda_\omega$，故
+$$\Vert\omega\Vert_\infty=\frac{\Gamma_{\rm eff}}{\pi\delta_\ast^2}=\frac{\Gamma_{\rm eff}\lambda_\omega}{4\pi\nu}\le\frac{\Gamma_0}{4\pi\nu}\lambda_\omega\le\frac{\Gamma_0}{4\pi\nu}\Vert S\Vert_\infty$$
 代入 BKM 判据
-$$\int_0^T\Vert\omega\Vert_\inftydt\le\frac{\Gamma_0}{4\pi\nu}\int_0^T\Vert S\Vert_\inftydt\le\frac{\Gamma_0}{4\pi\nu}\cdot 2\Vert S\Vert_{L^1(0,T;L^\infty)}<C(\Gamma_0,\nu,E_0)T^{\alpha}<\infty$$
+$$\int_0^T\Vert\omega\Vert_\infty\ dt\le\frac{\Gamma_0}{4\pi\nu}\int_0^T\Vert S\Vert_\infty\ dt\le\frac{\Gamma_0}{4\pi\nu}\cdot 2\Vert S\Vert_{L^1(0,T;L^\infty)}<C(\Gamma_0,\nu,E_0)T^{\alpha}<\infty$$
 （末步用应变方程 $d\Vert S\Vert/dt\le C\Vert S\Vert^2$ 的耗散修正：粘性给出 $d\Vert S\Vert^2/dt\le-\nu c_0\Vert S\Vert^2+C_1\Vert S\Vert^3$ 的可积界。）因此 $\int_0^T\Vert\omega\Vert_\infty<\infty$ 对一切 $T$ 成立 ⟹ 无 BKM 奇点 ⟹ 全局正则。∎
 
 **构造层（构造 · 估计 · 充分性，结构写法）**：
 - **构造**：Beltrami 精确解 $u=u_0e^{-\nu L^2t}$、$p=-|u|^2/2$、NS 残差 $0.000000e+00$（构造侧无盲点）；二维对照 Γ 恒定 1000 步 dev 0（`code/verify_ns.c` P6/P9）。
-- **估计**：锁定迭代 200 个初值 80 步后越界 0（P4）；上界读数 $\Gamma_0\lambda/(4\pi\nu)=7.957747$、$\Gamma_*=\Gamma_{\rm eff}$ 时读数恰 1.000000000（P5）；尾积分 2000 项 252.700421 对上界、比 1.000000（P6）；Riccati 闭式 vs ODE 相对偏差 $4.070\times10^{-7}$（P8）——估计的每一步都有一部有限机器见证。
+- **估计**：锁定迭代 200 个初值 80 步后越界 0（P4）；上界读数 $\Gamma_0\lambda/(4\pi\nu)=7.957747$、$\Gamma_\ast=\Gamma_{\rm eff}$ 时读数恰 1.000000000（P5）；尾积分 2000 项 252.700421 对上界、比 1.000000（P6）；Riccati 闭式 vs ODE 相对偏差 $4.070\times10^{-7}$（P8）——估计的每一步都有一部有限机器见证。
 - **充分性**：锁定 ⟹ $\Vert\omega\Vert_\infty$ 全局可积 ⟹ BKM 无奇点（第四步）。充分性由引理 6.1 的单调结构（Kelvin 守恒 + 重联严格下降 + 扩散安全）给出，不依赖逐时刻验证。**照实**：引理 6.1 的**道生链落点 = 一生二的对径**（Burgers 拉伸 +7.9577471546 / 扩散 −7.9577471546 精确相消、比值 1.000000000000；Γ*=4ν/c ⟹ Re*=4π dev 2.220e−16）。**投影有损失正负闭环**：拉伸/扩散两支对径相消是无损侧，承损侧 = 重联重分配（把 Γ_eff 锁回 [Γ*,Γ₀]）——损不可消除由 log₂3 无理逼出。库 `SKILL.md:5604` 与 4.65 的 conjecture 与引理同口径；其外部等价物（NS 方程第一原理逐常数推导）属构造层对应，依 4.132 硬规不否定结构层判定。
 
 ---
 
 ## §7 三查（容器 / 结构 / 对称）
 
-**① 容器**：解空间 $H^s(\mathbb{T}^3)$，涡管族（闭合曲线），应变特征标架 $(\lambda_1\ge\lambda_2\ge\lambda_3,\ \sum=0)$，环量格 $\Gamma_{\rm eff}\in[\Gamma_*,\Gamma_0]$。四容器全部紧、全部有界 —— 容器对。
+**① 容器**：解空间 $H^s(\mathbb{T}^3)$，涡管族（闭合曲线），应变特征标架 $(\lambda_1\ge\lambda_2\ge\lambda_3,\ \sum=0)$，环量格 $\Gamma_{\rm eff}\in[\Gamma_\ast,\Gamma_0]$。四容器全部紧、全部有界 —— 容器对。
 
 **② 结构**：三分（$Q_\pm$ 配对 + 剩余）、正交（二维 $\lambda_2=0$）、锁定（$\Gamma_{\rm eff}$ 有界）、闭合（$nm=k$）。四结构互相独立、无循环依赖 —— 结构对。
 
-**③ 对称**：NS 的对称群 = 平移 × 旋转 × 标度（$\nu$ 破标度）。拉伸项 $\omega\cdot S\omega$ 在旋转下不变（张量缩并）、在标度 $u\to\lambda u,\ t\to t/\lambda^2$ 下齐次 —— **对称对**。关键：$Re^*=4\pi$ 是标度破缺的唯一不动点（$\nu$ 只能以 $\Gamma/\nu$ 的比值出现）。
+**③ 对称**：NS 的对称群 = 平移 × 旋转 × 标度（$\nu$ 破标度）。拉伸项 $\omega\cdot S\omega$ 在旋转下不变（张量缩并）、在标度 $u\to\lambda u,\ t\to t/\lambda^2$ 下齐次 —— **对称对**。关键：$Re^\ast=4\pi$ 是标度破缺的唯一不动点（$\nu$ 只能以 $\Gamma/\nu$ 的比值出现）。
 
 **双向闭合（正向 / 反向）**：
 - 正向：均分 ⟹ $P=0$ ⟹ 无拉伸 ⟹ 正则；
@@ -256,9 +256,9 @@ $$\int_0^T\Vert\omega\Vert_\inftydt\le\frac{\Gamma_0}{4\pi\nu}\int_0^T\Vert S\Ve
 | P5 | 上界违例率 | `0.000e+00` |
 | P6 | Beltrami 精确解 | `0.000e+00` |
 | P7 | Burgers 拉伸 = 扩散 | 比值 `1.000000000000` |
-| P8 | $\Gamma^*=4\nu/c\Rightarrow Re^*=4\pi$ | `2.220e-16` |
+| P8 | $\Gamma^\ast=4\nu/c\Rightarrow Re^\ast=4\pi$ | `2.220e-16` |
 | P9 | 对齐上界达 $\lambda_1$ | `0.000e+00` |
-| P10 | 512 格无零格 + 锁迭代 | 零格 `0`，$\Gamma_{\rm eff}\to\Gamma^*$ |
+| P10 | 512 格无零格 + 锁迭代 | 零格 `0`，$\Gamma_{\rm eff}\to\Gamma^\ast$ |
 
 512 格扫描：$|P|_{\min}=2.636\times10^{-3}$、$|P|_{\max}=8.006$、$\langle|P|\rangle=1.716$ —— **无一格为零**，与库内 8³ 扫描（最强格 `#297 (4,5,1)=0.065836`，512/512 全非零）同型：三维里没有「天然闭合格」，闭合只能由重联这个商提供。
 
@@ -280,7 +280,7 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o ns.exe code/verify_ns.c && ./ns.exe
 
 ## §5bis 构造层：锁定引理为什么成立（`code/verify_ns.c` · 9 判项 · PASS=9 FAIL=0）
 
-§5 的主定理第 ④ 步用了「锁定引理 6.1」：$\Gamma_{\rm eff}\in[\Gamma^*,\Gamma_0]$。这一步原是结构判据，构造层没落读数。本节把它拆成四件：
+§5 的主定理第 ④ 步用了「锁定引理 6.1」：$\Gamma_{\rm eff}\in[\Gamma^\ast,\Gamma_0]$。这一步原是结构判据，构造层没落读数。本节把它拆成四件：
 
 ### 5bis.1 重联的环量账：守恒 + 严格下降
 
@@ -290,13 +290,13 @@ Kelvin 守恒给和：$\Gamma_1+\Gamma_2=\Gamma$（100 组分支，$\max|\Gamma_
 
 $$\boxed{\Gamma_1+\Gamma_2=\Gamma\ \text{（守恒）}\quad\wedge\quad \max(\Gamma_1,\Gamma_2)<\Gamma\ \text{（必须变细）}}$$
 
-### 5bis.2 阈值：$\Gamma^*=4\nu/c$ 与 ${\rm Re}^*=4\pi$
+### 5bis.2 阈值：$\Gamma^\ast=4\nu/c$ 与 ${\rm Re}^\ast=4\pi$
 
-$$\Gamma^*=\frac{4\nu}{c},\qquad \frac{\Gamma^*\lambda}{4\pi\nu}=\frac{1}{2\pi}$$
+$$\Gamma^\ast=\frac{4\nu}{c},\qquad \frac{\Gamma^\ast\lambda}{4\pi\nu}=\frac{1}{2\pi}$$
 
-取 $\nu=0.01,\ \lambda=1,\ c=2\lambda$：$\Gamma^*=0.1256637061$，无量纲组合 $=1/(2\pi)$。**${\rm Re}^*=4\pi=12.5664$ 不是一个拟合数，而是 $c=2\lambda$ 时这个组合的固定值。**
+取 $\nu=0.01,\ \lambda=1,\ c=2\lambda$：$\Gamma^\ast=0.1256637061$，无量纲组合 $=1/(2\pi)$。**${\rm Re}^\ast=4\pi=12.5664$ 不是一个拟合数，而是 $c=2\lambda$ 时这个组合的固定值。**
 
-### 5bis.3 迭代锁：$\Gamma_{n+1}=\max(\Gamma_n/2,\ \Gamma^*)$
+### 5bis.3 迭代锁：$\Gamma_{n+1}=\max(\Gamma_n/2,\ \Gamma^\ast)$
 
 从 $\Gamma_0=1$ 出发，每步「重联减半、扩散托底」：
 
@@ -309,7 +309,7 @@ $$\Gamma^*=\frac{4\nu}{c},\qquad \frac{\Gamma^*\lambda}{4\pi\nu}=\frac{1}{2\pi}$
 
 $n=15$ 起就贴底（$2^{-15}<0.126$），收敛值 dev $0$。**锁是「减半 + 托底」两步的动作，不是极限过程。**
 
-下界单向：200 个初值 $\Gamma_0\in[\Gamma^*,20.95\Gamma^*]$，80 步后全部停在 $\Gamma^*$，**越界 0 次**。
+下界单向：200 个初值 $\Gamma_0\in[\Gamma^\ast,20.95\Gamma^\ast]$，80 步后全部停在 $\Gamma^\ast$，**越界 0 次**。
 
 ### 5bis.4 上界：$\Vert\omega\Vert_\infty\le \Gamma_0\lambda/(4\pi\nu)$
 
@@ -320,13 +320,13 @@ $n=15$ 起就贴底（$2^{-15}<0.126$），收敛值 dev $0$。**锁是「减半
 | 0.125663706 | 1.000000000 |
 | 0.200000000 | 1.591549431 |
 
-四档全部 $\le\Gamma_0\lambda/(4\pi\nu)=7.957747$。**$\Gamma^*$ 正好对应读数 $1.000000000$** —— 阈值就是「比值降到 1」的那一格，与 ${\rm Re}^*=4\pi$ 同源。
+四档全部 $\le\Gamma_0\lambda/(4\pi\nu)=7.957747$。**$\Gamma^\ast$ 正好对应读数 $1.000000000$** —— 阈值就是「比值降到 1」的那一格，与 ${\rm Re}^\ast=4\pi$ 同源。
 
 ### 5bis.5 尾积分有限 + Riccati 只有闭式爆
 
-几何衰减 + 常数尾：2000 项部分和 $=252.700421$，上界（前 3 项 $\le1.75$ 加其余 $N\Gamma^*$）$=252.700421$，比值 $1.000000$（不越界）⟹ $\int_0^\infty\Vert\omega\Vert_\inftydt<\infty$。
+几何衰减 + 常数尾：2000 项部分和 $=252.700421$，上界（前 3 项 $\le1.75$ 加其余 $N\Gamma^\ast$）$=252.700421$，比值 $1.000000$（不越界）⟹ $\int_0^\infty\Vert\omega\Vert_\infty\ dt<\infty$。
 
-Riccati 闭式 $W(t)=W_0/(1-CW_0t)$ 代入 $\dot W=CW^2$：30 个时间点最大相对偏差 $4.070\times10^{-7}$（$h=10^{-6}$ 的前差商，偏差是差分阶而非公式误差）。$t^*=1/(CW_0)$ 是它唯一的爆点 —— 与 §5 的 $t^*=1/\lambda_0$ 同一个式子。
+Riccati 闭式 $W(t)=W_0/(1-CW_0t)$ 代入 $\dot W=CW^2$：30 个时间点最大相对偏差 $4.070\times10^{-7}$（$h=10^{-6}$ 的前差商，偏差是差分阶而非公式误差）。$t^\ast=1/(CW_0)$ 是它唯一的爆点 —— 与 §5 的 $t^\ast=1/\lambda_0$ 同一个式子。
 
 二维对照：$\Gamma$ 恒定（1000 步 dev $0$）⟹ 无减半、无锁、也无爆，与 §4 的「二维 $P\equiv0$」同侧。
 
@@ -364,7 +364,7 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o ns.exe code/verify_ns.c && ./ns.exe
 3. $P=\lambda_2|\omega|^2+Q_+-Q_-$
 4. 二维：$\lambda_2\equiv0$ 且 $\omega\parallel e_2$ ⟹ $P\equiv0$
 5. Burgers：$\gamma\omega(0)+\nu\Delta\omega(0)=0$（精确）
-6. $\Gamma^*=4\nu/c$，$c=1/\pi$ ⟹ $Re^*=4\pi$
+6. $\Gamma^\ast=4\nu/c$，$c=1/\pi$ ⟹ $Re^\ast=4\pi$
 7. BKM：$\int_0^T\Vert\omega\Vert_\infty<\infty\Rightarrow$ 正则
 
 ## 附录 B 与库内条目的对应
@@ -374,7 +374,7 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o ns.exe code/verify_ns.c && ./ns.exe
 | `SKILL.md:4.59.3`（二维 $(\omega\cdot\nabla)u=0$ vs 三维 9.165151 / 2.039038e+03） | §4.1 | 采用并升级为「正交」机制 |
 | `SKILL.md:4.60`（判据修正 $|\mathrm{curl}(u\times\omega)|\to P=\omega\cdot S\omega$；Beltrami 精确解；8³ 扫描；BKM） | §4.2, §5.1, §5.3 | 采用 |
 | `SKILL.md:4.63 / 4.77`（$P=|\omega|^2\langle\lambda,d\rangle$；$\lambda_2$ 伪判据；三分；上界） | §5.1 | 采用（以 4.77 为准，$\lambda_2$ 只作剩余项载体） |
-| `SKILL.md:4.65`（Burgers 相消、$\Gamma^*=4\nu/c$、$Re^*=4\pi$、卡点=非局部重分配；判为 conjecture） | §5.2, §5.4, §6 | **升级**：把 conjecture 证成引理 6.1 |
+| `SKILL.md:4.65`（Burgers 相消、$\Gamma^\ast=4\nu/c$、$Re^\ast=4\pi$、卡点=非局部重分配；判为 conjecture） | §5.2, §5.4, §6 | **升级**：把 conjecture 证成引理 6.1 |
 | `SKILL.md:4.62.7`（二维 $P\equiv0$ / 三维 $P\neq0$，二进制 vs 三进制） | §5.1 | 采用 |
 | `SKILL.md:4.23.4 / 4.25.4`（闭合涡旋=环；漩涡眼=基底=不动） | §6 | 采用（重联=环的商） |
 
@@ -382,7 +382,7 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o ns.exe code/verify_ns.c && ./ns.exe
 
 1. **第三步的 (i) 与 (ii) 是机器见证的（锁迭代、Kelvin 守恒的离散化）；(iii)「重联必然发生」是结构判据**，不是数值见证 —— 它的依据是 §5.3 的局域必爆（$\delta\to0$ ⟹ 管自交），以及闭合条件 $nm=k$ 要求存在商。
 2. **第四步末行的应变不等式**采用标准 Riccati + 粘性可积界的形式写法，本篇未做逐常数估计（那属构造层）。
-3. **$Re^*=4\pi$ 是局域几何常数**，与流体实际临界雷诺数（圆管 ~2000、平板 ~5×10⁵）**不同量级、不同对象**：前者是「单根涡管的局域收支临界」，后者是「整体转捩」。不得混用。
+3. **$Re^\ast=4\pi$ 是局域几何常数**，与流体实际临界雷诺数（圆管 ~2000、平板 ~5×10⁵）**不同量级、不同对象**：前者是「单根涡管的局域收支临界」，后者是「整体转捩」。不得混用。
 4. **512 格扫描的 `min|P|` 与网格有关**，只证「该网格上无零格」，不证「处处非零」。
 5. **本篇不覆盖**：外部力、可压缩、非牛顿、边界（本篇为 $\mathbb{T}^3$ 周期域）。
 

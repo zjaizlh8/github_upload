@@ -365,7 +365,7 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hodge.exe code/verify_hodge.c && ./hodge.
 
 ### 5ter.2 缺口在哪：$\exp$ 只给 1 维极化
 
-（$1,1$）类可由指数连接 $\exp:\mathcal{O}\to\mathcal{O}^*$ 的连接同态给出整数类（Lefschetz 定理），$p\ge2$ 没有这条序列。计数上：
+（$1,1$）类可由指数连接 $\exp:\mathcal{O}\to\mathcal{O}^\ast$ 的连接同态给出整数类（Lefschetz 定理），$p\ge2$ 没有这条序列。计数上：
 
 | $g$ | $\dim H^{1,1}=\binom{g}{1}^2$ | $\exp$ 给出 | 缺口 |
 |---|---|---|---|
