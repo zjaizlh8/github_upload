@@ -1,10 +1,10 @@
-/* 由 merge_segments.py 合成：单一入口，各段原样保留（仅冲突符号加段号前缀） */
+/* 单文件验证器：各部分在同一编译单元内顺序运行，符号按 part 编号区隔。 */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
 
-/* ───── 段 0：hodge-conjecture/code/verify_hodge.c ───── */
+/* ===== part 0: verify_hodge.c ===== */
 /*
  * NOTE: comments and output labels in this file were translated from Chinese.
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
@@ -304,7 +304,7 @@ int seg0_main(void)
     return S0_g_fail == 0 ? 0 : 1;
 }
 
-/* ───── 段 1：hodge-conjecture/code/verify_hodge_tech.c ───── */
+/* ===== part 1: verify_hodge_tech.c ===== */
 /*
  * NOTE: comments and output labels in this file were translated from Chinese.
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
@@ -587,7 +587,7 @@ int seg1_main(void)
 }
 
 /* ── 聚合：逐段跑，任一段失败则整体失败 ── */
-static int run_segments(void)
+static int run_all(void)
 {
     int rc = 0;
     rc |= seg0_main();
@@ -597,8 +597,8 @@ static int run_segments(void)
 
 int main(void)
 {
-    int rc = run_segments();
-    printf("RESULT TOTAL segments=2 rc=%d\n", rc);
+    int rc = run_all();
+    printf("RESULT: %s parts, overall %s\n", "2", rc ? "FAIL" : "PASS");
     printf("EXIT=%d\n", rc ? 1 : 0);
     return rc ? 1 : 0;
 }

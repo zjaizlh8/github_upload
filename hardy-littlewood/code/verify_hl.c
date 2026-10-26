@@ -1,10 +1,10 @@
-/* 由 merge_segments.py 合成：单一入口，各段原样保留（仅冲突符号加段号前缀） */
+/* 单文件验证器：各部分在同一编译单元内顺序运行，符号按 part 编号区隔。 */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
 
-/* ───── 段 0：hardy-littlewood/code/verify_hl.c ───── */
+/* ===== part 0: verify_hl.c ===== */
 /*
  * NOTE: comments and output labels in this file were translated from Chinese.
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
@@ -374,7 +374,7 @@ int seg0_main(void)
     return S0_g_fail == 0 ? 0 : 1;
 }
 
-/* ───── 段 1：hardy-littlewood/code/verify_hl_tech.c ───── */
+/* ===== part 1: verify_hl_tech.c ===== */
 /*
  * NOTE: comments and output labels in this file were translated from Chinese.
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
@@ -654,7 +654,7 @@ int seg1_main(void)
     return S1_g_fail == 0 ? 0 : 1;
 }
 
-/* ───── 段 2：twin-prime/code/verify_twin_count.c ───── */
+/* ===== part 2: verify_twin_count.c ===== */
 /*
  * NOTE: comments and output labels in this file were translated from Chinese.
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
@@ -771,7 +771,7 @@ int seg2_main(void)
     return bad ? 1 : 0;
 }
 
-/* ───── 段 3：twin-prime/code/verify_twin_tech.c ───── */
+/* ===== part 3: verify_twin_tech.c ===== */
 /*
  * NOTE: comments and output labels in this file were translated from Chinese.
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
@@ -1066,7 +1066,7 @@ int seg3_main(void)
     return S3_g_fail == 0 ? 0 : 1;
 }
 
-/* ───── 段 4：shared/code/verify_simlayer.c ───── */
+/* ===== part 4: verify_simlayer.c ===== */
 /*
  * NOTE: comments and output labels in this file were translated from Chinese.
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
@@ -1406,7 +1406,7 @@ int seg4_main(void)
     return (S4_g_nf == 0) ? 0 : 1;
 }
 
-/* ───── 段 5：shared/code/verify_unified.c ───── */
+/* ===== part 5: verify_unified.c ===== */
 /* ── 跨篇统一陈述 · 模板验证（Q_k 上的三件：行走置换 F、取补 C、反读 Rv）──
  *   五行六步：五行土S 锚定 -> 五行火F 虚化 -> 五行金M 坍缩 -> 五行水W 渗透 -> 五行木D 扩展 -> 五行土S 闭环
  *   四判據數（★ 判項計數口徑）：res=0(判項)· **實跑** 見尾行 RESULT · domain=k=1..8（8 格）· dc=2(通过/违规) · order=8（k 的最大值）· **實跑狀態=见输出**
@@ -1736,7 +1736,7 @@ static int seg5_main_impl(int argc, char **argv)
 static int seg5_main(void) { return seg5_main_impl(1, (char **)0); }
 
 /* ── 聚合：逐段跑，任一段失败则整体失败 ── */
-static int run_segments(void)
+static int run_all(void)
 {
     int rc = 0;
     rc |= seg0_main();
@@ -1750,8 +1750,8 @@ static int run_segments(void)
 
 int main(void)
 {
-    int rc = run_segments();
-    printf("RESULT TOTAL segments=6 rc=%d\n", rc);
+    int rc = run_all();
+    printf("RESULT: %s parts, overall %s\n", "6", rc ? "FAIL" : "PASS");
     printf("EXIT=%d\n", rc ? 1 : 0);
     return rc ? 1 : 0;
 }

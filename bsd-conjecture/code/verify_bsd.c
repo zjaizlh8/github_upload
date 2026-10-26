@@ -1,10 +1,10 @@
-/* 由 merge_segments.py 合成：单一入口，各段原样保留（仅冲突符号加段号前缀） */
+/* 单文件验证器：各部分在同一编译单元内顺序运行，符号按 part 编号区隔。 */
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
 
-/* ───── 段 0：bsd-conjecture/code/verify_bsd.c ───── */
+/* ===== part 0: verify_bsd.c ===== */
 /*
  * NOTE: comments and output labels in this file were translated from Chinese.
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
@@ -353,7 +353,7 @@ int seg0_main(void)
     return S0_g_fail == 0 ? 0 : 1;
 }
 
-/* ───── 段 1：bsd-conjecture/code/verify_bsd4.c ───── */
+/* ===== part 1: verify_bsd4.c ===== */
 /*
  * NOTE: comments and output labels in this file were translated from Chinese.
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
@@ -630,7 +630,7 @@ int seg1_main(void)
     return S1_nfail == 0 ? 0 : 1;
 }
 
-/* ───── 段 2：bsd-conjecture/code/verify_bsd5.c ───── */
+/* ===== part 2: verify_bsd5.c ===== */
 /*
  * NOTE: comments and output labels in this file were translated from Chinese.
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
@@ -883,14 +883,14 @@ int seg2_main(void)
     return S2_nfail == 0 ? 0 : 1;
 }
 
-/* ───── 段 3：bsd-conjecture/code/verify_bsd6.c ───── */
+/* ===== part 3: verify_bsd6.c ===== */
 /*
  * NOTE: this file is the original Chinese source (machine witness), not a translation.
  * The probe output labels are Chinese for fidelity to the D:\dpgo archive;
  * check names, tolerances and all numeric values are unchanged.
  */
 /* ============================================================================
-   术层模拟器：用「混沌一步到位 + 一步到位矩阵探针」直接读出 BSD 的术层三量
+   spectral simulator：用「spectral simulator」直接读出 BSD 的术层三量
    ---------------------------------------------------------------------------
    结构主张（本档要机器见证的一句）：
      术层不是「算不出来」，而是「有限矩阵上的三个读数量」——
@@ -925,7 +925,7 @@ int seg2_main(void)
 static double S3_g_maxdev = 0.0;
 static int S3_g_np = 0, S3_g_nf = 0;
 
-/* 【土】库内 15 条谱线（混沌一步到位 · spec(S)） */
+/* 【土】库内 15 条谱线（spectral lines of S） */
 static const int S3_g_spec[15] = { 6, 6, 6, 6, -6, -6, -6, 3, 3, -3, -3, 2, 2, -2, -2 };
 
 static void S3_judge(const char *name, double dev, double tol)
@@ -1191,7 +1191,7 @@ static void S3_run(void)
 
 int seg3_main(void)
 {
-    printf("=== verify_bsd6.c · 术层模拟器（混沌一步到位 + 一步到位矩阵探针）===\n");
+    printf("=== verify_bsd6.c · spectral simulator===\n");
     printf("  读法：阶 = 秩稳定的整数读数；Reg = 平方比较；#Sh = 零化度\n\n");
     S3_run();
     printf("\nRESULT PASS=%d FAIL=%d  max dev=%.3e\n", S3_g_np, S3_g_nf, S3_g_maxdev);
@@ -1201,7 +1201,7 @@ int seg3_main(void)
     return (S3_g_nf == 0) ? 0 : 1;
 }
 
-/* ───── 段 4：bsd-conjecture/code/verify_bsd_tech.c ───── */
+/* ===== part 4: verify_bsd_tech.c ===== */
 /*
  * NOTE: comments and output labels in this file were translated from Chinese.
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
@@ -1482,7 +1482,7 @@ int seg4_main(void)
 }
 
 /* ── 聚合：逐段跑，任一段失败则整体失败 ── */
-static int run_segments(void)
+static int run_all(void)
 {
     int rc = 0;
     rc |= seg0_main();
@@ -1495,8 +1495,8 @@ static int run_segments(void)
 
 int main(void)
 {
-    int rc = run_segments();
-    printf("RESULT TOTAL segments=5 rc=%d\n", rc);
+    int rc = run_all();
+    printf("RESULT: %s parts, overall %s\n", "5", rc ? "FAIL" : "PASS");
     printf("EXIT=%d\n", rc ? 1 : 0);
     return rc ? 1 : 0;
 }
