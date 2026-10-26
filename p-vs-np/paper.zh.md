@@ -388,22 +388,22 @@ containers(matrix, domain=abacus,  out=矩阵_abacus_层格缺口.csv)
 |---|---|---|---|---|
 | $\det$ 3×3 | Bareiss 无分数消元 $-3$ | Laplace 递归 $-3$ | $-3$ | $0$ |
 | $\det$ 4×4 | $-62$ | $-62$ | — | $0$ |
-| $\operatorname{per}$ 3×3 | Ryser（Gray 码 $2^3$ 项）$463$ | 置换枚举（$3!$ 项）$463$ | $1\cdot5\cdot10+1\cdot6\cdot8+2\cdot4\cdot10+2\cdot6\cdot7+3\cdot4\cdot8+3\cdot5\cdot7=463$ | $0$ |
-| $\operatorname{per}$ 4×4 | $2$ | $2$ | — | $0$ |
+| $\mathrm{per}$ 3×3 | Ryser（Gray 码 $2^3$ 项）$463$ | 置换枚举（$3!$ 项）$463$ | $1\cdot5\cdot10+1\cdot6\cdot8+2\cdot4\cdot10+2\cdot6\cdot7+3\cdot4\cdot8+3\cdot5\cdot7=463$ | $0$ |
+| $\mathrm{per}$ 4×4 | $2$ | $2$ | — | $0$ |
 
 两条路径一条走消元、一条走展开；`per` 一条走 Ryser、一条走枚举。四个数全部零偏差 —— 后面的判据才敢立在它们上面。
 
 ### 5ter.2 差在哪：一个是交错函数，一个不是
 
-$$\det(A^{\text{swap}})=-\det(A),\qquad \operatorname{per}(A^{\text{swap}})=\operatorname{per}(A)$$
+$$\det(A^{\text{swap}})=-\det(A),\qquad \mathrm{per}(A^{\text{swap}})=\mathrm{per}(A)$$
 
-实测：$\det=-11$ 与 $+11$（换两行变号），$\operatorname{per}=117$ 与 $117$（不变）。
+实测：$\det=-11$ 与 $+11$（换两行变号），$\mathrm{per}=117$ 与 $117$（不变）。
 
 这一条决定了整篇的分岔：**交错 ⟹ 有符号 ⟹ 项与项可以相消 ⟹ 可消元**；**非交错 ⟹ 全正 ⟹ 项与项只会叠加 ⟹ 只能累计**。
 
 ### 5ter.3 符号结构：`det` 的正负项数恰好各半
 
-| $n$ | $\det$ 展开正项 | 负项 | 相等？ | $\operatorname{per}$ 的项数 |
+| $n$ | $\det$ 展开正项 | 负项 | 相等？ | $\mathrm{per}$ 的项数 |
 |---|---|---|---|---|
 | 2 | 2 | 2 | ✓ | 4 |
 | 3 | 9 | 9 | ✓ | 18 |
@@ -417,15 +417,15 @@ $n!/2$ 正 $+$ $n!/2$ 负 —— **相消在项数上是先天的**；`per` 那�
 
 在 $\mathbb{F}_2$ 上，$+1=-1$，符号消失：
 
-$$\det(A)\equiv\operatorname{per}(A)\pmod 2$$
+$$\det(A)\equiv\mathrm{per}(A)\pmod 2$$
 
-本机**全枚举**：$n=2,3,4$ 的全部 $0/1$ 矩阵共 $66064$ 个，$\det\bmod 2\ne\operatorname{per}\bmod 2$ 的个数 = $\mathbf{0}$。
+本机**全枚举**：$n=2,3,4$ 的全部 $0/1$ 矩阵共 $66064$ 个，$\det\bmod 2\ne\mathrm{per}\bmod 2$ 的个数 = $\mathbf{0}$。
 
-这条既是好消息也是坏消息：**mod 2 商存在**，所以 $\operatorname{per}\bmod 2$ 属于 $\mathrm{P}$（它就是行列式）；但**恰好只有这一位**：奇偶之外的信息，$\mathbb{F}_2$ 一点也带不出来。
+这条既是好消息也是坏消息：**mod 2 商存在**，所以 $\mathrm{per}\bmod 2$ 属于 $\mathrm{P}$（它就是行列式）；但**恰好只有这一位**：奇偶之外的信息，$\mathbb{F}_2$ 一点也带不出来。
 
-### 5ter.5 整数侧：全 1 矩阵 $\det=0$ 而 $\operatorname{per}=n!$
+### 5ter.5 整数侧：全 1 矩阵 $\det=0$ 而 $\mathrm{per}=n!$
 
-| $n$ | $\det(J)$ | $\operatorname{per}(J)$ | $n!$ |
+| $n$ | $\det(J)$ | $\mathrm{per}(J)$ | $n!$ |
 |---|---|---|---|
 | 2 | 0 | 2 | 2 |
 | 3 | 0 | 6 | 6 |
@@ -433,11 +433,11 @@ $$\det(A)\equiv\operatorname{per}(A)\pmod 2$$
 | 5 | 0 | 120 | 120 |
 | 6 | 0 | 720 | 720 |
 
-相消侧的极限：$\det$ 全部抵消为 $0$，$\operatorname{per}$ 一个不少地长成 $n!$。另一件见证是重复行：三行前两行全 1 时 $\det=0$ 而 $\operatorname{per}=2(1+2+3)=12$。
+相消侧的极限：$\det$ 全部抵消为 $0$，$\mathrm{per}$ 一个不少地长成 $n!$。另一件见证是重复行：三行前两行全 1 时 $\det=0$ 而 $\mathrm{per}=2(1+2+3)=12$。
 
 ### 5ter.6 信息量：1 比特对 $\log_2 n!$ 比特
 
-| $n$ | $\operatorname{per}$ 需要的比特 $\log_2 n!$ | 奇偶给出的比特 |
+| $n$ | $\mathrm{per}$ 需要的比特 $\log_2 n!$ | 奇偶给出的比特 |
 |---|---|---|
 | 3 | 2.585 | 1 |
 | 4 | 4.585 | 1 |
@@ -465,7 +465,7 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o pvsnp.exe code/verify_pvsnp.c && ./pvsnp.
 # 本节是 part 2/2：段尾 RESULT PASS=9 FAIL=0 maxdev=0.000e+00  EXIT=0
 ```
 
-`k=9 fiber=1 保真度=1.000000 判别力=0.888889`、`domain=9 dc=6 order=2`；输出 运行日志（不随仓库发布）。取模处唯一：$\det\bmod 2$ 与 $\operatorname{per}\bmod 2$ 的奇偶比较；跨维度算子一个不用 ⟹ 不付残差，故 `maxdev=0`。
+`k=9 fiber=1 保真度=1.000000 判别力=0.888889`、`domain=9 dc=6 order=2`；输出 运行日志（不随仓库发布）。取模处唯一：$\det\bmod 2$ 与 $\mathrm{per}\bmod 2$ 的奇偶比较；跨维度算子一个不用 ⟹ 不付残差，故 `maxdev=0`。
 
 **照实四条**：① 5ter.4 / 5ter.5 / 5ter.7 是**全枚举**（$n\le4$ / $n\le6$ / $n\le4$），不是对一切 $n$ 的定理；② 5ter.3 的「正负各半」是**项数**计数，不是值的相消幅度；③ 5ter.6 是必要条件型论证（1 比特装不下 $n\log n$ 比特），不单独构成 $\#$P-困难性的证明；④ 「$2^n$ 墙」的定量口径仍由 §6 给，本节只补「墙为什么是结构性的」。
 

@@ -10,7 +10,7 @@
 
 The Hardy–Littlewood conjecture states
 
-$$\pi_2(x) \;\sim\; 2C_2 \cdot \operatorname{Li}_2(x), \qquad 2C_2 = 2\prod_{q>2}\Bigl(1-\frac{1}{(q-1)^2}\Bigr) = 1.320323631\ldots$$
+$$\pi_2(x) \;\sim\; 2C_2 \cdot \mathrm{Li}_2(x), \qquad 2C_2 = 2\prod_{q>2}\Bigl(1-\frac{1}{(q-1)^2}\Bigr) = 1.320323631\ldots$$
 
 We state the structural form (a conditional reading, not a formal proof): the welded integral `Li₂(x) = ∫₂ˣ (e^γ ∏_{p≤t}(1−1/p))² dt`
 (the five-element interface: lower bound 2 / logarithmic derivative / local factor `1/log²t` /

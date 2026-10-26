@@ -372,7 +372,7 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o ns.exe code/verify_ns.c && ./ns.exe
 | 库条目 | 本篇位置 | 关系 |
 |---|---|---|
 | `SKILL.md:4.59.3`（二维 $(\omega\cdot\nabla)u=0$ vs 三维 9.165151 / 2.039038e+03） | §4.1 | 采用并升级为「正交」机制 |
-| `SKILL.md:4.60`（判据修正 $|\curl(u\times\omega)|\to P=\omega\cdot S\omega$；Beltrami 精确解；8³ 扫描；BKM） | §4.2, §5.1, §5.3 | 采用 |
+| `SKILL.md:4.60`（判据修正 $|\mathrm{curl}\,(u\times\omega)|\to P=\omega\cdot S\omega$；Beltrami 精确解；8³ 扫描；BKM） | §4.2, §5.1, §5.3 | 采用 |
 | `SKILL.md:4.63 / 4.77`（$P=|\omega|^2\langle\lambda,d\rangle$；$\lambda_2$ 伪判据；三分；上界） | §5.1 | 采用（以 4.77 为准，$\lambda_2$ 只作剩余项载体） |
 | `SKILL.md:4.65`（Burgers 相消、$\Gamma^*=4\nu/c$、$Re^*=4\pi$、卡点=非局部重分配；判为 conjecture） | §5.2, §5.4, §6 | **升级**：把 conjecture 证成引理 6.1 |
 | `SKILL.md:4.62.7`（二维 $P\equiv0$ / 三维 $P\neq0$，二进制 vs 三进制） | §5.1 | 采用 |

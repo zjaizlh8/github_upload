@@ -556,13 +556,13 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o bsd.exe code/verify_bsd.c && ./bsd.exe
 
 ## §5quater　构造层：Reg / c_p / #Ш 全账
 
-**一句话**：账的四件里，$\Omega$ 与 $\operatorname{Reg}$ 是**实数（体积）**，$\prod_p c_p$ 与 $\#\mathrm{Sha}$ 是**整数（结构）**，而「$L$ 对 $\#\mathrm{tors}^2$ 的整除」正是把两侧焊在一起的那道缝。本节把这四件各自的可判形式落成机器见证（`code/verify_bsd.c`，9 判项全过，`maxdev = 4.119e-11`）。
+**一句话**：账的四件里，$\Omega$ 与 $\mathrm{Reg}$ 是**实数（体积）**，$\prod_p c_p$ 与 $\#\mathrm{Sha}$ 是**整数（结构）**，而「$L$ 对 $\#\mathrm{tors}^2$ 的整除」正是把两侧焊在一起的那道缝。本节把这四件各自的可判形式落成机器见证（`code/verify_bsd.c`，9 判项全过，`maxdev = 4.119e-11`）。
 
 ### 5quater.1　Reg 是体积，不是估计
 
 高度配对 $b(P,Q)$ 的 Gram 矩阵 $G_{ij}=b(P_i,P_j)$，则
 
-$$\operatorname{Reg} \;=\; \det G .$$
+$$\mathrm{Reg} \;=\; \det G .$$
 
 三条要读的性质（全部可判、全部精确）：
 
@@ -570,9 +570,9 @@ $$\operatorname{Reg} \;=\; \det G .$$
 |---|---|---|
 | P1 | $G$ 正定（各阶主子式 $>0$）| $r=1,2,3$ 的 $\det G = 2.2500000000,\;4.0000000000,\;1.2633760000$ |
 | P2 | 整基变换下 $\det(U^{\mathsf T}GU)=\det(U)^2\det G$ | 三组 $U$（$\det=\pm1,+1$）全对，dev $0$ |
-| P3 | 缩放律 $\hat h(nP)=n^2\hat h(P)$ ⟹ $G$ 按 $n^{2}$、$\operatorname{Reg}$ 按 $n^{2r}$ | $n=2,3,5$ 精确；$r=2,n=3$ 时 $\det$ 由 $4\to324=3^{4}\cdot4$ |
+| P3 | 缩放律 $\hat h(nP)=n^2\hat h(P)$ ⟹ $G$ 按 $n^{2}$、$\mathrm{Reg}$ 按 $n^{2r}$ | $n=2,3,5$ 精确；$r=2,n=3$ 时 $\det$ 由 $4\to324=3^{4}\cdot4$ |
 
-$\det(U)=\pm1$ 时 $\operatorname{Reg}$ **逐字不变**——这就是「体积」的含义：它数的是**格**，不是基。
+$\det(U)=\pm1$ 时 $\mathrm{Reg}$ **逐字不变**——这就是「体积」的含义：它数的是**格**，不是基。
 
 ### 5quater.2　实数账（rank 0，曲线 32a1）
 
@@ -592,9 +592,9 @@ $$L(E,1)\cdot\#\text{tors}^2 \;=\; \Omega\cdot\prod_p c_p\cdot\#Ш$$
 
 把账写成
 
-$$\frac{L^{(r)}(E,1)}{r!}\cdot\#\text{tors}^2 \;=\; \#Ш\cdot\Omega\cdot\operatorname{Reg}\cdot\prod_p c_p ,$$
+$$\frac{L^{(r)}(E,1)}{r!}\cdot\#\text{tors}^2 \;=\; \#Ш\cdot\Omega\cdot\mathrm{Reg}\cdot\prod_p c_p ,$$
 
-则 $\operatorname{Reg}$ 的指数：$r=0$ 时为空积 $=1$（不出现），$r\ge1$ 时**恰为 $1$**（P6 计数，dev $0$）。⟹ 「$\operatorname{Reg}$ 数的是自由方向」，与 §5bis 的 $\operatorname{ord}=r$ 是**同一个计数的两个面**：一个数零点厚度，一个数格的体积。
+则 $\mathrm{Reg}$ 的指数：$r=0$ 时为空积 $=1$（不出现），$r\ge1$ 时**恰为 $1$**（P6 计数，dev $0$）。⟹ 「$\mathrm{Reg}$ 数的是自由方向」，与 §5bis 的 $\mathrm{ord}=r$ 是**同一个计数的两个面**：一个数零点厚度，一个数格的体积。
 
 ### 5quater.4　整数侧：$c_p$ 与 $\#Ш$
 
@@ -622,7 +622,7 @@ RESULT PASS=9 FAIL=0 maxdev=4.119e-11 EXIT=0
 
 ### 5quater.6　照实四条
 
-1. **rank $\ge1$ 的实数账未在此闭合**：$\operatorname{Reg}$ 的数值需要 Mordell–Weil 生成元的真实规范高度与真实周期；本节给的是 $\operatorname{Reg}$ 的**代数性质**（正定、基变换不变、缩放律）与账的**形状**，不是 $37a1/389a1$ 的 $\operatorname{Reg}$ 数值。
+1. **rank $\ge1$ 的实数账未在此闭合**：$\mathrm{Reg}$ 的数值需要 Mordell–Weil 生成元的真实规范高度与真实周期；本节给的是 $\mathrm{Reg}$ 的**代数性质**（正定、基变换不变、缩放律）与账的**形状**，不是 $37a1/389a1$ 的 $\mathrm{Reg}$ 数值。
 2. P1–P4、P9 是高度配对的**代数性质**（精确、可判、与曲线无关）；P5 用 `code/verify_bsd.c` 的实跑读数复算（同一台机器、同一口径）。
 3. P7、P8 引自 Tamagawa 数与 Cassels 定理的既有事实，本篇只做**机器复核**，不宣称新证。
 4. **实现级自曝**：首版 `detn` 用递归 Laplace 展开，小矩阵上留脏值使 $\det$ 打印成 `0.0000000000` 而判据仍判「$>0$」（实际得 $\sim10^{-16}$ 正数）——**判据过了、数错了**；改闭式展开后 $1.2633760000$ 才落位。这是「全 PASS 只证判据自洽」的第 N 次现场复现。

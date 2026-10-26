@@ -391,11 +391,11 @@ $N=256$ 固定，$L=1,2,4$ 三档全部给出 $\Delta(L)L=6.2830276023$（逐位
 
 两体 $j=1/2$ 的单态投影 $P=(I-\boldsymbol\sigma\cdot\boldsymbol\sigma)/4$（$4\times4$ 实矩阵）：
 
-$$\operatorname{tr}P=1.0000000000\ (\text{秩}\ 1),\qquad \max|P^2-P|=0.000$$
+$$\mathrm{tr}P=1.0000000000\ (\text{秩}\ 1),\qquad \max|P^2-P|=0.000$$
 
 秩 1 ⟹ 物理扇区在每个格点上只有**一个**自由度 ⟹ 转移矩阵可截断为有限维，谱离散。这是「隙存在」的代数前提。
 
-迹对共轭不变也一并验了：$\operatorname{tr}(UAU^{\mathsf T})=\operatorname{tr}(A)=4$，dev $8.882\times10^{-16}$。
+迹对共轭不变也一并验了：$\mathrm{tr}(UAU^{\mathsf T})=\mathrm{tr}(A)=4$，dev $8.882\times10^{-16}$。
 
 ### 5ter.6 面积律与线性势（二维 $U(1)$ 口径）
 
@@ -406,7 +406,7 @@ $$E(R)=\sigma R,\ \sigma=0.35\ \Longrightarrow\ E(R)/R=0.350000\ \text{四档全
 
 ### 5ter.7 转移矩阵的隙与 $a$ 无关
 
-$T=\operatorname{diag}(e^{-E_1a},e^{-E_2a})$，$E_1=0.5,\ E_2=1.7$：
+$T=\mathrm{diag}(e^{-E_1a},e^{-E_2a})$，$E_1=0.5,\ E_2=1.7$：
 
 $$-\log(\ell_2/\ell_1)/a = 1.2000000000\quad (a=0.1,\ 0.05,\ 0.025\ \text{三档相同，dev}\ 3.775\times10^{-15})$$
 
