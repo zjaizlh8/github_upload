@@ -406,7 +406,7 @@ $$\mathrm{ord}_{s=1}L(E,s)=\mathrm{rank}\,E(\mathbb Q).$$
 
 **引理 4.1（配对即零点厚度）**　重数律的「每对在 $s=1$ 恰吞掉一个 $(s−1)$」，即 $\mathrm{ord}_{s=1}L(E,s)=\Sigma m_\lambda=\mathrm{rank}\,E(\mathbb Q)$（一般秩）。
 
-> 照实：这条识别就是 BSD 本身（库 `SKILL.md:10330`：ord=rank 的数值相等依赖对合公理、非标准定理），未能在库内找到被迫闭合证据。**已证锚**：解析秩 $0,1$ 由 Gross–Zagier（1986）+ Kolyvagin（1990）证明；§5bis 的三恒等式与超奇偶见证把结构侧做齐（`ord` 不是 `w` 的函数、parity 原理上给不出阶，verify_bsd6 P8）。
+> 照实：这条识别就是 BSD 本身（库 `SKILL.md:10330`：ord=rank 的数值相等依赖对合公理、非标准定理），未能在库内找到被迫闭合证据。**已证锚**：解析秩 $0,1$ 由 Gross–Zagier（1986）+ Kolyvagin（1990）证明；§5bis 的三恒等式与超奇偶见证把结构侧做齐（`ord` 不是 `w` 的函数、parity 原理上给不出阶，part 4/5 的 P8）。
 
 由引理 4.1，则 ord = Σm = rank。∎
 

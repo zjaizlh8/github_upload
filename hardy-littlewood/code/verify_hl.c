@@ -664,7 +664,7 @@ int seg1_main(void)
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
  * the translation keeps line structure, check names and all numeric values unchanged.
  */
-/* verify_twin_count.c —— 孪生素数对计数independent recomputation（本篇论文 §6 表的数据见证）
+/* [part 3/4] —— 孪生素数对计数independent recomputation（本篇论文 §6 表的数据见证）
  * caliber：pi2(x) = #{ p : p, p+2 皆素, p+2 <= x }
  * 与archivecalibercross-check：6m 中心者（排除三连体 (3,5),(5,7)）另计一列。
  * 纯 C，逐点筛法（位集），无外部表、无拟合。
@@ -786,7 +786,7 @@ int seg2_main(void)
  * [part 4/4] —— 孪生 · construction layer：lower bound靠闭合、密度侧只给upper bound
  * 对应论文：D:\lw\孪生成猜想_证明_结构层_chaos onestep_matrix probe.md
  *
- * numeric layer（π₂ recomputation + 三射线分布）已在 verify_twin_count.c closure。本篇要拿下的是
+ * numeric layer（π₂ recomputation + 三射线分布）已在 part 3/4 closure。本段要拿下的是
  * 用户点的construction layergap：**存活率lower bound与密度侧的定位** —— 密度侧 ∏(1−2/q)→0 会不会
  * 把「无穷多」吃掉？lower bound到底由谁给？
  *
