@@ -1,6 +1,7 @@
 # 编码与换行约定（2026-10-27 统一）：
 #   源文本（.c/.h/.md/.yml/Makefile/.json）—— UTF-8 无 BOM + LF（索引与工作区一致）
-#   机器见证（shared/results/*.out.txt）—— UTF-8 含 BOM + CRLF（Windows 记事本/Excel 可直接打开）
+#   附带的输出/表格（*.txt / *.csv，若将来导出）—— UTF-8 含 BOM + CRLF（Windows 记事本/Excel 可直接打开）
+#   注：本仓当前不含任何 .txt / .csv 产物（验证器只把读数打到 stdout）
 #   二进制（.exe/.zip/.o）—— 显式 binary，禁止任何文本转换
 * text=auto
 *.c        text eol=lf
