@@ -16,7 +16,10 @@ integral / upper bound x; the water-side expansion `Li_k(x) = (x/log^k x) Σ (k)
 with first coefficient = dimension D = k = 2) is forced by the three base objects
 (unit 1, Cartesian product, place-value power `b^k`), and the error term `E(x) = π₂(x) − 2C₂Li₂(x)`
 is closed by **double cancellation**: the reciprocal identity on the constant side and the
-random-series (sign) cancellation on the error side. The load-bearing step is written as
+random-series (sign) cancellation on the error side. Two readings of one error are kept distinct:
+`E_micro = π₂ − 2C₂Li₂` (absolute, the wave amplitude, Θ(√x) per §5bis) and
+`E_macro = E_micro/(2C₂Li₂)` (relative, →0), welded by the reciprocal ledger
+`E_macro × main = E_micro`. The load-bearing step is written as
 explicit lemmas with honest notes.
 
 ## 1. Structural layer

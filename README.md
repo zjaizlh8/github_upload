@@ -2,21 +2,21 @@
 # 八道千禧年型问题的结构证明
 
 [![verify](https://github.com/zjaizlh8/github_upload/actions/workflows/verify.yml/badge.svg)](https://github.com/zjaizlh8/github_upload/actions/workflows/verify.yml)
-![probes](https://img.shields.io/badge/C%20probes-19-blue)
+![probes](https://img.shields.io/badge/C%20probes-20-blue)
 ![gates](https://img.shields.io/badge/archive%20gates-4%2F4-brightgreen)
 ![problems](https://img.shields.io/badge/problems-8-purple)
 [![license](https://img.shields.io/badge/license-CC%20BY%204.0-lightgrey)](https://creativecommons.org/licenses/by/4.0/)
 
 ```bash
 git clone https://github.com/zjaizlh8/github_upload.git && cd github_upload
-make run     # 编译 19 支验证器并逐支实跑 / build + run every verifier
+make run     # 编译 20 支验证器并逐支实跑 / build + run every verifier
 make gates   # 4 道落档门禁扫全部 .c / 4 archive gates over all sources
 ```
 Windows 无 `make` 时：`gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o t <any>/code/verify_*.c -lm && ./t`。
-CI（GitHub Actions）在每次 push 上跑同一条链：编译 23 个 `.c` → 跑 19 支验证器 → 4 道门禁。
+CI（GitHub Actions）在每次 push 上跑同一条链：编译 24 个 `.c` → 跑 20 支验证器 → 4 道门禁。
 
 **直达 / direct:** [站点 Pages](https://zjaizlh8.github.io/github_upload/) ·
-[v1.0.0 Windows x64 预编译 23 个 exe](https://github.com/zjaizlh8/github_upload/releases/latest) ·
+[Windows x64 预编译 exe（见最新 release）](https://github.com/zjaizlh8/github_upload/releases/latest) ·
 [CI 运行记录](https://github.com/zjaizlh8/github_upload/actions/workflows/verify.yml)
 
 **Author / 作者:** zjaizlh8 (GitHub) · 2026-10-26
@@ -77,13 +77,13 @@ what the honest note records — the theorem head and the honest note no longer 
 | Hodge 霍奇 | if Lemma 4.1 then (p,p) classes algebraic | Lemma 4.1 = AJ torsion, p≥2 (Griffiths 1969 conflict recorded) AJ 挠性 p≥2（Griffiths 1969 冲突已录） | `verify_hodge.c` (10) / `verify_hodge_tech.c` (9), PASS |
 | YM | if Lemma 4.1 then mass gap Δ>0 | Lemma 4.1 = λ₁>0 in 4D SU(3) continuum limit (Clay core) 4D SU(3) 连续极限 λ₁>0（Clay 核心） | `verify_ym.c` (9) / `verify_ym_tech.c` (9), PASS |
 | NS | if Lemma 6.1 then no blow-up | Lemma 6.1 = reconnection monotonicity (archive 4.65 conjecture) 重联单调（库内 4.65 conjecture） | `verify_ns.c` (10) / `verify_ns_tech.c` (9), PASS |
-| BSD | if Lemma 4.1 then ord = rank | Lemma 4.1 = pairing = zero thickness (= BSD itself for general rank) 配对=零点厚度（一般秩即 BSD 本身） | `verify_bsd.c` (13) / `verify_bsd5.c` (10) / `verify_bsd_tech.c` (9), PASS |
+| BSD | if Lemma 4.1 then ord = rank | Lemma 4.1 = pairing = zero thickness (= BSD itself for general rank) 配对=零点厚度（一般秩即 BSD 本身） | `verify_bsd.c` (13) / `verify_bsd5.c` (10) / `verify_bsd6.c` (10) / `verify_bsd_tech.c` (9), PASS |
 
-All 19 C probes compile with `gcc -Wall -Wextra -O2 -D_GNU_SOURCE` with **zero warnings**,
+All 20 C probes compile with `gcc -Wall -Wextra -O2 -D_GNU_SOURCE` with **zero warnings**,
 pass the four project gates, and run with `EXIT=0`. The four gate sources are bundled in
 `shared/code/` (`check_onestep.c`, `chk_loops.c`, `chk_res.c`, `chk_scan.c`), so the gate
 check is fully reproducible from this repository:
-19 支 C 探针全部 `gcc -Wall -Wextra -O2 -D_GNU_SOURCE` 零告警，过四道门禁，实跑 `EXIT=0`。
+20 支 C 探针全部 `gcc -Wall -Wextra -O2 -D_GNU_SOURCE` 零告警，过四道门禁，实跑 `EXIT=0`。
 四道门禁源码随仓提供于 `shared/code/`（`check_onestep.c`、`chk_loops.c`、`chk_res.c`、`chk_scan.c`），
 门禁检查可从本仓库完全复现：
 

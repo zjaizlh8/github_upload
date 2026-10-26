@@ -15,3 +15,6 @@ a.out
 bin/
 _chk_scan.txt
 dist/
+
+# JiuwenSwarm runtime file operation logs
+.agent_history/

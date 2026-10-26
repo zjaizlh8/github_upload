@@ -89,7 +89,7 @@ static int run_files(int argc,char**argv){
 }
 int main(int argc,char**argv){
     if(argc<2){ printf("用法：chk_loops.exe 檔案…\n"); return 2; }
-    printf("循環歸屬探測 v6 · 判項塊 = 塊內含 PASS/FAIL 文本 或 CHK 調用\n");
+    printf("循環歸屬探測 v7 · 判項塊 = 塊內含 PASS/FAIL 文本 或 CHK 調用\n");
     printf("================================================================\n");
     return run_files(argc,argv);
 }
