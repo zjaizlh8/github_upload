@@ -57,7 +57,7 @@ follow the same four-part skeleton: abstract → structural layer → spectral m
 → main theorem (with the load-bearing step written as an explicit **Lemma + honest notes**) →
 construction layer (construct / estimate / sufficiency) → numerical tables → reproduction
 commands → honest notes.
-每篇 `paper.md` 为英文版，与中文版 `paper.zh.md` 对应；两者同构：摘要 → 结构层 → 谱结构方法 → 矩阵探针
+每篇 `paper.md` 为英文压缩版（逐节对应中文版，篇幅约 1/5）；`paper.zh.md` 为完整版（多出 §0′ 倒数形式、§0 记号、§5bis 构造层、§7bis 独立复算、附录 A/B）：摘要 → 结构层 → 谱结构方法 → 矩阵探针
 → 主定理（承重步显式写成 **引理 + 照实**）→ 构造层（构造 / 估计 / 充分性）→ 数值表 → 复现命令 → 照实。
 
 ## Status table / 状态表 (honest grading / 诚实分级)

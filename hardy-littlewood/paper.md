@@ -14,10 +14,10 @@ We prove the structural form: the welded integral `Li₂(x) = ∫₂ˣ (e^γ ∏
 (the five-element interface: lower bound 2 / logarithmic derivative / local factor `1/log²t` /
 integral / upper bound x; the water-side expansion `Li_k(x) = (x/log^k x) Σ (k)_n / log^n x`
 with first coefficient = dimension D = k = 2) is forced by the three base objects
-(unit 1, Cartesian product, place-value power `b^k`), and the error term `E(x) = π₂(x) − 2C₂Li₂(x)`
+(unit 1, Cartesian product, place-value power `b^k`), and the error term `E_micro(x) = π₂(x) − 2C₂Li₂(x)`
 is closed by **double cancellation**: the reciprocal identity on the constant side and the
 random-series (sign) cancellation on the error side. Two readings of one error are kept distinct:
-`E_micro = π₂ − 2C₂Li₂` (absolute, the wave amplitude, Θ(√x) per §5bis) and
+`E_micro = π₂ − 2C₂Li₂` (absolute, the wave amplitude, Θ(√x) — magnitudes measured in §6 *Estimate*) and
 `E_macro = E_micro/(2C₂Li₂)` (relative, →0), welded by the reciprocal ledger
 `E_macro × main = E_micro`. The load-bearing step is written as
 explicit lemmas with honest notes.
@@ -75,7 +75,7 @@ per parameter surface, checks per structural proposition). See `../shared/result
      the product is identically 1 (machine dev 8.88e−16), hence `ρ = π₂/(2C₂Li₂) → 1`.
    - (b) **Sign cancellation (error side):** the Möbius-weighted sum is a random series
      (archive probe [412]: net/total `0.0014 → 0.0002` monotone collapse, random-walk ratio
-     ≈0.4 stable) ⟹ complete cancellation ⟹ `E(x) = o(x)`.
+     ≈0.4 stable) ⟹ complete cancellation ⟹ `E_micro(x) = o(x)`, i.e. `E_macro(x) = o(1)`.
 
    *Honest note:* the single open step is promoting the random series to a theorem
    (Möbius randomness / equidistribution); everything else above is an identity or a
@@ -83,13 +83,15 @@ per parameter surface, checks per structural proposition). See `../shared/result
 
 ## 6. Construction layer (construct · estimate · sufficiency)
 
-- **Construct:** `E(x)` is a finite quantity; `Li₂` computed by the convergent series (80 terms)
+- **Construct:** `E_micro(x) = π₂(x) − 2C₂Li₂(x)` is a finite quantity — the *absolute* reading (the
+  wave amplitude); the *relative* reading is `E_macro(x) = E_micro(x)/(2C₂Li₂(x))`, and the reciprocal
+  ledger welds the two: `E_macro × main = E_micro` (one error, two resolutions). `Li₂` computed by the convergent series (80 terms)
   or by Simpson on the welded integral — both in `code/verify_hl.c` (P1: series vs Simpson,
   four tiers, tol 1e−9).
-- **Estimate:** `|E|/√x = 0.0730 / 0.0771 / 0.0720` (same order, spread ratio 1.07 — the error is
-  controlled by `√x`); `|E|/main = 0.01851 / 0.00935 / 0.00387` (monotone decreasing);
+- **Estimate:** `|E_micro|/√x = 0.0730 / 0.0771 / 0.0720` (same order, spread ratio 1.07 — the error is
+  controlled by `√x`); `|E_macro| = 0.01851 / 0.00935 / 0.00387` (monotone decreasing);
   amplification factor `2^{ω(d)}` with `max ω(d) = 5` for `d ≤ √(1e7)` (worst d = 2310 = 2·3·5·7·11)
-  ⟹ **factor ≤ 2⁵ = 32**; structural bound `|E| ≤ 6√x` verified tier by tier.
+  ⟹ **factor ≤ 2⁵ = 32**; structural bound `|E_micro| ≤ 6√x` verified tier by tier (widest tier uses 1/78 of the bound — sufficient, not tight).
   *(Caliber note: the archive's 790.3 is the ratio `S(√x)/S(x)`, a different quantity.)*
 - **Sufficiency:** the barrier is located by the multiplicity law — `c₂ = 2m₂ = 4` is even
   (pairs cancel, residue 0), the only unpaired slot is the β-slot (one) ⟹ the parity barrier
@@ -97,7 +99,7 @@ per parameter surface, checks per structural proposition). See `../shared/result
 
 ## 7. Numerical tables (machine-verified)
 
-| x | π₂(x) | ρ = π₂/(2C₂Li₂) | E(x) | \|E\|/√x | \|E\|/main |
+| x | π₂(x) | ρ = π₂/(2C₂Li₂) | E_micro | \|E_micro\|/√x | \|E_macro\| |
 |---|---|---|---|---|---|
 | 1e5 | 1224 | 0.981495 | −23.077 | 0.0730 | 0.01851 |
 | 1e6 | 8169 | 0.990655 | −77.060 | 0.0771 | 0.00935 |
@@ -119,12 +121,12 @@ Run logs: `../shared/results/verify_hl.out.txt`, `verify_hl_tech.out.txt`.
 
 ## 9. Honest notes
 
-1. Pointwise constants and optimal rate of `E(x)` are not derived here; the random-series
+1. Pointwise constants and optimal rate of `E_micro(x)` are not derived here; the random-series
    theorem for Möbius weights is the external open step (the only one on this paper's chain).
 2. The ρ values differ from the archive table (0.980213/0.990418/1.003850) by ≤1.28e−3 — a
    caliber difference of `Li₂` evaluation (archive uses 80 fixed terms past the optimal cutoff).
 3. Both calibers are reported without mixing: whole caliber `π₂/(2C₂Li₂)` and `A₁ = π₂ − π₂(√x)`.
-4. This section gives order-of-magnitude control, not a pointwise sign control of `E(x)`.
+4. This section gives order-of-magnitude control of `E_micro` and the monotone decay of the `|E_macro|` share, not a pointwise sign control of `E_micro(x)`.
 
 ## Acknowledgments
 
