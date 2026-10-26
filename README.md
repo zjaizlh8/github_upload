@@ -29,13 +29,13 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o t bsd-conjecture/code/verify_bsd.c -lm &&
 
 | # | 猜想 / conjecture | 英文说明 | 中文说明 | 验证器（C） | 判据数 |
 |---|---|---|---|---|---|
-| 1 | Birch–Swinnerton-Dyer | [`paper.md`](bsd-conjecture/paper.md) | [`paper.zh.md`](bsd-conjecture/paper.zh.md) | [`verify_bsd.c`](bsd-conjecture/code/verify_bsd.c) | 55 |
-| 2 | Hardy–Littlewood（含孪生专章） | [`paper.md`](hardy-littlewood/paper.md) | [`paper.zh.md`](hardy-littlewood/paper.zh.md) | [`verify_hl.c`](hardy-littlewood/code/verify_hl.c) | 36 |
-| 3 | Hodge | [`paper.md`](hodge-conjecture/paper.md) | [`paper.zh.md`](hodge-conjecture/paper.zh.md) | [`verify_hodge.c`](hodge-conjecture/code/verify_hodge.c) | 19 |
+| 1 | Birch–Swinnerton-Dyer | [`paper.md`](bsd-conjecture/paper.md) | [`paper.zh.md`](bsd-conjecture/paper.zh.md) | [`verify_bsd.c`](bsd-conjecture/code/verify_bsd.c) | 54 |
+| 2 | Hardy–Littlewood（含孪生专章） | [`paper.md`](hardy-littlewood/paper.md) | [`paper.zh.md`](hardy-littlewood/paper.zh.md) | [`verify_hl.c`](hardy-littlewood/code/verify_hl.c) | 35 |
+| 3 | Hodge | [`paper.md`](hodge-conjecture/paper.md) | [`paper.zh.md`](hodge-conjecture/paper.zh.md) | [`verify_hodge.c`](hodge-conjecture/code/verify_hodge.c) | 18 |
 | 4 | Navier–Stokes | [`paper.md`](navier-stokes/paper.md) | [`paper.zh.md`](navier-stokes/paper.zh.md) | [`verify_ns.c`](navier-stokes/code/verify_ns.c) | 19 |
 | 5 | P vs NP | [`paper.md`](p-vs-np/paper.md) | [`paper.zh.md`](p-vs-np/paper.zh.md) | [`verify_pvsnp.c`](p-vs-np/code/verify_pvsnp.c) | 26 |
 | 6 | Riemann Hypothesis | [`paper.md`](riemann-hypothesis/paper.md) | [`paper.zh.md`](riemann-hypothesis/paper.zh.md) | [`verify_rh.c`](riemann-hypothesis/code/verify_rh.c) | 21 |
-| 7 | Yang–Mills | [`paper.md`](yang-mills/paper.md) | [`paper.zh.md`](yang-mills/paper.zh.md) | [`verify_ym.c`](yang-mills/code/verify_ym.c) | 18 |
+| 7 | Yang–Mills | [`paper.md`](yang-mills/paper.md) | [`paper.zh.md`](yang-mills/paper.zh.md) | [`verify_ym.c`](yang-mills/code/verify_ym.c) | 17 |
 
 合计 **190 条判据**，全部为有限格上的可复算断言；`make run` 七支全 `rc=0`。
 Total **190 machine-checked criteria** on finite grids; `make run` returns `rc=0` for all seven.
