@@ -33,7 +33,7 @@ jobs:
 
       - name: Run every verifier (assert exit 0 / FAIL=0 / EXIT=0)
         run: |
-          set -uo pipefail
+          set +e            # runner 默认 bash -e：解析型 grep 无匹配会整步退出，故显式关闭
           bad=0
           {
             echo ""
@@ -62,7 +62,7 @@ jobs:
 
       - name: Run the four archive gates over all 23 sources
         run: |
-          set -uo pipefail
+          set +e            # runner 默认 bash -e：解析型 grep 无匹配会整步退出，故显式关闭
           mapfile -t files < <(find . -name '*.c' | sort)
           bad=0
           {
