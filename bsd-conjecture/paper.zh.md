@@ -310,9 +310,9 @@ a_p = p + 1 − #E(F_p) = − Σ_{x∈F_p} χ(x³ − x)
 **5bis.1 三条恒等式（结构层「秩 + 零化度 = 维数」在此落地）。**
 
 1. **正合列恒等式。** 取 2-下降正合列
-$$0\longrightarrow E(\mathbb{Q})/2E(\mathbb{Q})\longrightarrow \mathrm{Sel}_2(E)\longrightarrow Ш(E)[2]\longrightarrow 0$$
+$$0\longrightarrow E(\mathbb{Q})/2E(\mathbb{Q})\longrightarrow \mathrm{Sel}_2(E)\longrightarrow \text{Ш}(E)[2]\longrightarrow 0$$
 维数相加得
-$$\boxed{\dim_{\mathbb F_2}\mathrm{Sel}_2(E)=\mathrm{rank}E(\mathbb{Q})+\dim_{\mathbb F_2}Ш(E)[2]}$$
+$$\boxed{\dim_{\mathbb F_2}\mathrm{Sel}_2(E)=\mathrm{rank}E(\mathbb{Q})+\dim_{\mathbb F_2}\text{Ш}(E)[2]}$$
 这正是 [2235]「**秩 + 零化度 = 维数**」在算术侧的化身：`rank` 是像的维数（自由方向数），`dim Ш[2]` 是核的维数（无处可去的剩余类），两者相加恒等于 Selmer 的维数。
 
 2. **重数律配对恒等式。** 谱结构方法的重数律 `c_λ = 2m_λ + [λ=β]`：每个自由档 `λ` 贡献一个 `±λ` 的对（一对 = 一个可正可负的自由方向），配对总数 `Σ_λ m_λ`；每对在 `s=1` 处吞掉一个 `(s−1)`。于是
@@ -576,7 +576,7 @@ $\det(U)=\pm1$ 时 $\mathrm{Reg}$ **逐字不变**——这就是「体积」的
 
 ### 5quater.2　实数账（rank 0，曲线 32a1）
 
-$$L(E,1)\cdot|\text{tors}|^2 = \Omega\cdot\prod_p c_p\cdot|Ш|$$
+$$L(E,1)\cdot|\text{tors}|^2 = \Omega\cdot\prod_p c_p\cdot|\text{Ш}|$$
 
 | 量 | 值 | 来源 |
 |---|---|---|
@@ -584,22 +584,22 @@ $$L(E,1)\cdot|\text{tors}|^2 = \Omega\cdot\prod_p c_p\cdot|Ш|$$
 | $\Omega$ | $5.244115108584$ | `code/verify_bsd.c` 实跑（dev $1.578e-11$）|
 | $|\text{tors}|$ | $4$ | 库表 |
 | $c_2$ | $2$ | 库表 |
-| $|Ш|$ | $1$ | 库表（Cassels：平方类）|
+| $|\text{Ш}|$ | $1$ | 库表（Cassels：平方类）|
 
-左 $=0.6555143886\times16=10.4882302176$，右 $=5.244115108584\times2\times1=10.4882302172$，**dev $=4.119e-11$**；且右$/\Omega=2.0000000000$ ⟹ **整数 $2$**（$\prod c_p\cdot|Ш|=2$）。这一步把库内那张表的**五项**变成一个**整数等式**。
+左 $=0.6555143886\times16=10.4882302176$，右 $=5.244115108584\times2\times1=10.4882302172$，**dev $=4.119e-11$**；且右$/\Omega=2.0000000000$ ⟹ **整数 $2$**（$\prod c_p\cdot|\text{Ш}|=2$）。这一步把库内那张表的**五项**变成一个**整数等式**。
 
 ### 5quater.3　形状：Reg 只出现一次
 
 把账写成
 
-$$\frac{L^{(r)}(E,1)}{r!}\cdot|\text{tors}|^2 = |Ш|\cdot\Omega\cdot\mathrm{Reg}\cdot\prod_p c_p ,$$
+$$\frac{L^{(r)}(E,1)}{r!}\cdot|\text{tors}|^2 = |\text{Ш}|\cdot\Omega\cdot\mathrm{Reg}\cdot\prod_p c_p ,$$
 
 则 $\mathrm{Reg}$ 的指数：$r=0$ 时为空积 $=1$（不出现），$r\ge1$ 时**恰为 $1$**（P6 计数，dev $0$）。⟹ 「$\mathrm{Reg}$ 数的是自由方向」，与 §5bis 的 $\mathrm{ord}=r$ 是**同一个计数的两个面**：一个数零点厚度，一个数格的体积。
 
-### 5quater.4　整数侧：$c_p$ 与 $|Ш|$
+### 5quater.4　整数侧：$c_p$ 与 $|\text{Ш}|$
 
 - **Tamagawa 数**：$c_p \mid |E(\mathbb F_p)|$（P7：$p=2$ 时 $|E(\mathbb F_2)|=4$，$c_2=2$，$4\bmod 2=0$）。
-- **$|Ш|$ 是平方类**（Cassels）：候选 $1,4,9,16,25$ 逐个整数开方通过（P8，dev $0$；本档唯一取模判据）。
+- **$|\text{Ш}|$ 是平方类**（Cassels）：候选 $1,4,9,16,25$ 逐个整数开方通过（P8，dev $0$；本档唯一取模判据）。
 
 两件都是**有限量** ⟹ 只能进首项系数，不能进阶（与 §5bis 的「有限性反向」同一条）。
 
