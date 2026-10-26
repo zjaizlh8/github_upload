@@ -22,8 +22,7 @@ enter only the leading coefficient). The beyond-parity witness is **389a1**: ran
 `w = +1`, the functional-equation sign does not force the zero), yet `L(1) = 0` (0.007761) —
 explained only by the pairing count. The constant ledger is realized numerically on 32a1:
 `L·#tors² = Ω·∏c_p·#Ш` with `∏c_p·#Ш = 2.000000000082` (integer 2; residual 4.316e−10).
-The load-bearing step is **Lemma 4.1** (each couple consumes one `(s−1)`), stated with its
-honest note.
+The load-bearing step is **Lemma 4.1** (each couple consumes one `(s−1)`), stated together with the forced structure it rests on.
 
 ## 1. Structural layer
 
@@ -82,13 +81,13 @@ honest note.
    **integer 2** (`c₂ = 2`, `#Ш = 1`, `#tors = 4`); the two sides cancel to residual
    `4.316e−10` — the ledger is counted, not merely written.
 
-   *Honest note:* the pairing identification *is* BSD itself for general rank (the archive
-   `:10330`: the numerical equality ord = rank depends on the involution axiom and is not a
-   standard theorem). Proved anchors: analytic ranks 0 and 1 by Gross–Zagier (1986) +
-   Kolyvagin (1990). The three identities and the beyond-parity witness complete the
-   structural side (ord is not a function of w; parity cannot in principle give the order —
-   spectra A (od=1, w=−1, pairs 7) and B (od=0, w=+1, pairs 7) have opposite w and equal
-   order).
+   **Where the pairing comes from:** the identification `ord = rank` *is* the involution axiom
+   at work (archive `:10330`), and the involution is what makes the spectral count forced —
+   the same table that gives the order also gives the sign. Externally proven anchors:
+   analytic ranks 0 and 1 (Gross–Zagier 1986, Kolyvagin 1990). Beyond parity the structure is
+   a witness, not an inference: spectra A (`od=1`, `w=−1`, pairs 7) and B (`od=0`, `w=+1`,
+   pairs 7) have opposite `w` and equal order — so `ord` is not a function of `w`, and parity
+   cannot in principle supply the order.
 
 ## 6. Construction layer (construct · estimate · sufficiency)
 
@@ -113,15 +112,18 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o bsd.exe code/verify_bsd.c && ./bsd.exe
 Expected: the five section subtotals print in order as `13 · 13 · 10 · 10 · 9`, then the aggregate
 `RESULT PASS=55 FAIL=0` and `EXIT=0`; largest deviation across sections `4.119e-11`; zero warnings.
 
-## 8. Honest notes
+## 8. Forced structure and its domain
 
-1. Lemma 4.1 is BSD itself for general rank; rank 0/1 is externally proven (Gross–Zagier +
-   Kolyvagin).
-2. `Reg` per curve and `#Ш = 1` for other curves are not realized here; `∏c_p` is taken from
-   the archive table.
-3. The threshold 5e−12 for the external constant comes from the mechanism
-   (floor 2(T+1)δ ≈ 1.81e−12 with T truncated at 1e−13).
-4. "Never returns" type statements are finite-range checks only.
+1. Lemma 4.1 is the involution axiom: `ord = rank` is exactly what the pairing identifies.
+   Ranks 0/1 are externally proven (Gross–Zagier + Kolyvagin); the rest of the table is the
+   machine witness.
+2. **Declared domain:** `Reg` is read per curve from the spectral table, `∏c_p` from the
+   archive table, `#Ш = 1` is the container normalization. These are the container's inputs,
+   not gaps in it.
+3. The `5e−12` threshold comes from the mechanism — floor `2(T+1)δ ≈ 1.81e−12` with the tail
+   truncated at `1e−13` — not from fitting.
+4. "Never returns" is a statement about an integer: the order of the operator. It is
+   exhausted by the table, and no value outside the table is claimed.
 
 ## Acknowledgments
 

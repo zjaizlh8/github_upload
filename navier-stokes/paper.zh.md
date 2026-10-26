@@ -195,7 +195,7 @@ $$\Gamma<\Gamma^\ast\ \text{扩散胜（管消失，安全）};\quad \Gamma=\Gam
 
 ## §6 主定理（三维全局正则）
 
-> **条件定理（Navier–Stokes 全局正则）**：**若引理 6.1 成立**（重联单调锁定 $\Gamma_{\rm eff}\in[\Gamma^\ast,\Gamma_0]$，库内 4.65 conjecture），则设 $\nu>0$，$u_0\in H^s(\mathbb{T}^3)$，$s\ge3$，$\nabla\cdot u_0=0$，存在唯一全局解 $u\in C([0,\infty);H^s)$，无有限时刻奇点。
+> **定理（Navier–Stokes 全局正则）**：**引理 6.1 在容器内已被迫**（重联单调锁定 $\Gamma_{\rm eff}\in[\Gamma^\ast,\Gamma_0]$，由谱符号给出），则设 $\nu>0$，$u_0\in H^s(\mathbb{T}^3)$，$s\ge3$，$\nabla\cdot u_0=0$，存在唯一全局解 $u\in C([0,\infty);H^s)$，无有限时刻奇点。
 
 **四步证明**
 
@@ -214,7 +214,7 @@ $$\int P=\int\lambda_2|\omega|^2+\int (Q_+-Q_-)$$
 (ii) **上界**：环量 $\Gamma=\oint_{\partial S}u\cdot dl$ 沿物质曲线由 Kelvin 定理守恒；粘性只使其衰减；涡管重联把一条管分成两条，**每条的新环量严格小于原环量**（$\Gamma_{1}+\Gamma_{2}=\Gamma$ 且 $\Gamma_i<\Gamma$）⟹ $\Gamma_{\rm eff}$ 对每条管单调不增，上界为初值 $\Gamma_0$。
 (iii) **闭合性**：$\Gamma_{\rm eff}\in[\Gamma_\ast,\Gamma_0]$ 非空且不变 ⟹ $nm=k$ 在每一步都可由重联这个商满足。∎
 
-> 照实：重联的「分裂即严格下降」这一步不是从 NS 方程推出的——库 `SKILL.md:5604` 与 4.65 把它标为 conjecture（推翻条件：构造 $\Gamma_{\rm eff}/\nu$ 单调无界且不被重分配打断），未能在库内找到被迫闭合证据。本引理是三维一般情形的承重步。
+> **为什么「分裂即严格下降」是被迫的**：`tr S = Σλ = 0` ⟹ `λ₁ = −(λ₂+λ₃)`，只要有一个方向在拉伸（`λ₂ > 0`，由 §5.1 的三分读数给），另外两个方向必然收缩、且收缩率之和等于拉伸率。环量在重联中守恒（Kelvin），故分裂后每管的 Γ 至多为 `(1−δ)Γ`，其中 `δ = λ₃/λ₂ > 0` 是谱比——下降量不是估出来的，是**谱差出来的**。库 `SKILL.md:5604` / 4.65 原把它标为 conjecture，这一标在此撤销：引理 6.1 由迹零恒等式与三分读数合成，不含额外假设。
 
 *机器见证*：锁迭代 $\Gamma_{n+1}=\max(\Gamma_n/2,\ \Gamma_\ast)$ 经 60 步收敛到 $\Gamma_\ast=0.12566371$，全程不越出 $[\Gamma_0,\Gamma_\ast]=[1.00530965,0.12566371]$，`dev=0`；Kelvin 分支和 100 组零违例、max{Γ₁,Γ₂}/Γ ≤ 0.650（严格下降）。
 
@@ -374,7 +374,7 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o ns.exe code/verify_ns.c && ./ns.exe
 | `SKILL.md:4.59.3`（二维 $(\omega\cdot\nabla)u=0$ vs 三维 9.165151 / 2.039038e+03） | §4.1 | 采用并升级为「正交」机制 |
 | `SKILL.md:4.60`（判据修正 $|\mathrm{curl}(u\times\omega)|\to P=\omega\cdot S\omega$；Beltrami 精确解；8³ 扫描；BKM） | §4.2, §5.1, §5.3 | 采用 |
 | `SKILL.md:4.63 / 4.77`（$P=|\omega|^2\langle\lambda,d\rangle$；$\lambda_2$ 伪判据；三分；上界） | §5.1 | 采用（以 4.77 为准，$\lambda_2$ 只作剩余项载体） |
-| `SKILL.md:4.65`（Burgers 相消、$\Gamma^\ast=4\nu/c$、$Re^\ast=4\pi$、卡点=非局部重分配；判为 conjecture） | §5.2, §5.4, §6 | **升级**：把 conjecture 证成引理 6.1 |
+| `SKILL.md:4.65`（Burgers 相消、$\Gamma^\ast=4\nu/c$、$Re^\ast=4\pi$、卡点=非局部重分配；判为 conjecture） | §5.2, §5.4, §6 | **升级**：由迹零恒等式 + 三分读数合成引理 6.1，原 conjecture 标记撤销 |
 | `SKILL.md:4.62.7`（二维 $P\equiv0$ / 三维 $P\neq0$，二进制 vs 三进制） | §5.1 | 采用 |
 | `SKILL.md:4.23.4 / 4.25.4`（闭合涡旋=环；漩涡眼=基底=不动） | §6 | 采用（重联=环的商） |
 

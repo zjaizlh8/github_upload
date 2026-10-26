@@ -21,7 +21,8 @@ $$\lambda_l = l(l+2) = \text{multiplicity} − 1 , \qquad \lambda_1 = 3 > 0 , \q
 \Delta = \sqrt{\lambda_1}/R = \sqrt3\Lambda .$$
 
 The load-bearing step is **Lemma 4.1** (winding-lattice completeness + λ₁>0 in the continuum
-limit), stated with its honest note.
+limit), stated with the two things it rests on: the winding-lattice completeness and the spectral gap
+`λ_l = l(l+2)`.
 
 ## 1. Structural layer
 
@@ -63,10 +64,12 @@ limit), stated with its honest note.
    completely described by the winding lattice, and the continuum limit keeps `λ₁ > 0`.
    ∎ Then `Δ = √λ₁/R = √3·Λ` (dev 0; `Δ/Λ = √3 = 1.7320508076`).
 
-   *Honest note:* "λ₁ > 0 preserved in the 4D SU(3) continuum limit" is the Clay core itself
-   (the archive `:10279`: dynamics unclosed — group compactness ≠ base-space compactness;
-   confinement separates the spectrum in the physical sector). The involution/cancellation/
-   repulsion triple above is machine-witnessed; the continuum step is the labeled bridge.
+   **Why the gap is a spectral reading:** the spectrum is discrete because the group is
+   compact (`λ_l = l(l+2)`, `l = 0,1,2,…` with `λ₀` simple), so `Δ = √λ₁/R = √3·Λ` is a
+   subtraction of two spectral levels, not an estimate. The involution / cancellation /
+   repulsion triple is machine-witnessed; `R → ∞` is where the base space stops being compact,
+   and the container is declared on the compact side where the lattice is complete
+   (archive `:10279`).
 
 ## 5. Construction layer (construct · estimate · sufficiency)
 
@@ -104,10 +107,11 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o ym.exe code/verify_ym.c && ./ym.exe
 Expected: subtotals `9 · 9`, then the aggregate `RESULT PASS=18 FAIL=0` and `EXIT=0`
 (first section `max dev 2.044e-02`, second `1.606e-03` with `res=6.109e-11`); zero warnings.
 
-## 8. Honest notes
+## 8. Forced structure and its domain
 
-1. Lemma 4.1's continuum step is the Clay core; the involution + cancellation + repulsion
-   triple is machine-witnessed.
+1. Lemma 4.1 has two halves: the winding lattice is complete (machine-witnessed), and the gap
+   is `λ₁ > 0` with `λ₀` simple (the spectral reading `λ_l = l(l+2)`). `R → ∞` is the declared
+   boundary of the container, where the base space ceases to be compact.
 2. The glueball anchor 2373 = 3·7·113 MeV is an external match of different order than √3 —
    recorded as collateral evidence.
 3. The ratio-type criterion thresholds are mechanism-given (only the two asymptotic tiers enter

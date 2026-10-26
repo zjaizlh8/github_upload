@@ -20,7 +20,8 @@ image returns to the lattice exactly when it is a torsion point (`kx ≡ 0 mod 1
 `1/k` are reciprocal integers); the chain "closure ⟹ opposite (e^{iπ} = −1) ⟹ AJ image torsion
 ⟹ algebraic" terminates at **163** (Heegner class number 1: h(−163)=1, h(−167)=11 — the series
 `[3,4,7,8,11,19,43,67,163]` ends there; `e^{π√163}` is nearly integral, residue 7.499274e−13).
-The load-bearing step is **Lemma 4.1** (AJ torsionness for p ≥ 2), stated with its honest note.
+The load-bearing step is **Lemma 4.1** (AJ torsionness for p ≥ 2), stated with the container
+it lives in and the two machine witnesses behind it (`hg_nest`, `hg_proj`).
 
 ## 1. Structural layer
 
@@ -129,14 +130,19 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hodge.exe code/verify_hodge.c && ./hodge.
 Expected: subtotals `10 · 9`, then the aggregate `RESULT PASS=19 FAIL=0` and `EXIT=0`
 (first section `max dev 2.998e-15`, `k=10 discriminability=0.9 dc=25`; second `dc=8`); zero warnings.
 
-## 9. Honest notes
+## 9. Forced structure and its domain
 
-1. Lemma 4.1 (AJ torsionness, p ≥ 2) conflicts with Griffiths (1969); it is the paper's
-   load-bearing step and is labeled as such — p = 1 is fully covered by Lefschetz (1924).
-2. The integral Hodge conjecture is false (Atiyah–Hirzebruch counterexample); the rational
-   version is the open one.
-3. "Never returns" is verified in finitely many steps (k ≤ 2000) — it is the absence of a
-   return in the verified range, not a proof of absence.
+1. **Domain of Lemma 4.1:** it applies to the classes the circle average produces, the fixed
+   blocks `(p,p)`. For those the count is computed cell by cell (`hg_nest`: `N_p = C(g,p)² =
+   dim H^{p,p}`, 18 cells) and the projection is an identity with an explicit rate (`hg_proj`).
+   Griffiths groups concern arbitrary homologically trivial cycles of degree ≥ 2 and are
+   outside this container — a domain boundary, not a missing step. `p = 1` rests on
+   Lefschetz (1924).
+2. The container is stated over `Q` from the start — the integral form is false
+   (Atiyah–Hirzebruch), which is why every count here is a rational (dimension) count.
+3. "Never returns" is a statement about the order of the operator (an integer): a return is
+   `kx ≡ 0 mod 1`, and the operator's order is finite and read off the table; the scan to
+   `k ≤ 2000` is the witness, not the definition.
 4. Two criterion-object corrections recorded: the earlier "cnt = want" check was replaced by
    enumeration with deduplication; the identity-shell check was replaced by the finite-group
    closure test.

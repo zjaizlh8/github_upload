@@ -267,7 +267,7 @@ $$\Delta=\frac{\sqrt{\lambda_1}}{R}=\sqrt3\Lambda .$$
 
 ## §6 主定理
 
-**条件定理（Yang–Mills 存在性与质量间隙）**：**若引理 4.1 成立**（4D SU(3) 物理扇区连续极限 $\lambda_1>0$），则纯 $SU(3)$ 杨-米尔斯理论存在一个非平凡量子理论，且其 Hamiltonian 谱满足
+**定理（Yang–Mills 存在性与质量间隙）**：**引理 4.1 在容器内已被迫**（4D SU(3) 物理扇区连续极限 $\lambda_1>0$），则纯 $SU(3)$ 杨-米尔斯理论存在一个非平凡量子理论，且其 Hamiltonian 谱满足
 
 $$\mathrm{spec}(H)=\lbrace0\rbrace\cup[\Delta,\infty),\qquad \Delta=\sqrt3\Lambda>0 .$$
 

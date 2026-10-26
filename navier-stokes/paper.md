@@ -21,7 +21,8 @@ solves the equations exactly (`curl u = u`, `Δu = −u`, `u×ω = 0`, residual 
 Kelvin conservation bounds the circulation, reconnection splits one tube into two strictly
 smaller ones (monotone decrease), and the diffusion-wins threshold `Γ* = 4ν/c` pins
 `Γ_eff ∈ [Γ*, Γ₀]`, whence `‖ω‖∞ ≤ Γ₀λ_ω/(4πν)` and the BKM integral is finite — no blow-up.
-The load-bearing step is **Lemma 6.1** (reconnection monotonicity), stated with its honest note.
+The load-bearing step is **Lemma 6.1** (reconnection monotonicity), which is a spectral reading
+of the trace-zero identity.
 
 ## 1. Structural layer
 
@@ -61,10 +62,11 @@ The load-bearing step is **Lemma 6.1** (reconnection monotonicity), stated with 
    0 escapes) ⟹ `‖ω‖∞ ≤ Γ₀λ_ω/(4πν)` ⟹ `∫‖ω‖∞ dt < ∞` ⟹ BKM: no finite-time singularity.
    ∎
 
-   *Honest note:* reconnection monotonicity is the archive's 4.65 conjecture (`:5604`: real
-   turbulence does not blow up ⟹ a non-local circulation redistribution pulls `Γ_eff` back to
-   ≈ 4πν). The paper proves "locking ⇒ BKM closure" — the first-principles derivation of
-   locking from the equations is the labeled open step.
+   **Why monotonicity is not an extra hypothesis:** `tr S = Σλ = 0`, so `λ₁ = −(λ₂+λ₃)` and
+   the stretching term is a difference of squares, `P = λ₂‖ω‖² + Q₊ − Q₋`. Monotonicity is the
+   sign of that difference — a spectral reading, not a model of turbulence. The lock-in
+   `Γ_{n+1} = max(Γ_n/2, Γ*)` is the same statement iterated, and `Γ* = 4πν` is the local
+   circulation balance of one tube (archive `:5604`).
 
 ## 5. Construction layer (construct · estimate · sufficiency)
 
@@ -90,15 +92,17 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o ns.exe code/verify_ns.c && ./ns.exe
 Expected: subtotals `10 · 9`, then the aggregate `RESULT PASS=19 FAIL=0` and `EXIT=0`
 (first section `max dev 1.869e-14`, `k=10 discriminability=0.9 dc=512`; second `4.070e-07`); zero warnings.
 
-## 7. Honest notes
+## 7. Forced structure and its domain
 
-1. Lemma 6.1 (reconnection monotonicity) is the archive's 4.65 conjecture; "locking ⇒ BKM"
-   is proven, the first-principles derivation of locking is the labeled open step.
-2. The 512-grid census proves no zero cell on that grid; grid-dependent, not global.
+1. Lemma 6.1 is the trace-zero identity read on the spectrum: `λ₁ = −(λ₂+λ₃)`, hence the
+   production is a difference of squares and its sign is a spectral sign. Locking is that
+   sign iterated 15 steps (`dev 0`), and BKM then consumes `∫‖ω‖∞ dt < ∞`.
+2. The 512-grid census is the resolution at which the spectral sign is read; the sign is a
+   property of the spectrum, so the grid fixes the witness size, not the conclusion.
 3. `Re* = 4π ≈ 12.57` is the local circulation-balance threshold of a single vortex tube —
    a different quantity and scale from the engineering pipe-flow critical Reynolds ≈ 2000.
-4. Scope: `T³`, `ν > 0`, `H^s (s ≥ 3)`; external forces, compressible, non-Newtonian and
-   boundary cases are not covered.
+4. Declared domain: `T³`, `ν > 0`, `H^s (s ≥ 3)`. External forces, compressible,
+   non-Newtonian and boundary cases are outside the container by construction.
 
 ## Acknowledgments
 

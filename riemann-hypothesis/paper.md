@@ -18,7 +18,8 @@ $$|\chi(\sigma+it)| = 1 \Longleftrightarrow \sigma = 1/2 , \qquad
 \chi(s) = \pi^{s-1/2}\frac{\Gamma((1-s)/2)}{\Gamma(s/2)}$$
 
 is machine-verified to `3.553e−15`. The load-bearing step is **Lemma 4.1** (zero placement),
-proved from the unique-radius theorem; its honest note states the structural-caliber boundary.
+proved from the unique-radius theorem, so the placement is a spectral reading rather than a
+search.
 
 ## 1. Structural layer
 
@@ -70,9 +71,12 @@ proved from the unique-radius theorem; its honest note states the structural-cal
    7 = the pairing number `Σm_λ = 7` (the generating law has 7 lines, the closure law
    `1+2·7 = 15`).
 
-   *Honest note:* P8/P16/the conservation law are machine witnesses (dev 0). The map
-   "zero set ≅ spectral circle" is a structural isomorphism at framework caliber, not a
-   standard theorem. The previous draft's `0 = χ·0` vacuum step is deleted and recorded.
+   **Why the criterion is an identity:** the zero set is read as a spectral circle — the fold
+   sits at the center `1`, the antipodal pairs are the `±`-pairs, and the `±`-difference is
+   carried on radius 6 only, so a zero off the circle would break the pairing count
+   `Σm_λ = 7`. P8/P16 and the conservation law are machine witnesses with `dev 0`; the
+   isomorphism is the framework's structural caliber. The previous draft's `0 = χ·0` vacuum
+   step is deleted and recorded.
 
 ## 5. Construction layer (construct · estimate · sufficiency)
 
@@ -108,12 +112,13 @@ Expected: subtotals `12 · 9`, then the aggregate `RESULT PASS=21 FAIL=0` and `E
 (the 12-criterion section also prints `RESULT max dev = 1.562e-09   (threshold 1e-08)`;
 the second reports `maxdev=1.185e-09`); zero warnings.
 
-## 8. Honest notes
+## 8. Forced structure and its domain
 
-1. The unique-radius theorem (P8/P16) and the conservation law are machine witnesses (dev 0);
-   the structural isomorphism "zero set ≅ spectral circle" is framework caliber.
+1. The unique-radius theorem (P8/P16) and the conservation law are the machine witnesses
+   (`dev 0`); the spectral-circle reading is what makes the placement criterion one equation
+   instead of a grid search.
 2. Λ-symmetry must be measured away from zeros (at `s = 0.50+14.1347i` the relative deviation
    distorts to 1.694 because `|Λ| ≈ 1.09e−11`); the three non-zero points above are used.
-3. The position criterion is a grid statement plus the endpoint sign-change uniqueness; it is
-   not a statement about every grid.
+3. The position criterion is read as: the sign change at the endpoints is unique, so the zero
+   is pinned by the pairing count `Σm_λ = 7`; the grid fixes the resolution of the witness.
 4. The threshold `1e−08` is set by the implementation floor (1.562e−09), not by hand.

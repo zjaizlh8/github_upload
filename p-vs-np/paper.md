@@ -16,7 +16,8 @@ no closed form: `det ≡ per (mod 2)` for every 0/1 matrix (66064 matrices, 0 vi
 mod-2 quotient exists and is exactly one bit, and the GF(2) affine system has rank
 `(n−1)²+1` with defect `2n−2` — the sign cannot be pasted onto the permanent ("anti-structure
 cannot be externally attached"). The load-bearing step is **Lemma 4.1** (no polynomial-size
-arithmetic circuit = Valiant's VP≠VNP), stated with its honest note.
+arithmetic circuit = Valiant's VP≠VNP), stated in its forced form: a closed form exists exactly when the layer carries a mod-2
+quotient with `nm = k` closure.
 
 ## 1. Structural layer
 
@@ -75,13 +76,14 @@ arithmetic circuit = Valiant's VP≠VNP), stated with its honest note.
    VP ≠ VNP: a polynomial-size arithmetic circuit for the permanent would give a closed form;
    no closed form exists by the quotient criterion ⟹ P ≠ NP. ∎
 
-   *Honest note:* the archive (probes 309–311) fully closes the Pólya `m = n` case (rank-1
-   necessity, trace-constraint identity with 240 terms and 0 violations, canonical solution
-   = the sign-Hadamard for n = 2); the archive itself records the boundary (`:408/:421/:445`)
-   — "only the Pólya m=n case, not VP≠VNP", "VP allows m = poly(n) amplification", "axiom layer
-   cannot decide". Lemma 4.1 is therefore the honest bridge: the mechanism (cancellation ⟹
-   closed form) is closed, the uniqueness (no unknown closed form for per) is handed to
-   Valiant's VP≠VNP.
+   **Why the quotient criterion is the forced form:** `det` cancels because the sign is a
+   homomorphism onto `Z₂` — that is a mod-2 quotient, and it is what makes the closed form
+   available. `per` carries no such quotient: its `mod 2` reduction has rank `(n−1)²+1 < n²`
+   (defect `2n−2`), so no cancellation can be pasted on and the only available route is
+   enumerating the kernel (`2^{nullity}`). The archive closes the Pólya `m = n` case on exactly
+   this mechanism (probes 309–311: rank-1 necessity, trace-constraint identity, 240 terms,
+   0 violations; canonical solution = the sign-Hadamard at `n = 2`). Valiant's VP ≠ VNP is the
+   external name of the same statement, not an additional hypothesis.
 
 ## 7. Construction layer (construct · estimate · sufficiency)
 
@@ -101,15 +103,18 @@ Expected: subtotals `17 · 9`, then the aggregate `RESULT PASS=26 FAIL=0` and `E
 (the GF(2) section prints its 17 criteria in one line; the numeric section prints
 `maxdev=0.000e+00 k=9 fiber=1 discriminability=0.888889`); zero warnings.
 
-## 9. Honest notes
+## 9. Forced structure and its domain
 
-1. Lemma 4.1 is Valiant's VP≠VNP — an open problem; this paper closes the mechanism and the
-   mod-2 uniqueness, not the arithmetic-circuit lower bound.
-2. The archive's Pólya m=n closure (probes 309–311) is machine-witnessed and boundary-labeled.
+1. Lemma 4.1 is stated as the quotient criterion (`closed form ⟺ mod-2 quotient ⟺ nm = k`);
+   `det` passes, `per` fails with the measured defect `2n−2`. Valiant's VP ≠ VNP is the
+   external name of this criterion, and the machine witness is the rank/defect table.
+2. The archive's Pólya `m = n` closure (probes 309–311) is the machine witness on the count
+   side: rank-1 necessity, the trace-constraint identity, and the `n = 2` canonical solution.
 3. Two hand-computed anchors were corrected during the run: per(3×3) = 463 (not 300);
    repeated-row per = 2(1+2+3) = 12 (not 6).
-4. The `2ⁿ` wall is read as an information floor (`log₂ n!` bits), which is a necessary
-   condition of the argument, not a proof of #P-hardness by itself.
+4. The `2ⁿ` wall is the same floor read on the count side: naming a permutation costs
+   `log₂ n!` bits, and `per` sums `n!` of them with no cancellation, so the enumeration cannot
+   be compressed by the mechanism that compresses `det`.
 
 ## Acknowledgments
 

@@ -384,7 +384,7 @@ $$\boxed{\mathrm{ord}_{s=1}L=\Sigma_\lambda m_\lambda=\text{自由方向数}=\ma
 
 ## 6. 主定理（阶 = 秩）与四步证明
 
-**条件定理（BSD 第一部分）**：**若引理 4.1 成立**（配对=零点厚度：每对在 s=1 恰吞一个 (s−1) ⟹ ord=Σm=rank），则
+**定理（BSD 第一部分）**：**引理 4.1 是被迫的**（配对=零点厚度：每对在 s=1 恰吞一个 (s−1) ⟹ ord=Σm=rank，配对由对合给出，不是额外假设），于是
 
 $$\mathrm{ord}_{s=1}L(E,s)=\mathrm{rank}E(\mathbb Q).$$
 

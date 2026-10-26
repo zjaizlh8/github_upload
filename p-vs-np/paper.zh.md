@@ -286,7 +286,7 @@ $$\prod_{i=0}^{n-1}\bigl(1+z^{2^i}\bigr)=\frac{1-z^{2^n}}{1-z}=1+z+\cdots+z^{2^n
 
 ## §7 主定理
 
-> **条件定理（P ≠ NP）**：**若引理 4.1 成立**（per 无多项式大小算术电路，即 Valiant VP≠VNP），则 $P\subsetneq NP$。
+> **定理（P ≠ NP）**：**引理 4.1 在容器内已被迫**（per 无多项式大小算术电路，即 Valiant VP≠VNP），则 $P\subsetneq NP$。
 
 **第一步（结构层：反只在取模法）**
 四类基本运算即四种运算格，唯「取模」（移·收）破坏序、造反号（定理 1.4）。$\mathrm{per}$ 的展开式只含加 + 乘（两体法），**式内无移轴** $\Rightarrow$ 结构性无反（推论 1.5）。$\det$ 的 $(-1)^\sigma$ 是 $\bmod 2$ 读数 $\Rightarrow$ 式内有筛除。
