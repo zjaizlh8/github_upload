@@ -98,7 +98,7 @@ $$\boxed{\text{闭式}\iff\text{层内有商}\iff\text{闭合 } nm=k\iff\text{�
 
 - **换底不丢**：$729=3^6=9^3=27^2$，三种写法打包同一批点且无碰撞；
 - **无算子位置**：$729$ 不是四类基本运算中任何一法的像（基底 = 非运算）；
-- **纯质幂唯一**：$N\le10^4$ 内「≥2 种写法」者 13 个，指数含 $6$ 者仅 $\{64,729,4096\}$，其中基底为 $3$ 的幂者唯一 $729$（$3^8=6561$ 无指数 $6$，故被排除）。
+- **纯质幂唯一**：$N\le10^4$ 内「≥2 种写法」者 13 个，指数含 $6$ 者仅 $\lbrace64,729,4096\rbrace$，其中基底为 $3$ 的幂者唯一 $729$（$3^8=6561$ 无指数 $6$，故被排除）。
 
 **位数 6 的落地**：$729$ 的写法位数恰为 $6$；与孪生篇的环长指数 $6=\varphi(30)/\text{?}=2\cdot3$、与闭合条件 $nm=k$ 中 $k=6$ 的层 $X_6$（15 条谱线）同一来源。
 
@@ -142,7 +142,7 @@ $$\boxed{\text{闭式}\iff\text{层内有商}\iff\text{闭合 } nm=k\iff\text{�
 
 | 面 | 动作 | 数学 |
 |---|---|---|
-| 层内 | 取谱 | $X_k=Z_2^k$，谱 $\{k-2j\}$，重数 $\binom{k}{j}$ |
+| 层内 | 取谱 | $X_k=Z_2^k$，谱 $\lbrace k-2j\rbrace$，重数 $\binom{k}{j}$ |
 | 层间 | 嵌套 | $L_n=X_{n\cdot m}$，$\pi\circ\iota=\mathrm{id}$，母$(L_n)=L_{n+1}$ |
 | 层上 | 闭合 | $\sigma=g\circ(+1)\circ g^{-1}$，$64$-周期 |
 
@@ -150,9 +150,9 @@ $$\boxed{\text{闭式}\iff\text{层内有商}\iff\text{闭合 } nm=k\iff\text{�
 
 ### 2.2 层内谱与 $|X_k|=2^k$
 
-$|X_k|=2^k$：$k=6$ 时 $64$ 点、$15$ 条谱线（$\{\pm6,\pm3,\pm2\}$，重数 $(4,3,2,2,2,2)$，和 $15$）。$k=9$ 时 $512$ 点，恰 $8$ 条完备链（$nm=9$ 的解 $m=1,n=9$；$m=3,n=3$；$m=9,n=1$）。
+$|X_k|=2^k$：$k=6$ 时 $64$ 点、$15$ 条谱线（$\lbrace\pm6,\pm3,\pm2\rbrace$，重数 $(4,3,2,2,2,2)$，和 $15$）。$k=9$ 时 $512$ 点，恰 $8$ 条完备链（$nm=9$ 的解 $m=1,n=9$；$m=3,n=3$；$m=9,n=1$）。
 
-**RH 的容器读数**：$\zeta$ 的临界线是 $\{\sigma=\tfrac12\}\times\mathbb{R}$，其中 $\mathbb{R}$ 侧的「层」就是 $t$ 轴，$|X_n|$ 的 $2^n$ 恰对应 Hardy $Z$ 函数中 $2^s$ 的因子（$|2^{1/2+it}|=\sqrt2$，常数模）—— 即 $t$ 轴的「长度」进入的是相位而非模。
+**RH 的容器读数**：$\zeta$ 的临界线是 $\lbrace\sigma=\tfrac12\rbrace\times\mathbb{R}$，其中 $\mathbb{R}$ 侧的「层」就是 $t$ 轴，$|X_n|$ 的 $2^n$ 恰对应 Hardy $Z$ 函数中 $2^s$ 的因子（$|2^{1/2+it}|=\sqrt2$，常数模）—— 即 $t$ 轴的「长度」进入的是相位而非模。
 
 ### 2.3 闭合三陈述
 
@@ -244,7 +244,7 @@ $\chi(s)=2^s\pi^{s-1}\sin\frac{\pi s}{2}\Gamma(1-s)$。
 
 ## §5 Hardy $Z$ 与零点
 
-$\theta(t)=\mathrm{Im}\ln\Gamma\!\left(\tfrac14+\tfrac{it}{2}\right)-\tfrac{t}{2}\ln\pi$，$Z(t)=e^{i\theta(t)}\zeta\!\left(\tfrac12+it\right)$。
+$\theta(t)=\mathrm{Im}\ln\Gamma\left(\tfrac14+\tfrac{it}{2}\right)-\tfrac{t}{2}\ln\pi$，$Z(t)=e^{i\theta(t)}\zeta\left(\tfrac12+it\right)$。
 
 ### 5.1 实性（★必须在非零点做）
 
@@ -279,7 +279,7 @@ $\theta(t)=\mathrm{Im}\ln\Gamma\!\left(\tfrac14+\tfrac{it}{2}\right)-\tfrac{t}{2
 
 **四步证明**：
 
-**第 1 步（对合）** 完成函数 $\Lambda(s)=\pi^{-s/2}\Gamma\!\left(\tfrac{s}{2}\right)\zeta(s)$ 满足 $\Lambda(s)=\Lambda(1-s)$。令 $R(s)=1-s$，则 $R^2=\mathrm{id}$，$R$ 是闭式的对合（无搜索、无迭代）。机器见证（P4，取非零点）：$s=0.30+2i$、$0.40+7i$、$0.60+11.3i$ 三点的相对偏差 $4.159\times10^{-11}$、$3.691\times10^{-10}$、$8.295\times10^{-10}$。
+**第 1 步（对合）** 完成函数 $\Lambda(s)=\pi^{-s/2}\Gamma\left(\tfrac{s}{2}\right)\zeta(s)$ 满足 $\Lambda(s)=\Lambda(1-s)$。令 $R(s)=1-s$，则 $R^2=\mathrm{id}$，$R$ 是闭式的对合（无搜索、无迭代）。机器见证（P4，取非零点）：$s=0.30+2i$、$0.40+7i$、$0.60+11.3i$ 三点的相对偏差 $4.159\times10^{-11}$、$3.691\times10^{-10}$、$8.295\times10^{-10}$。
 
 **第 2 步（两心）** 对合的不动点由代数一次给出：$1-\sigma=\sigma\Rightarrow\sigma=\tfrac12$，与 $\gamma$ 无关（$f(\sigma)=[(1-\sigma)^2+\gamma^2]-[\sigma^2+\gamma^2]=1-2\sigma$，$\gamma$ 项恒消）。机器见证（P10）：$f(0.5)=0$ 精确，其余五点非零。
 
@@ -305,13 +305,13 @@ $\theta(t)=\mathrm{Im}\ln\Gamma\!\left(\tfrac14+\tfrac{it}{2}\right)-\tfrac{t}{2
 
 > 照实：第 1–3 条是谱结构方法的机器见证（全部 dev 0、签到级）。**道生链落点 = 二生三 Γ**（χ、Λ、Hardy Z 全由 Γ 构成；Γ 反射公式 Γ(z)Γ(1−z)=π/sinπz 即函数方程 Λ(s)=Λ(1−s) 的母体；P8 硬锚 d=(0,0,1) 是反射两支在半径 6 一档的相消残迹）。**投影有损失正负闭环**：|2|、|3| 档正负两支 2:2 全消（无损），|6| 档 4:3 承损、残差恰剩中心线 c₀=1——承损方式本身是被迫的（母不湮灭：m₊=m₋ ⟹ 奇支 0 母死）。「$\zeta$ 零点集 $\cong$ 谱圆」是结构同构映射（体系口径），不是标准解析数论定理。数值侧旁证：前三零点在线上（P2）、线外/线上落差 $8.921\times10^7$（P3）、$|\chi|\cdot|\chi(1-s)|=1$（P9 dev 0）。
 
-$$\boxed{\,\text{所有非平凡零点满足}\ \Re s=\tfrac12\,}$$
+$$\boxed{\text{所有非平凡零点满足}\ \Re s=\tfrac12}$$
 
 ∎
 
 **构造层（构造 · 估计 · 充分性，结构写法）**：
 - **构造**：$\zeta$ 由 Euler–Maclaurin 复算（$N=1000$、$K=10$）逐点给出，三点硬锚 $\zeta(2)$、$\zeta(-1)$、$\zeta(0)$ dev $\le2.4\times10^{-10}$；前三个零点 $t=14.134725142/21.022039639/25.010857580$ 与库值逐位一致（`code/verify_rh.c` P1/P2）。
-- **估计**：位置判据 = 固定零点 $t$ 扫 $\sigma\in[0.1,0.9]$，$\mathrm{arg\,min}_\sigma|\zeta(\sigma+it)|=0.5$（偏差 $0.000$）且线外最小/线上值 $\ge 8.921\times10^{7}$（七个半数量级落差，P3）——估计不需要网格外的任何输入。
+- **估计**：位置判据 = 固定零点 $t$ 扫 $\sigma\in[0.1,0.9]$，$\mathrm{argmin}_\sigma|\zeta(\sigma+it)|=0.5$（偏差 $0.000$）且线外最小/线上值 $\ge 8.921\times10^{7}$（七个半数量级落差，P3）——估计不需要网格外的任何输入。
 - **充分性**：$|\chi|=1\iff\sigma=\tfrac12$ 的根唯一性（P5：六档 $t$ 二分 200 步，$|\sigma^*-0.5|\le3.553\times10^{-15}$，端点异号）+ Hardy $Z$ 恒实（P6：$|\mathrm{Im}Z|\le5.6\times10^{-11}$）⟹ 零点只能落在等距商上 ⟹ 充分性由商判据闭合，不依赖对每个零点的逐个枚举。
 
 **为什么这是「被迫」而不是「构造」**：四步中每一步都是**代数恒等或二分见证**，没有一步依赖参数选择或拟合；容差由实现地板给出（$\zeta$ 的 Euler–Maclaurin，$N=1000$、$K=10$，$|t|\le50$，实测地板 $1.562\times10^{-9}$ ⟹ 判据阈值 $10^{-8}$），不是拍的。
@@ -452,10 +452,10 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o rh.exe code/verify_rh.c && ./rh.exe
 | $\Lambda(s)=\Lambda(1-s)$ | 完成函数对合 |
 | $\chi(s)=2^s\pi^{s-1}\sin\frac{\pi s}{2}\Gamma(1-s)$ | 欧拉反射公式合写 |
 | $\zeta(s)=\chi(s)\zeta(1-s)$ | 函数方程 |
-| $\theta(t)=\mathrm{Im}\ln\Gamma\!\left(\tfrac14+\tfrac{it}{2}\right)-\tfrac{t}{2}\ln\pi$ | Riemann–Siegel |
-| $Z(t)=e^{i\theta(t)}\zeta\!\left(\tfrac12+it\right)\in\mathbb{R}$ | Hardy |
+| $\theta(t)=\mathrm{Im}\ln\Gamma\left(\tfrac14+\tfrac{it}{2}\right)-\tfrac{t}{2}\ln\pi$ | Riemann–Siegel |
+| $Z(t)=e^{i\theta(t)}\zeta\left(\tfrac12+it\right)\in\mathbb{R}$ | Hardy |
 | $(1-\sigma)^2=\sigma^2\Rightarrow\sigma=\tfrac12$ | 不动点代数 |
-| $\sigma_{n+1}=2\sigma_n^2$，阈值 $\tfrac12$，不动点 $\{0,\tfrac12\}$ | $C_0$ 迭代 |
+| $\sigma_{n+1}=2\sigma_n^2$，阈值 $\tfrac12$，不动点 $\lbrace0,\tfrac12\rbrace$ | $C_0$ 迭代 |
 | $729=3^6=9^3=27^2$ | 基系统唯一 |
 | $V_4\cong Z_2^2$ | 四类基本运算即四种运算格 |
 

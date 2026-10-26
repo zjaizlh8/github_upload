@@ -13,7 +13,7 @@ The BSD conjecture states `ord_{s=1} L(E,s) = rank E(Q)`. The structural answer 
 `c_λ = 2m_λ + [λ=β]` pairs every free slot `λ` into a `±λ` couple (pairing number
 `Σm_λ`), and each couple consumes exactly one factor `(s−1)` at `s = 1` — so
 
-$$\mathrm{ord}_{s=1}L(E,s) = \Sigma m_\lambda = \mathrm{rank}\,E(\mathbb Q).$$
+$$\mathrm{ord}_{s=1}L(E,s) = \Sigma m_\lambda = \mathrm{rank}E(\mathbb Q).$$
 
 Three identities close the chain across parity: the exact sequence
 `dim Sel₂ = rank + dim Ш[2]` (the arithmetic avatar of "rank + nullity = dimension"), the

@@ -10,7 +10,7 @@
 
 The Hardy–Littlewood conjecture states
 
-$$\pi_2(x) \;\sim\; 2C_2 \cdot \mathrm{Li}_2(x), \qquad 2C_2 = 2\prod_{q>2}\Bigl(1-\frac{1}{(q-1)^2}\Bigr) = 1.320323631\ldots$$
+$$\pi_2(x) \sim 2C_2 \cdot \mathrm{Li}_2(x), \qquad 2C_2 = 2\prod_{q>2}\Bigl(1-\frac{1}{(q-1)^2}\Bigr) = 1.320323631\ldots$$
 
 We state the structural form (a conditional reading, not a formal proof): the welded integral `Li₂(x) = ∫₂ˣ (e^γ ∏_{p≤t}(1−1/p))² dt`
 (the five-element interface: lower bound 2 / logarithmic derivative / local factor `1/log²t` /
@@ -145,7 +145,7 @@ We state the structural form (a conditional reading, not a formal proof): the ri
 exactly the 3 pairs `(11,13), (17,19), (29,1)`, and **each layer of the spectral nesting keeps
 at least one complete chain whose two sides are genuine primes**, so that
 
-$$\pi_2(x) \;\ge\; \left\lfloor \frac{\log_2 x}{6} \right\rfloor \;\longrightarrow\; \infty .$$
+$$\pi_2(x) \ge \left\lfloor \frac{\log_2 x}{6} \right\rfloor \longrightarrow \infty .$$
 
 The load-bearing step is **Lemma 5.1** (each layer keeps ≥1 genuine pair), whose proof is the
 antipodal (reciprocal) argument: factor pairs are diametrically opposite about `√N`, so sieving

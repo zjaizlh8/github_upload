@@ -12,8 +12,8 @@ The Hodge conjecture states that rational Hodge classes — the `(p,p)` classes 
 The structural answer is the circle-average: under the circle action with weights
 `e^{i(p−q)θ}`, exactly the diagonal `p = q` slots survive (the others cancel), so
 
-$$\text{Hodge class} \;\Longleftrightarrow\; \text{fixed under the circle action}
-\;\Longleftrightarrow\; (p,p) .$$
+$$\text{Hodge class} \Longleftrightarrow \text{fixed under the circle action}
+\Longleftrightarrow (p,p) .$$
 
 The upgrade from topological to algebraic is the **reciprocal (return) law**: an Abel–Jacobi
 image returns to the lattice exactly when it is a torsion point (`kx ≡ 0 mod 1` ⟺ `x` and

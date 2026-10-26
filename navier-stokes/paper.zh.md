@@ -78,7 +78,7 @@ $$\textbf{闭式}\iff\textbf{层内有商}\iff\textbf{闭合 } nm=k$$
 ## §1 结构层（三件）
 
 ### 定理 1.1（基础三件）
-任何可计算的累积容器由三件张成：**单位 $1$**、**笛卡尔积**、**位值幂 $b^k$**。NS 的累积容器 = 尺度链 $\{2^k\}$（能量级联）+ 张量积（速度三重分量的笛卡尔积）。
+任何可计算的累积容器由三件张成：**单位 $1$**、**笛卡尔积**、**位值幂 $b^k$**。NS 的累积容器 = 尺度链 $\lbrace2^k\rbrace$（能量级联）+ 张量积（速度三重分量的笛卡尔积）。
 
 ### 定理 1.2（基系统唯一）
 $729=3^6=9^3=27^2$ 是唯一同时满足「换底不丢 / 无算子位置 / 纯质幂」的基底常数，位数 $6$。本篇它只作一处用：**闭合深度 $k=6$**。
@@ -98,7 +98,7 @@ $729=3^6=9^3=27^2$ 是唯一同时满足「换底不丢 / 无算子位置 / 纯�
 ### 2.1 三面
 | 面 | 对象 | 判据 |
 |---|---|---|
-| **层内取谱** | $X_k=\mathbb{Z}_2^k$，谱 $\{k-2j\}$，重数 $\binom kj$ | 取模法产生 $\pm$ |
+| **层内取谱** | $X_k=\mathbb{Z}_2^k$，谱 $\lbrace k-2j\rbrace$，重数 $\binom kj$ | 取模法产生 $\pm$ |
 | **层间嵌套** | $L_n=X_{n\cdot m}$，$\pi\circ\iota={\rm id}$ | 母又是子 |
 | **层上闭合** | $\sigma=g\circ(+1)\circ g^{-1}$ | 周期 $64$，$m=1\to n=6$ |
 
@@ -133,7 +133,7 @@ $$\underbrace{nm\ge k}_{\text{无截断链}}\quad\wedge\quad\underbrace{nm\le k}
 
 二维 $u=(u_1(x,y),u_2(x,y),0)$ ⟹ $\omega=(0,0,\omega_z)$、$\partial_z\equiv0$ ⟹ $(\omega\cdot\nabla)u=\omega_z\partial_z u\equiv0$。
 
-在应变特征标架里更清楚：二维应变 $S=\begin{pmatrix}a&b&0\\b&-a&0\\0&0&0\end{pmatrix}$ 的特征值为 $\pm\sqrt{a^2+b^2},\,0$ ⟹ **$\lambda_2\equiv0$**，而 $\omega$ 恰沿 $\lambda_2$ 的特征方向 ⟹
+在应变特征标架里更清楚：二维应变 $S=\begin{pmatrix}a&b&0\\\\b&-a&0\\\\0&0&0\end{pmatrix}$ 的特征值为 $\pm\sqrt{a^2+b^2},0$ ⟹ **$\lambda_2\equiv0$**，而 $\omega$ 恰沿 $\lambda_2$ 的特征方向 ⟹
 $$\langle\lambda,d\rangle=\lambda_1\cdot0+\lambda_2\cdot1+\lambda_3\cdot0=0\quad(\text{正交，非「维度低」})$$
 
 **机器见证**：`max|(ω·∇)u| = 0.000000e+00`；`λ₂ = 4.441e-16`；上界违例率 `0`。
@@ -142,10 +142,10 @@ $$\langle\lambda,d\rangle=\lambda_1\cdot0+\lambda_2\cdot1+\lambda_3\cdot0=0\quad
 
 ### 4.2 Beltrami：非线性项退化为纯梯度
 
-取 $u=(\sin z+\cos y,\ \sin x+\cos z,\ \sin y+\cos x)$，则 $\nabla\cdot u\equiv0$、${\rm curl}\,u=u$ ⟹ $u\times\omega=0$。由恒等式
-$$(u\cdot\nabla)u=\nabla\!\left(\tfrac{|u|^2}{2}\right)-u\times\omega=\nabla\!\left(\tfrac{|u|^2}{2}\right)$$
+取 $u=(\sin z+\cos y,\ \sin x+\cos z,\ \sin y+\cos x)$，则 $\nabla\cdot u\equiv0$、${\rm curl}u=u$ ⟹ $u\times\omega=0$。由恒等式
+$$(u\cdot\nabla)u=\nabla\left(\tfrac{|u|^2}{2}\right)-u\times\omega=\nabla\left(\tfrac{|u|^2}{2}\right)$$
 取 $p=-\tfrac{|u|^2}{2}$，NS 化为纯扩散，得**精确解**
-$$u(x,t)=u_0(x)\,e^{-\nu L^2t},\quad L=1$$
+$$u(x,t)=u_0(x)e^{-\nu L^2t},\quad L=1$$
 **机器见证**：`max|curl u−u|`、`max|u×ω|`、残差 全为 `0.000000e+00`。
 
 **结论**：三维**不是**一概不可解 —— Beltrami 族给出无穷多个三维全局光滑解。困难只在一类。
@@ -157,7 +157,7 @@ $$u(x,t)=u_0(x)\,e^{-\nu L^2t},\quad L=1$$
 ### 5.1 拉伸势的三分定理
 
 涡量方程取点积：
-$$\tfrac12\partial_t|\omega|^2+u\cdot\nabla\tfrac{|\omega|^2}{2}=\underbrace{\omega\cdot S\,\omega}_{P}-\nu|\nabla\omega|^2$$
+$$\tfrac12\partial_t|\omega|^2+u\cdot\nabla\tfrac{|\omega|^2}{2}=\underbrace{\omega\cdot S\omega}_{P}-\nu|\nabla\omega|^2$$
 不可压给 $\sum\lambda_i=0$，把 $\omega$ 在应变特征基上展开（$d_i^2$ 为权重）：
 $$\boxed{P=\underbrace{\lambda_2|\omega|^2}_{\text{第三态剩余}}+\underbrace{(\lambda_1-\lambda_2)|\omega|^2d_1^2}_{Q_+\ge0}-\underbrace{(\lambda_2-\lambda_3)|\omega|^2d_3^2}_{Q_-\ge0}}$$
 
@@ -165,7 +165,7 @@ $$\boxed{P=\underbrace{\lambda_2|\omega|^2}_{\text{第三态剩余}}+\underbrace
 - $\lambda_2=0$ ⟹ 纯配对 ⟹ 闭合（二维）；
 - 三维 $\lambda_2\neq0$ ⟹ **不可消的剩余** = 三进制相对二进制的第三个态。
 
-**机器见证**：三分恒等 `dev=1.869e-14`；`Q±≥0` 无违例；上界 $|P|\le\sqrt{2/3}\,|S|\,|\omega|^2$ 违例率 `0`；对齐上界 $\max\langle\lambda,d\rangle=\lambda_1$（`dev=0`）。
+**机器见证**：三分恒等 `dev=1.869e-14`；`Q±≥0` 无违例；上界 $|P|\le\sqrt{2/3}|S||\omega|^2$ 违例率 `0`；对齐上界 $\max\langle\lambda,d\rangle=\lambda_1$（`dev=0`）。
 
 ### 5.2 局域平衡是精确的（Burgers）
 
@@ -203,7 +203,7 @@ $$\Gamma<\Gamma^*\ \text{扩散胜（管消失，安全）};\quad \Gamma=\Gamma^
 $$\int P=\int\lambda_2|\omega|^2+\int (Q_+-Q_-)$$
 配对部分 $Q_+-Q_-$ 在管段间可相消（正交/对称处恒零：二维 $d\perp e_1$、Beltrami $u\times\omega=0$），故危险量只有 $\int\lambda_2|\omega|^2$。
 
-**第二步（危险量只在非均分处非零）** $\sum\lambda_i=0$ ⟹ 均分（各向同性，$A=0$）时 $P\equiv0$。三维 $A>0$ 是唯一的活动区；$A$ 的有界性 ⟹ 拉伸产生项被 $|S|\,|\omega|^2$ 线性控制。
+**第二步（危险量只在非均分处非零）** $\sum\lambda_i=0$ ⟹ 均分（各向同性，$A=0$）时 $P\equiv0$。三维 $A>0$ 是唯一的活动区；$A$ 的有界性 ⟹ 拉伸产生项被 $|S||\omega|^2$ 线性控制。
 
 **第三步（锁定引理 —— 重联的商；引理 6.1）**
 > **引理 6.1（重联单调性）**：在闭合 $nm=k$ 下，有效环量被锁在
@@ -216,18 +216,18 @@ $$\int P=\int\lambda_2|\omega|^2+\int (Q_+-Q_-)$$
 
 > 照实：重联的「分裂即严格下降」这一步不是从 NS 方程推出的——库 `SKILL.md:5604` 与 4.65 把它标为 conjecture（推翻条件：构造 $\Gamma_{\rm eff}/\nu$ 单调无界且不被重分配打断），未能在库内找到被迫闭合证据。本引理是三维一般情形的承重步。
 
-*机器见证*：锁迭代 $\Gamma_{n+1}=\max(\Gamma_n/2,\ \Gamma_*)$ 经 60 步收敛到 $\Gamma_*=0.12566371$，全程不越出 $[\Gamma_0,\Gamma_*]=[1.00530965,\,0.12566371]$，`dev=0`；Kelvin 分支和 100 组零违例、max{Γ₁,Γ₂}/Γ ≤ 0.650（严格下降）。
+*机器见证*：锁迭代 $\Gamma_{n+1}=\max(\Gamma_n/2,\ \Gamma_*)$ 经 60 步收敛到 $\Gamma_*=0.12566371$，全程不越出 $[\Gamma_0,\Gamma_*]=[1.00530965,0.12566371]$，`dev=0`；Kelvin 分支和 100 组零违例、max{Γ₁,Γ₂}/Γ ≤ 0.650（严格下降）。
 
 **第四步（BKM 闭合）** 由锁定，管截面在平衡态取 $\delta_*^2=4\nu/\lambda_\omega$，故
-$$\|\omega\|_\infty=\frac{\Gamma_{\rm eff}}{\pi\delta_*^2}=\frac{\Gamma_{\rm eff}\,\lambda_\omega}{4\pi\nu}\le\frac{\Gamma_0}{4\pi\nu}\,\lambda_\omega\le\frac{\Gamma_0}{4\pi\nu}\,\|S\|_\infty$$
+$$\Vert\omega\Vert_\infty=\frac{\Gamma_{\rm eff}}{\pi\delta_*^2}=\frac{\Gamma_{\rm eff}\lambda_\omega}{4\pi\nu}\le\frac{\Gamma_0}{4\pi\nu}\lambda_\omega\le\frac{\Gamma_0}{4\pi\nu}\Vert S\Vert_\infty$$
 代入 BKM 判据
-$$\int_0^T\|\omega\|_\infty\,dt\le\frac{\Gamma_0}{4\pi\nu}\int_0^T\|S\|_\infty\,dt\le\frac{\Gamma_0}{4\pi\nu}\cdot 2\|S\|_{L^1(0,T;L^\infty)}<C(\Gamma_0,\nu,E_0)\,T^{\alpha}<\infty$$
-（末步用应变方程 $d\|S\|/dt\le C\|S\|^2$ 的耗散修正：粘性给出 $d\|S\|^2/dt\le-\nu c_0\|S\|^2+C_1\|S\|^3$ 的可积界。）因此 $\int_0^T\|\omega\|_\infty<\infty$ 对一切 $T$ 成立 ⟹ 无 BKM 奇点 ⟹ 全局正则。∎
+$$\int_0^T\Vert\omega\Vert_\inftydt\le\frac{\Gamma_0}{4\pi\nu}\int_0^T\Vert S\Vert_\inftydt\le\frac{\Gamma_0}{4\pi\nu}\cdot 2\Vert S\Vert_{L^1(0,T;L^\infty)}<C(\Gamma_0,\nu,E_0)T^{\alpha}<\infty$$
+（末步用应变方程 $d\Vert S\Vert/dt\le C\Vert S\Vert^2$ 的耗散修正：粘性给出 $d\Vert S\Vert^2/dt\le-\nu c_0\Vert S\Vert^2+C_1\Vert S\Vert^3$ 的可积界。）因此 $\int_0^T\Vert\omega\Vert_\infty<\infty$ 对一切 $T$ 成立 ⟹ 无 BKM 奇点 ⟹ 全局正则。∎
 
 **构造层（构造 · 估计 · 充分性，结构写法）**：
 - **构造**：Beltrami 精确解 $u=u_0e^{-\nu L^2t}$、$p=-|u|^2/2$、NS 残差 $0.000000e+00$（构造侧无盲点）；二维对照 Γ 恒定 1000 步 dev 0（`code/verify_ns.c` P6/P9）。
 - **估计**：锁定迭代 200 个初值 80 步后越界 0（P4）；上界读数 $\Gamma_0\lambda/(4\pi\nu)=7.957747$、$\Gamma_*=\Gamma_{\rm eff}$ 时读数恰 1.000000000（P5）；尾积分 2000 项 252.700421 对上界、比 1.000000（P6）；Riccati 闭式 vs ODE 相对偏差 $4.070\times10^{-7}$（P8）——估计的每一步都有一部有限机器见证。
-- **充分性**：锁定 ⟹ $\|\omega\|_\infty$ 全局可积 ⟹ BKM 无奇点（第四步）。充分性由引理 6.1 的单调结构（Kelvin 守恒 + 重联严格下降 + 扩散安全）给出，不依赖逐时刻验证。**照实**：引理 6.1 的**道生链落点 = 一生二的对径**（Burgers 拉伸 +7.9577471546 / 扩散 −7.9577471546 精确相消、比值 1.000000000000；Γ*=4ν/c ⟹ Re*=4π dev 2.220e−16）。**投影有损失正负闭环**：拉伸/扩散两支对径相消是无损侧，承损侧 = 重联重分配（把 Γ_eff 锁回 [Γ*,Γ₀]）——损不可消除由 log₂3 无理逼出。库 `SKILL.md:5604` 与 4.65 的 conjecture 与引理同口径；其外部等价物（NS 方程第一原理逐常数推导）属构造层对应，依 4.132 硬规不否定结构层判定。
+- **充分性**：锁定 ⟹ $\Vert\omega\Vert_\infty$ 全局可积 ⟹ BKM 无奇点（第四步）。充分性由引理 6.1 的单调结构（Kelvin 守恒 + 重联严格下降 + 扩散安全）给出，不依赖逐时刻验证。**照实**：引理 6.1 的**道生链落点 = 一生二的对径**（Burgers 拉伸 +7.9577471546 / 扩散 −7.9577471546 精确相消、比值 1.000000000000；Γ*=4ν/c ⟹ Re*=4π dev 2.220e−16）。**投影有损失正负闭环**：拉伸/扩散两支对径相消是无损侧，承损侧 = 重联重分配（把 Γ_eff 锁回 [Γ*,Γ₀]）——损不可消除由 log₂3 无理逼出。库 `SKILL.md:5604` 与 4.65 的 conjecture 与引理同口径；其外部等价物（NS 方程第一原理逐常数推导）属构造层对应，依 4.132 硬规不否定结构层判定。
 
 ---
 
@@ -241,7 +241,7 @@ $$\int_0^T\|\omega\|_\infty\,dt\le\frac{\Gamma_0}{4\pi\nu}\int_0^T\|S\|_\infty\,
 
 **双向闭合（正向 / 反向）**：
 - 正向：均分 ⟹ $P=0$ ⟹ 无拉伸 ⟹ 正则；
-- 反向：若有奇点 ⟹ BKM 积发散 ⟹ $\|\omega\|_\infty$ 无界 ⟹ 由锁定 $\lambda_\omega$ 无界 ⟹ $\int\|S\|=\infty$ ⟹ 局域 Riccati 爆 ⟹ $\delta\to0$ ⟹ 管自交 ⟹ 重联发生 ⟹ $\Gamma_{\rm eff}$ 减半 ⟹ 回到有界。**往返闭合**。
+- 反向：若有奇点 ⟹ BKM 积发散 ⟹ $\Vert\omega\Vert_\infty$ 无界 ⟹ 由锁定 $\lambda_\omega$ 无界 ⟹ $\int\Vert S\Vert=\infty$ ⟹ 局域 Riccati 爆 ⟹ $\delta\to0$ ⟹ 管自交 ⟹ 重联发生 ⟹ $\Gamma_{\rm eff}$ 减半 ⟹ 回到有界。**往返闭合**。
 
 ---
 
@@ -286,7 +286,7 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o ns.exe code/verify_ns.c && ./ns.exe
 
 Kelvin 守恒给和：$\Gamma_1+\Gamma_2=\Gamma$（100 组分支，$\max|\Gamma_1+\Gamma_2-\Gamma|=0$，违例 $0$）。
 
-重联给严格下降：两支都 $<\Gamma$（比例取 $0.26\sim0.45$），100 组里 $\max\{\Gamma_1,\Gamma_2\}/\Gamma$ 的最大值为 $0.650$，**没有一组能保持原值**。
+重联给严格下降：两支都 $<\Gamma$（比例取 $0.26\sim0.45$），100 组里 $\max\lbrace\Gamma_1,\Gamma_2\rbrace/\Gamma$ 的最大值为 $0.650$，**没有一组能保持原值**。
 
 $$\boxed{\Gamma_1+\Gamma_2=\Gamma\ \text{（守恒）}\quad\wedge\quad \max(\Gamma_1,\Gamma_2)<\Gamma\ \text{（必须变细）}}$$
 
@@ -311,7 +311,7 @@ $n=15$ 起就贴底（$2^{-15}<0.126$），收敛值 dev $0$。**锁是「减半
 
 下界单向：200 个初值 $\Gamma_0\in[\Gamma^*,20.95\Gamma^*]$，80 步后全部停在 $\Gamma^*$，**越界 0 次**。
 
-### 5bis.4 上界：$\|\omega\|_\infty\le \Gamma_0\lambda/(4\pi\nu)$
+### 5bis.4 上界：$\Vert\omega\Vert_\infty\le \Gamma_0\lambda/(4\pi\nu)$
 
 | $\Gamma_{\rm eff}$ | $\Gamma_{\rm eff}\lambda/(4\pi\nu)$ |
 |---|---|
@@ -324,7 +324,7 @@ $n=15$ 起就贴底（$2^{-15}<0.126$），收敛值 dev $0$。**锁是「减半
 
 ### 5bis.5 尾积分有限 + Riccati 只有闭式爆
 
-几何衰减 + 常数尾：2000 项部分和 $=252.700421$，上界（前 3 项 $\le1.75$ 加其余 $N\Gamma^*$）$=252.700421$，比值 $1.000000$（不越界）⟹ $\int_0^\infty\|\omega\|_\infty\,dt<\infty$。
+几何衰减 + 常数尾：2000 项部分和 $=252.700421$，上界（前 3 项 $\le1.75$ 加其余 $N\Gamma^*$）$=252.700421$，比值 $1.000000$（不越界）⟹ $\int_0^\infty\Vert\omega\Vert_\inftydt<\infty$。
 
 Riccati 闭式 $W(t)=W_0/(1-CW_0t)$ 代入 $\dot W=CW^2$：30 个时间点最大相对偏差 $4.070\times10^{-7}$（$h=10^{-6}$ 的前差商，偏差是差分阶而非公式误差）。$t^*=1/(CW_0)$ 是它唯一的爆点 —— 与 §5 的 $t^*=1/\lambda_0$ 同一个式子。
 
@@ -365,14 +365,14 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o ns.exe code/verify_ns.c && ./ns.exe
 4. 二维：$\lambda_2\equiv0$ 且 $\omega\parallel e_2$ ⟹ $P\equiv0$
 5. Burgers：$\gamma\omega(0)+\nu\Delta\omega(0)=0$（精确）
 6. $\Gamma^*=4\nu/c$，$c=1/\pi$ ⟹ $Re^*=4\pi$
-7. BKM：$\int_0^T\|\omega\|_\infty<\infty\Rightarrow$ 正则
+7. BKM：$\int_0^T\Vert\omega\Vert_\infty<\infty\Rightarrow$ 正则
 
 ## 附录 B 与库内条目的对应
 
 | 库条目 | 本篇位置 | 关系 |
 |---|---|---|
 | `SKILL.md:4.59.3`（二维 $(\omega\cdot\nabla)u=0$ vs 三维 9.165151 / 2.039038e+03） | §4.1 | 采用并升级为「正交」机制 |
-| `SKILL.md:4.60`（判据修正 $|\mathrm{curl}\,(u\times\omega)|\to P=\omega\cdot S\omega$；Beltrami 精确解；8³ 扫描；BKM） | §4.2, §5.1, §5.3 | 采用 |
+| `SKILL.md:4.60`（判据修正 $|\mathrm{curl}(u\times\omega)|\to P=\omega\cdot S\omega$；Beltrami 精确解；8³ 扫描；BKM） | §4.2, §5.1, §5.3 | 采用 |
 | `SKILL.md:4.63 / 4.77`（$P=|\omega|^2\langle\lambda,d\rangle$；$\lambda_2$ 伪判据；三分；上界） | §5.1 | 采用（以 4.77 为准，$\lambda_2$ 只作剩余项载体） |
 | `SKILL.md:4.65`（Burgers 相消、$\Gamma^*=4\nu/c$、$Re^*=4\pi$、卡点=非局部重分配；判为 conjecture） | §5.2, §5.4, §6 | **升级**：把 conjecture 证成引理 6.1 |
 | `SKILL.md:4.62.7`（二维 $P\equiv0$ / 三维 $P\neq0$，二进制 vs 三进制） | §5.1 | 采用 |

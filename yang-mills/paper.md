@@ -18,7 +18,7 @@ winding number ⟹ discrete, quotientable, compact), and the spectral gap follow
 (level repulsion with minimal crossing distance `2c`), so `λ₁ > 0`:
 
 $$\lambda_l = l(l+2) = \text{multiplicity} − 1 , \qquad \lambda_1 = 3 > 0 , \qquad
-\Delta = \sqrt{\lambda_1}/R = \sqrt3\,\Lambda .$$
+\Delta = \sqrt{\lambda_1}/R = \sqrt3\Lambda .$$
 
 The load-bearing step is **Lemma 4.1** (winding-lattice completeness + λ₁>0 in the continuum
 limit), stated with its honest note.

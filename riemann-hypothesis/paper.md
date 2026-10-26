@@ -14,8 +14,8 @@ set closed, and the **unique-radius theorem** of the spectral method forbids the
 `β, 1−β` from carrying asymmetric weights — so the only allowed location is the fixed line
 `β = 1/2` (the center line `c₀ = 1` of the spectral circle). The equivalent equidistance reading
 
-$$|\chi(\sigma+it)| = 1 \;\Longleftrightarrow\; \sigma = 1/2 , \qquad
-\chi(s) = \pi^{s-1/2}\,\frac{\Gamma((1-s)/2)}{\Gamma(s/2)}$$
+$$|\chi(\sigma+it)| = 1 \Longleftrightarrow \sigma = 1/2 , \qquad
+\chi(s) = \pi^{s-1/2}\frac{\Gamma((1-s)/2)}{\Gamma(s/2)}$$
 
 is machine-verified to `3.553e−15`. The load-bearing step is **Lemma 4.1** (zero placement),
 proved from the unique-radius theorem; its honest note states the structural-caliber boundary.

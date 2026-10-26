@@ -91,7 +91,7 @@ $$\boxed{\ \textbf{单位 }1\ \times\ \textbf{笛卡尔积}\ \times\ \textbf{位
 
 $$\boxed{\ 729=3^6=9^3=27^2\ }$$
 
-$N\le10^4$ 内「$\ge2$ 种写法」者 $13$ 个；交「指数含 $6$」者 $\{64,729,4096\}$；再交「基底为 $3$ 的幂」者，**唯一命中 $729=3^6$**，且**位数 $=6$**。故 $6$ 是基底位数的结构常数（环长指数、六阶递推的阶、$\varphi(30)/$射线数 $=8$ 的配对长度，皆同一个 $6$）。
+$N\le10^4$ 内「$\ge2$ 种写法」者 $13$ 个；交「指数含 $6$」者 $\lbrace64,729,4096\rbrace$；再交「基底为 $3$ 的幂」者，**唯一命中 $729=3^6$**，且**位数 $=6$**。故 $6$ 是基底位数的结构常数（环长指数、六阶递推的阶、$\varphi(30)/$射线数 $=8$ 的配对长度，皆同一个 $6$）。
 
 ### 1.3 四类基本运算即四种运算格（结构级，库原文机器见证）
 
@@ -107,7 +107,7 @@ $N\le10^4$ 内「$\ge2$ 种写法」者 $13$ 个；交「指数含 $6$」者 $\{
 
 > **定理 1.4**　「反」（即把某项的符号翻成相反）**只能由取模法产生**。加法与乘法在正系数多项式中保持单调，不产生符号翻转；唯有 $\bmod 2$ 读数（取模法）把「同」与「异」折成两点，才是「反」的来源。
 
-**证明**：设表达式只含 $+,\times$ 且系数为正，则它是其变量的单调函数：任一变量增大，值不减小。而 $x\mapsto-x$ 不是单调的。故仅用两体法不能写出「把某一项反号」。反之，$\bmod 2$（取模法）给出 $\sigma\bmod 2\in\{0,1\}$，映射为 $(-1)^{\sigma}$ 即得反号。$\blacksquare$
+**证明**：设表达式只含 $+,\times$ 且系数为正，则它是其变量的单调函数：任一变量增大，值不减小。而 $x\mapsto-x$ 不是单调的。故仅用两体法不能写出「把某一项反号」。反之，$\bmod 2$（取模法）给出 $\sigma\bmod 2\in\lbrace0,1\rbrace$，映射为 $(-1)^{\sigma}$ 即得反号。$\blacksquare$
 
 ### 1.5 推论（per 的结构性无反）
 
@@ -125,7 +125,7 @@ $$\mathrm{per}(A)=\sum_{\sigma}\prod_i a_{i,\sigma(i)}\quad\text{只含}\ +,\tim
 
 | 面 | 内容 | 判据 |
 |---|---|---|
-| **层内取谱** | $X_k=\mathbb{Z}_2^k$，谱 $\{k-2j\}$，重数 $\binom{k}{j}$ | $k=6$ 得 $15$ 条谱线 $\{\pm6,\pm3,\pm2\}$ |
+| **层内取谱** | $X_k=\mathbb{Z}_2^k$，谱 $\lbrace k-2j\rbrace$，重数 $\binom{k}{j}$ | $k=6$ 得 $15$ 条谱线 $\lbrace\pm6,\pm3,\pm2\rbrace$ |
 | **层间嵌套** | $L_n=X_{n\cdot m}$，$\pi\circ\iota=\mathrm{id}$ | 母（$L_n$）$=L_{n+1}$ |
 | **层上闭合** | $\sigma=g\circ(+1)\circ g^{-1}$，$64$-周期 | 绕数可读 |
 
@@ -214,7 +214,7 @@ CSV：`矩阵_onestep_层格缺口_pvsnp.csv`、`矩阵_abacus_层格缺口.csv`
 
 ### 5.1 $\mathrm{GF}(2)$ 系统：秩与可解性（独立复算）
 
-问：$\exists S\in\{\pm1\}^{n\times n}$，使 $\forall A:\ \det(A\circ S)=\mathrm{per}(A)$ ？
+问：$\exists S\in\lbrace\pm1\rbrace^{n\times n}$，使 $\forall A:\ \det(A\circ S)=\mathrm{per}(A)$ ？
 
 令 $x_{ij}=(-1)^{y_{ij}}$，条件化为 $\mathrm{GF}(2)$ 线性系统
 
@@ -300,8 +300,8 @@ $$\prod_{i=0}^{n-1}\bigl(1+z^{2^i}\bigr)=\frac{1-z^{2^n}}{1-z}=1+z+\cdots+z^{2^n
 **第四步（归纳到 $P$ 与 $NP$，引理 4.1 收口）**
 由结构层对应律（§0）：
 
-$$\text{P}=\{\text{层内有商、闭合 }nm=k\text{、自由度 }1\},\qquad
-\text{NP}=\{\text{可验证（代入恒等，误差 }0\text{）}\}.$$
+$$\text{P}=\lbrace\text{层内有商、闭合 }nm=k\text{、自由度 }1\rbrace,\qquad
+\text{NP}=\lbrace\text{可验证（代入恒等，误差 }0\text{）}\rbrace.$$
 
 $\det$ 型（有商）落 P。$\mathrm{per}$ 型：由第二、三步，**相消型闭式不存在**；由 §7.1，剩余可能性是「非相消型闭式」（一般算术电路）。**引理 4.1（硬度）**收口：
 
@@ -346,7 +346,7 @@ $\mathrm{per}$ 无 $\bmod 2$ 商（推论 1.5），且 $\bmod 2$ 商不可外贴
 
 | 检验项 | 实测 |
 |---|---|
-| $(-1)^{\mathrm{inv}}\equiv\mathrm{Re}\,e^{i\pi\cdot\mathrm{inv}}$（$n\le7$，$5912$ 个置换） | dev $=0.000\text{e+}00$ |
+| $(-1)^{\mathrm{inv}}\equiv\mathrm{Re}e^{i\pi\cdot\mathrm{inv}}$（$n\le7$，$5912$ 个置换） | dev $=0.000\text{e+}00$ |
 | $e^{i\pi}+1$ | $0.000\text{e+}00$ |
 | $\det$ 相消度（$n=3\to8$） | $5.44\text{e-}02\to1.65\text{e-}06$，$a\approx-1.9788$ |
 | $\mathrm{per}$ 相消度（正矩阵） | $1.0000000000$（dev $0$） |
@@ -467,7 +467,7 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o pvsnp.exe code/verify_pvsnp.c && ./pvsnp.
 
 `k=9 fiber=1 保真度=1.000000 判别力=0.888889`、`domain=9 dc=6 order=2`；输出 运行日志（不随仓库发布）。取模处唯一：$\det\bmod 2$ 与 $\mathrm{per}\bmod 2$ 的奇偶比较；跨维度算子一个不用 ⟹ 不付残差，故 `maxdev=0`。
 
-**照实四条**：① 5ter.4 / 5ter.5 / 5ter.7 是**全枚举**（$n\le4$ / $n\le6$ / $n\le4$），不是对一切 $n$ 的定理；② 5ter.3 的「正负各半」是**项数**计数，不是值的相消幅度；③ 5ter.6 是必要条件型论证（1 比特装不下 $n\log n$ 比特），不单独构成 $\#$P-困难性的证明；④ 「$2^n$ 墙」的定量口径仍由 §6 给，本节只补「墙为什么是结构性的」。
+**照实四条**：① 5ter.4 / 5ter.5 / 5ter.7 是**全枚举**（$n\le4$ / $n\le6$ / $n\le4$），不是对一切 $n$ 的定理；② 5ter.3 的「正负各半」是**项数**计数，不是值的相消幅度；③ 5ter.6 是必要条件型论证（1 比特装不下 $n\log n$ 比特），不单独构成 #P-困难性的证明；④ 「$2^n$ 墙」的定量口径仍由 §6 给，本节只补「墙为什么是结构性的」。
 
 ---
 
@@ -505,7 +505,7 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o pvsnp.exe code/verify_pvsnp.c && ./pvsnp.
 | NS | 不脱圈 $\Rightarrow$ 率点态有界 | $\int\sigma$ 可积 |
 | YM | 群紧致 $\Rightarrow$ 谱离散 | 底空间 $\mathbb{R}^3$ 非紧 |
 | RH | $|\chi|=1\iff\sigma=1/2$ | 线外零点排除 |
-| BSD | 局部恒正、符号定奇偶 | $\mathrm{ord}\,L=\mathrm{rank}$ |
+| BSD | 局部恒正、符号定奇偶 | $\mathrm{ord}L=\mathrm{rank}$ |
 | **P vs NP** | **$(-1)^\sigma\Rightarrow$ 相消 $\Rightarrow$ 闭式** | **$\mathrm{per}$ 无反，且反不可外贴** |
 | Hodge | 圆平均 $\Rightarrow(p,p)$ 不动 | 缺 $p\ge2$ 之 $\exp$ 整数化 |
 | 毛球 | $\chi=1+e^{i\pi n}$ | $S^3$ 三场唯一正解 |
