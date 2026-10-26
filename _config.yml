@@ -1,8 +1,8 @@
 # GitHub Pages（分支 main / 根目录）配置
 # README.md 经 jekyll-readme-index 转成首页；主题用 GitHub Pages 白名单内的 primer。
 theme: jekyll-theme-primer
-title: 八道千禧年型问题的结构证明
-description: Structural proofs of eight millennium-type problems — 19 C probes, 4 archive gates, one push = full re-verification.
+title: 七道千禧年型问题的结构解读
+description: Structural readings of seven millennium-type problems — seven papers, seven C verifiers, 194 machine-checked criteria, one push = full re-verification.
 show_downloads: false
 
 exclude:

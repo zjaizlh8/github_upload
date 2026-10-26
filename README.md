@@ -19,8 +19,9 @@ Windows 无 `make` 时 / without make:
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o t bsd-conjecture/code/verify_bsd.c -lm && ./t
 ```
 
-**预编译（Windows x64，7 个 exe + SHA256SUMS）/**
-**[prebuilt Windows x64 (7 exes + checksums)](https://github.com/zjaizlh8/github_upload/releases/latest)**
+**不随仓发布二进制 / no binaries are shipped in the repo**：上面两条命令就地编出 7 个 exe；
+打 `v*` tag 时 CI 才在 windows-latest + MinGW 上现场编译、逐支实跑、生成 `SHA256SUMS.txt` 并发 Release
+（见 [`.github/workflows/verify.yml`](.github/workflows/verify.yml)）。当前仓内与 Release 列表均无预编译产物。
 
 ---
 
