@@ -14,3 +14,4 @@ a.out
 *.log
 bin/
 _chk_scan.txt
+dist/
