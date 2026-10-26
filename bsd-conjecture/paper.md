@@ -533,6 +533,8 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o bsd.exe code/verify_bsd.c && ./bsd.exe
 | constant-side volume | `det` (the spectral side of `Reg²`), square root replaced by squared comparison | determinant |
 | `#Ш[2]` | the nullity `n − rank(A)` | rank |
 
+**Local readings (`BSD-1` / `BSD-2`, mutually independent witnesses against §5ter).** A Jordan block of width 2 at the centre plus two eigenvalues `2, 3` outside the centre ⟹ `ord = 2`; a single block of width 4 ⟹ `ord = 4` (dev `0`, **the same detector separates the two exactly**). The multiplicative volume of the spectrum is `∏|λ| = 362797056 = 6¹¹`; the conservation reads `15 = 1 + 2×7` (dev `0`).
+
 **Local readings (`BSD-1/BSD-2`, mutually independent witnesses with §5ter).** A Jordan block of width 2 at the centre plus two eigenvalues outside the centre `2, 3` ⟹ `ord = 2`; a single block of width 4 ⟹ `ord = 4` (dev `0`, **the same detector distinguishes them exactly**). The multiplicative volume of the spectrum is `∏|λ| = 362797056 = 6¹¹`; conservation `15 = 1 + 2×7` (dev `0`).
 
 **Interface.** The order and the constant are no longer sought separately: the three readings `ord`, `Reg`, `#Ш[2]` are **of one source** (the same set of ranks and determinants), so they cannot drift apart — this is the machine-level meaning of "the two halves of BSD share one chain".
