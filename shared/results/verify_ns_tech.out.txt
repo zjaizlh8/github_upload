@@ -1,4 +1,4 @@
-﻿== verify_ns_tech : 术层 —— 锁定引理 Gamma_eff in [Gamma*, Gamma0] ==
+﻿== verify_ns_tech : construction layer —— lockinglemma Gamma_eff in [Gamma*, Gamma0] ==
    [土S锚定]   [火F虚化]   [金M坍缩]   [水W渗透]   [木D扩展]   [土S闭环]
 
   [P1] 100 branches: max|g1+g2-G| = 2.220e-16   violations = 0
@@ -28,10 +28,10 @@
   PASS P9 2D control: Gamma constant              dev=0.000000e+00 tol=0.000000e+00
 
 RESULT PASS=9 FAIL=0 maxdev=4.070e-07
-k=9 fiber=1.000000 保真度=1.000000 判别力=0.888889
+k=9 fiber=1.000000 fidelity=1.000000 discriminability=0.888889
 res=0.000000e+00 domain=9 dc=4 order=2
-照实：P1/P2/P5 是环量守恒与分支枚举（精确组合），P3/P4 是阈值迭代，
-     P7 的「有限」是几何衰减 + 常数尾的上界比较，不含粘性项的完整估计；
-     P8 只验 Riccati 闭式满足 ODE，P9 的恒定性是二维退化事实；
-     本节证的是「锁定一旦成立 ⟹ BKM 积分有限」，锁定本身由重联单调性给。
+honest note：P1/P2/P5 是circulationconservation与分branchenumeration（精确组合），P3/P4 是阈值iteration，
+     P7 的「finite」是几何衰减 + 常数尾的upper bound比较，不含粘性项的完整estimate；
+     P8 只验 Riccati 闭式satisfies ODE，P9 的恒定性是二维de生成事实；
+     本section证的是「locking一旦holds ⟹ BKM integralfinite」，locking本身由reconnectionmonotone性给。
 EXIT=0

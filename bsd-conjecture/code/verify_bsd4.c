@@ -6,20 +6,20 @@
 /* ============================================================================
    verify_bsd4.c · BSD 的「reciprocal逼迫」final version实证（2026-10-26）
    ----------------------------------------------------------------------------
-   用户caliber（逐字）：是reciprocal逼迫出的。
+   用户口径（逐字）：是reciprocal逼迫出的。
    archive内reciprocal定律： [2233] closure ⟺ 逆在同一容器内可写出；[2234] 膨胀↔收缩乘积 1；
-                 [2235] projection率 × 本体倍率 = 1；rank + nullity = dimension。
+                 [2235] 投影率 × 本体倍率 = 1；rank + nullity = dimension。
 
-   本step三件：
-     ① constant侧（reciprocal账）：L(E,1)·#tors² / (Ω · ∏c_p · #Ш) = 1
-        —— analyticreading与几何体量 Ω 互为reciprocal，商是有理账（本stepmeasured ∏c_p exactly为整数 2）。
-     ② rank侧（zerocriterion）：L(E,1) 的 Abel 和 —— rank 0 饱和非零、rank ≥ 1 趋零。
-        —— zero阶 = analytic侧的「reciprocalexponent」，与自由度数同位。
-     ③ 负结果honest note：局部欧拉积 ∏_{p≤X}(p+1−a_p)/p 的 log-log 斜率**不区分rank**
-        （三条曲线全在 1.27 附近）⟹ rank只能从 L(1) 的zero读，不能从局部积读。
+   本步三件：
+     ① 常数侧（倒数账）：L(E,1)·#tors² / (Ω · ∏c_p · #Ш) = 1
+        —— analytic读数与几何体量 Ω 互为reciprocal，商是有理账（本步measured ∏c_p exactly为整数 2）。
+     ② 秩侧（zerocriterion）：L(E,1) 的 Abel 和 —— rank 0 饱和非零、rank ≥ 1 趋零。
+        —— 零阶 = 解析侧的「reciprocalexponent」，与自由度数同位。
+     ③ 负结果honest note：局部欧拉积 ∏_{p≤X}(p+1−a_p)/p 的 log-log 斜率**不区分秩**
+        （三条曲线全在 1.27 附近）⟹ 秩只能从 L(1) 的零读，不能从局部积读。
 
-   four operationscaliber：加法=点数计数summation；乘法=Hecke 关系/乘法性/欧拉积；取modulo=Legendre 符号；
-             跨维度=analytic侧 exp/log/sqrt（Abel kernel、Simpson 求积、log），只在reading上用。
+   four operationscaliber：加法=点数计数summation；乘法=Hecke 关系/乘法性/欧拉积；取模=Legendre 符号；
+             跨维度=解析侧 exp/log/sqrt（Abel kernel、Simpson 求积、log），只在读数上用。
    ============================================================================ */
 #include <stdio.h>
 #include <math.h>
@@ -32,8 +32,8 @@
 typedef struct {
     const char *name;
     long long a1, a2, a3, a4, a6;
-    long long cond;      /* conductor（同时是unique坏prime的power） */
-    int rank;            /* Cremona 表，外部input */
+    long long cond;      /* conductor（同时是唯一坏素数的power） */
+    int rank;            /* Cremona 表，外部输入 */
     int tors;
 } Curve;
 
@@ -84,7 +84,7 @@ static int legendre(long long d, long long p)
 static int ap_curve(const Curve *E, int p)
 {
     long long x, s = 0;
-    if ((long long)p == E->cond) return 0;      /* 坏prime只在 cond 是prime时hit */
+    if ((long long)p == E->cond) return 0;      /* 坏素数只在 cond 是素数时hit */
     for (x = 0; x < p; x++) {
         long long x3 = x * x % p * x % p;
         long long rhs = (x3 + E->a2 * x % p * x % p) % p;
@@ -132,7 +132,7 @@ static void build_an(const Curve *E, int *a, int M)
     free(is_p);
 }
 
-/* L(1) 的 Abel 和：Σ (a_n/n)·e^{−2πny/√N}（kernel只作正则化，绝对值受kernel污染，只读zero/非zero） */
+/* L(1) 的 Abel 和：Σ (a_n/n)·e^{−2πny/√N}（核只作正则化，绝对值受核污染，只读零/非零） */
 static double abel_L1(const Curve *E, int M, double y)
 {
     int *a = (int *)calloc((size_t)M + 1, sizeof(int));
@@ -150,7 +150,7 @@ static double abel_L1(const Curve *E, int M, double y)
     return s + c;
 }
 
-/* Ω(y²=x³−x)=4∫₀^{π/2} dθ/√(1+cos²θ)；identity分branchperiod = 其一半 */
+/* Ω(y²=x³−x)=4∫₀^{π/2} dθ/√(1+cos²θ)；恒等分branchperiod = 其一半 */
 static double omega_32a1(int N)
 {
     int i;
@@ -182,7 +182,7 @@ static void judge(const char *name, double dev, double tol)
     if (fabs(dev) > maxdev) maxdev = fabs(dev);
 }
 
-/* -------- check数据器（cycle全部收在辅助函数内，main 只取reading） -------- */
+/* -------- 判据器（循环全部收在辅助函数内，main 只取读数） -------- */
 static void hs_scan(int ok[3], int cnt[3], int *c3, int *c3z)
 {
     int i, k;
@@ -221,9 +221,9 @@ int main(void)
 
     sieve();
     printf("=== verify_bsd4.c · BSD reciprocal逼迫final version ===\n");
-    printf("  ① constant侧reciprocal账：L·#tors² = Ω·∏c_p·#Ш\n");
-    printf("  ② rank侧zerocriterion：rank 0 饱和 / rank≥1 趋零\n");
-    printf("  ③ 负结果：局部欧拉积 log-log 斜率不区分rank\n\n");
+    printf("  ① 常数侧倒数账：L·#tors² = Ω·∏c_p·#Ш\n");
+    printf("  ② 秩侧零criterion：rank 0 饱和 / rank≥1 趋零\n");
+    printf("  ③ 负结果：局部欧拉积 log-log 斜率不区分秩\n\n");
 
     /* Hasse 与 CM */
     {
@@ -236,18 +236,18 @@ int main(void)
         judge("32a1 CM：p≡3(4) ⟹ a_p=0", (double)(c3 - c3z), 0.0);
     }
 
-    /* ① constant侧：reciprocal账 */
+    /* ① 常数侧：倒数账 */
     om  = omega_32a1(NPTS);
     tam = LEXT * (double)(CURVES[3].tors * CURVES[3].tors) / om;   /* ∏c_p·#Ш 的理论值 */
     printf("\n       · Ω(32a1) = %.12f（外部锚 2·2.6220575543 = 5.2441151086）\n", om);
     judge("Ω 与外部锚一致", om - 2.0 * 2.6220575543, 1e-08);
     printf("       · ∏c_p·#Ш = L·#tors²/Ω = %.12f（应为整数 2 ⟹ c₂=2、#Ш=1）\n", tam);
-    judge("Tamagawa 积为整数 2（账closure）", tam - 2.0, 1e-07);
-    dev = LEXT * 16.0 - om * 2.0;                                  /* reciprocal账：两项cancellation */
+    judge("Tamagawa 积为整数 2（账闭合）", tam - 2.0, 1e-07);
+    dev = LEXT * 16.0 - om * 2.0;                                  /* 倒数账：两项相消 */
     printf("       · L·#tors² = %.9f    Ω·∏c_p·#Ш = %.9f\n", LEXT * 16.0, om * 2.0);
-    judge("reciprocal账两项cancellation（residual → 0）", dev, 1e-06);
+    judge("倒数账两项相消（residual → 0）", dev, 1e-06);
 
-    /* ② rank侧：zerocriterion */
+    /* ② 秩侧：zerocriterion */
     S11  = abel_L1(&CURVES[0], M, 0.001);
     S37  = abel_L1(&CURVES[1], M, 0.001);
     S389 = abel_L1(&CURVES[2], M, 0.001);
@@ -265,8 +265,8 @@ int main(void)
     {
         double r[3];
         slope_scan(r);
-        printf("       · 结论（负结果）：three steps斜率同量级 ⟹ 局部积在 s=1 对所有rank都给 ~log X\n");
-        judge("负结果：|r(37a1) − r(389a1)| < 0.1（rank不可由局部积读）",
+        printf("       · 结论（负结果）：three steps斜率同量级 ⟹ 局部积在 s=1 对所有秩都给 ~log X\n");
+        judge("负结果：|r(37a1) − r(389a1)| < 0.1（秩不可由局部积读）",
               r[1] - r[2], 1e-01);
     }
 

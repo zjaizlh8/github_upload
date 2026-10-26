@@ -1,4 +1,4 @@
-# 孪生素数猜想的证明
+# 孪生素数猜想的结构解读
 
 ### ——结构层基底、谱结构方法、矩阵探针三重闭合
 
@@ -421,7 +421,7 @@ $\pi_2(x)\ge\lfloor\log_2x/6\rfloor$ 三档零违例，但宽松倍数 $612\to27
 
 ```
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o twintech.exe verify_twin_tech.c
-./twintech.exe     # RESULT PASS=10 FAIL=0 maxdev=7.039e-03  EXIT=0
+./twintech.exe     # RESULT PASS=10 FAIL=0 maxdev=7.039249e-03  EXIT=0
 ```
 
 `k=9 fiber=1 保真度=1 判别力=0.888889`、`domain=9 dc=9 order=2`；输出 `D:\lw\verify_twin_tech_输出.txt`（UTF-8 BOM）。十判项：完备链数（P1）· 每层 ≥1 对（P2）· 层可加（P3）· 存活率递减（P4）· 下界零违例（P5）· 密度积收敛（P6）· 首项比趋 1（P7）· 升阶乘系数恒等（P7b）· 密度侧只给上界（P8）· 宽松倍数增长（P9）。

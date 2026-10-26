@@ -4,34 +4,34 @@
  * the translation keeps line structure, check names and all numeric values unchanged.
  */
 /* ============================================================================
- * verify_twin_tech.c —— 孪generate猜想篇「construction layer」：lower bound靠closure、密度侧只给upper bound
- * 对应论文：D:\lw\孪generate猜想_证明_structure层_chaos onestep_matrix probe.md
+ * verify_twin_tech.c —— 孪生成猜想篇「construction layer」：lower bound靠闭合、密度侧只给upper bound
+ * 对应论文：D:\lw\孪生成猜想_证明_结构层_chaos onestep_matrix probe.md
  *
  * numeric layer（π₂ recomputation + 三射线分布）已在 verify_twin_count.c closure。本篇要拿下的是
  * 用户点的construction layergap：**存活率lower bound与密度侧的定位** —— 密度侧 ∏(1−2/q)→0 会不会
  * 把「无穷多」吃掉？lower bound到底由谁给？
  *
- * structure主张（本probe要机器witness的四条）：
- *   ① lower bound由closure给：m=6, k=6 ⟹ 层 L_n 上complete chain数 = 2^{6n−6} ≥ 1（整数精确）；
- *      每层至少一条complete chain ⟹ 至少一对孪generate ⟹ 层数 = ⌊log₂x/6⌋ ⟹ π₂ ≥ ⌊log₂x/6⌋。
- *   ② 密度侧 ∏(1−2/q)·log²x convergence到constant（只给「比例」），π₂/x → 0 与无穷不矛盾：
+ * 结构主张（本probe要机器见证的四条）：
+ *   ① lower bound由闭合给：m=6, k=6 ⟹ 层 L_n 上complete 链数 = 2^{6n−6} ≥ 1（整数精确）；
+ *      每层至少一条complete chain ⟹ 至少一对孪生成 ⟹ 层数 = ⌊log₂x/6⌋ ⟹ π₂ ≥ ⌊log₂x/6⌋。
+ *   ② 密度侧 ∏(1−2/q)·log²x convergence到常数（只给「比例」），π₂/x → 0 与无穷不矛盾：
  *      密度趋 0 说的是「越来越稀」，不是「finite」。
  *   ③ 层区间 [2^{6(n−1)}, 2^{6n}) 互不相交 ⟹ 计数可加（measured Σ层内 = π₂ 总）。
- *   ④ lower bound的宽松倍数measured（honest note：bound真但松，松度随 x 增长）。
+ *   ④ lower bound的宽松倍数实测（honest note：bound真但松，松度随 x 增长）。
  *
- * five roles执line铁序：
+ * 五行执line铁序：
  *   base S 锚定  → 2C₂、log²x 与 C(x)=⌊x/6⌋ 三锚落地
- *   dimension-change F 虚化  → complete chain数 2^{6n−6} = |X_{6n}|/|X_6|（kerneldimensionreading）
- *   sieve M 坍缩  → 每层measured孪generate对数 vs complete chain数（≥ 判定）
- *   accumulate W 渗透  → 逐step π₂、存活率 s(x)、密度积扫描
+ *   dimension-change F 虚化  → complete 链数 2^{6n−6} = |X_{6n}|/|X_6|（kerneldimensionreading）
+ *   sieve M 坍缩  → 每层实测孪生成对数 vs complete 链数（≥ 判定）
+ *   accumulate W 渗透  → 逐步 π₂、存活率 s(x)、密度积扫描
  *   generate D 扩展  → 宽松倍数与bound宽松趋势
- *   base S closure  → 密度侧/closure侧分工表 + 结论
+ *   base S closure  → 密度侧/闭合侧分工表 + 结论
  *
- * four operationscaliber：加法=layer by layer计数相加；乘法=∏(1−2/q) 与 2^{6n−6}；取modulo=unique处 q|h 的divides判定；
- *   跨维度=log（libm）与 my_exp（自写）用于密度积与 ρ 比值。tolerance按mechanism给。
+ * four operationscaliber：加法=layer by 层计数相加；乘法=∏(1−2/q) 与 2^{6n−6}；取模=唯一处 q|h 的整除判定；
+ *   跨维度=log（libm）与 my_exp（自写）用于密度积与 ρ 比值。tolerance按机制给。
  *
- * F: 正向 —— 从closure数出发 ⟹ 每层至少一对 ⟹ lower bound。
- * R: 反向 —— 若某层measured对数 < 2^{6n−6}，closure侧立刻崩（本steplayer by layer验，不许空过）。
+ * F: 正向 —— 从闭合数出发 ⟹ 每层至少一对 ⟹ lower bound。
+ * R: 反向 —— 若某层实测对数 < 2^{6n−6}，闭合侧立刻崩（本步layer by 层验，不许空过）。
  *
  * 编译：gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o twintech.exe verify_twin_tech.c
  * ==========================================================================*/
@@ -90,10 +90,10 @@ static void build(void)
 
 static int pi2_at(int x) { return (x > MAXN) ? g_pi2[MAXN] : g_pi2[x]; }
 
-/* complete chain数：层 L_n = X_{6n}，|X_k| = 2^k ⟹ complete chain数 = |X_{6n}| / |X_6| = 2^{6n−6} */
+/* complete 链数：层 L_n = X_{6n}，|X_k| = 2^k ⟹ complete 链数 = |X_{6n}| / |X_6| = 2^{6n−6} */
 static double chains_of_layer(int n) { return my_exp((6.0 * n - 6.0) * log(2.0)); }
 
-/* -------- check数据器（cycle全部收在辅助函数内，main 只取reading） -------- */
+/* -------- 判据器（循环全部收在辅助函数内，main 只取读数） -------- */
 static double p1_chain(void)
 {
     int expect[6] = {1, 64, 4096, 262144, 16777216, 1073741824};
@@ -101,7 +101,7 @@ static double p1_chain(void)
     int n;
     for (n = 1; n <= 6; n++) {
         double c = chains_of_layer(n);
-        printf("       层 n=%d：complete chain数 2^{6n−6}=%.0f（应 %d）\n", n, c, expect[n - 1]);
+        printf("       层 n=%d：complete 链数 2^{6n−6}=%.0f（应 %d）\n", n, c, expect[n - 1]);
         if (iabsd(c - (double)expect[n - 1]) > 0.5) bad += 1.0;
     }
     return bad;
@@ -121,7 +121,7 @@ static double p2_layer_pairs(void)
         {
             int cnt = pi2_at(b) - pi2_at(a - 1 >= 1 ? a - 1 : 1);
             double need = chains_of_layer(n);
-            printf("       层 n=%d：[%d, %d]%s measured对数=%d  complete chain数=%.0f  chain/对=%.2f\n",
+            printf("       层 n=%d：[%d, %d]%s 实测对数=%d  complete 链数=%.0f  chain/对=%.2f\n",
                    n, a, b, capped ? "（截断到 1e7）" : "", cnt, need,
                    (cnt > 0) ? need / (double)cnt : 0.0);
             if (cnt < 1) bad += 1.0;
@@ -265,11 +265,11 @@ int main(void)
     double res = 0.0, worst;
 
     build();
-    printf("verify_twin_tech.c · 孪generateconstruction layer：closure给lower bound · 密度只给upper bound（sieve至 %d）\n\n", MAXN);
+    printf("verify_twin_tech.c · 孪生成construction layer：闭合给lower bound · 密度只给upper bound（筛法至 %d）\n\n", MAXN);
 
-    judge("P1 complete chain数 = |X_{6n}|/|X_6| = 2^{6n−6}（n=1..6）", p1_chain(), 0.0);
+    judge("P1 complete 链数 = |X_{6n}|/|X_6| = 2^{6n−6}（n=1..6）", p1_chain(), 0.0);
 
-    judge("P2 每层至少一对孪generate（structure保证 ≥1，非 ≥ complete chain数）", p2_layer_pairs(), 0.0);
+    judge("P2 每层至少一对孪生成（结构保证 ≥1，非 ≥ complete 链数）", p2_layer_pairs(), 0.0);
 
     judge("P3 层区间互不相交：Σ层内计数 = π₂（可加）", p3_additive(), 0.0);
 

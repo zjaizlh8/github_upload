@@ -1,4 +1,16 @@
-*.c text eol=lf
-*.yml text eol=lf
-Makefile text eol=lf
-*.md text eol=lf
+# 编码与换行约定（2026-10-27 统一）：
+#   源文本（.c/.h/.md/.yml/Makefile/.json）—— UTF-8 无 BOM + LF（索引与工作区一致）
+#   机器见证（shared/results/*.out.txt）—— UTF-8 含 BOM + CRLF（Windows 记事本/Excel 可直接打开）
+#   二进制（.exe/.zip/.o）—— 显式 binary，禁止任何文本转换
+* text=auto
+*.c        text eol=lf
+*.h        text eol=lf
+*.yml      text eol=lf
+Makefile   text eol=lf
+*.md       text eol=lf
+*.json     text eol=lf
+*.txt      text eol=crlf
+*.exe      binary
+*.zip      binary
+*.o        binary
+*.csv      text eol=crlf

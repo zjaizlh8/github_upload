@@ -1,4 +1,4 @@
-﻿== verify_ym_tech : 术层 —— 物理扇区与连续极限 ==
+﻿== verify_ym_tech : construction layer —— physical 扇区与连续pole限 ==
    [土S锚定]   [火F虚化]   [金M坍缩]   [水W渗透]   [木D扩展]   [土S闭环]
 
   [P1] N | lambda1*L^2 | /(2pi)^2
@@ -46,9 +46,9 @@
   PASS P9 gap in lattice units / a = E2-E1        dev=3.774758e-15 tol=1.000000e-09
 
 RESULT PASS=9 FAIL=0 maxdev=1.606e-03
-k=9 fiber=1.000000 保真度=1.000000 判别力=0.888889
+k=9 fiber=1.000000 fidelity=1.000000 discriminability=0.888889
 res=6.109002e-11 domain=9 dc=5 order=2
-照实：P1/P2 是离散圆的谱（解析已知），P5/P6 是有限维恒等式，
+honest note：P1/P2 是离散圆的谱（解析已知），P5/P6 是finite维恒等式，
      P7/P8 用二维 U(1) 的精确 Wilson 回路与线性势做口径演示；
-     连续极限只验「隙与 a 无关」这一必要条件，不含重整化群流与四维非阿贝尔的构造。
+     连续pole限只验「隙与 a 无关」这一必要条件，不含重整化group流与四维非阿贝尔的construction。
 EXIT=0

@@ -3,10 +3,10 @@
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
  * the translation keeps line structure, check names and all numeric values unchanged.
  */
-/* verify_twin_count.c —— 孪generateprime对计数independent recomputation（本篇论文 §6 表的数据witness）
+/* verify_twin_count.c —— 孪生素数对计数independent recomputation（本篇论文 §6 表的数据见证）
  * caliber：pi2(x) = #{ p : p, p+2 皆素, p+2 <= x }
  * 与archivecalibercross-check：6m 中心者（排除三连体 (3,5),(5,7)）另计一列。
- * 纯 C，逐点sieve（位集），无外部表、无拟合。
+ * 纯 C，逐点筛法（位集），无外部表、无拟合。
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,7 +24,7 @@ static int is_prime(unsigned long long n)
     return (sieve[n >> 3] >> (n & 7ULL)) & 1U ? 1 : 0;
 }
 
-/* 传统 Eratosthenes（位集）—— 只在 main 里调一次，cycle封在函数内 */
+/* 传统 Eratosthenes（位集）—— 只在 main 里调一次，循环封在函数内 */
 static void build_sieve(unsigned long long n)
 {
     unsigned long long i, j;
@@ -40,7 +40,7 @@ static void build_sieve(unsigned long long n)
     }
 }
 
-/* 分段统计：返回 (x 以内孪generate对数, 其中 6m 中心者) */
+/* 分段统计：返回 (x 以内孪生成对数, 其中 6m 中心者) */
 static void count_twins(unsigned long long x, unsigned long long *all, unsigned long long *six)
 {
     unsigned long long p;
@@ -54,27 +54,65 @@ static void count_twins(unsigned long long x, unsigned long long *all, unsigned 
     *all = a; *six = s;
 }
 
-static void run_targets(void)
+/* 外部锚：五档 pi2(x) 的公认值（不来自本程序，来自独立文献/独立实现的公开计数） */
+static const unsigned long long KNOWN_X[5]   = {100000ULL, 1000000ULL, 10000000ULL,
+                                                100000000ULL, 1000000000ULL};
+static const unsigned long long KNOWN_PI2[5] = {1224ULL, 8169ULL, 58980ULL,
+                                                440312ULL, 3424506ULL};
+
+/* 一次扫描把五档结果装进数组（循环只做填充，不判断不打印） */
+static void fill_counts(unsigned long long *pi2, unsigned long long *six)
 {
-    unsigned long long targets[5] = {100000ULL, 1000000ULL, 10000000ULL,
-                                     100000000ULL, 1000000000ULL};
     int i;
-    unsigned long long tot = 0ULL, six = 0ULL;
-    printf("RESULT 孪generateprime对计数independent recomputation（纯 C 位集sieve）\n");
-    printf("caliber pi2(x)=#{p: p,p+2 皆素, p+2<=x}；six=其中中心 6m 者\n");
-    printf("%-12s %-14s %-14s %-10s\n", "x", "pi2(x)", "six(6m中心)", "差(三连体)");
+    unsigned long long a, s;
     for (i = 0; i < 5; i++) {
-        unsigned long long x = targets[i];
-        count_twins(x, &tot, &six);
-        printf("%-12llu %-14llu %-14llu %-10llu\n", x, tot, six, tot - six);
+        count_twins(KNOWN_X[i], &a, &s);
+        pi2[i] = a; six[i] = s;
     }
+}
+
+static void print_table(const unsigned long long *pi2, const unsigned long long *six)
+{
+    int i;
+    printf("TABLE 孪生素数对计数（独立复算 · 纯 C 位集 sieve）\n");
+    printf("口径 pi2(x)=#{p: p,p+2 皆素, p+2<=x}；six=其中中心 6m 者\n");
+    printf("%-12s %-14s %-14s %-10s\n", "x", "pi2(x)", "six(6m中心)", "差(非6m中心)");
+    for (i = 0; i < 5; i++)
+        printf("%-12llu %-14llu %-14llu %-10llu\n",
+               KNOWN_X[i], pi2[i], six[i], pi2[i] - six[i]);
     printf("LIMIT=%llu\n", LIMIT);
+}
+
+/* 判据（6 项）：五档 pi2 对公认值 + 一条结构律「非 6m 中心者恰 1 个 = (3,5)」 */
+static int judge_counts(const unsigned long long *pi2, const unsigned long long *six)
+{
+    int i, bad = 0, pass = 0;
+    for (i = 0; i < 5; i++) {
+        int ok = (pi2[i] == KNOWN_PI2[i]);
+        printf("  [%s] P%-2d pi2(%llu) = %llu （公认 %llu）\n",
+               ok ? "PASS" : "FAIL", i + 1, KNOWN_X[i], pi2[i], KNOWN_PI2[i]);
+        if (ok) pass++; else bad++;
+    }
+    {
+        int ok = 1;
+        for (i = 0; i < 5; i++)
+            if (pi2[i] - six[i] != 1ULL) ok = 0;
+        printf("  [%s] P6   非 6m 中心者恒 1（唯 (3,5)）· 五档一致\n", ok ? "PASS" : "FAIL");
+        if (ok) pass++; else bad++;
+    }
+    printf("RESULT PASS=%d FAIL=%d\n", pass, bad);
+    return bad;
 }
 
 int main(void)
 {
+    unsigned long long pi2[5], six[5];
+    int bad;
     build_sieve(LIMIT);
-    run_targets();
+    fill_counts(pi2, six);           /* 一趟扫描：只填数组 */
+    print_table(pi2, six);           /* 一次取出：只打印 */
+    bad = judge_counts(pi2, six);    /* 一次取出：只判据 */
+    printf("EXIT=%d\n", bad ? 1 : 0);
     free(sieve);
-    return 0;
+    return bad ? 1 : 0;
 }

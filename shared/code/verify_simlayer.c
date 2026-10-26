@@ -6,28 +6,28 @@
 /* ============================================================================
    verify_simlayer.c · 八篇共用的「construction layermodulo拟器」
    ---------------------------------------------------------------------------
-   一句话：construction layer的对象都是finite量 ⟹ 都能在finite矩阵上读出来。
-     阶      = eigenvalue重合点的代数multiplicity（rank稳定reading，只用rank）
+   一句话：construction 层的对象都是finite量 ⟹ 都能在finite矩阵上读出来。
+     阶      = eigenvalue重合点的代数multiplicity（秩稳定读数，只用秩）
      rank/defect = rank 与nullity（rank + nullity = dimension）
-     体积    = determinant（乘法体积；square root用平方比较，不付跨维度residual）
-     阶（group）= permutation矩阵的power序（T^ord = I 的整数witness）
+     体积    = determinant（乘法体积；square root用平方比较，不付跨维度残差）
+     阶（group）= permutation矩阵的power序（T^ord = I 的整数见证）
 
-   five roles铁序：base S 锚定 -> dimension-change F 虚化分析 -> sieve M 坍缩convergence -> accumulate W 渗透检索
-             -> generate D 扩展generate -> base S closure验证
+   五行铁序：base S 锚定 -> dimension-change F 虚化分析 -> sieve M 坍缩convergence -> accumulate W 渗透检索
+             -> generate D 扩展生成 -> base S 闭合验证
 
-   【base】八个容器（HL / 孪generate / RH / PvsNP / Hodge / YM / NS / BSD）各锚一张矩阵
-   【dimension-change】虚化：只留spectrum、trace、determinant、rank这些不变量，丢弃坐标
-   【sieve】坍缩：rank稳定 -> 代数multiplicity；permutationpower -> group的阶
-   【accumulate】渗透：nullity + rank = dimension，逐容器kernel对
-   【generate】扩展：体积乘积、chain数 2^(6n-6)、lower bound floor(log2 x / 6)
-   【base】closure：八容器全过 ⟹ construction layerreading法普适
+   【base】八个容器（HL / 孪生成 / RH / PvsNP / Hodge / YM / NS / BSD）各锚一张矩阵
+   【dimension-change】虚化：只留谱、trace、determinant、秩这些不变量，丢弃坐标
+   【sieve】坍缩：秩稳定 -> 代数重数；置换幂 -> 群的阶
+   【accumulate】渗透：nullity + rank = dimension，逐容器核对
+   【generate】扩展：体积乘积、链数 2^(6n-6)、lower bound floor(log2 x / 6)
+   【base】closure：八容器全过 ⟹ construction 层读数法普适
 
-   F: 对象（阶/rank/体积/group阶）-> 矩阵不变量 -> 整数reading
-   R: 整数reading -> 反解对象（multiplicity、defect、体积、阶）
+   F: 对象（阶/rank/体积/group阶）-> 矩阵不变量 -> 整数读数
+   R: 整数读数 -> 反解对象（multiplicity、defect、体积、阶）
 
-   four operations口徑：加法=对角元与计数相加；乘法=矩阵乘与体积相乘；取modulo=GF(2) 与
-   cycleshift取modulo；跨维度 exp/log/pow——本step只用整数左移与整数power，
-   square root一律改成平方比较 ⟹ 不付residual。
+   四则口徑：加法=对角元与计数相加；乘法=矩阵乘与体积相乘；取模=GF(2) 与
+   cycleshift取模；跨维度 exp/log/pow——本步只用整数左移与整数power，
+   square root一律改成平方比较 ⟹ 不付残差。
    ============================================================================ */
 #include <stdio.h>
 #include <math.h>
@@ -139,7 +139,7 @@ static void run(void)
     double A[MAXN * MAXN], B[MAXN * MAXN], C[MAXN * MAXN];
     int i, j;
 
-    /* ================= HL：局部因子体积 + 双ledger各满rank ================= */
+    /* ================= HL：局部因子体积 + 双账本各满秩 ================= */
     {
         /* 局部因子 1-1/q, q = 2,3,5,7,11  ⟹ 体积 = 480/2310 = 16/77 */
         int num = 1, den = 1;
@@ -151,12 +151,12 @@ static void run(void)
         zero_m(5, A);
         for (i = 0; i < 5; i++) A[i * 5 + i] = (double)(Q[i] - 1) / (double)Q[i];
         { int r = rank_real(5, A), nl = 5 - r;
-          printf("       . 双ledger：测量账 rank=%d nullity=%d（满rank ⟹ 无kernel ⟹ 各自自洽）\n", r, nl);
-          judge("HL-2 测量账满rank（rank + nullity = 5）", (double)(r + nl - 5), 0.0); }
+          printf("       . 双账本：测量账 rank=%d nullity=%d（满秩 ⟹ 无核 ⟹ 各自自洽）\n", r, nl);
+          judge("HL-2 测量账满秩（rank + nullity = 5）", (double)(r + nl - 5), 0.0); }
         (void)B; (void)C;
     }
 
-    /* ================= 孪generate：complete chain数 2^(6n-6) 与lower bound floor(log2 x/6) ======= */
+    /* ================= 孪生成：complete 链数 2^(6n-6) 与lower bound floor(log2 x/6) ======= */
     {
         int n, ok = 1;
         for (n = 1; n <= 3; n++) {
@@ -164,14 +164,14 @@ static void run(void)
             long bnd = 6L * n / 6;
             if (chain < 1L || bnd != n) ok = 0;
         }
-        judge("孪generate-1 complete chain数 2^(6n-6) 与lower bound一致（n=1..3）", (double)(1 - ok), 0.0);
+        judge("孪生成-1 complete 链数 2^(6n-6) 与lower bound一致（n=1..3）", (double)(1 - ok), 0.0);
 
         /* closure nm = k：k=6 的 m 集 {1,2,3,6} 全部饱和 */
         {
             int k = 6, cnt = 0, bad = 0;
             static const int M[4] = { 1, 2, 3, 6 };
             for (i = 0; i < 4; i++) { if (M[i] * (k / M[i]) == k) cnt++; else bad++; }
-            judge("孪generate-2 closure nm=k 四组饱和（m|k）", (double)(4 - cnt) + (double)bad, 0.0);
+            judge("孪生成-2 closure nm=k 四组饱和（m|k）", (double)(4 - cnt) + (double)bad, 0.0);
         }
     }
 
@@ -198,7 +198,7 @@ static void run(void)
           judge("RH-2 旋转块等距（R^T R = I）", maxdev, 1e-15); }
     }
 
-    /* ================= P vs NP：GF(2) rank与defectidentity式 ==================== */
+    /* ================= P vs NP：GF(2) 秩与亏恒等式 ==================== */
     {
         int n, bad = 0;
         for (n = 2; n <= 6; n++) {
@@ -213,14 +213,14 @@ static void run(void)
           for (i = 0; i < 16; i++) W[i] = 0;
           W[0] = 1; W[1] = 1; W[4] = 1; W[5] = 1; W[2] = 1; W[6] = 1;
           { int r = rank_mod2(4, W), nl = 4 - r;
-            printf("       . modulo 2：rank=%d nullity=%d（无逆 ⟹ 只能enumeration 2^nullity 个kernel元）\n", r, nl);
+            printf("       . modulo 2：rank=%d nullity=%d（无逆 ⟹ 只能enumeration 2^nullity 个核元）\n", r, nl);
             judge("PVNP-2 modulo 2 rank + nullity = 4", (double)(r + nl - 4), 0.0); } }
     }
 
     /* ================= Hodge：projectionidempotent + 平移的阶 ====================== */
     {
         zero_m(3, A);
-        A[0] = 1.0; A[4] = 1.0;                 /* 对角 (1,1,0) 的projection */
+        A[0] = 1.0; A[4] = 1.0;                 /* 对角 (1,1,0) 的投影 */
         mul_m(3, A, A, B);
         { double maxdev = 0.0;
           for (i = 0; i < 9; i++) if (fabs(A[i] - B[i]) > maxdev) maxdev = fabs(A[i] - B[i]);
@@ -228,7 +228,7 @@ static void run(void)
                  (double)rank_real(3, A), trace_m(3, A));
           judge("HODGE-1 idempotent P^2 = P 且 rank = trace", maxdev + fabs(rank_real(3, A) - trace_m(3, A)), 1e-15); }
 
-        /* 12 阶cyclepermutation：T^12 = I（torsion point x=1/12 于 k=12 return） */
+        /* 12 阶循环permutation：T^12 = I（torsion point x=1/12 于 k=12 return） */
         { int n = 12, T[144], Z[144], maxdev = 0;
           for (i = 0; i < 144; i++) T[i] = 0;
           for (i = 0; i < n; i++) T[i * n + ((i + 1) % n)] = 1;
@@ -240,7 +240,7 @@ static void run(void)
           judge("HODGE-2 平移十二阶return（T^12 = I）", (double)maxdev, 0.0); }
     }
 
-    /* ================= YM：spectrum离散与质量隙 ============================= */
+    /* ================= YM：谱离散与质量隙 ============================= */
     {
         int l, bad = 0;
         int lam[5];
@@ -248,9 +248,9 @@ static void run(void)
         for (l = 0; l <= 4; l++) if (lam[l] != l * l + 2 * l) bad++;
         printf("       . spectrum λ_l = l(l+2)：%d %d %d %d %d，隙 = %d\n",
                lam[0], lam[1], lam[2], lam[3], lam[4], lam[1] - lam[0]);
-        judge("YM-1 spectrum离散且隙 = λ₁ = 3", (double)bad + fabs((double)(lam[1] - lam[0] - 3)), 0.0);
+        judge("YM-1 谱离散且隙 = λ₁ = 3", (double)bad + fabs((double)(lam[1] - lam[0] - 3)), 0.0);
 
-        /* trace的permutation不变：tr(Ω A Ωᵀ) = tr(A)（整数精确） */
+        /* 迹的permutation不变：tr(Ω A Ωᵀ) = tr(A)（整数精确） */
         { int n = 3, P3[9], M3[9], R[9], trA, trB;
           for (i = 0; i < 9; i++) { P3[i] = 0; M3[i] = 0; }
           P3[0 * 3 + 1] = 1; P3[1 * 3 + 2] = 1; P3[2 * 3 + 0] = 1;   /* cyclepermutation */
@@ -269,32 +269,32 @@ static void run(void)
           trA = M3[0] + M3[4] + M3[8];
           trB = R[0] + R[4] + R[8];
           printf("       . trace：tr(A) = %d、tr(ΩAΩᵀ) = %d\n", trA, trB);
-          judge("YM-2 trace的permutation不变（整数精确）", (double)(trA - trB), 0.0); }
+          judge("YM-2 迹的permutation不变（整数精确）", (double)(trA - trB), 0.0); }
     }
 
-    /* ================= NS：应变无trace与三分pairing ========================= */
+    /* ================= NS：应变无迹与三分配对 ========================= */
     {
         zero_m(3, A);
         A[0] = 2.0; A[4] = -1.0; A[8] = -1.0;
-        printf("       . 应变spectrum (2,-1,-1)：trace = %.0f\n", trace_m(3, A));
-        judge("NS-1 应变无trace（Σλ = 0）", trace_m(3, A), 1e-15);
+        printf("       . 应变谱 (2,-1,-1)：trace = %.0f\n", trace_m(3, A));
+        judge("NS-1 应变无迹（Σλ = 0）", trace_m(3, A), 1e-15);
 
         /* 三分：P = λ₂|ω|² + Q₊ - Q₋，取 |ω|²=3、λ₂=-1 ⟹ P = -3 + (Q₊-Q₋) */
         { double lam2 = -1.0, w2 = 3.0, Pv = -3.0, qp = 0.0, qm = 0.0, dev2;
           dev2 = fabs(Pv - (lam2 * w2 + qp - qm));
-          judge("NS-2 三分identity（λ₂|ω|² + Q₊ - Q₋）", dev2, 1e-15); }
+          judge("NS-2 三分恒等（λ₂|ω|² + Q₊ - Q₋）", dev2, 1e-15); }
     }
 
     /* ================= BSD：阶的整数读出 + 体积/conservation =================== */
     {
         double o2, o4;
-        /* 阶 2：center处一个宽 2 的若尔当块 + 两个非centereigenvalue 2、3 */
+        /* 阶 2：中心处一个宽 2 的若尔当块 + 两个非中心特征值 2、3 */
         zero_m(4, A);
         A[0 * 4 + 0] = 1.0; A[0 * 4 + 1] = 1.0;      /* 块首line：1，超对角 1 */
         A[1 * 4 + 1] = 1.0;                          /* 块次line：1 */
         A[2 * 4 + 2] = 2.0; A[3 * 4 + 3] = 3.0;      /* center外两条 */
         o2 = ord_detector(4, A);
-        /* 阶 4：center处一个宽 4 的若尔当块（单块） */
+        /* 阶 4：中心处一个宽 4 的若尔当块（单块） */
         zero_m(4, A);
         A[0 * 4 + 0] = 1.0; A[0 * 4 + 1] = 1.0;
         A[1 * 4 + 1] = 1.0; A[1 * 4 + 2] = 1.0;
@@ -330,7 +330,7 @@ static void run(void)
 int main(void)
 {
     printf("=== verify_simlayer.c · 八篇共用construction layermodulo拟器 ===\n");
-    printf("  reading法：阶=rank稳定reading；rank/defect=rank 与nullity；体积=determinant；group阶=permutationpower\n\n");
+    printf("  读数法：阶=秩稳定读数；rank/defect=rank 与nullity；体积=determinant；group阶=permutationpower\n\n");
     run();
     printf("\nRESULT PASS=%d FAIL=%d  max dev=%.3e\n", g_np, g_nf, g_maxdev);
     printf("k=16 fiber=1.000000 fidelity=1.000000 discriminability=1.000000\n");

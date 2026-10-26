@@ -1,4 +1,4 @@
-﻿# A Structural Proof of the Birch–Swinnerton-Dyer Conjecture
+# A Structural Reading of the Birch–Swinnerton-Dyer Conjecture
 
 **Author:** zjaizlh8 (GitHub) · 2026-10-26 · CC BY 4.0
 **Framework:** structural layer · spectral method · matrix probe

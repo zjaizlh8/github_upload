@@ -3,17 +3,17 @@
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
  * the translation keeps line structure, check names and all numeric values unchanged.
  */
-/* verify_ns.c —— 纳维-斯托克斯方程存在性与光滑性：independent recomputationwitness
- * 纯 C（C99）。main 直接层零cycle；check一律 judge(name, dev, tol)。
+/* verify_ns.c —— 纳维-斯托克斯方程存在性与光滑性：independent 复算见证
+ * 纯 C（C99）。main 直接层零循环；判据一律 judge(name, dev, tol)。
  *
- * four operations口徑（本step跨维度处 = sqrt / acos / cos / π，全部落在eigenvalue与对齐几何上）：
- *   加法：三分定理 P = λ2|ω|² + Q₊ − Q₋ 的两项pairing相加（Q₊、Q₋ ≥ 0 可消）
- *   乘法：stretching = diffusion ⟹ cΓ = 4ν ⟹ Γ* = 4ν/c（乘法closure，不是加法accumulation）
- *   取modulo：P 的号只取 ±1（stretching / 压缩）两态，不取连续值 —— 号即「取modulo」分类
- *   跨维度：eigenvalue λ（sqrt/acos）、对齐角（cos）、π：付residual，故每条另有analytic锚
- *          （Burgers 用 r=0 analytic值，不用finite差分）
+ * 四则口徑（本步跨维度处 = sqrt / acos / cos / π，全部落在eigenvalue与对齐几何上）：
+ *   加法：三分定理 P = λ2|ω|² + Q₊ − Q₋ 的两项配对相加（Q₊、Q₋ ≥ 0 可消）
+ *   乘法：stretching = diffusion ⟹ cΓ = 4ν ⟹ Γ* = 4ν/c（乘法闭合，不是加法累加）
+ *   取模：P 的号只取 ±1（stretching / 压缩）两态，不取连续值 —— 号即「取模」分类
+ *   跨维度：eigenvalue λ（sqrt/acos）、对齐角（cos）、π：付残差，故每条另有解析锚
+ *          （Burgers 用 r=0 解析值，不用finite差分）
  *
- * onestep：main 只做check块序列；所有cycle在辅助函数内，且只往数组里填。
+ * onestep：main 只做判据块序列；所有循环在辅助函数内，且只往数组里填。
  */
 #include <stdio.h>
 #include <string.h>
@@ -41,12 +41,12 @@ static void judge(const char *name, double dev, double tol)
     if (dev > g_maxdev) g_maxdev = dev;
 }
 
-/* ---------------- analytic三维无散场（div u ≡ 0 identity） ----------------
+/* ---------------- 解析三维无散场（div u ≡ 0 identity） ----------------
  * u1 = sin y + cos z
  * u2 = sin z + cos x + 0.4 cos 2x
  * u3 = sin x + cos y + 0.5 sin 2y
  * 三line分别不依赖 (x, y, z) ⟹ ∂x u1 = ∂y u2 = ∂z u3 = 0 ⟹ div u ≡ 0
- * 梯度与vorticity全部analytic（无差分）。
+ * 梯度与vorticity全部解析（无差分）。
  */
 static void field(const double x[3], double g[3][3], double w[3])
 {
@@ -63,7 +63,7 @@ static void field(const double x[3], double g[3][3], double w[3])
     w[2] = g[1][0] - g[0][1];      /* ∂x u2 − ∂y u1 */
 }
 
-/* symmetric 3×3 eigenvalue（三角法），降序output */
+/* symmetric 3×3 eigenvalue（三角法），降序输出 */
 static void eig_sym(const double S[3][3], double lam[3])
 {
     double p1 = S[0][1] * S[0][1] + S[0][2] * S[0][2] + S[1][2] * S[1][2];
@@ -159,7 +159,7 @@ static void run_p2(void)
     g_p2 = mx;
 }
 
-/* ---------------- P3：三分identity（特征标架内，精确） ----------------
+/* ---------------- P3：三分恒等（特征标架内，精确） ----------------
  * S = diag(λ1,λ2,λ3)，λ1+λ2+λ3 = 0；d = (cosφ, sinφ, 0)
  * P = λ1 d1² + λ2 d2² = λ2 + (λ1−λ2)d1² − (λ2−λ3)d3²  （d3 = 0）
  */
@@ -253,7 +253,7 @@ static void run_p6(void)
     if (mr > g_p6) g_p6 = mr;
 }
 
-/* ---------------- P7：Burgers 涡 —— stretching与diffusion在 r=0 精确cancellation ----------------
+/* ---------------- P7：Burgers 涡 —— stretching与diffusion在 r=0 精确相消 ----------------
  * ω(r) = C e^{−γr²/(4ν)}，C = Γγ/(4πν)；r=0：γ ω = νΔω = −γω
  */
 static double g_p7;
@@ -262,7 +262,7 @@ static void run_p7(void)
     double nu = 0.01, gam = 1.0, G = 1.0;
     double C = G * gam / (4.0 * PI_ * nu);
     double stretch = gam * C;
-    double diff = -gam * C;                  /* νΔω(0) = −γω(0)，analytic值 */
+    double diff = -gam * C;                  /* νΔω(0) = −γω(0)，解析值 */
     double ratio = (stretch == 0.0) ? 1.0 : (-diff / stretch);
     double delta = 2.0 * sqrt(nu / gam);
     double circ = C * PI_ * delta * delta;
@@ -272,7 +272,7 @@ static void run_p7(void)
            stretch, diff, ratio, delta, circ);
 }
 
-/* ---------------- P8：临boundcirculation Γ* = 4ν/c ⟹ Re* = 4π（closure定出） ---------------- */
+/* ---------------- P8：临boundcirculation Γ* = 4ν/c ⟹ Re* = 4π（闭合定出） ---------------- */
 static double g_p8;
 static void run_p8(void)
 {
@@ -311,7 +311,7 @@ static void run_p9(void)
     printf("  · 对齐: max⟨λ,d⟩=%.10f (λ1=%.10f)  min=%.10f (λ3=%.10f)\n", mx, lam[0], mn, lam[2]);
 }
 
-/* ---------------- P10：512 lattice无零lattice + Γ_eff locking在 [Γ*, Γ0] ---------------- */
+/* ---------------- P10：512 格无零格 + Γ_eff locking在 [Γ*, Γ0] ---------------- */
 static double g_p10;
 static void run_p10(void)
 {
@@ -340,7 +340,7 @@ static void run_p10(void)
         if (dv(Ge, Gs) > dev) dev = dv(Ge, Gs);
         printf("  · locking: Γ0=%.8f  Γ*=%.8f  iteration后 Γ_eff=%.8f  ∈[Γ*,Γ0]\n", G0, Gs, Ge);
     }
-    printf("  · 512 lattice |P|: min=%.6e max=%.6f mean=%.6f 零lattice=%d\n", mn, mx, sum / NC, zeros);
+    printf("  · 512 lattice |P|: min=%.6e max=%.6f mean=%.6f 零格=%d\n", mn, mx, sum / NC, zeros);
     if (zeros > 0) dev = (double)zeros / (double)NC;
     g_p10 = dev;
 }
@@ -350,10 +350,10 @@ int main(void)
     printf("=== verify_ns.c · NS 存在性与光滑性 independent recomputation ===\n");
     run_p1(); printf("  · 二维 max|(ω·∇)u| = %.6e\n", g_p1);
     run_p2(); printf("  · 不可压 Σλ = %.6e\n", g_p2);
-    run_p3(); printf("  · 三分identity dev = %.6e\n", g_p3);
+    run_p3(); printf("  · 三分恒等 dev = %.6e\n", g_p3);
     run_p4(); printf("  · 二维 λ2 = %.6e\n", g_p4);
     run_p5(); printf("  · upper boundviolation率 = %.6e\n", g_p5);
-    run_p6(); printf("  · Beltrami: max|curl u−u| 与 |u×ω| 与residual = %.6e\n", g_p6);
+    run_p6(); printf("  · Beltrami: max|curl u−u| 与 |u×ω| 与残差 = %.6e\n", g_p6);
     run_p7();
     run_p8();
     run_p9();
@@ -361,7 +361,7 @@ int main(void)
 
     judge("P1 二维stretching恒零", g_p1, 1e-14);
     judge("P2 不可压 Σλ=0", g_p2, 1e-14);
-    judge("P3 三分identity", g_p3, 1e-13);
+    judge("P3 三分恒等", g_p3, 1e-13);
     judge("P4 二维 λ2≡0", g_p4, 1e-14);
     judge("P5 upper bound |P|≤√(2/3)|S||ω|²", g_p5, 1e-12);
     judge("P6 Beltrami 精确解", g_p6, 1e-12);

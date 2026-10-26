@@ -6,21 +6,21 @@
 /* ============================================================================
    verify_bsd_tech.c  ——  BSD 篇 · construction layer：Reg / c_p / #Sha 全账
    ----------------------------------------------------------------------------
-   five roles六步（阶段直序）：
-     base S 锚定 —— 高pairing Gram 矩阵先钉住：正定、det = 体积平方
+   五行六步（阶段直序）：
+     base S 锚定 —— 高配对 Gram 矩阵先钉住：正定、det = 体积平方
      dimension-change F 虚化 —— 基变换不变量：整基变换 U 下 det(U^T G U) = det(U)^2 det(G)
      sieve M 坍缩 —— 缩放律 h(nP) = n^2 h(P) ⟹ Reg 按 n^{2r} 缩放
-     accumulate W 渗透 —— 平line四边形律：pairing由 h unique确定
-     generate D 扩展 —— constant账：L·#tors^2 = Omega·prod c_p·#Sha（rank 0）+ c_p divides + #Sha square class
+     accumulate W 渗透 —— 平line四边形律：配对由 h 唯一确定
+     generate D 扩展 —— 常数账：L·#tors^2 = Omega·prod c_p·#Sha（rank 0）+ c_p divides + #Sha square class
      base S closure —— 四量齐报：r=0 ⟹ Reg = 1（空积），r>=1 ⟹ Reg 出现且只出现一次
 
    four operationscaliber：
      加法 = Gram 矩阵的加法组合 / 账目两侧相加
-     乘法 = 二次型的乘 / det 的展open / 缩放 n^2
-     取modulo = **本stepunique取modulo处**：#Sha square class的整数square rootcriterion（m*m == n）
+     乘法 = 二次型的乘 / det 的展开 / 缩放 n^2
+     取模 = **本步唯一取模处**：#Sha square class的整数square rootcriterion（m*m == n）
      跨维度 = sqrt 走自写 my_sqrt（只在「体积 ↔ det square root」处一次）
 
-   F: input (Gram G, 基变换 U, 缩放 n, 账目五项) → output (Reg, 账两侧, violation数)
+   F: input (Gram G, 基变换 U, 缩放 n, 账目五项) → output (Reg, 账两侧, 违例数)
    R: 由「账两侧相等」反推「Reg 的良定义」这一步的机器criterion
    ============================================================================ */
 #include <stdio.h>
@@ -33,7 +33,7 @@
 static int g_pass = 0, g_fail = 0;
 static double g_maxdev = 0.0, g_res = 0.0;
 
-static const char *g_W[6] = { "baseS锚定", "dimension-changeF虚化", "sieveM坍缩", "accumulateW渗透", "generateD扩展", "baseSclosure" };
+static const char *g_W[6] = { "土S锚定", "火F虚化", "金M坍缩", "水W渗透", "木D扩展", "土S闭环" };
 
 static void judge(const char *name, double dev, double tol)
 {
@@ -51,7 +51,7 @@ static double my_sqrt(double x)
     return g;
 }
 
-/* n×n determinant（r<=3，closed式展open，不用递归） */
+/* n×n determinant（r<=3，闭式展开，不用递归） */
 static double detn(int n, const double *a)
 {
     if (n == 1) return a[0];
@@ -157,7 +157,7 @@ static double p3_scaling(void)
 /* ---------------- P4 平line四边形律 ---------------- */
 static double p4_parallelogram(void)
 {
-    /* 用二次型 q(x,y) = 2x^2 + 3xy + y^2 当作 h 的modulo型，验证pairing b 的symmetric双线性 */
+    /* 用二次型 q(x,y) = 2x^2 + 3xy + y^2 当作 h 的modulo型，验证配对 b 的symmetric双线性 */
     const double P[2] = { 0.7, -1.3 }, Q[2] = { 1.1, 0.4 };
     double s[2], d[2];
     int i;
@@ -173,7 +173,7 @@ static double p4_parallelogram(void)
     }
 }
 
-/* ---------------- P5 constant账（rank 0 实数）：L·#tors^2 = Omega·prod c_p·#Sha ---------------- */
+/* ---------------- P5 常数账（rank 0 实数）：L·#tors^2 = Omega·prod c_p·#Sha ---------------- */
 static double p5_ledger_rank0(void)
 {
     const double L = 0.6555143886;       /* verify_bsd4 run（32a1） */
@@ -193,7 +193,7 @@ static double p5_ledger_rank0(void)
 static double p6_ledger_shape(void)
 {
     /* 抽象验证：把账写成 L^(r)/r! * #tors^2 = #Sha * Omega * Reg * prod c_p
-       Reg 的exponent在两侧必须同为 1（否则账不是「一次」出现） */
+       Reg 的指数在两侧必须同为 1（否则账不是「一次」出现） */
     int r, dev = 0;
     printf("  [P6] r | Reg exponent (lhs, rhs) | r=0 => Reg=1\n");
     for (r = 0; r <= 2; r++) {
@@ -208,7 +208,7 @@ static double p6_ledger_shape(void)
 /* ---------------- P7 Tamagawa 数：c_p | #E(F_p) ---------------- */
 static double p7_tamagawa_divisibility(void)
 {
-    /* 32a1：p=2 时 #E(F_2) = 4、c_2 = 2（c | #E(F_p) 的dividesstructure） */
+    /* 32a1：p=2 时 #E(F_2) = 4、c_2 = 2（c | #E(F_p) 的整除structure） */
     const int p = 2, NE = 4, c = 2;
     int dev = (NE % c == 0) ? 0 : 1;
     printf("  [P7] p=%d : #E(F_p) = %d, c_p = %d,  #E %% c = %d\n", p, NE, c, NE % c);
@@ -222,7 +222,7 @@ static double p8_sha_square(void)
     int i, dev = 0;
     for (i = 0; i < 5; i++) {
         int m = (int)my_sqrt((double)cand[i]);
-        if (m * m != cand[i]) dev++;            /* unique取modulo/整数criterion：平方性 */
+        if (m * m != cand[i]) dev++;            /* 唯一取模/整数criterion：平方性 */
         printf("  [P8] #Sha candidate %2d : sqrt = %d, square check %s\n",
                cand[i], m, (m * m == cand[i]) ? "ok" : "NOT");
     }
@@ -271,9 +271,9 @@ int main(void)
     printf("\nRESULT PASS=%d FAIL=%d maxdev=%.3e\n", g_pass, g_fail, g_maxdev);
     printf("k=%d fiber=1.000000 fidelity=1.000000 discriminability=%.6f\n", NJ, 1.0 - 1.0 / (double)NJ);
     printf("res=%.6e domain=%d dc=%d order=%d\n", g_res, NJ, 5, 2);
-    printf("honest note：P1-P4/P9 是高度pairing的代数性质（精确），P5 用 verify_bsd4 的runreadingrecomputation，\n");
-    printf("     P6 是账目形状的计数（Reg 的exponent），P7/P8 引自 Tamagawa 与 Cassels 的既有事实；\n");
-    printf("     本篇未在实数上closure rank>=1 的 Reg numeric（需要 Mordell-Weil generate元与真实period）。\n");
+    printf("honest note：P1-P4/P9 是高度配对的代数性质（精确），P5 用 verify_bsd4 的runreadingrecomputation，\n");
+    printf("     P6 是账目形状的计数（Reg 的指数），P7/P8 引自 Tamagawa 与 Cassels 的既有事实；\n");
+    printf("     本篇未在实数上闭合 rank>=1 的 Reg numeric（需要 Mordell-Weil 生成元与真实period）。\n");
     printf("EXIT=%d\n", g_fail == 0 ? 0 : 1);
     (void)d3; (void)d6; (void)d9;
     return g_fail == 0 ? 0 : 1;

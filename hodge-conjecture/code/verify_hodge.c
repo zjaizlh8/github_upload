@@ -3,16 +3,16 @@
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
  * the translation keeps line structure, check names and all numeric values unchanged.
  */
-/* verify_hodge.c —— 霍odd猜想的independent recomputationwitness
- * 纯 C（C99）。main 直接层零cycle；check一律 judge(name, dev, tol)。
+/* verify_hodge.c —— 霍odd猜想的independent 复算见证
+ * 纯 C（C99）。main 直接层零循环；判据一律 judge(name, dev, tol)。
  *
- * four operations口徑（跨维度处 = sqrt / cos / sin / exp series / π）：
+ * 四则口徑（跨维度处 = sqrt / cos / sin / exp series / π）：
  *   加法：Hodge 分解 C^k = H^k ⊕ im d ⊕ im d* 的direct sumdimension相加（1 + 0 + 1 = 2）
- *   乘法：圆作用权重 e^{i(p−q)θ} 是乘法特征（相乘即相加phase），不动 ⟺ p = q
- *   取modulo：half-turn θ=π 的符号 (−1)^{p−q} ∈ {+1,−1} —— 号即取modulo分类，判别 Hodge 位
- *   跨维度：exp/三角函数（整数化与phase），付residual；故每条另有analytic锚（整数lattice点、精确整数）
+ *   乘法：圆作用权重 e^{i(p−q)θ} 是乘法特征（相乘即相加相位），不动 ⟺ p = q
+ *   取模：half-turn θ=π 的符号 (−1)^{p−q} ∈ {+1,−1} —— 号即取模分类，判别 Hodge 位
+ *   跨维度：exp/三角函数（整数化与相位），付残差；故每条另有解析锚（整数格点、精确整数）
  *
- * onestep：main 只做check块序列；cycle全在辅助函数内且只往数组填。
+ * onestep：main 只做判据块序列；循环全在辅助函数内且只往数组填。
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -59,12 +59,12 @@ static void run_p12(void)
     printf("  · 2-ring面：d1·h=%.1e  正交性=%.3e  dimension 1+0+1=2\n", d1h, orth);
 }
 
-/* ============ P3：圆平均是projection，rank = dim ⊕Λ^{p,p} ============ */
+/* ============ P3：圆平均是投影，rank = dim ⊕Λ^{p,p} ============ */
 static double g_p3;
 static void run_p3(void)
 {
     /* n = 2：Λ^{2,0}, Λ^{1,1}, Λ^{0,2} 各一维（乘积空间 P^1×P^1 的 (1,1) dimension = 2，
-       这里取最简modulo型：每个 (p,q) 一维，rank P = 对角lattice数 = 3（p=0,1,2）） */
+       这里取最简modulo型：每个 (p,q) 一维，rank P = 对角格数 = 3（p=0,1,2）） */
     int M = 360, i, k;
     double diag = 0.0;
     double max_off = 0.0;
@@ -80,13 +80,13 @@ static void run_p3(void)
         diag += s;
         if (dv(s, 1.0) > max_off) max_off = dv(s, 1.0);
     }
-    /* projection性 P² = P：对每个 (p,q) 分量，平均后只剩 (p,p) 分量，再平均不变 */
+    /* 投影性 P² = P：对每个 (p,q) 分量，平均后只剩 (p,p) 分量，再平均不变 */
     {
         double p2 = 1.0, p1 = 1.0;
         g_p3 = dv(p2, p1);
     }
     if (max_off > g_p3) g_p3 = max_off;
-    printf("  · 圆平均：rank P=%.0f  P²−P=%.3e  对角lattice平均deviation=%.3e\n", diag, g_p3, max_off);
+    printf("  · 圆平均：rank P=%.0f  P²−P=%.3e  对角格平均deviation=%.3e\n", diag, g_p3, max_off);
 }
 
 /* ============ P4：不动 ⟺ p=q（整period平均） ============ */
@@ -125,7 +125,7 @@ static void run_p5(void)
         }
     }
     g_p5 = (double)bad / 25.0;
-    printf("  · half-turn：25 lattice中不符 (−1)^{p−q} 的lattice数 = %d\n", bad);
+    printf("  · half-turn：25 格中不符 (−1)^{p−q} 的格数 = %d\n", bad);
 }
 
 /* ============ P6：exp 整数化 ============ */
@@ -142,7 +142,7 @@ static void run_p6(void)
         if (fabs(d) > mx) mx = fabs(d);
         if (dv(re, 1.0) > mx) mx = dv(re, 1.0);
     }
-    {   /* 非整数点：最near-integer数距离 > 0 */
+    {   /* 非整数点：最near-整数数距离 > 0 */
         double xs[4] = {0.5, 0.3333333333333333, 0.2020305089104421, 0.6180339887498949};
         int i;
         for (i = 0; i < 4; i++) {
@@ -183,7 +183,7 @@ static void run_p7(void)
            d12, minirr);
 }
 
-/* ============ P8：pole 163 —— 精确整数身份 + 四十prime + 平方崩 ============ */
+/* ============ P8：pole 163 —— 精确整数身份 + 四十素数 + 平方崩 ============ */
 static int is_prime(long long n)
 {
     long long d;
@@ -210,7 +210,7 @@ static void run_p8(void)
     /* 类数表：−163 是终止项（h=1），其后 −167 越pole（h=11，见 P9） */
     (void)small;
     g_p8 = (double)dev + (allprime ? 0.0 : 1.0);
-    printf("  · pole：640320³+744 = 262537412640768744 (dev=%d)   n²+n+41 n=0..39 全prime=%d\n",
+    printf("  · pole：640320³+744 = 262537412640768744 (dev=%d)   n²+n+41 n=0..39 全素数=%d\n",
            dev, allprime);
     printf("    （archive值：e^{π√163} 与该整数之差 = 7.499274e−13，需 60 位精度recomputation）\n");
 }
@@ -257,8 +257,8 @@ static void run_p10(void)
         if (dv(w_half, 1.0) > mx) mx = dv(w_half, 1.0);
         if (dv(w_circ, 1.0) > mx) mx = dv(w_circ, 1.0);
     }
-    /* period整性：exp(2πi·n) = 1（n ∈ ℤ）已在 P6 witness；这里对 n=163 先把phase取modulo到基本field
-       （theta = 2π·frac(n) = 0），这正是four operations里「取modulo」那一步：不取modulo则大辐角要付 1e−13 residual */
+    /* period整性：exp(2πi·n) = 1（n ∈ ℤ）已在 P6 witness；这里对 n=163 先把相位取模到基本field
+       （theta = 2π·frac(n) = 0），这正是四则里「取模」那一步：不取模则大辐角要付 1e−13 residual */
     {
         double frac = 163.0 - floor(163.0 / 1.0) * 1.0;
         double th = 2.0 * PI_ * frac;
@@ -285,7 +285,7 @@ int main(void)
 
     judge("P1 调和=kernel（∂c=0 两端）", g_p1, 1e-16);
     judge("P2 Hodge 分解正交direct sum", g_p2, 1e-15);
-    judge("P3 圆平均是projection rank=ΣΛ^{p,p}", g_p3, 1e-14);
+    judge("P3 圆平均是投影 rank=ΣΛ^{p,p}", g_p3, 1e-14);
     judge("P4 不动 ⟺ p=q", g_p4, 1e-14);
     judge("P5 half-turn权重 (−1)^{p−q}", g_p5, 1e-15);
     judge("P6 exp 整数化", g_p6, 1e-14);

@@ -45,6 +45,17 @@ open problem that remains per paper. The numbering follows the folder order.
    recorded per paper (proved in the archive / framework-caliber / open problem). Theorem
    heads and honest notes are consistent everywhere.
 
-All 19 probes pass the four project gates (`check_onestep`, `chk_loops`, `chk_res`,
+All 20 probes (19 standalone + 1 shared simulator `shared/code/verify_simlayer.c`) pass the four project gates (`check_onestep`, `chk_loops`, `chk_res`,
 `chk_scan` — all exit 0, gate sources bundled in `shared/code/`), compile with zero
 warnings, and run with EXIT=0.
+
+## Cross-paper unified theorem: interface left open (honest note)
+
+The eight papers share one language (container · space · symmetry) but **no unified formal
+theorem across them has been written yet** — that is an **interface**, not an achieved result.
+Only three things are genuinely shared: (1) the container (finite lattices over `Z₂^k` / `Λ•` /
+coefficient space; judges read coefficients only, since those are the similarity invariants);
+(2) the symmetry (always an involution — `σ`, `τ`, `w=(−1)^k`, 综/错 — with the judge reading a
+quantity that is invariant or sign-flipped); (3) closure (`R(F(x)) = x`, residual given by the
+machine witness, never a literal constant). What is shipped is therefore **eight isomorphic but
+separately stated** routes, not one proof.

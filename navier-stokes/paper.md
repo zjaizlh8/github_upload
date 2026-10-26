@@ -1,4 +1,4 @@
-﻿# A Structural Proof of Navier–Stokes Existence and Smoothness
+# A Structural Reading of Navier–Stokes Existence and Smoothness
 
 **Author:** zjaizlh8 (GitHub) · 2026-10-26 · CC BY 4.0
 **Framework:** structural layer · spectral method · matrix probe

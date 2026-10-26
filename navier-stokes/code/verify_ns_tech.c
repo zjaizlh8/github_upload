@@ -6,21 +6,21 @@
 /* ============================================================================
    verify_ns_tech.c  ——  Navier–Stokes 篇 · construction layer：lockinglemma
    ----------------------------------------------------------------------------
-   five roles六步（阶段直序）：
+   五行六步（阶段直序）：
      base S 锚定 —— Kelvin conservation先钉住：分branchcirculation之和 = 原circulation（enumeration 100 组）
-     dimension-change F 虚化 —— reconnection把一branch分两branch，每branch严lattice小于原值 ⟹ max 严lattice下降
-     sieve M 坍缩 —— diffusion胜的threshold Gamma* = 4 nu / c（Re* = 4 pi 的来处）
+     dimension-change F 虚化 —— reconnection把一branch分两branch，每branch严格小于原值 ⟹ max 严格下降
+     sieve M 坍缩 —— diffusion胜的阈值 Gamma* = 4 nu / c（Re* = 4 pi 的来处）
      accumulate W 渗透 —— iterationlock：Gamma_{n+1} = max(Gamma_n/2, Gamma*) convergence到 Gamma*
-     generate D 扩展 —— lower bound不可越（200 初值）、尾integralfinite、Riccati closed式satisfies ODE
+     generate D 扩展 —— lower bound不可越（200 初值）、尾integralfinite、Riccati 闭式satisfies ODE
      base S closure —— 四量齐报：Gamma 区间 [Gamma*, Gamma0] ⟹ ||omega||_inf 有bound
 
    four operationscaliber：
      加法 = 条数计数 / circulationsummation / 尾integralaccumulation
      乘法 = Gamma * lambda / (4 pi nu) 的乘除 / 分branch比例
-     取modulo = **本stepunique取modulo处**：整数条数与print分step的取余（m % step）
-     跨维度 = 只用除法与constant乘法，不用 exp/log/pow（Riccati 用closed式分式）
+     取模 = **本步唯一取模处**：整数条数与print分步的取余（m % step）
+     跨维度 = 只用除法与常数乘法，不用 exp/log/pow（Riccati 用闭式分式）
 
-   F: input (Gamma0, nu, lambda, c) → output (Gamma*, iteration轨trace, ||omega||_inf upper bound)
+   F: input (Gamma0, nu, lambda, c) → output (Gamma*, iteration轨迹, ||omega||_inf upper bound)
    R: 由「Gamma_eff locking」反推「BKM integralfinite ⟹ 无odd点」的机器criterion
    ============================================================================ */
 #include <stdio.h>
@@ -32,7 +32,7 @@
 static int g_pass = 0, g_fail = 0;
 static double g_maxdev = 0.0, g_res = 0.0;
 
-static const char *g_W[6] = { "baseS锚定", "dimension-changeF虚化", "sieveM坍缩", "accumulateW渗透", "generateD扩展", "baseSclosure" };
+static const char *g_W[6] = { "土S锚定", "火F虚化", "金M坍缩", "水W渗透", "木D扩展", "土S闭环" };
 
 static void judge(const char *name, double dev, double tol)
 {
@@ -58,7 +58,7 @@ static double p1_branch_conservation(void)
     return (double)dev;
 }
 
-/* ---------------- P2 reconnection后 max 严lattice下降 ---------------- */
+/* ---------------- P2 reconnection后 max 严格下降 ---------------- */
 static double p2_monotone_decrease(void)
 {
     int i, dev = 0; double worst_ratio = 0.0;
@@ -82,7 +82,7 @@ static double p3_threshold(void)
     double Gs = 4.0 * nu / c;
     double lhs = Gs * lam / (4.0 * PI * nu);
     printf("  [P3] Gamma* = 4 nu/c = %.10f   Gamma* lambda/(4 pi nu) = %.10f\n", Gs, lhs);
-    /* unique外部constant：Re* = 4 pi（无量纲组合的固定值，不是拟合） */
+    /* 唯一外部常数：Re* = 4 pi（无量纲组合的固定值，不是拟合） */
     return fabs(lhs - 1.0 / (2.0 * PI));
 }
 
@@ -131,7 +131,7 @@ static double p6_vorticity_bound(void)
     return worst;
 }
 
-/* ---------------- P7 尾integralfinite：几何衰减 + constant尾 ---------------- */
+/* ---------------- P7 尾integralfinite：几何衰减 + 常数尾 ---------------- */
 static double p7_finite_tail(void)
 {
     const double q = 0.5, Gs = 0.1256637061;
@@ -146,7 +146,7 @@ static double p7_finite_tail(void)
       return (ratio > 1.0) ? (ratio - 1.0) : 0.0; }
 }
 
-/* ---------------- P8 Riccati closed式satisfies dW/dt = C W^2 ---------------- */
+/* ---------------- P8 Riccati 闭式satisfies dW/dt = C W^2 ---------------- */
 static double p8_riccati(void)
 {
     const double C = 0.5, W0 = 1.0, h = 1e-6;
@@ -205,9 +205,9 @@ int main(void)
     printf("\nRESULT PASS=%d FAIL=%d maxdev=%.3e\n", g_pass, g_fail, g_maxdev);
     printf("k=%d fiber=1.000000 fidelity=1.000000 discriminability=%.6f\n", NJ, 1.0 - 1.0 / (double)NJ);
     printf("res=%.6e domain=%d dc=%d order=%d\n", g_res, NJ, 4, 2);
-    printf("honest note：P1/P2/P5 是circulationconservation与分branchenumeration（精确组合），P3/P4 是thresholditeration，\n");
-    printf("     P7 的「finite」是几何衰减 + constant尾的upper bound比较，不含粘性项的完整estimate；\n");
-    printf("     P8 只验 Riccati closed式satisfies ODE，P9 的恒定性是二维degenerate事实；\n");
+    printf("honest note：P1/P2/P5 是circulationconservation与分branchenumeration（精确组合），P3/P4 是阈值iteration，\n");
+    printf("     P7 的「finite」是几何衰减 + 常数尾的upper bound比较，不含粘性项的完整estimate；\n");
+    printf("     P8 只验 Riccati 闭式satisfies ODE，P9 的恒定性是二维de生成事实；\n");
     printf("     本section证的是「locking一旦holds ⟹ BKM integralfinite」，locking本身由reconnectionmonotone性给。\n");
     printf("EXIT=%d\n", g_fail == 0 ? 0 : 1);
     (void)d4; (void)d6; (void)d7;

@@ -1,14 +1,14 @@
-# A Structural Proof of the Riemann Hypothesis
+# A Structural Reading of the Riemann Hypothesis
 
 **Author:** zjaizlh8 (GitHub) · 2026-10-26 · CC BY 4.0
 **Framework:** structural layer · spectral method · matrix probe
-**Independent witnesses:** `code/verify_rh.c` (12 checks, `RESULT max dev=1.562e-09 EXIT=0`),
+**Independent witnesses:** `code/verify_rh.c` (12 checks, `RESULT PASS=12 FAIL=0` + `RESULT max dev = 1.562e-09   (threshold 1e-08)` + `EXIT=0`),
 `code/verify_rh_tech.c` (9 checks, `RESULT PASS=9 FAIL=0 EXIT=0`)
 
 ## Abstract
 
 The Riemann Hypothesis states that all non-trivial zeros of `ζ(s)` lie on `σ = 1/2`.
-We prove the structural form: the functional-equation involution `Λ(s) = Λ(1−s)` keeps the zero
+We state the structural form (a conditional reading, not a formal proof): the functional-equation involution `Λ(s) = Λ(1−s)` keeps the zero
 set closed, and the **unique-radius theorem** of the spectral method forbids the two sides
 `β, 1−β` from carrying asymmetric weights — so the only allowed location is the fixed line
 `β = 1/2` (the center line `c₀ = 1` of the spectral circle). The equivalent equidistance reading
@@ -105,7 +105,7 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o rh.exe code/verify_rh.c && ./rh.exe
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o rhtech.exe code/verify_rh_tech.c && ./rhtech.exe
 ```
 
-Expected: `RESULT max dev=1.562e-09 EXIT=0` (12 checks) and `RESULT PASS=9 FAIL=0
+Expected: `RESULT PASS=12 FAIL=0   (判据 12 项：P1–P12)` + `RESULT max dev = 1.562e-09   (threshold 1e-08)` + `EXIT=0` (12 checks) and `RESULT PASS=9 FAIL=0
 maxdev=1.185e-09 EXIT=0`. Four gates exit 0; zero compiler warnings.
 
 ## 8. Honest notes

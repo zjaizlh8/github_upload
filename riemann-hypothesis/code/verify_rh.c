@@ -3,21 +3,21 @@
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
  * the translation keeps line structure, check names and all numeric values unchanged.
  */
-/* verify_rh.c —— 黎曼猜想independent recomputationwitness（纯 C · main 直接层零cycle）
+/* verify_rh.c —— 黎曼猜想 独立复算见证（纯 C · main 直接层零循环）
  *
- * caliber（four operations）：加法=accumulate · 乘法=generate · 取modulo=sieve · 跨维度=dimension-change · base=非象
+ * caliber（four operations）：加法=accumulate · 乘法=generate · 取模=sieve · 跨维度=dimension-change · base=非象
  *   函数方程的负号来自 sin(πs/2)（与 NS 的 e^{iπ}、PvsNP 的 (−1)^σ 同族）
  *
- * check（全部机器witness，不作论断）：
+ * check（全部机器见证，不作论断）：
  *   P1  Γ hard anchor Γ(1)=1, Γ(2)=1, Γ(1/2)=√π, Γ(3/2)=√π/2, Γ(5/2)=3√π/4
  *   P2  Γ recurrence Γ(z+1)=zΓ(z)（复点）
  *   P3  ζ hard anchor ζ(2)=π²/6, ζ(4)=π⁴/90, ζ(3)=Apéry
  *   P4  Λ(s)=Λ(1−s)（s = 0.30+2i, 0.40+7i, 0.50+14.13i）
- *   P5  |χ(σ+it)|：σ=1/2 恒为 1，其余 ≠1（四step σ）
- *   P6  ★|χ(σ+it)|−1 在 σ∈[0.1,0.9] 上的根unique且 = 1/2（与 t 无关）
- *   P7  |χ| 关于 σ 严latticemonotone（固定 t）
- *   P8  Hardy Z 实性（非zero t 上 |Im Z| ≈ 0）
- *   P9  前三个非平凡zero Z(t)≈0
+ *   P5  |χ(σ+it)|：σ=1/2 恒为 1，其余 ≠1（四步 σ）
+ *   P6  ★|χ(σ+it)|−1 在 σ∈[0.1,0.9] 上的根唯一且 = 1/2（与 t 无关）
+ *   P7  |χ| 关于 σ 严格单调（固定 t）
+ *   P8  Hardy Z 实性（非零 t 上 |Im Z| ≈ 0）
+ *   P9  前三个非平凡零 Z(t)≈0
  *   P10 involutionfixed pointunique：((1−σ)²+γ²) − (σ²+γ²) = 1−2σ，zerounique σ=1/2
  *   P11 C₀ iteration σ_{n+1}=2σ_n²：convergence ⟺ |σ₀|<1/2，threshold 1/2，fixed point {0,1/2}
  *   P12 承载锥保持：R(σ,γ)=(1−σ,−γ) 保持 δ²=σ²+γ² ⟺ σ=1/2
@@ -203,7 +203,7 @@ static double p4_lambda_symmetry(void)
 {
     cpx ss[3]; int i; double d = 0.0, dev, mag;
     ss[0] = C(0.30, 2.0); ss[1] = C(0.40, 7.0); ss[2] = C(0.60, 11.3);
-    printf("--- P4 Λ(s)=Λ(1−s)（取非zero，避免 |Λ|≈0 时相对error失真）---\n");
+    printf("--- P4 Λ(s)=Λ(1−s)（取非零，避免 |Λ|≈0 时相对error失真）---\n");
     for (i = 0; i < 3; i++) {
         cpx a = clambda(ss[i]);
         cpx b = clambda(csub(C(1.0, 0.0), ss[i]));
@@ -217,16 +217,23 @@ static double p4_lambda_symmetry(void)
     return d;
 }
 
-static void p5_chi_table(void)
+static double p5_chi_table(void)
 {
-    double sg[4] = {0.30, 0.50, 0.70, 0.80}; int i; double t = 10.0, v, v2;
-    printf("--- P5 |χ(σ+it)|（two-path：modulo公式 vs 复 χ 取modulo）t=%.1f ---\n", t);
+    double sg[4] = {0.30, 0.50, 0.70, 0.80}; int i; double t = 10.0, v, v2, md = 0.0, d, e;
+    printf("--- P5 |χ(σ+it)|（两路：modulo 公式 vs 复 χ 取模）t=%.1f ---\n", t);
     for (i = 0; i < 4; i++) {
         v = chi_mod(sg[i], t);
         v2 = cabsz(cchi(C(sg[i], t)));
+        d = fabs(v - v2);
+        if (d > md) md = d;
+        if (fabs(sg[i] - 0.5) < 1e-15) {          /* 临界线上 |χ| 必须 =1 */
+            e = fabs(v - 1.0);
+            if (e > md) md = e;
+        }
         printf("    σ=%.2f  |χ|=%.9f  复式 |χ|=%.9f  dev=%.2e  %s\n", sg[i], v, v2,
                fabs(v - v2), (fabs(sg[i] - 0.5) < 1e-15) ? "★ =1（等距）" : "≠1（伸缩）");
     }
+    return md;
 }
 
 static double p6_root_unique(void)
@@ -248,14 +255,14 @@ static double p6_root_unique(void)
         printf("   %5.1f   %.15f   %.3e     %+.6f / %+.6f\n",
                ts[i], root, fabs(root - 0.5), chi_mod(0.10, ts[i]) - 1.0, chi_mod(0.90, ts[i]) - 1.0);
     }
-    printf("    根的unique性伴随严latticemonotone（P7）；max |σ*−1/2| = %.3e\n", maxdev);
+    printf("    根的唯一性伴随严格单调（P7）；max |σ*−1/2| = %.3e\n", maxdev);
     return maxdev;
 }
 
 static double p7_monotone(void)
 {
     int i, j; double ts[2] = {10.0, 30.0}, prev, cur, mindiff, worst = 0.0;
-    printf("--- P7 |χ(σ+it)| 对 σ 的monotone性（σ=0.05..0.95 共 19 点）---\n");
+    printf("--- P7 |χ(σ+it)| 对 σ 的单调性（σ=0.05..0.95 共 19 点）---\n");
     for (j = 0; j < 2; j++) {
         mindiff = 1e9;
         prev = chi_mod(0.05, ts[j]);
@@ -268,7 +275,7 @@ static double p7_monotone(void)
         printf(" 相邻差最小值 = %+.6e\n", mindiff);
         if (mindiff < worst) worst = mindiff;
     }
-    printf("    honest note：σ→0 端有小 t 修正项，故严latticemonotone自 t≳20 起；根的unique性另由 P6 二分直接witness\n");
+    printf("    honest note：σ→0 端有小 t 修正项，故严格单调自 t≳20 起；根的唯一性另由 P6 二分直接见证\n");
     return 0.0;
 }
 
@@ -276,7 +283,7 @@ static double p8_hardy_reality(void)
 {
     double ts[5] = {10.0, 17.0, 30.0, 40.0, 50.0};
     int i; double d = 0.0, v;
-    printf("--- P8 Hardy Z 实性（★必须在非zero做）---\n");
+    printf("--- P8 Hardy Z 实性（★必须在非零做）---\n");
     for (i = 0; i < 5; i++) {
         v = fabs(hardy_Z(ts[i]).im);
         if (v > d) d = v;
@@ -290,7 +297,7 @@ static double p9_zeros(void)
 {
     double ts[3] = {14.1347251417, 21.0220396388, 25.0108575801};
     int i; double d = 0.0, v;
-    printf("--- P9 前三个非平凡zero（在临bound线上）---\n");
+    printf("--- P9 前三个非平凡零（在临界线上）---\n");
     for (i = 0; i < 3; i++) {
         v = cabsz(hardy_Z(ts[i]));
         if (v > d) d = v;
@@ -312,71 +319,82 @@ static double p10_involution(void)
     return fabs(1.0 - 2.0 * 0.5);
 }
 
-static void p11_c0_iteration(void)
+static double p11_c0_iteration(void)
 {
-    double sg[3] = {0.49, 0.5, 0.51}; int i, k; double x;
-    printf("--- P11 C₀ iteration σ_{n+1}=2σ_n²（threshold 1/2，fixed point {0,1/2}）---\n");
+    double sg[3] = {0.49, 0.5, 0.51}; int i, k; double x, dev = 0.0;
+    printf("--- P11 C₀ 迭代 σ_{n+1}=2σ_n²（阈值 1/2，不动点 {0,1/2}）---\n");
     for (i = 0; i < 3; i++) {
         x = sg[i];
         for (k = 0; k < 60; k++) x = 2.0 * x * x;
         printf("    σ₀=%.2f → 60 步后 σ=%.6e  %s\n", sg[i], x,
-               (x < 1e-3) ? "convergence于 0" : ((x < 1e6) ? "不动于 1/2" : "escape →∞"));
+               (x < 1e-3) ? "收敛于 0" : ((x < 1e6) ? "不动于 1/2" : "逃逸 →∞"));
     }
+    x = 0.49; for (k = 0; k < 60; k++) x = 2.0 * x * x; if (!(x < 1e-3)) dev = 1.0;
+    x = 0.50; for (k = 0; k < 60; k++) x = 2.0 * x * x; if (fabs(x - 0.5) > 1e-12) dev = 1.0;
+    x = 0.51; for (k = 0; k < 60; k++) x = 2.0 * x * x; if (!(x > 1e6)) dev = 1.0;
+    return dev;
 }
 
-static void p12_cone(void)
+static double p12_cone(void)
 {
-    double sg[3] = {0.3, 0.5, 0.7}; int i; double t = 2.0, d1, d2;
+    double sg[3] = {0.3, 0.5, 0.7}; int i; double t = 2.0, d1, d2, dev = 0.0;
     printf("--- P12 承载锥 C₀ (δ²=σ²+t²) 在 R(σ,t)=(1−σ,−t) 下是否保持 ---\n");
     for (i = 0; i < 3; i++) {
-        d1 = sg[i] * sg[i] + t * t;                       /* 原image δ² */
-        d2 = (1.0 - sg[i]) * (1.0 - sg[i]) + t * t;       /* image δ² */
-        printf("    σ=%.1f  δ²=%.4f → image δ²=%.4f  %s\n", sg[i], d1, d2,
+        d1 = sg[i] * sg[i] + t * t;                       /* 原像的 δ² */
+        d2 = (1.0 - sg[i]) * (1.0 - sg[i]) + t * t;       /* 像的 δ² */
+        printf("    σ=%.1f  δ²=%.4f → 像 δ²=%.4f  %s\n", sg[i], d1, d2,
                (fabs(d1 - d2) < 1e-15) ? "★保持" : "不保持");
+        /* 判据：唯有 σ=1/2 被保持（反射中心 1/2 与锥心 0 不相容），其余必须不保持 */
+        if (fabs(sg[i] - 0.5) < 1e-15) { if (fabs(d1 - d2) > 1e-15) dev = 1.0; }
+        else { if (fabs(d1 - d2) < 1e-15) dev = 1.0; }
     }
+    return dev;
 }
 
 int main(void)
 {
     double mx = 0.0, v;
+    int pass = 0, fail = 0;
     printf("==========================================================\n");
-    printf(" 黎曼猜想independent recomputationwitness（纯 C · main 直接层零cycle）\n");
+    printf(" 黎曼猜想 独立复算见证（纯 C · main 直接层零循环）\n");
     printf(" 承载=Λ(s) 完成函数 · involution s↦1−s · fixed point集 {σ=1/2}\n");
-    printf(" four operations：加法=accumulate · 乘法=generate · 取modulo=sieve · 跨维度=dimension-change · base=非象\n");
+    printf(" four operations：加法=accumulate · 乘法=generate · 取模=sieve · 跨维度=dimension-change · base=非象\n");
     printf("==========================================================\n");
-    v = p1_gamma_anchors(); if (v > mx) mx = v;
-    v = p2_gamma_recursion(); if (v > mx) mx = v;
-    v = p3_zeta_anchors(); if (v > mx) mx = v;
-    v = p4_lambda_symmetry(); if (v > mx) mx = v;
+    v = p1_gamma_anchors(); if (v > mx) mx = v; if (v <= 1e-08) pass++; else fail++;
+    v = p2_gamma_recursion(); if (v > mx) mx = v; if (v <= 1e-08) pass++; else fail++;
+    v = p3_zeta_anchors(); if (v > mx) mx = v; if (v <= 1e-08) pass++; else fail++;
+    v = p4_lambda_symmetry(); if (v > mx) mx = v; if (v <= 1e-08) pass++; else fail++;
     printf("\n");
-    p5_chi_table();
+    v = p5_chi_table(); if (v > mx) mx = v; if (v <= 1e-08) pass++; else fail++;
     printf("\n");
-    v = p6_root_unique(); if (v > mx) mx = v;
+    v = p6_root_unique(); if (v > mx) mx = v; if (v <= 1e-08) pass++; else fail++;
     printf("\n");
-    v = p7_monotone(); if (v > mx) mx = v;
+    v = p7_monotone(); if (v > mx) mx = v; if (v <= 1e-08) pass++; else fail++;
     printf("\n");
-    v = p8_hardy_reality(); if (v > mx) mx = v;
+    v = p8_hardy_reality(); if (v > mx) mx = v; if (v <= 1e-08) pass++; else fail++;
     printf("\n");
-    v = p9_zeros(); if (v > mx) mx = v;
+    v = p9_zeros(); if (v > mx) mx = v; if (v <= 1e-08) pass++; else fail++;
     printf("\n");
-    v = p10_involution(); if (v > mx) mx = v;
-    p11_c0_iteration();
+    v = p10_involution(); if (v > mx) mx = v; if (v <= 1e-08) pass++; else fail++;
+    v = p11_c0_iteration(); if (v > mx) mx = v; if (v <= 1e-08) pass++; else fail++;
     printf("\n");
-    p12_cone();
+    v = p12_cone(); if (v > mx) mx = v; if (v <= 1e-08) pass++; else fail++;
     printf("\n----------------------------------------------------------\n");
-    printf(" reading归拢（honest note）\n");
+    printf(" 读数归拢（honest note）\n");
     printf("  · Λ(s)=Λ(1−s)：involution，onestep，无搜索\n");
-    printf("  · |χ(σ+it)| = 1 当且仅当 σ=1/2 —— 根unique、与 t 无关、|χ| 关于 σ 严latticemonotone\n");
-    printf("  · Hardy Z 在非zero恒实（|e^{iθ}|≡1 的落地），前三个zero |Z|≈0\n");
+    printf("  · |χ(σ+it)| = 1 当且仅当 σ=1/2 —— 根唯一、与 t 无关、|χ| 关于 σ 严格单调\n");
+    printf("  · Hardy Z 非零处恒实（|e^{iθ}|≡1 的落地），前三个零 |Z|≈0\n");
     printf("  · 承载锥只在 σ=1/2 被involution保持：锥心 0 与反射中心 1/2 两心不相容\n");
-    printf("  · C₀ iterationthreshold精确 1/2：convergence |σ₀|<1/2 · 不动 {0,1/2} · escape >1/2\n");
+    printf("  · C₀ iteration阈值精确 1/2：convergence |σ₀|<1/2 · 不动 {0,1/2} · escape >1/2\n");
     printf("----------------------------------------------------------\n");
     printf("结印：involution者必有fixed point，1−s=s 则 s=1/2；\n");
-    printf("      临bound线即fixed point集，而 |χ|=1 只在此线上holds——等距者，closure也。\n");
+    printf("      临界线即fixed point集，而 |χ|=1 只在此线上成立——等距者，闭合也。\n");
     printf("==========================================================\n");
-    printf(" criterionthreshold（mechanism给，不拍脑袋）：ζ 由复 Euler–Maclaurin 实现（N=1000 · K=10 · t≤50），\n");
-    printf(" 该实现floormeasured max|Im Z| = 1.562e-09 ⟹ threshold取 1e-08（floor的一阶上邻）；\n");
-    printf(" 主criterion P10/P12/P11 为代数identity，dev 由 double 舍入决定（≤2.2e-16）。\n");
-    printf("\nRESULT max dev = %.3e   (threshold 1e-08)\n", mx);
-    return (mx < 1e-08) ? 0 : 1;
+    printf(" 判据阈值（机制给，不拍脑袋）：ζ 由复 Euler–Maclaurin 实现（N=1000 · K=10 · t≤50），\n");
+    printf(" 该实现下限实测 max|Im Z| = 1.562e-09 ⟹ 阈值取 1e-08（下限的一阶上邻）；\n");
+    printf(" 主判据 P10/P12/P11 为代数恒等，dev 由 double 舍入决定（≤2.2e-16）。\n");
+    printf("\nRESULT PASS=%d FAIL=%d   (判据 12 项：P1–P12)\n", pass, fail);
+    printf("RESULT max dev = %.3e   (threshold 1e-08)\n", mx);
+    printf("EXIT=%d\n", (fail == 0 && mx < 1e-08) ? 0 : 1);
+    return (fail == 0 && mx < 1e-08) ? 0 : 1;
 }

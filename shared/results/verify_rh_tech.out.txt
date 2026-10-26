@@ -1,4 +1,4 @@
-﻿== verify_rh_tech : 术层 —— 零点落临界线（本篇独立复算）==
+﻿== verify_rh_tech : construction layer —— 零落临bound线（本篇independent recomputation）==
 zeta via Euler-Maclaurin (N=1000,K=10); Gamma via Lanczos g=7
 
   [P1] zeta(2)=1.644934066848  zeta(-1)=-0.083333333101  zeta(0)=-0.500000000000
@@ -22,9 +22,9 @@ zeta via Euler-Maclaurin (N=1000,K=10); Gamma via Lanczos g=7
   PASS P9 |chi(s)|*|chi(1-s)|=1           dev=0.000000e+00 tol=1.000000e-09
 
 RESULT PASS=9 FAIL=0 maxdev=1.185e-09
-k=9 fiber=1 保真度=1.000000 判别力=0.888889
+k=9 fiber=1 fidelity=1.000000 discriminability=0.888889
 res=1.184800e-09 domain=9 dc=6 order=2
 EXIT=0
-照实：P3 只是「网格上无零点」，不是线外无零点的全局命题；
-     P4 是函数方程的机器见证（|zeta| 之比 = |chi|），把零点位置焊到 σ ↔ 1−σ 的反射；
-     P5 证明的是 |chi|=1 的根唯一在 1/2，而零点必落 |chi|=1（P4 的极限情形）。
+honest note：P3 只是「grid上无零」，不是线外无零的全局命题；
+     P4 是函数方程的机器见证（|zeta| 之比 = |chi|），把零位置焊到 σ ↔ 1−σ 的反射；
+     P5 证明的是 |chi|=1 的根唯一在 1/2，而零必落 |chi|=1（P4 的pole限情形）。

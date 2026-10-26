@@ -4,23 +4,23 @@
  * the translation keeps line structure, check names and all numeric values unchanged.
  */
 /* ============================================================================
-   verify_hodge_tech.c  ——  Hodge 篇 · construction layer：p>=2 的gap与torsion pointreturn
+   verify_hodge_tech.c  ——  Hodge 篇 · construction layer：p>=2 的间隙与torsion pointreturn
    ----------------------------------------------------------------------------
-   five roles六步（阶段直序）：
-     base S 锚定 —— (p,p) dimension C(g,p)^2 与圆平均总rank C(2g,g) 先钉死（组合identity）
+   五行六步（阶段直序）：
+     base S 锚定 —— (p,p) dimension C(g,p)^2 与圆平均总秩 C(2g,g) 先钉死（组合恒等）
      dimension-change F 虚化 —— 权重 e^{i(p-q)theta}：p=q 不动、p!=q annihilated
-     sieve M 坍缩 —— 圆平均projection的rank = (p,p) dimension之和
+     sieve M 坍缩 —— 圆平均投影的秩 = (p,p) dimension之和
      accumulate W 渗透 —— torsion pointreturn：k*x ≡ 0 于 k 步回到 0；非挠永不return
      generate D 扩展 —— 挠子group阶 k^{2g}；连接形式 exp 只给 1 维pole化 ⟹ gap C(g,1)^2-1
      base S closure —— pole 163：return与不return在同一把尺上分open
 
    four operationscaliber：
-     加法 = 组合dimensionsummation / lattice点平移 / 距离取最小
+     加法 = 组合dimensionsummation / 格点平移 / 距离取最小
      乘法 = C(g,p)^2 的平方 / k^{2g} 的power
-     取modulo = **本stepunique取modulo处**：lattice点returncriterion x ⊗ = 0 mod Λ（用divides与就near-integer数）
-     跨维度 = 不用（无 exp/log/pow/sqrt，sqrt 只在矩形lattice r=sqrt(163) 处用一次且明写）
+     取模 = **本步唯一取模处**：格点返回判据 x ⊗ = 0 mod Λ（用整除与就near-整数数）
+     跨维度 = 不用（无 exp/log/pow/sqrt，sqrt 只在矩形格 r=sqrt(163) 处用一次且明写）
 
-   F: input (g, p, k, lattice参数 r, 点 z) → output (dimension, rank, return步数, 最小距)
+   F: input (g, p, k, 格参数 r, 点 z) → output (dimension, rank, return步数, 最小距)
    R: 由「return/不return」反推「closedchain能否升为代数closedchain」这一步的机器criterion
    ============================================================================ */
 #include <stdio.h>
@@ -34,7 +34,7 @@ static int g_pass = 0, g_fail = 0;
 static double g_maxdev = 0.0;
 static double g_res = 0.0;
 
-static const char *g_W[6] = { "baseS锚定", "dimension-changeF虚化", "sieveM坍缩", "accumulateW渗透", "generateD扩展", "baseSclosure" };
+static const char *g_W[6] = { "土S锚定", "火F虚化", "金M坍缩", "水W渗透", "木D扩展", "土S闭环" };
 
 static void judge(const char *name, double dev, double tol)
 {
@@ -53,7 +53,7 @@ static long comb(int n, int k)
     return c;
 }
 
-/* 到矩形lattice Λ = Z + i r Z 的距离（r = 1 时即方lattice） */
+/* 到矩形格 Λ = Z + i r Z 的距离（r = 1 时即方格） */
 static double dist_lattice(double x, double y, double r)
 {
     double dx = x - floor(x + 0.5);
@@ -81,7 +81,7 @@ static double p1_dim_pp(void)
         for (p = 0; p <= g; p++) {
             long a = comb(g, p);
             long d = a * a;
-            /* two-path：把 p 个基向量与 p 个对even基向量各自独立选，笛卡尔积 = a*a */
+            /* two-path：把 p 个基向量与 p 个对偶基向量各自独立选，笛卡尔积 = a*a */
             int i, j, cnt = 0;
             for (i = 0; i < (1 << g); i++) {
                 int bi = 0; for (j = 0; j < g; j++) bi += (i >> j) & 1;
@@ -99,7 +99,7 @@ static double p1_dim_pp(void)
     return (double)dev;
 }
 
-/* ---------------- P2 圆平均总rank = C(2g,g) ---------------- */
+/* ---------------- P2 圆平均总秩 = C(2g,g) ---------------- */
 static double p2_total_rank(void)
 {
     int g, p, dev = 0;
@@ -255,7 +255,7 @@ int main(void)
 {
     double d1, d2, d3, d4, d5, d6, d7, d8, d9;
 
-    printf("== verify_hodge_tech : construction layer —— p>=2 的gap与torsion pointreturn ==\n");
+    printf("== verify_hodge_tech : construction layer —— p>=2 的间隙与torsion pointreturn ==\n");
     print_wuxing();
     printf("\n");
 
@@ -269,13 +269,13 @@ int main(void)
     d8 = p8_gap();         judge("P8 gap = C(g,1)^2 - 1", d8, 0.0);
     d9 = p9_extreme163();  judge("P9 extreme 163 separates both", d9, 0.0);
 
-    g_res = (double)(2 * 1 + 2);   /* 见血caliber：p>=2 的 (p,p) 类数 g<=4 共 2+... 记 4 step */
+    g_res = (double)(2 * 1 + 2);   /* 见血口径：p>=2 的 (p,p) 类数 g<=4 共 2+... 记 4 step */
     printf("\nRESULT PASS=%d FAIL=%d maxdev=%.3e\n", g_pass, g_fail, g_maxdev);
     printf("k=%d fiber=1.000000 fidelity=1.000000 discriminability=%.6f\n", NJ, 1.0 - 1.0 / (double)NJ);
     printf("res=%.6e domain=%d dc=%d order=%d\n", g_res, NJ, 8, 2);
-    printf("honest note：P1/P2/P8 是组合identity（精确），P4/P5/P9 是矩形lattice上的numericcriterion（KMAX=%d）；\n", KMAX);
-    printf("     P6 的 k^{2g} 是finite挠子group的阶，按定义holds，不是新定理；\n");
-    printf("     P5/P9「永不return」在finite步内只是未见return，不是不存在return的证明。\n");
+    printf("honest note：P1/P2/P8 是组合恒等（精确），P4/P5/P9 是矩形格上的numericcriterion（KMAX=%d）；\n", KMAX);
+    printf("     P6 的 k^{2g} 是有限挠子群的阶，按定义成立，不是新定理；\n");
+    printf("     P5/P9「永不返回」在有限步内只是未见返回，不是不存在");
     printf("EXIT=%d\n", g_fail == 0 ? 0 : 1);
     (void)d3; (void)d7;
     return g_fail == 0 ? 0 : 1;

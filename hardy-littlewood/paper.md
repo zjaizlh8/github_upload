@@ -1,4 +1,4 @@
-﻿# A Structural Proof of the Hardy–Littlewood Twin-Prime Conjecture
+# A Structural Reading of the Hardy–Littlewood Twin-Prime Conjecture
 
 **Author:** zjaizlh8 (GitHub) · 2026-10-26 · CC BY 4.0
 **Framework:** structural layer · spectral method · matrix probe
@@ -10,7 +10,7 @@ The Hardy–Littlewood conjecture states
 
 $$\pi_2(x) \;\sim\; 2C_2 \cdot \operatorname{Li}_2(x), \qquad 2C_2 = 2\prod_{q>2}\Bigl(1-\frac{1}{(q-1)^2}\Bigr) = 1.320323631\ldots$$
 
-We prove the structural form: the welded integral `Li₂(x) = ∫₂ˣ (e^γ ∏_{p≤t}(1−1/p))² dt`
+We state the structural form (a conditional reading, not a formal proof): the welded integral `Li₂(x) = ∫₂ˣ (e^γ ∏_{p≤t}(1−1/p))² dt`
 (the five-element interface: lower bound 2 / logarithmic derivative / local factor `1/log²t` /
 integral / upper bound x; the water-side expansion `Li_k(x) = (x/log^k x) Σ (k)_n / log^n x`
 with first coefficient = dimension D = k = 2) is forced by the three base objects
@@ -115,7 +115,7 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hl.exe code/verify_hl.c && ./hl.exe
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hltech.exe code/verify_hl_tech.c && ./hltech.exe
 ```
 
-Expected: `RESULT PASS=11 FAIL=0 EXIT=0` (res = 1.105190, P11 internal dev by design) and
+Expected: `RESULT PASS=11 FAIL=0 maxdev=1.105190e+00` + `EXIT=0` (res = 1.105190, P11 internal dev by design) and
 `RESULT PASS=9 FAIL=0 maxdev=1.284e-02 EXIT=0`. Four gates exit 0; zero compiler warnings.
 Run logs: `../shared/results/verify_hl.out.txt`, `verify_hl_tech.out.txt`.
 

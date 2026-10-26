@@ -1,14 +1,14 @@
-﻿# A Structural Proof of the Twin-Prime Conjecture
+# A Structural Reading of the Twin-Prime Conjecture
 
 **Author:** zjaizlh8 (GitHub) · 2026-10-26 · CC BY 4.0
 **Framework:** structural layer · spectral method · matrix probe
 **Independent witnesses:** `code/verify_twin_count.c` (bit-sieve count, `EXIT=0`),
-`code/verify_twin_tech.c` (10 checks, `RESULT PASS=10 FAIL=0 EXIT=0`)
+`code/verify_twin_count.c` (6 checks, `RESULT PASS=6 FAIL=0` + `EXIT=0`) and `code/verify_twin_tech.c` (10 checks, `RESULT PASS=10 FAIL=0 maxdev=7.039249e-03` + `EXIT=0`)
 
 ## Abstract
 
 The twin-prime conjecture states that there are infinitely many primes `p` with `p+2` prime.
-We prove the structural form: the ring `mod 30` has `φ(30) = 8` rays, the twin positions are
+We state the structural form (a conditional reading, not a formal proof): the ring `mod 30` has `φ(30) = 8` rays, the twin positions are
 exactly the 3 pairs `(11,13), (17,19), (29,1)`, and **each layer of the spectral nesting keeps
 at least one complete chain whose two sides are genuine primes**, so that
 
@@ -112,7 +112,7 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o twin_count.exe code/verify_twin_count.c &
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o twintech.exe code/verify_twin_tech.c && ./twintech.exe
 ```
 
-Expected: the five-tier table above and `RESULT PASS=10 FAIL=0 maxdev=7.039e-03 EXIT=0`
+Expected: the five-tier table plus `RESULT PASS=6 FAIL=0` (count) and `RESULT PASS=10 FAIL=0 maxdev=7.039249e-03` (tech)
 (`k=9 fiber=1 fidelity=1 discriminability=0.888889`). Four gates exit 0; zero compiler warnings.
 
 ## 8. Honest notes

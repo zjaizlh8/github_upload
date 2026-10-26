@@ -14,7 +14,8 @@ BIN     := bin
 SRC     := $(shell find . -name '*.c' | sort)
 BINS    := $(patsubst ./%,$(BIN)/%,$(basename $(SRC)))
 GATES   := check_onestep chk_loops chk_res chk_scan
-VERIFS  := $(filter-out $(addprefix $(BIN)/shared/code/,$(GATES)) $(BIN)/shared/code/verify_simlayer,$(BINS))
+# 验证器 = 全部 .c 去掉 4 道门禁源码 = 20 支（含 shared/code/verify_simlayer.c 共用模拟器）
+VERIFS  := $(filter-out $(addprefix $(BIN)/shared/code/,$(GATES)),$(BINS))
 
 .PHONY: all all-verify run gates clean
 all: $(BINS)

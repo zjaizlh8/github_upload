@@ -4,26 +4,26 @@
  * the translation keeps line structure, check names and all numeric values unchanged.
  */
 /* ============================================================================
-   verify_ym_tech.c  ——  Yang–Mills 篇 · construction layer：physical sector与连续pole限
+   verify_ym_tech.c  ——  Yang–Mills 篇 · construction layer：physical 扇区与连续pole限
    ----------------------------------------------------------------------------
-   five roles六步（阶段直序）：
-     base S 锚定 —— 离散圆上的spectrum先钉死：λ₁ L² → (2π)²（three steps N + Richardson extrapolation）
-     dimension-change F 虚化 —— convergence阶 O(1/N²)：dev·N² 应为constant
-     sieve M 坍缩 —— physical sector：色单态projectionidempotent、rank 1；trace对共轭不变
+   五行六步（阶段直序）：
+     base S 锚定 —— 离散圆上的谱先钉死：λ₁ L² → (2π)²（three steps N + Richardson extrapolation）
+     dimension-change F 虚化 —— convergence阶 O(1/N²)：dev·N² 应为常数
+     sieve M 坍缩 —— 物理扇区：色单态投影幂等、rank 1；迹对共轭不变
      accumulate W 渗透 —— 体积标度：Δ(L)·L 与 L 无关
-     generate D 扩展 —— 面积律与线性lattice势：log W ∝ RT、E(R) ∝ R
+     generate D 扩展 —— 面积律与线性格势：log W ∝ RT、E(R) ∝ R
      base S closure —— 转移矩阵的隙与 a 无关（物理量），四量齐报
 
    four operationscaliber：
-     加法 = spectrum值summation / 矩阵trace（对角相加）/ 面积累积
+     加法 = 谱值summation / 矩阵迹（对角相加）/ 面积累积
      乘法 = tensor积 σ⊗σ 的乘法 / 面积 R·T / 比值 RT
-     取modulo = **本stepunique取modulo处**：phase/reduced mass 的modulo长criterion（|λ| 比较）
-     跨维度 = exp/log/pow/sqrt 在物理量换算处使用（能量、exponent衰减），
+     取模 = **本步唯一取模处**：phase/reduced mass 的modulo长criterion（|λ| 比较）
+     跨维度 = exp/log/pow/sqrt 在物理量换算处使用（能量、指数衰减），
             power与square root走自写 ipow 与牛顿 my_sqrt，exp/log 走 libm 且只在
-            「lattice点单位 ↔ 物理单位」换算处出现，residual由 O(1/N²) mechanism给出
+            「格点单位 ↔ 物理单位」换算处出现，残差由 O(1/N²) 机制给出
 
-   F: input (N, L, a, lattice点耦合) → output (λ₁, 隙, W(R,T), 单态rank)
-   R: 由「隙与 a 无关 ⟹ 连续pole限存在」反推physical sector的finite维性
+   F: input (N, L, a, 格点耦合) → output (λ₁, 隙, W(R,T), 单态秩)
+   R: 由「隙与 a 无关 ⟹ 连续pole限存在」反推physical 扇区的finite维性
    ============================================================================ */
 #include <stdio.h>
 #include <math.h>
@@ -35,7 +35,7 @@ static int g_pass = 0, g_fail = 0, g_maxdev = 0;
 static double g_maxdev_d = 0.0;
 static double g_res = 0.0;
 
-static const char *g_W[6] = { "baseS锚定", "dimension-changeF虚化", "sieveM坍缩", "accumulateW渗透", "generateD扩展", "baseSclosure" };
+static const char *g_W[6] = { "土S锚定", "火F虚化", "金M坍缩", "水W渗透", "木D扩展", "土S闭环" };
 
 static void judge(const char *name, double dev, double tol)
 {
@@ -81,7 +81,7 @@ static double p1_spectrum(void)
     return dev;
 }
 
-/* ---------------- P2 convergence阶 O(1/N²)：dev·N² 为constant ---------------- */
+/* ---------------- P2 convergence阶 O(1/N²)：dev·N² 为常数 ---------------- */
 static double p2_order(void)
 {
     int NS[3] = { 16, 32, 64 };
@@ -91,7 +91,7 @@ static double p2_order(void)
         double d = fabs(lam1(NS[i], 1.0) - 4.0 * PI * PI) * (double)NS[i] * (double)NS[i];
         printf("        %3d | %.6f\n", NS[i], d);
     }
-    /* three stepsconstant应同阶（相对pole差 <= 5%） */
+    /* three steps常数应同阶（相对pole差 <= 5%） */
     {
         double a0 = fabs(lam1(16, 1.0) - 4 * PI * PI) * 256.0;
         double a2 = fabs(lam1(64, 1.0) - 4 * PI * PI) * 4096.0;
@@ -134,7 +134,7 @@ static double p4_finite_volume(void)
     return dev;
 }
 
-/* ---------------- P5 单态projection：P²=P，rank 1（两体 j=1/2） ---------------- */
+/* ---------------- P5 单态投影：P²=P，rank 1（两体 j=1/2） ---------------- */
 static double p5_singlet_projector(void)
 {
     /* sigma·sigma = sx⊗sx + sy⊗sy + sz⊗sz，4x4 实矩阵 */
@@ -157,7 +157,7 @@ static double p5_singlet_projector(void)
     return dev;
 }
 
-/* ---------------- P6 trace对共轭不变：tr(U A Uᵀ) = tr(A) ---------------- */
+/* ---------------- P6 迹对共轭不变：tr(U A Uᵀ) = tr(A) ---------------- */
 static double p6_trace_invariance(void)
 {
     /* 3x3 旋转（欧拉角）U 与一般矩阵 A */
@@ -195,7 +195,7 @@ static double p7_area_law(void)
     return (double)dev;
 }
 
-/* ---------------- P8 线性lattice势：E(R) = sigma R ---------------- */
+/* ---------------- P8 线性格势：E(R) = sigma R ---------------- */
 static double p8_linear_potential(void)
 {
     const double sigma = 0.35;
@@ -239,7 +239,7 @@ int main(void)
 {
     double d1, d2, d3, d4, d5, d6, d7, d8, d9;
 
-    printf("== verify_ym_tech : construction layer —— physical sector与连续pole限 ==\n");
+    printf("== verify_ym_tech : construction layer —— physical 扇区与连续pole限 ==\n");
     print_wuxing();
     printf("\n");
 
@@ -256,8 +256,8 @@ int main(void)
     printf("\nRESULT PASS=%d FAIL=%d maxdev=%.3e\n", g_pass, g_fail, g_maxdev_d);
     printf("k=%d fiber=1.000000 fidelity=1.000000 discriminability=%.6f\n", NJ, 1.0 - 1.0 / (double)NJ);
     printf("res=%.6e domain=%d dc=%d order=%d\n", g_res, NJ, 5, 2);
-    printf("honest note：P1/P2 是离散圆的spectrum（analytic已知），P5/P6 是finite维identity式，\n");
-    printf("     P7/P8 用二维 U(1) 的精确 Wilson 回路与线性势做caliber演示；\n");
+    printf("honest note：P1/P2 是离散圆的谱（解析已知），P5/P6 是finite维恒等式，\n");
+    printf("     P7/P8 用二维 U(1) 的精确 Wilson 回路与线性势做口径演示；\n");
     printf("     连续pole限只验「隙与 a 无关」这一必要条件，不含重整化group流与四维非阿贝尔的construction。\n");
     printf("EXIT=%d\n", g_fail == 0 ? 0 : 1);
     (void)g_maxdev; (void)d4; (void)d6;

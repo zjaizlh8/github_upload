@@ -1,4 +1,4 @@
-# Hardy–Littlewood 孪生素数猜想的证明
+# Hardy–Littlewood 孪生素数猜想的结构解读
 
 ### ——结构层基底、谱结构方法、矩阵探针三重闭合
 
@@ -242,7 +242,7 @@ $$\Gamma(\beta,P,m;N)=(1+(-1)^N)\sum_\lambda m_\lambda\,\lambda^N+\beta^N\qquad\
 
 ### 3.2 矩阵三层（层 × 格 × 缺口）
 
-把 HL 的证明任务排成矩阵，行 = 结构层三段，列 = 判据三关（被迫 / 结构 / 对照）：
+把 HL 的论证任务排成矩阵，行 = 结构层三段，列 = 判据三关（被迫 / 结构 / 对照）：
 
 |  | 被迫 | 结构 | 对照 |
 |---|---|---|---|
@@ -450,7 +450,7 @@ $\mathrm{Li}_2$ 的展开是**发散渐近级数**（项比 $(2+n)/\log x$），
 
 ```
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hl.exe verify_hl.c
-./hl.exe        # RESULT PASS=11 FAIL=0 maxdev=1.105e+00  EXIT=0
+./hl.exe        # RESULT PASS=11 FAIL=0 maxdev=1.105190e+00  EXIT=0
 ```
 
 | 判项 | 对象 | 本机读数 | 容差来源 |

@@ -1,4 +1,4 @@
-﻿== verify_pvsnp_tech : 术层 —— per 为什么没有闭式（mod 2 商）==
+﻿== verify_pvsnp_tech : construction layer —— per 为什么没有闭式（mod 2 商）==
    [土S锚定]   [火F虚化]   [金M坍缩]   [水W渗透]   [木D扩展]   [土S闭环]
 
   [P1] det 3x3 = -3.000000 (expect -3)   det 4x4 bareiss -62.000000 vs laplace -62.000000
@@ -38,9 +38,9 @@
   PASS P9 GF(2) affine rank = (n-1)^2+1       dev=0.000000e+00 tol=0.000000e+00
 
 RESULT PASS=9 FAIL=0 maxdev=0.000e+00
-k=9 fiber=1.000000 保真度=1.000000 判别力=0.888889
+k=9 fiber=1.000000 fidelity=1.000000 discriminability=0.888889
 res=0.000000e+00 domain=9 dc=6 order=2
-照实：P5/P6/P9 是全枚举（n<=4 / n=3 / n<=4），不是对一切 n 的定理；
+honest note：P5/P6/P9 是全enumeration（n<=4 / n=3 / n<=4），不是对一切 n 的定理；
      P4 的「正负各半」是项数计数，不是值的相消；
-     P7 的信息量是下界论证的必要条件，不构成 #P-hard 的证明。
+     P7 的信息量是lower bound论证的必要条件，不构成 #P-hard 的证明。
 EXIT=0

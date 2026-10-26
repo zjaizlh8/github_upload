@@ -3,22 +3,22 @@
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
  * the translation keeps line structure, check names and all numeric values unchanged.
  */
-/* verify_ym.c —— 杨-米尔斯存在性与质量gap：independent recomputationwitness
+/* verify_ym.c —— 杨-米尔斯存在性与质量间隙：independent 复算见证
  *
- * structure层：基础三件（单位 1 × 笛卡尔积 × place valuepower b^k）· 承载unique 729=3^6 · four operations即four operation lattices
- * chaos onestep：层内取spectrum / 层间嵌套 / 层上closure（nm=k）
- * five roles：base=作用量 S · dimension-change=F=dA+A∧A · sieve=gauge固定（kernel=Gribov 复本=暗面）· accumulate=Λ=μe^{−8π²/(β₀g²)} · generate=|e^{iθ}|≡1⇒紧致⇒spectrum离散⇒gap
+ * 结构层：基础三件（单位 1 × 笛卡尔积 × place valuepower b^k）· 承载唯一 729=3^6 · 四则即four operation lattices
+ * chaos onestep：层内取谱 / 层间嵌套 / 层上闭合（nm=k）
+ * five roles：base=作用量 S · dimension-change=F=dA+A∧A · sieve=gauge固定（kernel=Gribov 复本=暗面）· accumulate=Λ=μe^{−8π²/(β₀g²)} · generate=|e^{iθ}|≡1⇒紧致⇒谱离散⇒gap
  *
- * four operationscaliber（本step使用处逐条标注）：
- *   · 加法（accumulate·守收）：矩阵相加、spectrum线相加
+ * four operationscaliber（本步使用处逐条标注）：
+ *   · 加法（accumulate·守收）：矩阵相加、谱线相加
  *   · 乘法（generate·守张）：矩阵相乘、Casimir power
- *   · 取modulo（sieve·移收）：winding number取整（closure ⟺ 整数winding number）、period折回
- *   · 跨维度（dimension-change·移张）：exp/log（Λ 本性odd点、跑动耦合对数）—— 跨维度必然付residual，
- *     故 P7 的criterion取 log identity式（residual由 double 给出并被报出，不设 0 tolerance）
+ *   · 取模（sieve·移收）：winding number取整（closure ⟺ 整数绕数 number）、period折回
+ *   · 跨维度（dimension-change·移张）：exp/log（Λ 本性奇点、跑动耦合对数）—— 跨维度必然付残差，
+ *     故 P7 的criterion取 log 恒等式（残差由 double 给出并被报出，不设 0 tolerance）
  *   · base = 非象：不参与运算，只给体量（λ₁=3 的「3」即三才之体量）
  *
- * F: group紧致 ⇒ spectrum离散 ⇒ 去kernel ⇒ 最小非零 λ₁=3>0 ⇒ gap存在；且物理spectrum落在closure回路（色单态）上
- * R: 从gap Δ>0 反推 ⟹ 存在最小非零spectrum λ₁ ⟹ 该扇区容器紧致 ⟹ closure回路；若容器非紧（R³）则 λ→0 无gap
+ * F: group紧致 ⇒ 谱离散 ⇒ 去核 ⇒ 最小非零 λ₁=3>0 ⇒ 间隙存在；且物理谱落在闭合回路（色单态）上
+ * R: 从间隙 Δ>0 反推 ⟹ 存在最小非零谱 λ₁ ⟹ 该扇区容器紧致 ⟹ 闭合回路；若容器非紧（R³）则 λ→0 无间隙
  */
 
 #include <stdio.h>
@@ -150,7 +150,7 @@ static double p2_double_cover(void)
 static double p3_s3_spectrum(void)
 {
     int l; double d = 0.0, e, lam, mult;
-    printf("--- P3 S³ spectrum λ_l=l(l+2)，multiplicity (l+1)²，identity式 λ=multiplicity−1 ---\n");
+    printf("--- P3 S³ spectrum λ_l=l(l+2)，multiplicity (l+1)²，恒等式 λ=multiplicity−1 ---\n");
     for (l = 1; l <= 8; l++) {
         lam = (double)l * (double)(l + 2);
         mult = (double)((l + 1) * (l + 1));
@@ -159,11 +159,11 @@ static double p3_s3_spectrum(void)
         if (l <= 3 || l == 7)
             printf("    l=%d  λ=%6.1f  multiplicity=%4.1f  λ−(multiplicity−1)=%.1e\n", l, lam, mult, e);
     }
-    printf("--- P3 max |λ−(multiplicity−1)| = %.3e ；λ₁ = %.1f > 0（最小非零spectrum）---\n", d, 3.0);
+    printf("--- P3 max |λ−(multiplicity−1)| = %.3e ；λ₁ = %.1f > 0（最小非零谱）---\n", d, 3.0);
     return d;
 }
 
-/* P4 紧 vs 非紧：S¹ spectrum λ_n=n² 最小非零 1；R 上 (2π/L)² → 0（无gap） */
+/* P4 紧 vs 非紧：S¹ spectrum λ_n=n² 最小非零 1；R 上 (2π/L)² → 0（无间隙） */
 static double p4_compact_vs_line(void)
 {
     double lmin = 1.0, ls[3], L; int i, j; double d;
@@ -172,12 +172,12 @@ static double p4_compact_vs_line(void)
     printf("--- P4 S¹：最小非零 λ₁ = %.1f > 0 ｜ R：L=10/100/1000 的 (2π/L)² = %.4f / %.6f / %.8f → 0 ---\n",
            lmin, ls[0], ls[1], ls[2]);
     d = fabs(lmin - 1.0);
-    for (i = 0; i < 3; i++) if (ls[i] <= 0.0) d = 1.0;      /* 非紧 ⟹ 无正lower bound ⟹ 无gap */
+    for (i = 0; i < 3; i++) if (ls[i] <= 0.0) d = 1.0;      /* 非紧 ⟹ 无正lower bound ⟹ 无间隙 */
     if (!(ls[0] > ls[1] && ls[1] > ls[2])) d = 1.0;
     return d;
 }
 
-/* P5 色单态 = closure回路的trace：gauge不变 tr(ΩUΩ†)=tr(U)，且 tr(U₁U₂)=tr(U₂U₁) */
+/* P5 色单态 = 闭合回路的迹：gauge不变 tr(ΩUΩ†)=tr(U)，且 tr(U₁U₂)=tr(U₂U₁) */
 static double p5_wilson_gauge_invariance(void)
 {
     double d = 0.0, e;
@@ -188,13 +188,13 @@ static double p5_wilson_gauge_invariance(void)
     e = cabsz(csub(m2_trace(X), m2_trace(U))); if (e > d) d = e;
     e = cabsz(csub(m2_trace(p1), m2_trace(p2))); if (e > d) d = e;
     e = fabs(cabsz(m2_trace(U)) - 2.0 * fabs(cos(0.65))); if (e > d) d = e;
-    /* 加法（accumulate）path：trace对加法线性 tr(U₁+U₂) = tr(U₁)+tr(U₂) */
+    /* 加法（accumulate）path：迹对加法线性 tr(U₁+U₂) = tr(U₁)+tr(U₂) */
     e = cabsz(csub(m2_trace(m2_add(U1, U2)), cadd(m2_trace(U1), m2_trace(U2)))); if (e > d) d = e;
-    printf("--- P5 trace的gauge不变性 / cycle性 / 加法线性 max dev = %.3e ---\n", d);
+    printf("--- P5 迹的gauge不变性 / 循环性 / 加法线性 max dev = %.3e ---\n", d);
     return d;
 }
 
-/* P6 跑动耦合：closed式 1/α(Q)=1/α(μ)+(β₀/2π)ln(Q/μ) 与欧拉accumulation（error ∝ 1/N ⟹ 一阶） */
+/* P6 跑动耦合：闭式 1/α(Q)=1/α(μ)+(β₀/2π)ln(Q/μ) 与欧拉累加（error ∝ 1/N ⟹ 一阶） */
 static double p6_running(void)
 {
     double b0[7]; int i; double d = 0.0, e, er[4], rt;
@@ -210,14 +210,14 @@ static double p6_running(void)
             double a = a0, h = L / (double)N;
             for (k = 0; k < N; k++) a = a - h * (b / (2.0 * M_PI)) * a * a;
             er[j] = a - a_closed;
-            printf("    步数 %5d：欧拉 α = %.10f  closed式 α = %.10f  error = %+.3e\n", N, a, a_closed, er[j]);
+            printf("    步数 %5d：欧拉 α = %.10f  闭式 α = %.10f  error = %+.3e\n", N, a, a_closed, er[j]);
             N *= 10;
         }
     }
     for (i = 0; i < 3; i++) {
         rt = fabs(er[i]) / fabs(er[i + 1]);
         printf("    error比 e(%d)/e(%d) = %.4f（一阶 ⟹ 应 → 10）\n", i, i + 1, rt);
-        if (i >= 1) {                       /* 首step偏离属 O(h) 项，只取asymptotic两step入判 */
+        if (i >= 1) {                       /* 首步偏离属 O(h) 项，只取asymptotic两步入判 */
             e = fabs(rt - 10.0); if (e > d) d = e;
         }
     }
@@ -226,11 +226,11 @@ static double p6_running(void)
     return d;
 }
 
-/* P7 Λ 本性odd点：log(Λ/μ) = −8π²/(β₀g²)，且 Λ/μ ÷ g^10 → 0 */
+/* P7 Λ 本性奇点：log(Λ/μ) = −8π²/(β₀g²)，且 Λ/μ ÷ g^10 → 0 */
 static double p7_lambda(void)
 {
     double g, d = 0.0, e, b = 11.0, y, last = 1.0;
-    printf("--- P7 Λ/μ = exp(−8π²/(β₀g²))：本性odd点 ⟹ 微扰论不可见 ---\n");
+    printf("--- P7 Λ/μ = exp(−8π²/(β₀g²))：本性奇点 ⟹ 微扰论不可见 ---\n");
     g = 1.0;
     while (g >= 0.5 - 1e-15) {
         y = exp(-8.0 * M_PI * M_PI / (b * g * g));
@@ -240,11 +240,11 @@ static double p7_lambda(void)
         last = y / pow(g, 10.0);
         g -= 0.1;
     }
-    if (!(last < 1e-3)) d = 1.0;   /* 除以 g^10 仍趋 0 ⟹ 本性odd点 */
+    if (!(last < 1e-3)) d = 1.0;   /* 除以 g^10 仍趋 0 ⟹ 本性奇点 */
     return d;
 }
 
-/* P8 closure ⟺ 整数winding number（取modulo法）：非整数winding number在接缝处不closure */
+/* P8 closure ⟺ 整数绕数 number（取模法）：非整数绕数 number在接缝处不闭合 */
 static double p8_loop_closure(void)
 {
     double d = 0.0, e; int w[4] = {1, 2, 3, -2}; int i; double seam;
@@ -253,19 +253,19 @@ static double p8_loop_closure(void)
         if (e > d) d = e;
     }
     seam = cabsz(csub(C(cos(2.0 * M_PI * 1.7), sin(2.0 * M_PI * 1.7)), C(1.0, 0.0)));
-    printf("--- P8 closure（整数winding number）dev = %.3e ；非整数winding number 1.7 的接缝deviation = %.4f ⟹ broken chain ---\n", d, seam);
+    printf("--- P8 closure（整数绕数 number）dev = %.3e ；非整数绕数 number 1.7 的接缝deviation = %.4f ⟹ broken chain ---\n", d, seam);
     if (!(seam > 0.5)) d = 1.0;
     return d;
 }
 
-/* P9 gap标度：Δ/Λ = √λ₁ = √3，λ₁=3；外部锚 2373 = 3·7·113（honest note标注） */
+/* P9 间隙标度：Δ/Λ = √λ₁ = √3，λ₁=3；外部锚 2373 = 3·7·113（honest note标注） */
 static double p9_gap_scale(void)
 {
     double d = fabs(sqrt(3.0) - 1.7320508075688772), e;
     printf("--- P9 Δ/Λ = √λ₁ = √3 = %.10f（λ₁=3）；2373 = 3·7·113 = %.0f（外部glueball锚）---\n",
            sqrt(3.0), 3.0 * 7.0 * 113.0);
     e = fabs(3.0 * 7.0 * 113.0 - 2373.0); if (e > d) d = e;
-    printf("    Λ = 2373/√3 = %.2f MeV（若以 2373 MeV 为gap锚）\n", 2373.0 / sqrt(3.0));
+    printf("    Λ = 2373/√3 = %.2f MeV（若以 2373 MeV 为间隙锚）\n", 2373.0 / sqrt(3.0));
     return d;
 }
 
@@ -273,31 +273,31 @@ int main(void)
 {
     double mx = 0.0, v;
     printf("==========================================================\n");
-    printf(" 杨-米尔斯存在性与质量gap · independent recomputationwitness（纯 C · main 直接层零cycle）\n");
-    printf(" 容器=gaugegroup流形（紧）· physical sector=色单态closure回路（S¹）· 对even=Peter–Weyl 离散spectrum\n");
-    printf(" four operations：加法=accumulate · 乘法=generate · 取modulo=sieve · 跨维度=dimension-change · base=非象（只给体量）\n");
+    printf(" 杨-米尔斯存在性与质量间隙 · independent 复算见证（纯 C · main 直接层零循环）\n");
+    printf(" 容器=gaugegroup流形（紧）· 物理扇区=色单态闭合回路（S¹）· 对偶=Peter–Weyl 离散谱\n");
+    printf(" four operations：加法=accumulate · 乘法=generate · 取模=sieve · 跨维度=dimension-change · base=非象（只给体量）\n");
     printf("==========================================================\n");
     v = p1_phase_unit();      judge("P1 |e^{iθ}|≡1 与 2π period", v, 1e-12); if (v > mx) mx = v;
     v = p2_double_cover();    judge("P2 SU(2) 半角double cover U(t+2π)=−U(t)", v, 1e-12); if (v > mx) mx = v;
     v = p3_s3_spectrum();     judge("P3 S³ spectrum λ_l=l(l+2)=multiplicity−1", v, 1e-12); if (v > mx) mx = v;
     v = p4_compact_vs_line(); judge("P4 紧容器有正lower bound / 非紧容器无lower bound", v, 1e-12); if (v > mx) mx = v;
-    v = p5_wilson_gauge_invariance(); judge("P5 trace的gauge不变性与cycle性（色单态=closure回路）", v, 1e-12); if (v > mx) mx = v;
-    v = p6_running();         judge("P6 跑动耦合：欧拉error ∝ 1/N（closed式onestep）", v, 5e-2); if (v > mx) mx = v;
-    v = p7_lambda();          judge("P7 Λ 本性odd点（log identity式 + g^10 抑制）", v, 1e-11); if (v > mx) mx = v;
-    v = p8_loop_closure();    judge("P8 closure ⟺ 整数winding number（取modulo法）", v, 1e-12); if (v > mx) mx = v;
+    v = p5_wilson_gauge_invariance(); judge("P5 迹的gauge不变性与循环性（色单态=闭合回路）", v, 1e-12); if (v > mx) mx = v;
+    v = p6_running();         judge("P6 跑动耦合：欧拉error ∝ 1/N（闭式onestep）", v, 5e-2); if (v > mx) mx = v;
+    v = p7_lambda();          judge("P7 Λ 本性奇点（log 恒等式 + g^10 抑制）", v, 1e-11); if (v > mx) mx = v;
+    v = p8_loop_closure();    judge("P8 closure ⟺ 整数绕数 number（取模法）", v, 1e-12); if (v > mx) mx = v;
     v = p9_gap_scale();       judge("P9 Δ/Λ = √λ₁ = √3 与外部锚 2373=3·7·113", v, 1e-12); if (v > mx) mx = v;
-    printf("    criterionthreshold说明（mechanism给）：前向欧拉error = C·h + O(h²)，步数 ×10 ⟹ error比 = 10·(1+O(1/N))；\n");
-    printf("    故比值criterion的threshold取 10/N_first = 0.1 的半量（5e-2），不是拍的。\n");
+    printf("    criterion阈值说明（机制给）：前向欧拉error = C·h + O(h²)，步数 ×10 ⟹ error比 = 10·(1+O(1/N))；\n");
+    printf("    故比值criterion的阈值取 10/N_first = 0.1 的半量（5e-2），不是拍的。\n");
     printf("\n----------------------------------------------------------\n");
-    printf(" reading归拢（honest note）\n");
-    printf("  · group紧致（|e^{iθ}|≡1，period 2π/4π double cover）⟹ 对even离散 ⟹ Casimir spectrum离散\n");
+    printf(" 读数归拢（honest note）\n");
+    printf("  · group紧致（|e^{iθ}|≡1，period 2π/4π double cover）⟹ 对偶离散 ⟹ Casimir 谱离散\n");
     printf("  · S³ spectrum λ_l = l(l+2) = multiplicity − 1 ⟹ 最小非零 λ₁ = 3 > 0（三才之体量）\n");
-    printf("  · 色单态 = trace = closure回路 ⟹ physical sector容器是 S¹（紧）⟹ spectrum离散 ⟹ gap存在\n");
-    printf("  · 非紧 R³ 的连续spectrum属带色荷的非physical sector，被sieve（gauge固定）projection的kernel（Gribov 复本）承载\n");
-    printf("  · Λ = μ·exp(−8π²/(β₀g²))：跨维度付residual，g→0 时呈本性odd点 ⟹ 微扰论不可见\n");
+    printf("  · 色单态 = trace = 闭合回路 ⟹ physical 扇区容器是 S¹（紧）⟹ 谱离散 ⟹ 间隙存在\n");
+    printf("  · 非紧 R³ 的连续谱属带色荷的非物理扇区，被筛法（gauge固定）投影的核（Gribov 复本）承载\n");
+    printf("  · Λ = μ·exp(−8π²/(β₀g²))：跨维度付残差，g→0 时呈本性奇点 ⟹ 微扰论不可见\n");
     printf("----------------------------------------------------------\n");
-    printf("结印：generate之保modulo即group之紧，sieve之convergence去其kernel，closure者spectrum离散；\n");
-    printf("      离散者去kernel而有间——gap不在底空间之紧，而在观测者之合。\n");
+    printf("结印：生成之保modulo即group之紧，筛法之convergence去其核，闭合者谱离散；\n");
+    printf("      离散者去核而有间——间隙不在底空间之紧，而在观测者之合。\n");
     printf("==========================================================\n");
     printf("\nRESULT PASS=%d FAIL=%d max dev = %.3e\n", g_pass, g_fail, mx);
     return g_fail == 0 ? 0 : 1;

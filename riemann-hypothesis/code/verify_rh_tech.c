@@ -8,15 +8,15 @@
 #include <math.h>
 
 /* ============================================================
-   F: 复 ζ（Euler–Maclaurin）→ Λ/χ/Hardy Z → 临bound线reading σ=1/2
-   R: 由 |ζ(σ+it)|/|ζ(1−σ+it)| = |χ(σ+it)| 反解zero必须落在反射fixed point
+   F: 复 ζ（Euler–Maclaurin）→ Λ/χ/Hardy Z → 临bound线读数 σ=1/2
+   R: 由 |ζ(σ+it)|/|ζ(1−σ+it)| = |χ(σ+it)| 反解零必须落在反射fixed point
    four operationscaliber：加法=seriessummation与 Euler–Maclaurin 尾部；乘法=χ 的分mother乘回；
-             取modulo=phase取modulo到基本field（本stepunique取modulo处，Hardy Z 的 θ）；
+             取模=相位取模到基本field（本步唯一取模处，Hardy Z 的 θ）；
              跨维度=exp/log/Γ，走 libm 的 exp/log（residual ~1e-15），无自写iteration
-   five roles铁序：base S 锚定 ζ 三hard anchor → dimension-change F 焊接口 |ζ|比=|χ| →
+   五行铁序：base S 锚定 ζ 三hard anchor → dimension-change F 焊接口 |ζ|比=|χ| →
              sieve M 坍缩（involution R²=id、fixed point方程，零tolerance）→ accumulate W 渗透（线外grid最小modulo）→
              generate D 扩展（六个 t 的根）→ base S closure（四量 + honest note）
-   本篇construction layer对象：非平凡zero是否落在 σ=1/2 上（RH 的construction layergap）
+   本篇construction 层对象：非平凡零是否落在 σ=1/2 上（RH 的construction layergap）
    ============================================================ */
 
 #define MAXP 8
@@ -131,7 +131,7 @@ static cpx hardy_Z(double t)
 }
 
 /* ============================================================
-   以下为本篇check
+   以下为本篇判据
    ============================================================ */
 
 static int g_pass = 0, g_fail = 0;
@@ -164,7 +164,7 @@ static double p1_zeta_anchors(void)
     return fmax(d2, fmax(dm1, d0));
 }
 
-/* ---------- P2 临bound线上的zero（Hardy Z 变号 + 二分） ---------- */
+/* ---------- P2 临bound线上的零（Hardy Z 变号 + 二分） ---------- */
 static double zero_on_line(double lo, double hi)
 {
     double flo = hardy_Z(lo).re, fhi = hardy_Z(hi).re, mid = 0.0, fm = 0.0;
@@ -194,7 +194,7 @@ static double p2_line_zeros(void)
     return fmax(dev_t, dev_z);
 }
 
-/* ---------- P3 zero的位置：在三个zero t 上，σ grid的最小点必须是 1/2 ---------- */
+/* ---------- P3 零的位置：在三个零 t 上，σ grid的最小点必须是 1/2 ---------- */
 static double p3_argmin_on_line(void)
 {
     const double BR[3][2] = { { 13.0, 15.0 }, { 20.0, 22.0 }, { 24.0, 26.0 } };
@@ -235,7 +235,7 @@ static double p4_weld(void)
     return dev;
 }
 
-/* ---------- P5 |χ(σ+it)|=1 的unique根 = 1/2 ---------- */
+/* ---------- P5 |χ(σ+it)|=1 的唯一根 = 1/2 ---------- */
 static double chi_root(double t)
 {
     double lo = 0.10, hi = 0.90, mid = 0.0, flo, fm;
@@ -263,7 +263,7 @@ static double p5_chi_root_unique(void)
     return dev;
 }
 
-/* ---------- P6 Hardy Z 的实性（必在非zero测） ---------- */
+/* ---------- P6 Hardy Z 的实性（必在非零测） ---------- */
 static double p6_hardy_reality(void)
 {
     const double T[5] = { 3.0, 5.0, 7.0, 11.0, 17.0 };
@@ -274,7 +274,7 @@ static double p6_hardy_reality(void)
     return dev;
 }
 
-/* ---------- P7 Λ symmetric性（非zero） ---------- */
+/* ---------- P7 Λ symmetric性（非零） ---------- */
 static double p7_lambda_symmetry(void)
 {
     const double S[3] = { 0.30, 0.40, 0.60 };
@@ -282,7 +282,7 @@ static double p7_lambda_symmetry(void)
     double dev = 0.0;
     int i;
     for (i = 0; i < 3; i++) {
-        /* 函数方程pairing的是 s 与 1−s：(σ+it) ↔ (1−σ)−it */
+        /* 函数方程配对的是 s 与 1−s：(σ+it) ↔ (1−σ)−it */
         cpx a = clambda(C(S[i], T[i]));
         cpx b = clambda(C(1.0 - S[i], -T[i]));
         double m = fmax(cabsz(a), cabsz(b));
@@ -328,7 +328,7 @@ int main(void)
 {
     double d1, d2, dmin, d4, d5, d6, d7, d8, d9, rres;
 
-    printf("== verify_rh_tech : construction layer —— zero落临bound线（本篇independent recomputation）==\n");
+    printf("== verify_rh_tech : construction layer —— 零落临bound线（本篇independent recomputation）==\n");
     printf("zeta via Euler-Maclaurin (N=1000,K=10); Gamma via Lanczos g=7\n\n");
 
     d1 = p1_zeta_anchors();
@@ -364,8 +364,8 @@ int main(void)
     printf("k=9 fiber=1 fidelity=1.000000 discriminability=0.888889\n");
     printf("res=%.6e domain=9 dc=6 order=2\n", rres);
     printf("EXIT=%d\n", (g_fail == 0 ? 0 : 1));
-    printf("honest note：P3 只是「grid上无zero」，不是线外无zero的全局命题；\n");
-    printf("     P4 是函数方程的机器witness（|zeta| 之比 = |chi|），把zero位置焊到 σ ↔ 1−σ 的反射；\n");
-    printf("     P5 证明的是 |chi|=1 的根unique在 1/2，而zero必落 |chi|=1（P4 的pole限情形）。\n");
+    printf("honest note：P3 只是「grid上无零」，不是线外无零的全局命题；\n");
+    printf("     P4 是函数方程的机器见证（|zeta| 之比 = |chi|），把零位置焊到 σ ↔ 1−σ 的反射；\n");
+    printf("     P5 证明的是 |chi|=1 的根唯一在 1/2，而零必落 |chi|=1（P4 的pole限情形）。\n");
     return (g_fail == 0 ? 0 : 1);
 }

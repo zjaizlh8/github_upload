@@ -4,23 +4,23 @@
  * the translation keeps line structure, check names and all numeric values unchanged.
  */
 /* ============================================================================
-   verify_pvsnp_tech.c  ——  P vs NP 篇 · construction layer：为什么 per 没有closed式（mod 2 商）
+   verify_pvsnp_tech.c  ——  P vs NP 篇 · construction layer：为什么 per 没有闭式（mod 2 商）
    ----------------------------------------------------------------------------
-   five roles六步（阶段直序）：
-     base S 锚定 —— 先把 det 与 per 的三条独立path钉在hard anchor上（2×2、3×3 手算值）
-     dimension-change F 虚化 —— 展open式的符号structure：det 的正负项数与 per 的全正项数
-     sieve M 坍缩 —— modulo 2 商：char 2 里符号消失 ⟹ det ≡ per；整数侧cancellation不起来
-     accumulate W 渗透 —— 信息量：oddeven只给 1 比特，per 需 log2(n!) 比特
-     generate D 扩展 —— GF(2) 仿射rank (n-1)^2+1 与enumerationfield 2^nullity
+   五行六步（阶段直序）：
+     base S 锚定 —— 先把 det 与 per 的三条独立路径钉在hard 锚上（2×2、3×3 手算值）
+     dimension-change F 虚化 —— 展开式的符号结构：det 的正负项数与 per 的全正项数
+     sieve M 坍缩 —— modulo 2 商：char 2 里符号消失 ⟹ det ≡ per；整数侧相消不起来
+     accumulate W 渗透 —— 信息量：odd偶只给 1 比特，per 需 log2(n!) 比特
+     generate D 扩展 —— GF(2) 仿射秩 (n-1)^2+1 与enumerationfield 2^nullity
      base S closure —— 四条criterion一次取出，四量齐报
 
-   four operationscaliber（本step只用两条半）：
-     加法 = Laplace 展open / Ryser 的 Gray 码累积 / GF(2) 向量异或
-     乘法 = permutation的乘积项（每项 n 个因子相乘）与项的计数 n!
-     取modulo = **本stepunique取modulo处**：det mod 2 与 per mod 2 的oddeven比较（`% 2`）
-     跨维度 = 不用（无 exp/log/pow/sqrt）⟹ 不付residual
+   four operationscaliber（本步只用两条半）：
+     加法 = Laplace 展开 / Ryser 的 Gray 码累积 / GF(2) 向量异或
+     乘法 = 置换的乘积项（每项 n 个因子相乘）与项的计数 n!
+     取模 = **本步唯一取模处**：det mod 2 与 per mod 2 的odd偶比较（`% 2`）
+     跨维度 = 不用（无 exp/log/pow/sqrt）⟹ 不付残差
 
-   F: input矩阵 A（0/1 或整数）→ output (det, per) 与符号structure计数
+   F: 输入矩阵 A（0/1 或整数）→ output (det, per) 与符号结构计数
    R: 由 (det mod 2, per mod 2, GF(2) rank) 反推「是否存在 mod 2 商」
    ============================================================================ */
 #include <stdio.h>
@@ -35,7 +35,7 @@ static int g_pass = 0, g_fail = 0;
 static double g_maxdev = 0.0;
 static double g_res = 0.0;
 
-static const char *g_W[6] = { "baseS锚定", "dimension-changeF虚化", "sieveM坍缩", "accumulateW渗透", "generateD扩展", "baseSclosure" };
+static const char *g_W[6] = { "土S锚定", "火F虚化", "金M坍缩", "水W渗透", "木D扩展", "土S闭环" };
 
 static void judge(const char *name, double dev, double tol)
 {
@@ -44,7 +44,7 @@ static void judge(const char *name, double dev, double tol)
     if (dev > g_maxdev) g_maxdev = dev;
 }
 
-/* ---------------- det：Bareiss 无分数elimination（整数精确） ---------------- */
+/* ---------------- det：Bareiss 无分数消元（整数精确） ---------------- */
 static double det_bareiss(int n, const int *a)
 {
     int m[MAXN][MAXN], i, j, k, sign = 1, piv;
@@ -66,7 +66,7 @@ static double det_bareiss(int n, const int *a)
     return (double)sign * (double)m[n - 1][n - 1];
 }
 
-/* ---------------- det：Laplace 递归展open（独立path） ---------------- */
+/* ---------------- det：Laplace 递归展开（独立路径） ---------------- */
 static double det_laplace(int n, const int *a)
 {
     int i, j, r, c; double s = 0.0;
@@ -96,7 +96,7 @@ static double per_ryser(int n, const int *a)
     return sum;
 }
 
-/* ---------------- per：permutationenumeration（独立path） ---------------- */
+/* ---------------- per：permutationenumeration（独立路径） ---------------- */
 static double per_enum(int n, const int *a)
 {
     int perm[MAXN], i, j, k; double s = 0.0;
@@ -115,7 +115,7 @@ static double per_enum(int n, const int *a)
     return s;
 }
 
-/* ---------------- 符号structure：det 展open的正项数 / 负项数；per 全正 ---------------- */
+/* ---------------- 符号结构：det 展开的正项数 / 负项数；per 全正 ---------------- */
 static void sign_split(int n, int *pos, int *neg)
 {
     int i, j, inv;
@@ -136,7 +136,7 @@ static void sign_split(int n, int *pos, int *neg)
     }
 }
 
-/* ---------------- GF(2) rank（按位elimination） ---------------- */
+/* ---------------- GF(2) rank（按位消元） ---------------- */
 static int rank_gf2(int rows, int n, const int *a)
 {
     int r = 0, c, i, j;
@@ -205,7 +205,7 @@ static double p3_alternating(void)
     return dev;
 }
 
-/* ---------------- P4 符号structure：det 正负各半；per 全正 ---------------- */
+/* ---------------- P4 符号结构：det 正负各半；per 全正 ---------------- */
 static double p4_sign_structure(void)
 {
     int n, pos, neg, dev = 0;
@@ -267,7 +267,7 @@ static double p7_info_gap(void)
         for (i = 2; i <= n; i++) f *= (double)i;
         bits = log(f) / log(2.0);
         printf("        %d | %.3f | 1\n", n, bits);
-        if (bits <= 1.0) dev++;     /* criterion：n>=3 时 log2(n!) 必须严lattice大于 1 比特 */
+        if (bits <= 1.0) dev++;     /* criterion：n>=3 时 log2(n!) 必须严格大于 1 比特 */
     }
     return (double)dev;
 }
@@ -281,7 +281,7 @@ static double p8_cancel(void)
     return fabs(p - 12.0) + fabs(d);
 }
 
-/* ---------------- P9 GF(2) 仿射rank = (n-1)^2+1 ---------------- */
+/* ---------------- P9 GF(2) 仿射秩 = (n-1)^2+1 ---------------- */
 static double p9_affine_rank(void)
 {
     int n, dev = 0;
@@ -324,7 +324,7 @@ int main(void)
 {
     double d1, d2, d3, d4, d5, d6, d7, d8, d9;
 
-    printf("== verify_pvsnp_tech : construction layer —— per 为什么没有closed式（mod 2 商）==\n");
+    printf("== verify_pvsnp_tech : construction layer —— per 为什么没有闭式（mod 2 商）==\n");
     print_wuxing();
     printf("\n");
 
@@ -359,7 +359,7 @@ int main(void)
     printf("k=%d fiber=1.000000 fidelity=1.000000 discriminability=%.6f\n", NJ, 1.0 - 1.0 / (double)NJ);
     printf("res=%.6e domain=%d dc=%d order=%d\n", g_res, NJ, 6, 2);
     printf("honest note：P5/P6/P9 是全enumeration（n<=4 / n=3 / n<=4），不是对一切 n 的定理；\n");
-    printf("     P4 的「正负各半」是项数计数，不是值的cancellation；\n");
+    printf("     P4 的「正负各半」是项数计数，不是值的相消；\n");
     printf("     P7 的信息量是lower bound论证的必要条件，不构成 #P-hard 的证明。\n");
     printf("EXIT=%d\n", g_fail == 0 ? 0 : 1);
     (void)d5; (void)d6; (void)d9;

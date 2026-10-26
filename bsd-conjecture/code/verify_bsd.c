@@ -6,15 +6,15 @@
 /* verify_bsd.c · BSD 猜想（Birch and Swinnerton-Dyer）independent recomputation
  *
  * F: 函数方程 Λ(E,s) = w·Λ(E,2−s) 的involution s ↦ 2−s 与符号 w=±1
- * R: 由 F 反推中心 s=1 的zero阶的oddeven，并由八元数norm-preserving把「累积=summation」落成identity式
+ * R: 由 F 反推中心 s=1 的零阶的oddeven，并由八元数norm-preserving把「累积=summation」落成恒等式
  *
  * four operationscaliber：
  *   加法 —— constructionidentity Λ_k(s)=(s−1)^k·g(s) 按多项式逐项相加；四元/八元数乘法逐分量相加
- *   乘法 —— norm-preserving律 |ab|² = |a|²|b|²；倍角recurrence cos2x = 2cos²x − 1
- *   取modulo —— a_p 的 Legendre 符号与 p≡3 (mod 4) criterion（本stepunique取modulo处）
- *   跨维度 —— 不用（不调 exp/log/sqrt/pow）⟹ 不付跨维度residual，全部tolerance皆为整数/机器精度
+ *   乘法 —— 保范律 |ab|² = |a|²|b|²；倍角recurrence cos2x = 2cos²x − 1
+ *   取模 —— a_p 的 Legendre 符号与 p≡3 (mod 4) criterion（本步唯一取模处）
+ *   跨维度 —— 不用（不调 exp/log/sqrt/pow）⟹ 不付跨维度残差，全部tolerance皆为整数/机器精度
  *
- * check：12；main 直接层零cycle（onestep在最外层），check只读全field常量。
+ * check：12；main 直接层零循环（one步在最外层），判据只读全field常量。
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -127,7 +127,7 @@ static int ap_cubic(int p)
 /* 倍角recurrence：cos(2x) = 2cos²x − 1（纯加乘，无跨维度算子） */
 static double dbl_cos(double c) { return 2.0 * c * c - 1.0; }
 
-/* check 1：involution s ↦ 2−s 的fixed pointunique为 s=1 */
+/* check 1：involution s ↦ 2−s 的fixed point唯一为 s=1 */
 static double P1(void)
 {
     double s = 1.0, r = 2.0 - s;
@@ -152,7 +152,7 @@ static double P2(void)
     return mx;
 }
 
-/* check 3：Λ_k(1)=0（k ≥ 1）——中心zero，阶exactly为 k */
+/* check 3：Λ_k(1)=0（k ≥ 1）——中心零，阶exactly为 k */
 static double P3(void)
 {
     double mx = 0.0; int k, j;
@@ -217,7 +217,7 @@ static double P7(void)
     return fabs(o_n2(m) - 4.0);              /* 范数 2 ⟹ 平方 4 */
 }
 
-/* check 8：八元数无zero divisor —— 整数lattice点上 min |xy|² ≥ 1 */
+/* check 8：八元数无零因子 —— 整数格点上 min |xy|² ≥ 1 */
 static double P8(void)
 {
     double mn = 1e300; int i, j;
@@ -231,7 +231,7 @@ static double P8(void)
         n2 = o_n2(o_mul(a, b));
         if (n2 < mn) mn = n2;
     }
-    return (mn >= 1.0) ? 0.0 : (1.0 - mn);   /* 无zero divisor ⟹ 永不塌到 0 */
+    return (mn >= 1.0) ? 0.0 : (1.0 - mn);   /* 无零因子 ⟹ 永不塌到 0 */
 }
 
 /* check 9：CM criterion p ≡ 3 (mod 4) ⟹ a_p = 0（y²=x³−x，enumeration p ≤ 503） */
@@ -304,7 +304,7 @@ static double P12(void)
 }
 
 /* check 13：pole 163 —— 163 = 2·9²+1 = 4·41−1；archive里 T_crit=17.0831413200251 satisfies
-   (T+1)² = 327（纯加乘verify引用的外部constant，不调square root） */
+   (T+1)² = 327（纯加乘verify引用的外部常数，不调square root） */
 static double P13(void)
 {
     double mx = 0.0, shape, euler, t = 17.0831413200251, lhs;
@@ -320,24 +320,24 @@ static double P13(void)
 int main(void)
 {
     printf("=== verify_bsd.c · BSD 猜想 independent recomputation ===\n");
-    printf("  · involution s ↦ 2−s 的fixed point s=1；符号 w=(−1)^k 管zero阶的oddeven\n");
-    printf("  · 四元数管符号（中心 Z₂=±1），八元数管rank（非结合而norm-preserving ⟹ generate元不塌）\n");
+    printf("  · involution s ↦ 2−s 的fixed point s=1；符号 w=(−1)^k 管零阶的oddeven\n");
+    printf("  · 四元数管符号（中心 Z₂=±1），八元数管秩（非结合而norm-preserving ⟹ 生成元不塌）\n");
 
     judge("P1  involutionfixed pointunique s=1", P1(), 1e-15);
     judge("P2  constructionidentity w=(−1)^k（k=1,2,3）", P2(), 1e-12);
-    judge("P3  Λ_k(1)=0 中心zero（阶exactly为 k）", P3(), 1e-15);
+    judge("P3  Λ_k(1)=0 中心零（阶exactly为 k）", P3(), 1e-15);
     judge("P4  half-turn −1 / full turn +1（倍角recurrence）", P4(), 1e-15);
     judge("P5  四元数norm-preserving |ab|²=|a|²|b|²", P5(), 1e-14);
     judge("P6  八元数norm-preserving（非结合仍norm-preserving）", P6(), 1e-13);
     judge("P7  八元数非结合 [e1,e2,e4] 范数²=4", P7(), 1e-14);
-    judge("P8  八元数无zero divisor min|xy|²≥1", P8(), 1e-15);
+    judge("P8  八元数无零因子 min|xy|²≥1", P8(), 1e-15);
     judge("P9  CM criterion p≡3(4) ⟹ a_p=0", P9(), 0.0);
     judge("P10 Hasse bound a_p²≤4p", P10(), 0.0);
     judge("P11 伸缩commute / 纯虚不commute", P11(), 1e-15);
     judge("P12 乘积范数=范数之积（累积=summation）", P12(), 1e-14);
-    {   /* tolerance由mechanism给：archive值 T_crit 只给到 1e−13 位，平方把截断放大为
-           2(T+1)×δ = 2×18.083×5e−14 ≈ 1.81e−12 ⟹ tolerance取其一阶上邻 5e−12 */
-        printf("       · P13 tolerancemechanism：外部constant截断floor 2(T+1)δ = 2×18.083×5e−14 ≈ 1.81e−12\n");
+    {   /* tolerance由机制给：archive值 T_crit 只给到 1e−13 位，平方把截断放大为
+           2(T+1)×δ = 2×18.083×5e−14 ≈ 1.81e−12 ⟹ 容差取其一阶上邻 5e−12 */
+        printf("       · P13 tolerancemechanism：外部常数截断floor 2(T+1)δ = 2×18.083×5e−14 ≈ 1.81e−12\n");
         judge("P13 pole 163 = 2·9²+1 与 (T+1)²=327", P13(), 5e-12);
     }
 

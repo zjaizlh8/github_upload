@@ -1,4 +1,4 @@
-﻿== verify_bsd_tech : 术层 —— Reg / c_p / #Sha 全账 ==
+﻿== verify_bsd_tech : construction layer —— Reg / c_p / #Sha 全账 ==
    [土S锚定]   [火F虚化]   [金M坍缩]   [水W渗透]   [木D扩展]   [土S闭环]
 
   [P1] r=1 : det(G) = 2.2500000000 (>0), leading minors >0
@@ -36,9 +36,9 @@
   PASS P9 r=0 => Reg=1; r>=1 => Reg>0               dev=0.000000e+00 tol=0.000000e+00
 
 RESULT PASS=9 FAIL=0 maxdev=4.119e-11
-k=9 fiber=1.000000 保真度=1.000000 判别力=0.888889
+k=9 fiber=1.000000 fidelity=1.000000 discriminability=0.888889
 res=0.000000e+00 domain=9 dc=5 order=2
-照实：P1-P4/P9 是高度配对的代数性质（精确），P5 用 verify_bsd4 的实跑读数复算，
+honest note：P1-P4/P9 是高度配对的代数性质（精确），P5 用 verify_bsd4 的runreadingrecomputation，
      P6 是账目形状的计数（Reg 的指数），P7/P8 引自 Tamagawa 与 Cassels 的既有事实；
-     本篇未在实数上闭合 rank>=1 的 Reg 数值（需要 Mordell-Weil 生成元与真实周期）。
+     本篇未在实数上闭合 rank>=1 的 Reg numeric（需要 Mordell-Weil 生成元与真实period）。
 EXIT=0

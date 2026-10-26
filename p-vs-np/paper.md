@@ -1,9 +1,9 @@
-﻿# A Structural Proof of P vs NP
+# A Structural Reading of P vs NP
 
 **Author:** zjaizlh8 (GitHub) · 2026-10-26 · CC BY 4.0
 **Framework:** structural layer · spectral method · matrix probe
 **Independent witnesses:** `code/verify_pvsnp.c` (PASS, `EXIT=0`),
-`code/verify_pvsnp_tech.c` (9 checks, `RESULT PASS=9 FAIL=0 maxdev=0.000e+00 EXIT=0`)
+`code/verify_pvsnp_tech.c` (9 checks, `RESULT PASS=9 FAIL=0 maxdev=0.000e+00` + `EXIT=0`); main witness `code/verify_pvsnp.c` (17 checks, `RESULT PASS=17 FAIL=0  (GF(2) 判据 17 项…)` + `EXIT=0`)
 
 ## Abstract
 
@@ -98,7 +98,7 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o pvsnp.exe code/verify_pvsnp.c && ./pvsnp.
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o pvnp_tech.exe code/verify_pvsnp_tech.c && ./pvnp_tech.exe
 ```
 
-Expected: `RESULT PASS=9 FAIL=0 maxdev=0.000e+00 EXIT=0` (tech; `k=9 fiber=1 discriminability=0.888889`).
+Expected: main `RESULT PASS=17 FAIL=0  (GF(2) 判据 17 项；数值判据另由此前 max dev 把门)` + `EXIT=0`; tech `RESULT PASS=9 FAIL=0 maxdev=0.000e+00` + `EXIT=0` (`k=9 fiber=1 discriminability=0.888889`).
 Four gates exit 0; zero compiler warnings.
 
 ## 9. Honest notes

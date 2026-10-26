@@ -1,4 +1,4 @@
-﻿== verify_hodge_tech : 术层 —— p>=2 的缺口与挠点归位 ==
+﻿== verify_hodge_tech : construction layer —— p>=2 的间隙与torsion pointreturn ==
    [土S锚定]   [火F虚化]   [金M坍缩]   [水W渗透]   [木D扩展]   [土S闭环]
 
   [P1] g | dim H^{p,p} (p=0..g) | check
@@ -41,9 +41,8 @@
   PASS P9 extreme 163 separates both            dev=0.000000e+00 tol=0.000000e+00
 
 RESULT PASS=9 FAIL=0 maxdev=0.000e+00
-k=9 fiber=1.000000 保真度=1.000000 判别力=0.888889
+k=9 fiber=1.000000 fidelity=1.000000 discriminability=0.888889
 res=4.000000e+00 domain=9 dc=8 order=2
-照实：P1/P2/P8 是组合恒等（精确），P4/P5/P9 是矩形格上的数值判据（KMAX=2000）；
+honest note：P1/P2/P8 是组合恒等（精确），P4/P5/P9 是矩形格上的numericcriterion（KMAX=2000）；
      P6 的 k^{2g} 是有限挠子群的阶，按定义成立，不是新定理；
-     P5/P9「永不归位」在有限步内只是未见归位，不是不存在归位的证明。
-EXIT=0
+     P5/P9「永不返回」在有限步内只是未见返回，不是不存在EXIT=0

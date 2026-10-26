@@ -4,33 +4,33 @@
  * the translation keeps line structure, check names and all numeric values unchanged.
  */
 /* ============================================================================
- * verify_hl.c —— HL 猜想（Hardy–Littlewood 孪generateprime）independent recomputation
- * 对应论文：D:\lw\HL_证明_structure层_chaos onestep_matrix probe.md
+ * verify_hl.c —— HL 猜想（Hardy–Littlewood 孪生素数）independent recomputation
+ * 对应论文：D:\lw\HL_证明_结构层_chaos onestep_matrix probe.md
  *
- * five roles执line铁序（阶段直序）：
+ * 五行执line铁序（阶段直序）：
  *   base S 锚定  → 外部锚先落地（2C₂、e^{−γ}、log(e^{2γ}/4)、4e^{−2γ}）
- *   dimension-change F 虚化  → t=1 处 k 阶pole点 ⟹ 下限forced ≥ 2（P3）
- *   sieve M 坍缩  → accumulate展opencoefficient抽取：一阶coefficient = D = k（P2）
+ *   dimension-change F 虚化  → t=1 处 k 阶极点 ⟹ 下限被迫 ≥ 2（P3）
+ *   sieve M 坍缩  → 累加展开coefficient抽取：一阶coefficient = D = k（P2）
  *   accumulate W 渗透  → 逐 x numeric检索：series vs integral、焊接口阶梯integral（P1、P4）
- *   generate D 扩展  → 双ledger det 比、discriminability缺step、首项/截断error（P7、P9、P11）
+ *   generate D 扩展  → 双账本 det 比、判别力缺步、首项/截断error（P7、P9、P11）
  *   base S closure  → 汇总deviation + 四量 + 判定
  *
- * four operationscaliber（凡跨维度必付residual）：
- *   加法：series逐项相加、阶梯integral逐段summation —— 无residual。
- *   乘法：∏(1−1/q)、∏(1−1/(q−1)²)、部分积 ∏(1+1/n)e^{−1/n} —— 无residual。
- *   取modulo：unique一处 = discriminability缺step的divides判定 q | h（整数，无residual）。
+ * four operationscaliber（凡跨维度必付残差）：
+ *   加法：series逐项相加、阶梯integral逐段summation —— 无残差。
+ *   乘法：∏(1−1/q)、∏(1−1/(q−1)²)、部分积 ∏(1+1/n)e^{−1/n} —— 无残差。
+ *   取模：唯一一处 = 判别力缺步的整除判定 q | h（整数，无残差）。
  *   跨维度：exp/log 用于 e^{−γ}、2C₂、log(e^{2γ}/4) 与coefficient比的逐级halvingextrapolation。
- *           exp 走自写 my_exp（Taylor + halving）；本step不需要 sqrt；
+ *           exp 走自写 my_exp（Taylor + halving）；本步不需要 sqrt；
  *           log/fabs 用 libm（体系允许）。residualcaliber = 相对deviation dev，
- *           每项tolerance由该项mechanism给（截断尾 e^{−1/u} / convergence阶 / 外部constant位数）。
+ *           每项tolerance由该项机制给（截断尾 e^{−1/u} / convergence阶 / 外部常数位数）。
  *
- * 注意（本file自带的measuredlesson）：
- *   accumulate的时间展open Σ(k)_n/log^n x 是**divergenceasymptoticseries**（项比 (k+n)/log x），
+ * 注意（本file自带的实测lesson）：
+ *   累加的时间展开 Σ(k)_n/log^n x 是**divergenceasymptoticseries**（项比 (k+n)/log x），
  *   最优截断在 n ≈ log x − k。取固定 80 项会爆到 1e38。
  *   故 li_ser 用**自适应最优截断**（项open始增长即停），tolerance按最小项 e^{−1/u} 给。
  *
- * F: 正向 —— 从 Li_k 焊接口出发：展open抽coefficient、算双ledger、读discriminability缺step。
- * R: 反向 —— 从外部锚回推：若 2C₂、e^{−γ}、4e^{−2γ}、det 比任一对不上，本step当场崩。
+ * F: 正向 —— 从 Li_k 焊接口出发：展开抽coefficient、算双账本、读判别力缺步。
+ * R: 反向 —— 从外部锚回推：若 2C₂、e^{−γ}、4e^{−2γ}、det 比任一对不上，本步当场崩。
  *
  * 编译：gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hl.exe verify_hl.c
  * ==========================================================================*/
@@ -114,7 +114,7 @@ static double li_int(double t0, double t1, int k, int seg)
     return s * h / 3.0;
 }
 
-/* -------- Li_k 展open：自适应最优截断（divergenceasymptoticseries）+ 返回末项量级 --------
+/* -------- Li_k 展开：自适应最优截断（divergenceasymptoticseries）+ 返回末项量级 --------
  * series：(x/log^k x)·Σ_{n≥0} (k)_n u^n,  u = 1/log x
  * 项比 t_{n+1}/t_n = (k+n)u ⟹ 最优截断 n* ≈ 1/u − k，最小项 ~ e^{−1/u}
  * ------------------------------------------------------------------------- */
@@ -159,7 +159,7 @@ static double step_int_mertens(double t0, double t1, double egamma)
     return s;
 }
 
-/* -------- discriminability缺step：q ≤ 13 中divides h 的prime个数（取modulo法unique处） -------- */
+/* -------- 判别力缺步：q ≤ 13 中整除 h 的素数个数（取模法唯一处） -------- */
 static int holes_of(int h)
 {
     int i, c = 0;
@@ -171,7 +171,7 @@ static int holes_of(int h)
     return c;
 }
 
-/* -------- 双ledger det 比：∏(q−1)/∏q（整数，精确） -------- */
+/* -------- 双账本 det 比：∏(q−1)/∏q（整数，精确） -------- */
 static void ledger(int *num, int *den)
 {
     int qs[5] = {2, 3, 5, 7, 11};
@@ -180,7 +180,7 @@ static void ledger(int *num, int *den)
     *num = a; *den = b;
 }
 
-/* -------- check数据器（cycle全部收在辅助函数内，main 只取reading） -------- */
+/* -------- 判据器（循环全部收在辅助函数内，main 只取读数） -------- */
 static const double GAMMA_E = 0.5772156649015329;   /* γ */
 static double p1_scan(void)
 {
@@ -274,7 +274,7 @@ static int p9_holes(void)
     int bad = 0, i;
     for (i = 0; i < 4; i++) {
         int got = holes_of(hs[i]);
-        printf("       h=%-3d 缺step=%d（应 %d）\n", hs[i], got, ex[i]);
+        printf("       h=%-3d 缺步=%d（应 %d）\n", hs[i], got, ex[i]);
         bad += iabs(got - ex[i]);
     }
     return bad;
@@ -309,15 +309,15 @@ int main(void)
     char   buf[160];
 
     sieve();
-    printf("verify_hl.c · HL independent recomputation（焊接口 / 双ledger / coefficient / 缺step）\n");
-    printf("primesieve上限 %d，sieve得 %d 个prime；外部锚 e^-gamma=%.16f\n\n", PMAX, g_npr, EG);
+    printf("verify_hl.c · HL independent recomputation（焊接口 / 双账本 / coefficient / 缺步）\n");
+    printf("素数筛法上限 %d，筛法得 %d 个素数；外部锚 e^-gamma=%.16f\n\n", PMAX, g_npr, EG);
 
     { double rw = p1_scan();
-      judge("P1 展open(最优截断) vs integral：deviation / 尾estimate ≤ 3", rw, 3.0);
+      judge("P1 展开(最优截断) vs integral：deviation / 尾estimate ≤ 3", rw, 3.0);
       if (rw > res) res = rw; }
 
     C = p2_extrap();
-    sprintf(buf, "P2 accumulate展open一阶coefficient = D = k = 2（extrapolation %.6f）", C);
+    sprintf(buf, "P2 累加展开一阶coefficient = D = k = 2（extrapolation %.6f）", C);
     judge(buf, fabs(C - 2.0), 1e-3);
     if (fabs(C - 2.0) > res) res = fabs(C - 2.0);
 
@@ -325,13 +325,13 @@ int main(void)
       double I2 = li_int(1.001, 2.0, 2, 200000);
       double ratio = I2 / I1;
       printf("       I(1e-2)=%.6f  I(1e-3)=%.6f  比值=%.6f\n", I1, I2, ratio);
-      judge("P3 下限forced：I(eps)~1/eps，比值 I(1e-3)/I(1e-2)", fabs(ratio - 10.0), 0.5);
+      judge("P3 下限被迫：I(eps)~1/eps，比值 I(1e-3)/I(1e-2)", fabs(ratio - 10.0), 0.5);
       if (fabs(ratio - 10.0) > res) res = fabs(ratio - 10.0); }
 
     { double w = p4_weld();
       thr = 3.0 / log(1e4);   /* mechanism：Mertens 尾 O(1/log t) */
       judge("P4 焊接口：阶梯integral ∫(e^gamma·prod)^2 dt vs Li2", w, thr);
-      printf("       (threshold按 tail=3/log(x_min) 给 = %.4f)\n", thr);
+      printf("       (阈值按 tail=3/log(x_min) 给 = %.4f)\n", thr);
       if (w > res) res = w; }
 
     a = p5_c2();
@@ -353,7 +353,7 @@ int main(void)
     if (fabs(v + 0.231863031) > res) res = fabs(v + 0.231863031);
 
     bad = p9_holes();
-    judge("P9 缺step = q|h 的prime个数（h=2,6,30,210）", (double)bad, 0.0);
+    judge("P9 缺步 = q|h 的素数个数（h=2,6,30,210）", (double)bad, 0.0);
 
     v = 4.0 * EG * EG;
     printf("       4e^-2gamma = %.12f\n", v);

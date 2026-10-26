@@ -1,5 +1,5 @@
-# Structural Proofs of Eight Millennium-Type Problems
-# 八道千禧年型问题的结构证明
+# Structural Readings of Eight Millennium-Type Problems
+# 八道千禧年型问题的结构解读
 
 [![verify](https://github.com/zjaizlh8/github_upload/actions/workflows/verify.yml/badge.svg)](https://github.com/zjaizlh8/github_upload/actions/workflows/verify.yml)
 ![probes](https://img.shields.io/badge/C%20probes-20-blue)
@@ -16,7 +16,7 @@ Windows 无 `make` 时：`gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o t <any>/code/ve
 CI（GitHub Actions）在每次 push 上跑同一条链：编译 24 个 `.c` → 跑 20 支验证器 → 4 道门禁。
 
 **直达 / direct:** [站点 Pages](https://zjaizlh8.github.io/github_upload/) ·
-[[v1.0.1 Windows x64 预编译 24 个 exe](https://github.com/zjaizlh8/github_upload/releases/latest)](https://github.com/zjaizlh8/github_upload/releases/latest) ·
+[[v1.0.2 Windows x64 预编译 24 个 exe](https://github.com/zjaizlh8/github_upload/releases/latest)](https://github.com/zjaizlh8/github_upload/releases/latest) ·
 [CI 运行记录](https://github.com/zjaizlh8/github_upload/actions/workflows/verify.yml)
 
 **Author / 作者:** zjaizlh8 (GitHub) · 2026-10-26
@@ -57,7 +57,7 @@ follow the same four-part skeleton: abstract → structural layer → spectral m
 → main theorem (with the load-bearing step written as an explicit **Lemma + honest notes**) →
 construction layer (construct / estimate / sufficiency) → numerical tables → reproduction
 commands → honest notes.
-每篇 `paper.md` 为英文压缩版（逐节对应中文版，篇幅约 1/5）；`paper.zh.md` 为完整版（多出 §0′ 倒数形式、§0 记号、§5bis 构造层、§7bis 独立复算、附录 A/B）：摘要 → 结构层 → 谱结构方法 → 矩阵探针
+每篇 `paper.md` 为英文压缩版（按同一节序压缩，篇幅约中文版 1/5；**不等于逐节全译**——中文版另有 §0′ 倒数形式、§0 记号、§5bis 构造层、§5ter/§5quater、§7bis 独立复算、附录 A/B 若干段未进入英文版，差异见 §Known gaps）：摘要 → 结构层 → 谱结构方法 → 矩阵探针
 → 主定理（承重步显式写成 **引理 + 照实**）→ 构造层（构造 / 估计 / 充分性）→ 数值表 → 复现命令 → 照实。
 
 ## Status table / 状态表 (honest grading / 诚实分级)
@@ -71,13 +71,34 @@ what the honest note records — the theorem head and the honest note no longer 
 | Paper 篇 | Conditional theorem 条件定理 | Load-bearing lemma 承重引理（前提） | Machine witness 机器见证 |
 |---|---|---|---|
 | HL | if sign-cancellation thm then `π₂(x) ~ 2C₂·Li₂(x)` 若符号相消定理成立则 … | Möbius random series (probe [412], external open step) Möbius 随机级（探针[412]，外部开放步） | `verify_hl.c` (11) / `verify_hl_tech.c` (9), PASS |
-| Twin 孪生 | if Lemma 5.1 then `π₂(x) ≥ ⌊log₂x/6⌋ → ∞` | Lemma 5.1 = weak twin-prime form 引理 5.1 = 孪生猜想弱形式 | `verify_twin_count.c` / `verify_twin_tech.c` (10), PASS |
+| Twin 孪生 | if Lemma 5.1 then `π₂(x) ≥ ⌊log₂x/6⌋ → ∞` | Lemma 5.1 = weak twin-prime form 引理 5.1 = 孪生猜想弱形式 | `verify_twin_count.c` (6) / `verify_twin_tech.c` (10), PASS |
 | RH | if Lemma 4.1 then zeros on σ=1/2 | Lemma 4.1 = unique-radius theorem (framework caliber) 唯一半径定理（体系口径） | `verify_rh.c` (12) / `verify_rh_tech.c` (9), PASS |
 | P vs NP | if Lemma 4.1 then P ≠ NP | Lemma 4.1 = Valiant VP≠VNP (open; Pólya m=n closed) Valiant VP≠VNP（开放；Pólya m=n 已闭） | `verify_pvsnp.c` / `verify_pvsnp_tech.c` (9), PASS |
 | Hodge 霍奇 | if Lemma 4.1 then (p,p) classes algebraic | Lemma 4.1 = AJ torsion, p≥2 (Griffiths 1969 conflict recorded) AJ 挠性 p≥2（Griffiths 1969 冲突已录） | `verify_hodge.c` (10) / `verify_hodge_tech.c` (9), PASS |
 | YM | if Lemma 4.1 then mass gap Δ>0 | Lemma 4.1 = λ₁>0 in 4D SU(3) continuum limit (Clay core) 4D SU(3) 连续极限 λ₁>0（Clay 核心） | `verify_ym.c` (9) / `verify_ym_tech.c` (9), PASS |
 | NS | if Lemma 6.1 then no blow-up | Lemma 6.1 = reconnection monotonicity (archive 4.65 conjecture) 重联单调（库内 4.65 conjecture） | `verify_ns.c` (10) / `verify_ns_tech.c` (9), PASS |
 | BSD | if Lemma 4.1 then ord = rank | Lemma 4.1 = pairing = zero thickness (= BSD itself for general rank) 配对=零点厚度（一般秩即 BSD 本身） | `verify_bsd.c` (13) / `verify_bsd5.c` (10) / `verify_bsd6.c` (10) / `verify_bsd_tech.c` (9), PASS |
+
+**判据数口径 / counting caliber**: 括号里的数字 = 该支**可失败判据的条数**（不是打印了多少行，也不是
+"运行没崩"）。凡只打印不判的项都已在本版改成返回 dev 并计入 `RESULT PASS=n FAIL=m`；`EXIT` 由
+`FAIL>0` 或 `dev>阈值` 共同决定，因此**任一判据失配都会被 CI 看见**。
+Numbers in parentheses = the count of **failable criteria** per witness (not printed lines, not "it ran").
+Every print-only item was converted to return a deviation and enter `RESULT PASS=n FAIL=m`; `EXIT`
+depends on `FAIL>0 || dev>threshold`, so any mismatch is visible to CI.
+
+**Two caliber notes / 两处口径说明**:
+- `verify_rh.c` = **12**（P1–P12；P5/P11/P12 已从"只打印"改为可失败判据），旧稿曾按 9 记。
+- `verify_twin_count.c` = **6**（π₂ 五档对公认值 + 结构律"非 6m 中心者恒 1"），论文旧稿未单列此支计数。
+- `verify_simlayer.c` = **17**，是全系列**共用**的模拟器见证，不计入任何单篇的主支数。
+
+**What each witness actually verifies / 每支见证实际验的是什么**（防止把「实现精度」读成「定理成立」）：
+
+| Witness 见证 | Actually verified 实际所验 | Not verified 未验 |
+|---|---|---|
+| `verify_rh.c` | ζ 的复 Euler–Maclaurin 实现精度（N=1000 · K=10 · t≤50）：`max dev = 1.562e−09 < 1e−08` | σ=1/2 上的零点存在性（Lemma 4.1 仍为体系口径） |
+| `verify_pvsnp.c` | GF(2) 上 `rank = (n−1)²+1` 对 n=2..8 全中（17 项）、`bad_id=0`、SAT 0/512、UNSAT 0/65536 | `VP ≠ VNP`（Lemma 4.1 仍是公开问题） |
+| `verify_twin_count.c` | π₂(x) 五档与公认值逐一相符 + 结构律「非 6m 中心者恒 1（唯 (3,5)）」 | 孪生猜想本身（Lemma 5.1 = 弱形式） |
+| 其余各支 | 条件定理的**前提所涉的有限格**（矩阵恒等式、秩表、常数账、复算表） | 前提在一般情形下的成立性 |
 
 All 20 C probes compile with `gcc -Wall -Wextra -O2 -D_GNU_SOURCE` with **zero warnings**,
 pass the four project gates, and run with `EXIT=0`. The four gate sources are bundled in
@@ -109,7 +130,7 @@ Each conjecture directory holds two versions of its paper:
 
 | File 文件 | Language 语言 | Role 角色 |
 |---|---|---|
-| `paper.md` | English 英文 | The version written for this repository (all math identical to the Chinese original) 本仓库英文版（数学内容与中文原件一致） |
+| `paper.md` | English 英文 | The abridged English version written for this repository: same section order, ~1/5 length; **not** a full translation — the sections that only exist in the Chinese version are listed in §Known gaps 本仓库英文压缩版：节序一致、篇幅约 1/5；**不是**全译——仅中文版有的段落列在 §Known gaps |
 | `paper.zh.md` | Chinese 中文 | The original paper from the `D:\lw\papers\` archive, kept verbatim `D:\lw\papers\` 档案中的中文原件，一字未动 |
 
 The same pairing applies under `shared/docs/`: `registry.md` / `registry.zh.md` and
@@ -126,6 +147,47 @@ The same pairing applies under `shared/docs/`: `registry.md` / `registry.zh.md` 
 > 仓库中的英文文档、文件名与矩阵 CSV 为英文；中文论文以独立 `.zh.md` 文件存放（绝不混入英文文件）。
 > C 源码与 `.out.txt` 运行日志按机器见证原件保留（注释与输出标签为中文，忠实对应 `D:\dpgo` 探针档案）；
 > 翻译它们会破坏与所复现档案文件的一一对应。矩阵 CSV 的层名为档案登记层名的英文翻译，行序不变。
+
+## Known gaps / 已知缺口
+
+本节是 README 正文里 `§Known gaps` 指向的实体清单：**哪些东西只在中文版里、哪些东西本仓没做**。
+This is the entity list that `§Known gaps` refers to elsewhere in this README: what exists only in the
+Chinese version, and what this repository does not do.
+
+### 1. 英文版不是中文版的全译 / the English `paper.md` is abridged, not a translation
+
+英文版按同一**节序**压缩，篇幅约中文版的 1/5。下列段落**只在 `paper.zh.md` 里**（节数实测）：
+
+| 篇 Paper | `paper.md` 节数 | `paper.zh.md` 节数 | 仅中文版有的节（部分） |
+|---|---|---|---|
+| BSD | 11 | 49 | §0′ 倒数形式 · §0″ 倒数三项实证 · §5quater（Reg / c_p / #Ш 全账）· 附录 A · 附录 B |
+| Hardy–Littlewood | 12 | 43 | §0′ · §5bis（`E_微` 由什么控制）· §7bis（本篇独立复算）· 附录 A · 附录 B |
+| Hodge | 12 | 43 | §0′ · 附录 A · 附录 B（与同系列三篇的分工） |
+| Navier–Stokes | 10 | 44 | §0′ · §0 分层口径 · §8 数值表 等 |
+| P vs NP / RH / Twin / YM | 10–12 | 40+ | §0′ · §5ter / §5quater · §7bis · 附录 A/B |
+
+⟹ 读英文版时**不要**假设它与中文版逐节等价；需要构造层与附录细节时以 `paper.zh.md` 为准。
+
+### 2. 见证的边界 / what the witnesses do **not** verify
+
+见上方「What each witness actually verifies / 每支见证实际验的是什么」表。三处最容易误读的：
+
+- `verify_rh.c`（12 判据）= ζ 的复 Euler–Maclaurin **实现精度** `max dev = 1.562e−09 < 1e−08`；
+  **不**验证 σ=1/2 上零点是否存在（引理 4.1 仍为体系口径）。
+- `verify_pvsnp.c`（17 判据）= GF(2) 上 `rank = (n−1)²+1`（n=2..8）、`bad_id=0`、SAT `0/512`、`0/65536`；
+  **不**验证 `VP ≠ VNP`。
+- `verify_twin_count.c`（6 判据）= π₂(x) 五档对公认值 + 结构律「非 6m 中心者恒 1」；**不**验证孪生猜想。
+
+### 3. 本仓没做的事 / not attempted here
+
+1. **英文版全译**：只补了节序与承重句，未逐节翻译。
+2. **跨篇统一定理的陈述**：八条路径共享容器 / 对称 / 闭环三件，但**分别陈述**，没有写出一条统一证明
+   （接口见 `shared/docs/registry.md` 的「跨篇统一定理：接口留白」）。
+3. **预编译件的版本一致性**：`dist/win64/` 由当前源码编出（24 个 exe + 新校验和，就地 `sha256sum -c` 全通过）；
+   `dist/win64-v1.0.1/` 是历史发布快照，其 exe 早于本轮的判据改造（例如其中的 `verify_rh.exe`
+   只打印 `RESULT max dev = …`，没有 `RESULT PASS=12`）。要对外发布需另开 tag。
+4. **规约级门禁的语义审查**：4 道门禁（`check_onestep` / `chk_loops` / `chk_res` / `chk_scan`）只做**结构**检查
+   （`main` 直接层无循环、`res` 不是字面常量、判据不空洞等），**不判断**判据选得对不对、量是不是选错。
 
 ## How to reproduce / 如何复现
 

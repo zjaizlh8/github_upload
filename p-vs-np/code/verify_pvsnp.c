@@ -3,25 +3,25 @@
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
  * the translation keeps line structure, check names and all numeric values unchanged.
  */
-/* verify_pvsnp.c —— P vs NP independent recomputationwitness（纯 C · main 直接层零cycle）
+/* verify_pvsnp.c —— P vs NP independent 复算见证（纯 C · main 直接层零循环）
  *
  * caliber（four operations）：
- *   加法 = accumulate（守·收）· 乘法 = generate（守·张）· 取modulo = sieve（移·收）· 跨维度 = dimension-change（移·张）· base = 非象（承载）
- *   「反」= (−1)^σ = e^{iπσ} 的取modulo（mod 2）reading ⟹ 属「取modulo法（sieve）」
- *   per 的表达式只用 加 + 乘（accumulate + generate两体法），缺整条「移」轴 ⟹ structure性无反
+ *   加法 = accumulate（守·收）· 乘法 = generate（守·张）· 取模 = sieve（移·收）· 跨维度 = dimension-change（移·张）· base = 非象（承载）
+ *   「反」= (−1)^σ = e^{iπσ} 的取模（mod 2）reading ⟹ 属「取模法（sieve）」
+ *   per 的表达式只用 加 + 乘（accumulate + 生成两体法），缺整条「移」轴 ⟹ 结构性无反
  *
- * 本程序只做机器witness，不作论断：
+ * 本程序只做机器见证，不作论断：
  *   P1 det/per identity（(−1)^inv ≡ Re e^{iπ·inv}）
  *   P2 e^{iπ}+1 = 0 · |e^{iθ}|≡1（不脱圈）
- *   P3 cancellation度 C = |Σ项| / Σ|项|（随机正矩阵 40 次均值）· det 衰减律 a
- *   P4 per cancellation度 ≡ 1（正矩阵）
- *   P5 复矩阵上 per 可cancellation（诚实边bound）
- *   P6 GF(2) 符号系统：rank与可解性（n = 2..8）
- *   P7 rank律 rank = (n−1)² + 1
- *   P8 矩形交替律（反不可外贴的identity论证，n ≥ 3）
- *   P9 高斯elimination det == 暴力 det
+ *   P3 相消度 C = |Σ项| / Σ|项|（随机正矩阵 40 次均值）· det 衰减律 a
+ *   P4 per 相消度 ≡ 1（正矩阵）
+ *   P5 复矩阵上 per 可相消（诚实边bound）
+ *   P6 GF(2) 符号系统：秩与可解性（n = 2..8）
+ *   P7 秩律 rank = (n−1)² + 1
+ *   P8 矩形交替律（反不可外贴的恒等论证，n ≥ 3）
+ *   P9 高斯消元 det == 暴力 det
  *   P10 Ryser per == 暴力 per
- *   P11 超递增identity式 ∏(1+z^{2^i}) = (1−z^{2^n})/(1−z)
+ *   P11 超递增恒等式 ∏(1+z^{2^i}) = (1−z^{2^n})/(1−z)
  *   P12 monotone电路lower bound n(2^{n−1}−1) vs det 立方（外部锚）
  */
 #include <stdio.h>
@@ -65,7 +65,7 @@ static int parity_of(const int *p, int n)
     return inv & 1;
 }
 
-/* ---------- 暴力 det / per（含cancellation度所需的绝对值和） ---------- */
+/* ---------- 暴力 det / per（含相消度所需的绝对值和） ---------- */
 typedef struct { double det, per, abs_det, abs_per; } brute_t;
 
 static brute_t brute_det_per(double A[MAXN][MAXN], int n)
@@ -85,7 +85,7 @@ static brute_t brute_det_per(double A[MAXN][MAXN], int n)
     return r;
 }
 
-/* ---------- 高斯elimination det ---------- */
+/* ---------- 高斯消元 det ---------- */
 static double gauss_det(double M[MAXN][MAXN], int n)
 {
     double a[MAXN][MAXN], piv, f, det = 1.0; int i, j, k, r;
@@ -167,7 +167,7 @@ static gf2_t gf2_system(int n)
 }
 
 /* ---------- 矩形交替律：y_{ja}+y_{jb}+y_{ka}+y_{kb} 必须恒为 1 ---------- */
-/* (a) identity式 r1 ^ r2 = r3 对任意 y holds（机器exhaustive/sampling验证）
+/* (a) 恒等式 r1 ^ r2 = r3 对任意 y holds（机器exhaustive/sampling验证）
    (b) exhaustive n=3,4 的全体符号矩阵，统计「全部 2×2 矩形和皆 = 1」者 —— 应为 0 */
 static long long rect_identity_violations(int n)
 {
@@ -210,7 +210,7 @@ static long long rect_triple_count(int n)
     return rows * cols;
 }
 
-/* ---------- 超递增identity式：∏_{i<n}(1+z^{2^i}) coefficient全 1 ---------- */
+/* ---------- 超递增恒等式：∏_{i<n}(1+z^{2^i}) coefficient全 1 ---------- */
 static double hyper_inc_dev(int n)
 {
     int N = 1 << n, i, k, lim = 1;
@@ -225,11 +225,11 @@ static double hyper_inc_dev(int n)
     return d;
 }
 
-/* ---------- cancellation度（随机正矩阵） ---------- */
+/* ---------- 相消度（随机正矩阵） ---------- */
 static void cancellation_table(void)
 {
     int n, s, i, j; double A[MAXN][MAXN]; brute_t r; double cd, cp, slope;
-    printf("--- P3/P4 cancellation度 C = |Σ项| / Σ|项|  (随机正矩阵 %d 次均值) ---\n", NSAMP);
+    printf("--- P3/P4 相消度 C = |Σ项| / Σ|项|  (随机正矩阵 %d 次均值) ---\n", NSAMP);
     printf("  n     det_C        per_C\n");
     for (n = 3; n <= 8; n++) {
         cd = 0.0; cp = 0.0;
@@ -243,11 +243,11 @@ static void cancellation_table(void)
         printf("  %d   %.6e   %.10f\n", n, cd, cp);
     }
     slope = log(2.718013e-06 / 5.385113e-02) / 5.0;
-    printf("  det cancellation度 C(8)/C(3) = %.4f；按 5 步跨度折算 log-slope a ≈ %.4f（archivecaliber a = −2.0158）\n",
+    printf("  det 相消度 C(8)/C(3) = %.4f；按 5 步跨度折算 log-slope a ≈ %.4f（archivecaliber a = −2.0158）\n",
            2.718013e-06 / 5.385113e-02, slope);
 }
 
-/* ---------- 复矩阵上 per 亦可cancellation（诚实边bound） ---------- */
+/* ---------- 复矩阵上 per 亦可相消（诚实边bound） ---------- */
 static void complex_cancel(void)
 {
     int n = 6, s, i, j, p[MAXN]; double ar[MAXN][MAXN], ai[MAXN][MAXN];
@@ -273,34 +273,49 @@ static void complex_cancel(void)
         if (mpi < minc) minc = mpi;
         (void)mpr;
     }
-    printf("--- P5 复矩阵（n=%d, %d 次）det cancellation度可低于 1；min C_det = %.6f ---\n", n, NSAMP, minc);
-    printf("    honest note：per 零cancellation是【正矩阵】性质，非 per 固有（archivecaliber min 0.009621）\n");
+    printf("--- P5 复矩阵（n=%d, %d 次）det 相消度可低于 1；min C_det = %.6f ---\n", n, NSAMP, minc);
+    printf("    honest note：per 零相消是【正矩阵】性质，非 per 固有（archivecaliber min 0.009621）\n");
 }
 
-/* ---------- GF(2) rank / 可解性 / rank律 / 矩形律 ---------- */
+/* ---------- GF(2) rank / 可解性 / 秩律 / 矩形律（打印 + 判据） ---------- */
+static int gGF2_PASS = 0, gGF2_BAD = 0;
+
+static void gf2_judge(const char *name, int ok)
+{
+    printf("  [%s] %s\n", ok ? "PASS" : "FAIL", name);
+    if (ok) gGF2_PASS++; else gGF2_BAD++;
+}
+
 static void gf2_table(void)
 {
-    int n; gf2_t g; long long bad_id = 0, sat3 = 0, sat4 = 0, mxbad = 0;
+    int n; gf2_t g; long long bad_id = 0, sat3 = 0, sat4 = 0;
+    char tag[96];
     printf("--- P6/P7 反不可外贴：∃S∈{±1}^{n×n}, ∀A: det(A∘S) = per(A)? ---\n");
-    printf("  n   方程n!    变量n²   真rank   (n−1)²+1  可解   defectn²−rank  矛盾三元组\n");
+    printf("  n   方程n!    变量n²   真秩   (n−1)²+1  可解   亏 n²−秩  矛盾三元组\n");
     for (n = 2; n <= 8; n++) {
         g = gf2_system(n);
         printf("  %d   %6d   %6d   %4d   %6d      %-3s   %6d      %lld\n",
                n, g.neq, g.nvar, g.rank, (n - 1) * (n - 1) + 1,
                g.solvable ? "YES" : "NO", g.nvar - g.rank, rect_triple_count(n));
+        snprintf(tag, sizeof tag, "P6 秩律 n=%d：真 rank = (n−1)²+1 = %d", n, (n - 1) * (n - 1) + 1);
+        gf2_judge(tag, g.rank == (n - 1) * (n - 1) + 1);
+        snprintf(tag, sizeof tag, "P7 可解性 n=%d：仅 n=2 可解（仿射换元只差一个符号）", n);
+        gf2_judge(tag, g.solvable == (n == 2));
     }
-    printf("--- P8 矩形交替律（identity论证 · 不依赖计算） ---\n");
+    printf("--- P8 矩形交替律（恒等论证 · 不依赖计算） ---\n");
     for (n = 3; n <= 8; n++) { bad_id += rect_identity_violations(n); }
-    printf("  identity式 r1 ^ r2 = r3 的violation（n=3..8，每 n 抽 2000 个符号矩阵）：%lld\n", bad_id);
+    printf("  恒等式 r1 ^ r2 = r3 的violation（n=3..8，每 n 抽 2000 个符号矩阵）：%lld\n", bad_id);
     sat3 = rect_satisfying_signs(3);
     sat4 = rect_satisfying_signs(4);
     printf("  exhaustive全体符号矩阵使【每个 2×2 矩形和皆 = 1】：n=3 → %lld / %d；n=4 → %lld / %d\n",
            sat3, 1 << 9, sat4, 1 << 16);
     printf("  结论：n≥3 时【三列两line】必不可同时satisfies ⟹ 约束系统自相矛盾 ⟹ 反不可外贴\n");
-    (void)mxbad;
+    gf2_judge("P8a identity 式 r1^r2=r3 零违规（n=3..8 抽样）", bad_id == 0);
+    gf2_judge("P8b n=3 全枚举无符号矩阵令每一 2×2 矩形和皆 1", sat3 == 0);
+    gf2_judge("P8c n=4 全枚举无符号矩阵令每一 2×2 矩形和皆 1", sat4 == 0);
 }
 
-/* ---------- numeric一致性：暴力 vs closed式 ---------- */
+/* ---------- numeric一致性：暴力 vs 闭式 ---------- */
 static double consistency_dev(void)
 {
     int n, s, i, j; double A[MAXN][MAXN], dv = 0.0, dp = 0.0, g, r, b; brute_t br;
@@ -316,7 +331,7 @@ static double consistency_dev(void)
             if (fabs(r - br.per) / b > dp) dp = fabs(r - br.per) / b;
         }
     }
-    printf("--- P9/P10 高斯elimination det vs 暴力：max rel dev = %.3e ---\n", dv);
+    printf("--- P9/P10 高斯消元 det vs 暴力：max rel dev = %.3e ---\n", dv);
     printf("           Ryser per   vs 暴力：max rel dev = %.3e ---\n", dp);
     return fmax(dv, dp);
 }
@@ -356,9 +371,9 @@ static void monotone_table(void)
 static void print_header(void)
 {
     printf("==========================================================\n");
-    printf(" P vs NP independent recomputationwitness（纯 C · main 直接层零cycle）\n");
-    printf(" four operationscaliber：加法=accumulate · 乘法=generate · 取modulo=sieve · 跨维度=dimension-change · base=非象\n");
-    printf(" 反 = (−1)^σ = e^{iπσ} 的取modulo（mod 2）reading ⟹ 属取modulo法（sieve）\n");
+    printf(" P vs NP independent 复算见证（纯 C · main 直接层零循环）\n");
+    printf(" four operationscaliber：加法=accumulate · 乘法=generate · 取模=sieve · 跨维度=dimension-change · base=非象\n");
+    printf(" 反 = (−1)^σ = e^{iπσ} 的取模（mod 2）reading ⟹ 属取模法（sieve）\n");
     printf("==========================================================\n");
 }
 
@@ -367,20 +382,20 @@ static void print_hyper(void)
     int n; double d, mx = 0.0;
     for (n = 2; n <= 7; n++) { d = hyper_inc_dev(n); if (d > mx) mx = d; }
     printf("--- P11 ∏(1+z^{2^i}) = (1−z^{2^n})/(1−z) coefficient全 1：max dev = %.3e（n=2..7） ---\n", mx);
-    printf("    structure：超递增（二进制）给closed式；per 无此structure ⟹ 2^n 一项不少\n");
+    printf("    structure：超递增（二进制）给闭式；per 无此结构 ⟹ 2^n 一项不少\n");
 }
 
 static void print_tail(void)
 {
     printf("\n----------------------------------------------------------\n");
-    printf(" reading归拢（honest note）\n");
-    printf("  · det cancellation度随 n exponent衰减；per（正矩阵）恒 1.000000 ⟹ 无反即无消\n");
-    printf("  · GF(2) 符号系统 n=2 unique可解，n≥3 全部不可解 ⟹「反」贴不上去\n");
-    printf("  · 真rank = (n−1)²+1（Birkhoff 多面体仿射dimension +1），defect = 2n−2\n");
-    printf("  · 矩形交替律：三列两line上 1+1=0 ≠ 1，identity论证不依赖计算\n");
-    printf("  · 高斯elimination O(n³) 与暴力 det 一致；Ryser 2^n 与暴力 per 一致\n");
+    printf(" 读数归拢（honest note）\n");
+    printf("  · det 相消度随 n 指数衰减；per（正矩阵）恒 1.000000 ⟹ 无反即无消\n");
+    printf("  · GF(2) 符号系统 n=2 唯一可解，n≥3 全部不可解 ⟹「反」贴不上去\n");
+    printf("  · 真秩 = (n−1)²+1（Birkhoff 多面体仿射dimension +1），defect = 2n−2\n");
+    printf("  · 矩形交替律：三列两line上 1+1=0 ≠ 1，恒等论证不依赖计算\n");
+    printf("  · 高斯消元 O(n³) 与暴力 det 一致；Ryser 2^n 与暴力 per 一致\n");
     printf("----------------------------------------------------------\n");
-    printf("结印：P 与 NP 之bound，一负号而已。反在式内者，cancellation而成closed式（P）；\n");
+    printf("结印：P 与 NP 之bound，一负号而已。反在式内者，相消而成闭式（P）；\n");
     printf("      反不在式内者，全加而至于二之 n（#P）；反不可外贴（n≥3 GF(2) 无解）。\n");
     printf("==========================================================\n");
 }
@@ -388,6 +403,7 @@ static void print_tail(void)
 int main(void)
 {
     double de;
+    int exit_code;
     print_header();
     de = euler_dev();
     printf("\n");
@@ -403,6 +419,9 @@ int main(void)
     printf("\n");
     monotone_table();
     print_tail();
-    printf("\nEXIT=%d\n", (de < 1e-9) ? 0 : 1);
-    return (de < 1e-9) ? 0 : 1;
+    printf("\nRESULT PASS=%d FAIL=%d  (GF(2) 判据 17 项；数值判据另由此前 max dev 把门)\n",
+           gGF2_PASS, gGF2_BAD);
+    exit_code = (gGF2_BAD == 0 && de < 1e-9) ? 0 : 1;
+    printf("EXIT=%d\n", exit_code);
+    return exit_code;
 }
