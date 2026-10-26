@@ -2,6 +2,12 @@
  * 判据：main 体【直接层】不得出现 for/while。
  * 修 v6（2026-10-26）：main 直接层零循环——argv 遍历搬进 run_files()；
  *   识别函数改「首见证即返回」形态且函数名不含判据关键词。
+ * 修 v7（2026-10-26·上线 CI 时实测发现）：strip() 里 for 头已带 i++，函数体尾部又有一句 i++，
+ *   两处叠加 ⟹ 扫描器【每步跳 2 字节】，等价只读了半个文件。后果：
+ *     ① `*` 与 `/` 分处奇偶两侧时 `结尾的 *斜杠` 永远配不上 ⟹ 块注释永不闭合 ⟹ 其后代码整段被抹成空格；
+ *     ② 23 支源码里 19 支因此被判「無 main」⟹ **这 19 支从未被真正检查过（覆盖面 4/23）**，且退出码 1。
+ *   实证：把该文件前 45 字节喂给 strip() 后缓冲区呈 "....-.-.a...-.-.*." 之类的隔字节垃圾。
+ *   修法：删掉函数体尾部多余的 i++（for 头的 i++ 保留）。修后 23/23 全部识别到 main、异常 0。
  * F: chk_loops.exe 檔案…   R: 退出码 0=全部合规 / 1=有违规或异常
  * 编译：gcc -Wall -Wextra -O2 -o chk_loops.exe chk_loops.c */
 #include <stdio.h>
@@ -16,7 +22,7 @@ static void strip(char*s,long n){
         else if(is){ if(c=='\\'){s[i]=' ';if(i+1<n&&s[i+1]!='\n')s[i+1]=' ';i++;} else {if(c=='"')is=0; if(c!='\n')s[i]=' ';} }
         else if(ic){ if(c=='\\'){s[i]=' ';if(i+1<n&&s[i+1]!='\n')s[i+1]=' ';i++;} else {if(c=='\'')ic=0; if(c!='\n')s[i]=' ';} }
         else { if(c=='/'&&d=='/'){s[i]=' ';s[i+1]=' ';i++;il=1;} else if(c=='/'&&d=='*'){s[i]=' ';s[i+1]=' ';i++;ib=1;}
-               else if(c=='"'){s[i]=' ';is=1;} else if(c=='\''){s[i]=' ';ic=1;} } i++; } }
+               else if(c=='"'){s[i]=' ';is=1;} else if(c=='\''){s[i]=' ';ic=1;} } } }
 static int ident(char c){ return (c>='a'&&c<='z')||(c>='A'&&c<='Z')||(c>='0'&&c<='9')||c=='_'; }
 /* 识别「CHK 调用」：三字母 chk/CHK/Chk + 可选数字 + 空白 + '('。首见证即返回。 */
 static int lex_call_paren(char *p, char *e){

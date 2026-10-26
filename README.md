@@ -1,6 +1,20 @@
 # Structural Proofs of Eight Millennium-Type Problems
 # 八道千禧年型问题的结构证明
 
+[![verify](https://github.com/zjaizlh8/github_upload/actions/workflows/verify.yml/badge.svg)](https://github.com/zjaizlh8/github_upload/actions/workflows/verify.yml)
+![probes](https://img.shields.io/badge/C%20probes-19-blue)
+![gates](https://img.shields.io/badge/archive%20gates-4%2F4-brightgreen)
+![problems](https://img.shields.io/badge/problems-8-purple)
+[![license](https://img.shields.io/badge/license-CC%20BY%204.0-lightgrey)](https://creativecommons.org/licenses/by/4.0/)
+
+```bash
+git clone https://github.com/zjaizlh8/github_upload.git && cd github_upload
+make run     # 编译 19 支验证器并逐支实跑 / build + run every verifier
+make gates   # 4 道落档门禁扫全部 .c / 4 archive gates over all sources
+```
+Windows 无 `make` 时：`gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o t <any>/code/verify_*.c -lm && ./t`。
+CI（GitHub Actions）在每次 push 上跑同一条链：编译 23 个 `.c` → 跑 19 支验证器 → 4 道门禁。
+
 **Author / 作者:** zjaizlh8 (GitHub) · 2026-10-26
 **License / 许可:** CC BY 4.0 (text and code / 文本与代码); conjectures themselves are public mathematical statements / 猜想表述本身为公有数学问题。
 

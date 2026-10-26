@@ -1,0 +1,81 @@
+name: verify
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-run:
+    name: build + run all verifiers + gates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Toolchain
+        run: gcc --version | head -1 && make --version | head -1
+
+      - name: Build all verifiers (gcc -Wall -Wextra -O2)
+        run: |
+          set -euo pipefail
+          mkdir -p bin
+          n=0
+          for f in $(find . -name '*.c' | sort); do
+            out="bin/$(basename "$f" .c)"
+            gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o "$out" "$f" -lm
+            n=$((n+1))
+          done
+          echo "编译通过：$n / $n 个 .c" | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Run every verifier and collect PASS/FAIL
+        run: |
+          set -uo pipefail
+          bad=0
+          {
+            echo ""
+            echo "| program | exit | PASS | FAIL | RESULT |"
+            echo "|---|---|---|---|---|"
+          } >> "$GITHUB_STEP_SUMMARY"
+          for b in bin/*; do
+            case "$(basename "$b")" in check_onestep|chk_*) continue ;; esac
+            out=$(timeout 300 "$b" 2>&1); rc=$?
+            p=$(printf '%s\n' "$out" | grep -oE 'PASS=[0-9]+' | head -1 | cut -d= -f2); p=${p:-—}
+            f=$(printf '%s\n' "$out" | grep -oE 'FAIL=[0-9]+' | head -1 | cut -d= -f2); f=${f:-—}
+            r=$(printf '%s\n' "$out" | grep -oE 'max dev *= *[0-9.eE+-]+' | head -1); r=${r:-—}
+            echo "| \`$(basename "$b")\` | $rc | $p | $f | $r |" >> "$GITHUB_STEP_SUMMARY"
+            # 判据：退出码 0；若打了 FAIL=k 则 k 必须为 0；若打了 EXIT= 则必须为 EXIT=0
+            if [ "$rc" -ne 0 ]; then echo "::error::$(basename "$b") exit=$rc"; bad=1; fi
+            if [ "$f" != "—" ] && [ "$f" != "0" ]; then echo "::error::$(basename "$b") FAIL=$f"; bad=1; fi
+            if printf '%s\n' "$out" | grep -qE 'EXIT=[0-9]+' && ! printf '%s\n' "$out" | grep -q 'EXIT=0'; then
+              echo "::error::$(basename "$b") 非 EXIT=0"; bad=1
+            fi
+          done
+          exit "$bad"
+
+      - name: Run the four archive gates over all sources
+        run: |
+          set -uo pipefail
+          files=$(find . -name '*.c' | sort)
+          bad=0
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "### 落档门禁（4 道）" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          for g in check_onestep chk_loops chk_res chk_scan; do
+            out=$(timeout 300 "bin/$g" $files 2>&1); rc=$?
+            tail1=$(printf '%s\n' "$out" | grep -E '判定|全過|違規|====' | tail -1)
+            echo "- \`$g\` → exit=$rc · ${tail1:-（无摘要行）}" >> "$GITHUB_STEP_SUMMARY"
+            if [ "$rc" -ne 0 ]; then echo "::error::$g exit=$rc"; bad=1; fi
+          done
+          exit "$bad"
+
+      - name: Upload built binaries
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verifiers-linux-x64
+          path: bin/
+          retention-days: 14

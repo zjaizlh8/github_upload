@@ -12,3 +12,5 @@ a.out
 # local scratch
 *.tmp
 *.log
+bin/
+_chk_scan.txt
