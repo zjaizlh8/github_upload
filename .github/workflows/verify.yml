@@ -19,7 +19,7 @@ jobs:
       - name: Toolchain
         run: gcc --version | head -1 && make --version | head -1
 
-      - name: Build all 23 .c (gcc -Wall -Wextra -O2 -D_GNU_SOURCE)
+      - name: Build all 24 .c (gcc -Wall -Wextra -O2 -D_GNU_SOURCE)
         run: |
           set -euo pipefail
           mkdir -p bin
@@ -37,7 +37,7 @@ jobs:
           bad=0
           {
             echo ""
-            echo "### 19 支验证器实跑 / verifier runs"
+            echo "### 20 支验证器实跑 / verifier runs"
             echo ""
             echo "| program | exit | PASS | FAIL | RESULT |"
             echo "|---|---|---|---|---|"
@@ -60,7 +60,7 @@ jobs:
           echo "失败标记 bad=$bad"
           exit "$bad"
 
-      - name: Run the four archive gates over all 23 sources
+      - name: Run the four archive gates over all 24 sources
         run: |
           set +e            # runner 默认 bash -e：解析型 grep 无匹配会整步退出，故显式关闭
           mapfile -t files < <(find . -name '*.c' | sort)
