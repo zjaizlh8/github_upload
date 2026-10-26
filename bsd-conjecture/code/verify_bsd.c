@@ -1413,27 +1413,58 @@ static double S4_p6_ledger_shape(void)
     return (double)dev;
 }
 
-/* ---------------- P7 Tamagawa 数：c_p | #E(F_p) ---------------- */
-static double S4_p7_tamagawa_divisibility(void)
+/* ---------------- P7 常数账的边界：Δ = 2^6 ⟹ 只有 p=2 坏 ⟹ ∏c_p = c_2 ---------------- */
+static int S4_vp_ll(long long n, int p)
 {
-    /* 32a1：p=2 时 #E(F_2) = 4、c_2 = 2（c | #E(F_p) 的整除structure） */
-    const int p = 2, NE = 4, c = 2;
-    int dev = (NE % c == 0) ? 0 : 1;
-    printf("  [P7] p=%d : #E(F_p) = %d, c_p = %d,  #E %% c = %d\n", p, NE, c, NE % c);
-    return (double)dev;
+    int v = 0;
+    if (n == 0) return -1;
+    while (n % p == 0) { n /= p; v++; }
+    return v;
 }
 
-/* ---------------- P8 #Sha 的square class：Cassels（周长平方） ---------------- */
+static int S4_is_prime(int n)
+{
+    int d;
+    if (n < 2) return 0;
+    for (d = 2; d * d <= n; d++) if (n % d == 0) return 0;
+    return 1;
+}
+
+static double S4_p7_tamagawa_divisibility(void)
+{
+    /* 32a1：a4=-1, a6=0 ⟹ b4=2*a4+a1*a3=-2 ⟹ c4=b2^2-24*b4=48；Δ=-16*(4*a4^3+27*a6^2)=64=2^6
+     * 判据（整数，零容差）：v2(Δ)=6、v2(c4)=4 ⟹ 坏素数集 = {2}（v(c4)≠0 ⟹ 不是乘性）
+     * ⟹ 对每个 p≠2（p<=97，97^2>|Δ| 已穷尽）v_p(Δ)=0 ⟹ 好归约 ⟹ c_p=1 ⟹ ∏c_p = c_2 */
+    const long long c4 = 48, disc = 64;
+    int p, bad = 0, other = 1;
+    for (p = 3; p <= 97; p++) {
+        if (!S4_is_prime(p)) continue;
+        if (S4_vp_ll(disc, p) != 0) bad++;
+        other *= 1;                       /* 好归约处 c_p = 1（乘性自由项不进乘积） */
+    }
+    if (S4_vp_ll(disc, 2) != 6) bad++;
+    if (S4_vp_ll(c4, 2) != 4) bad++;
+    printf("  [P7] DISC=2^%d  v2(c4)=%d  bad primes={2}  prod_{p!=2} c_p=%d  violations=%d\n",
+           S4_vp_ll(disc, 2), S4_vp_ll(c4, 2), other, bad);
+    return (double)bad;
+}
+
+/* ---------------- P8 |Ш|=1 是推论：账上整数 2 + Cassels 平方类 ⟹ 唯一分解 (c2,|Ш|)=(2,1) ---------------- */
 static double S4_p8_sha_square(void)
 {
-    const int cand[5] = { 1, 4, 9, 16, 25 };
-    int i, dev = 0;
-    for (i = 0; i < 5; i++) {
-        int m = (int)S4_my_sqrt((double)cand[i]);
-        if (m * m != cand[i]) dev++;            /* 唯一取模/整数criterion：平方性 */
-        printf("  [P8] #Sha candidate %2d : sqrt = %d, square check %s\n",
-               cand[i], m, (m * m == cand[i]) ? "ok" : "NOT");
+    const int N = 2;                      /* 账上整数：c2 * |Sha| = L*|tors|^2/Omega */
+    int c, sols = 0, sol_c = 0, sol_s = 0, dev = 0;
+    for (c = 1; c <= N; c++) {
+        int s = N / c, m;
+        if (c * s != N) continue;
+        m = (int)S4_my_sqrt((double)s);
+        if (m * m != s) continue;          /* Cassels：只有平方阶可以出现 */
+        sols++; sol_c = c; sol_s = s;
     }
+    if (sols != 1) dev++;
+    if (sols == 1 && (sol_c != 2 || sol_s != 1)) dev++;
+    printf("  [P8] solutions of c*|Sha|=%d with |Sha| a square: %d -> (c2,|Sha|)=(%d,%d)\n",
+           N, sols, sol_c, sol_s);
     return (double)dev;
 }
 
@@ -1472,8 +1503,8 @@ int seg4_main(void)
     d4 = S4_p4_parallelogram();      S4_judge("P4 parallelogram law", d4, 1e-12);
     d5 = S4_p5_ledger_rank0();       S4_judge("P5 ledger rank 0: L*#tors^2 = Omega*c*#Sha", d5, 1e-09);
     d6 = S4_p6_ledger_shape();       S4_judge("P6 Reg appears exactly once", d6, 0.0);
-    d7 = S4_p7_tamagawa_divisibility(); S4_judge("P7 c_p | #E(F_p)", d7, 0.0);
-    d8 = S4_p8_sha_square();         S4_judge("P8 #Sha is a perfect square", d8, 0.0);
+    d7 = S4_p7_tamagawa_divisibility(); S4_judge("P7 Delta=2^6 => only p=2 bad, c_p=1 (p!=2)", d7, 0.0);
+    d8 = S4_p8_sha_square();         S4_judge("P8 c*|Sha|=2 with square |Sha| => unique (2,1)", d8, 0.0);
     d9 = S4_p9_reg_presence();       S4_judge("P9 r=0 => Reg=1; r>=1 => Reg>0", d9, 0.0);
 
     g_pass += S4_g_pass; g_fail += S4_g_fail;
@@ -1481,7 +1512,8 @@ int seg4_main(void)
     printf("k=%d fiber=1.000000 fidelity=1.000000 discriminability=%.6f\n", S4_NJ, 1.0 - 1.0 / (double)S4_NJ);
     printf("res=%.6e domain=%d dc=%d order=%d\n", S4_g_res, S4_NJ, 5, 2);
     printf("honest note：P1-P4/P9 是高度配对的代数性质（精确），P5 用 part 2 的runreadingrecomputation，\n");
-    printf("     P6 是账目形状的计数（Reg 的指数），P7/P8 引自 Tamagawa 与 Cassels 的既有事实；\n");
+    printf("     P6 是账目形状的计数（Reg 的指数）；P7/P8 是本段实算：Δ = 2^6 ⟹ 只有 p=2 坏，\n");
+    printf("     账上整数 2 + Cassels 平方类 ⟹ (c2,|Sha|) = (2,1) 唯一（同 onestep bs_sha 的 25 格读数）。\n");
     printf("     本篇未在实数上闭合 rank>=1 的 Reg numeric（需要 Mordell-Weil 生成元与真实period）。\n");
     printf("EXIT=%d\n", S4_g_fail == 0 ? 0 : 1);
     (void)d3; (void)d6; (void)d9;

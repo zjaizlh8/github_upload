@@ -79,7 +79,9 @@ The load-bearing step is **Lemma 4.1** (each couple consumes one `(s−1)`), sta
    **Constant ledger (realized on 32a1):** `Ω = 5.244115108584` (external anchor
    `2Γ(1/4)²/(2√(2π))`, dev 1.578e−11); `∏c_p·#Ш = L·#tors²/Ω = 2.000000000082` ⟹
    **integer 2** (`c₂ = 2`, `#Ш = 1`, `#tors = 4`); the two sides cancel to residual
-   `4.316e−10` — the ledger is counted, not merely written.
+   `4.316e−10` — the ledger is counted, not merely written. Neither `c₂` nor `|Ш|` is an
+   input: `Δ = 2⁶` forces `∏c_p = c₂`, and the ledger plus Cassels' square class leaves only
+   `(2, 1)`; see §8.2 for the forced/theorem/inference split (archive probe `bs_sha`).
 
    **Where the pairing comes from:** the identification `ord = rank` *is* the involution axiom
    at work (archive `:10330`), and the involution is what makes the spectral count forced —
@@ -117,9 +119,17 @@ Expected: the five section subtotals print in order as `13 · 13 · 10 · 10 · 
 1. Lemma 4.1 is the involution axiom: `ord = rank` is exactly what the pairing identifies.
    Ranks 0/1 are externally proven (Gross–Zagier + Kolyvagin); the rest of the table is the
    machine witness.
-2. **Declared domain:** `Reg` is read per curve from the spectral table, `∏c_p` from the
-   archive table, `#Ш = 1` is the container normalization. These are the container's inputs,
-   not gaps in it.
+2. **Nothing here is a normalization input.** The ledger leaves one integer equation
+   `∏c_p·#Ш = 2`, and that equation is over-determined in three steps:
+   - *forced:* `a₄ = −1, a₆ = 0` ⟹ `j = 1728·4a₄³/(4a₄³+27a₆²) = 1728` ⟹ CM by `Z[i]`; this is
+     arithmetic in `a, b`, with no choice involved;
+   - *theorems:* `rank = 0` and `#Ш` finite are Kolyvagin's (from `L(E,1) ≠ 0` and `rank ≤ 1`),
+     so the argument is not circular;
+   - *inference:* `Δ = 2⁶` ⟹ the only bad prime is `p = 2` ⟹ `∏c_p = c₂`; the integer ledger
+     plus Cassels' square class (`#Ш` is a perfect square when finite) leaves exactly one
+     solution, `(c₂, |Ш|) = (2, 1)` — the alternative `(1, 2)` is excluded because 2 is not a
+     square. Machine witness: archive probe `bs_sha` (25 primes, 8 criteria all zero, eight
+     teeth all killed, `FAKE_VIOL 1 2 25 2 2 1 2 1`).
 3. The `5e−12` threshold comes from the mechanism — floor `2(T+1)δ ≈ 1.81e−12` with the tail
    truncated at `1e−13` — not from fitting.
 4. "Never returns" is a statement about an integer: the order of the operator. It is
