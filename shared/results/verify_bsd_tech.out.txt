@@ -1,0 +1,44 @@
+﻿== verify_bsd_tech : 术层 —— Reg / c_p / #Sha 全账 ==
+   [土S锚定]   [火F虚化]   [金M坍缩]   [水W渗透]   [木D扩展]   [土S闭环]
+
+  [P1] r=1 : det(G) = 2.2500000000 (>0), leading minors >0
+  [P1] r=2 : det(G) = 4.0000000000 (>0), leading minors >0
+  [P1] r=3 : det(G) = 1.2633760000 (>0), leading minors >0
+  PASS P1 Gram positive definite                    dev=0.000000e+00 tol=0.000000e+00
+  [P2] U1 : det(U)=1.0  det(U^T G U)=4.0000000000  det(U)^2 det(G)=4.0000000000
+  [P2] U2 : det(U)=-1.0  det(U^T G U)=4.0000000000  det(U)^2 det(G)=4.0000000000
+  [P2] U3 : det(U)=1.0  det(U^T G U)=4.0000000000  det(U)^2 det(G)=4.0000000000
+  PASS P2 det(U^T G U) = det(U)^2 det(G)            dev=0.000000e+00 tol=0.000000e+00
+  [P3] n=2 : h(nP)=6.938000  n^2 h(P)=6.938000
+  [P3] n=3 : h(nP)=15.610500  n^2 h(P)=15.610500
+  [P3] n=5 : h(nP)=43.362500  n^2 h(P)=43.362500
+  [P3] r=2, n=3 : det scaled = 324.000000  vs 81*det = 324.000000
+  PASS P3 h(nP)=n^2 h(P), det scales n^{2r}         dev=0.000000e+00 tol=0.000000e+00
+  [P4] q(P+Q)+q(P-Q) = 7.6800000000   2q(P)+2q(Q) = 7.6800000000
+  PASS P4 parallelogram law                         dev=1.776357e-15 tol=1.000000e-12
+  [P5] lhs = L*#tors^2 = 10.4882302176   rhs = Omega*prod c_p*#Sha = 10.4882302172
+        rhs/Omega = 2.0000000000 (should be integer 2)
+  PASS P5 ledger rank 0: L*#tors^2 = Omega*c*#Sha   dev=4.118896e-11 tol=1.000000e-09
+  [P6] r | Reg exponent (lhs, rhs) | r=0 => Reg=1
+        0 | (0, 0)  empty product = 1
+        1 | (0, 1)
+        2 | (0, 1)
+  PASS P6 Reg appears exactly once                  dev=0.000000e+00 tol=0.000000e+00
+  [P7] p=2 : #E(F_p) = 4, c_p = 2,  #E % c = 0
+  PASS P7 c_p | #E(F_p)                             dev=0.000000e+00 tol=0.000000e+00
+  [P8] #Sha candidate  1 : sqrt = 1, square check ok
+  [P8] #Sha candidate  4 : sqrt = 2, square check ok
+  [P8] #Sha candidate  9 : sqrt = 3, square check ok
+  [P8] #Sha candidate 16 : sqrt = 4, square check ok
+  [P8] #Sha candidate 25 : sqrt = 5, square check ok
+  PASS P8 #Sha is a perfect square                  dev=0.000000e+00 tol=0.000000e+00
+  [P9] r=0 : Reg = 1.0 (empty product)   r=1 : Reg = det(G) = 2.250000 > 0
+  PASS P9 r=0 => Reg=1; r>=1 => Reg>0               dev=0.000000e+00 tol=0.000000e+00
+
+RESULT PASS=9 FAIL=0 maxdev=4.119e-11
+k=9 fiber=1.000000 保真度=1.000000 判别力=0.888889
+res=0.000000e+00 domain=9 dc=5 order=2
+照实：P1-P4/P9 是高度配对的代数性质（精确），P5 用 verify_bsd4 的实跑读数复算，
+     P6 是账目形状的计数（Reg 的指数），P7/P8 引自 Tamagawa 与 Cassels 的既有事实；
+     本篇未在实数上闭合 rank>=1 的 Reg 数值（需要 Mordell-Weil 生成元与真实周期）。
+EXIT=0

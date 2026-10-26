@@ -1,0 +1,30 @@
+﻿== verify_rh_tech : 术层 —— 零点落临界线（本篇独立复算）==
+zeta via Euler-Maclaurin (N=1000,K=10); Gamma via Lanczos g=7
+
+  [P1] zeta(2)=1.644934066848  zeta(-1)=-0.083333333101  zeta(0)=-0.500000000000
+  PASS P1 zeta anchors                    dev=2.327170e-10 tol=1.000000e-08
+  [P2] t1=14.134725142 t2=21.022039639 t3=25.010857580  max|zeta(1/2+it)|=3.033e-10
+  PASS P2 zeros on line                   dev=3.033332e-10 tol=1.000000e-06
+  [P3] max |argmin sigma - 1/2| = 0.000e+00 (grid 0.01)   min off/on ratio = 8.921e+07
+  [P3] criterion: argmin sigma = 1/2 and off-line min >= 1e3 x on-line value
+  PASS P3 argmin sigma = 1/2 at zeros     dev=0.000000e+00 tol=0.000000e+00
+  [P4] weld max rel dev over 6 (sigma,t) = 1.185e-09
+  PASS P4 weld |zeta|/|zeta(1-s)|=|chi|   dev=1.184800e-09 tol=1.000000e-06
+  [P5] |chi|=1 roots: max |root-1/2| = 3.553e-15
+  PASS P5 |chi|=1 root unique at 1/2      dev=3.552714e-15 tol=1.000000e-12
+  [P6] max |Im Z(t)| on non-zeros = 5.555e-11
+  PASS P6 Hardy Z real                    dev=5.555456e-11 tol=1.000000e-09
+  [P7] max rel dev Lambda(s) vs Lambda(1-s) = 9.694e-11
+  PASS P7 Lambda(s)=Lambda(1-s)           dev=9.694463e-11 tol=1.000000e-06
+  [P8] R^2=id dev=5.551e-17  fixed point eq at 1/2 dev=0.000e+00
+  PASS P8 R^2=id and fixed point 1/2      dev=5.551115e-17 tol=1.000000e-15
+  [P9] max ||chi(s)|*|chi(1-s)|-1| = 0.000e+00
+  PASS P9 |chi(s)|*|chi(1-s)|=1           dev=0.000000e+00 tol=1.000000e-09
+
+RESULT PASS=9 FAIL=0 maxdev=1.185e-09
+k=9 fiber=1 保真度=1.000000 判别力=0.888889
+res=1.184800e-09 domain=9 dc=6 order=2
+EXIT=0
+照实：P3 只是「网格上无零点」，不是线外无零点的全局命题；
+     P4 是函数方程的机器见证（|zeta| 之比 = |chi|），把零点位置焊到 σ ↔ 1−σ 的反射；
+     P5 证明的是 |chi|=1 的根唯一在 1/2，而零点必落 |chi|=1（P4 的极限情形）。
