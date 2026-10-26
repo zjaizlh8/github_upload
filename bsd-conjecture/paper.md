@@ -455,18 +455,19 @@ The structural reading of this note (the same chain as part one):
 | P10 | Hasse bound `a_p² ≤ 4p` | `0` violations / 95 primes | exact |
 | P11 | dilation commutes / pure imaginary does not | `0.000e+00` | `1e−15` |
 | P12 | product norm = product of norms | `9.447e−15` | `1e−14` |
-| P13 | pole: `163 = 2·9²+1`, `(T+1)²=327` | `9.095e−13` | `5e−12` |
+| P13 | class number (counted by reduced-form enumeration): `h(−163)=1`, `h(−167)=11` | `0.000e+00` (`[sanity]`, not counted) | exact (integer equality) |
 
 ```
-RESULT PASS=13 FAIL=0  max dev=9.095e-13
-k=13 fiber=1.000000 fidelity=1.000000 discriminating power=0.923077
-res=9.094947e-13 domain=13 dc=97 order=2
+[sanity] P13 h(-163)=1 (reduced-form enumeration), -167 past the pole dev=0.000e+00 (identity/sanity, not counted)
+RESULT PASS=12 FAIL=0  max dev=9.447e-15
+k=12 fiber=1.000000 fidelity=1.000000 discriminability=0.916667
+res=9.446710e-15 domain=12 dc=97 order=2
 EXIT=0
 ```
 
-**The four criterion numbers**: `res=9.094947e−13` (dominated by the truncation of the P13 external constant, see below), `domain=13` (the number of check items), `dc=97` (the cardinality of the measured value range: the 95 odd primes `≤ 503` plus 2 algebraic identity witnesses), `order=2` (the order of the involution).
+**The four criterion numbers**: `res=9.446710e−15` (double accumulation in the product norms, see below), `domain=12` (the number of check items; P13 has been demoted to `[sanity]`), `dc=97` (the cardinality of the measured value range: the 95 odd primes `≤ 503` plus 2 algebraic identity witnesses), `order=2` (the order of the involution).
 
-**The P13 tolerance is given by the mechanism** (not by thumb): the library value `T_crit = 17.0831413200251` is given only to the `1e−13` place, and squaring amplifies the truncation to `2(T+1)δ = 2×18.083×5e−14 ≈ 1.81e−12`, so the tolerance takes its first-order upper neighbour `5e−12`. This is the same type as `2262`'s "truncation floor of external values".
+**P13 now has no tolerance at all**: the class number is counted cell by cell through reduced-form enumeration (`a²≤|D|/3`, `|b|≤a≤c`), and the criterion is **integer equality** (`h(−163)=1`, `h(−167)=11`), so there is no adjustable `δ`. The segment maximum deviation `9.447e−15` comes from the product norms of P12, with tolerance `1e−14` fixed by the depth of the double accumulation (twelve factors).
 
 **9bis. Ten check items of `code/verify_bsd.c` (order = rank + constant ledger · this cut)**
 
@@ -496,7 +497,7 @@ EXIT=0
 
 ```bash
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o bsd.exe code/verify_bsd.c && ./bsd.exe
-# five section subtotals 12 · 13 · 10 · 10 · 9, last line RESULT PASS=54 FAIL=0 ; EXIT=0 (max deviation 4.119e-11)
+# five section subtotals 12 · 13 · 10 · 10 · 9, last line RESULT PASS=54 FAIL=0 ; EXIT=0 (max deviation 8.238e-11)
 
 # containers(matrix, domain=onestep, out=matrix_onestep_layer_gap.csv)
 # layers 41 · budget 368 · emitted 41 · gaps [] · all 41 layers D1=0/S2=1/CLOSED=1
@@ -545,7 +546,7 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o bsd.exe code/verify_bsd.c && ./bsd.exe
 
 ## §5quater Construction layer: the full Reg / c_p / #Ш ledger
 
-**In one sentence**: of the four pieces of the ledger, $\Omega$ and $\mathrm{Reg}$ are **real numbers (volumes)**, $\prod_p c_p$ and $|\mathrm{Sha}|$ are **integers (structure)**, and "the divisibility of $L$ by $|\mathrm{tors}|^2$" is exactly the seam that welds the two sides together. This section lands the decidable form of each of these four pieces as a machine witness (`code/verify_bsd.c`, 9 check items all passing, `maxdev = 4.119e-11`).
+**In one sentence**: of the four pieces of the ledger, $\Omega$ and $\mathrm{Reg}$ are **real numbers (volumes)**, $\prod_p c_p$ and $|\mathrm{Sha}|$ are **integers (structure)**, and "the divisibility of $L$ by $|\mathrm{tors}|^2$" is exactly the seam that welds the two sides together. This section lands the decidable form of each of these four pieces as a machine witness (`code/verify_bsd.c`, 9 check items all passing, `maxdev = 8.238e-11`).
 
 ### 5quater.1 Reg is a volume, not an estimate
 
@@ -569,13 +570,13 @@ $$L(E,1)\cdot|\text{tors}|^2 = \Omega\cdot\prod_p c_p\cdot|\text{Ш}|$$
 
 | Quantity | Value | Source |
 |---|---|---|
-| $L(32a1,1)$ | $0.6555143886$ | `code/verify_bsd.c` real run |
+| $L(32a1,1)$ | $0.6555143886$ | external anchor (library value; this repo does not recompute $L$, it is used only to solve jointly with the self-computed $\Omega$) |
 | $\Omega$ | $5.244115108584$ | `code/verify_bsd.c` real run (dev $1.578e-11$) |
 | $|\text{tors}|$ | $4$ | local point enumeration: the three roots $0,\pm1$ of $x^3-x$ each give a 2-torsion point ⟹ $\mathrm{tors}\cong(\mathbb Z/2)^2$ |
 | $c_2$ | $2$ | **deduction** (prime divisor set of $\Delta$ + Tate algorithm + ledger + square class, see §5quater.4; `bs_sha` J3·J6) |
 | $|\text{Ш}|$ | $1$ | **deduction** (same; `bs_sha` J5–J7) |
 
-Left $=0.6555143886\times16=10.4882302176$, right $=5.244115108584\times2\times1=10.4882302172$, **dev $=4.119e-11$**; and right$/\Omega=2.0000000000$ ⟹ **the integer $2$** ($\prod c_p\cdot|\text{Ш}|=2$). This step turns the **five items** of that library table into **one integer equality**.
+Left $=0.6555143886\times16=10.4882302176$, right $=5.244115108584\times2\times1=10.4882302172$ (absolute gap $4.1\times10^{-11}$), **criterion dev $=8.238e-11$** (dominated by $|\text{left}/\Omega-2|$); and left$/\Omega=2.0000000001$ ⟹ **the integer $2$** ($\prod c_p\cdot|\text{Ш}|=2$). This step turns the **five items** of that library table into **one integer equality**.
 
 ### 5quater.3 Shape: Reg appears exactly once
 
@@ -606,15 +607,15 @@ P1 Gram positive definite        dev 0
 P2 det(U^T G U) = det(U)^2 det G dev 0
 P3 h(nP)=n^2 h(P), det ~ n^{2r}  dev 0
 P4 parallelogram law             dev 1.776e-15
-P5 ledger rank 0                 dev 4.119e-11   (rhs/Omega = 2.0000000000)
+P5 ledger rank 0                 dev 8.238e-11   (lhs/Omega = 2.0000000001)
 P6 Reg appears exactly once      dev 0
 P7 Delta=2^6 => only p=2 bad   dev 0
 P8 c*|Sha|=2, |Sha| square      dev 0   -> (c2,|Sha|)=(2,1)
 P9 r=0 => Reg=1; r>=1 => Reg>0   dev 0
-RESULT PASS=9 FAIL=0 maxdev=4.119e-11 EXIT=0
+RESULT PASS=9 FAIL=0 maxdev=8.238e-11 EXIT=0
 ```
 
-Reproduction: `gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o bsd.exe code/verify_bsd.c && ./bsd.exe` (this section is part 5/5, section tail `RESULT PASS=9 FAIL=0 maxdev=4.119e-11`)
+Reproduction: `gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o bsd.exe code/verify_bsd.c && ./bsd.exe` (this section is part 5/5, section tail `RESULT PASS=9 FAIL=0 maxdev=8.238e-11`)
 
 ### 5quater.6 Four reading caveats (the domain written out)
 

@@ -347,7 +347,7 @@ The real historical sticking point is the **parity barrier**: the sieve weight $
 - The complement reflection $\sigma(n)=C-n$ must flip parity ($C=b^k-1$ is odd) and has no fixed point ($2n=C$ has no integer solution) ⟹ `cap=15` being odd is exactly the arithmetic body of "the involution has no midpoint" ([2237]/[2245]);
 - The $2^{\omega(d)}$ of the product-type weight and the spectral line count $7=2m_1+[\lambda=\beta]$ of the generating function share one source ($m_\lambda$ = divisor count) ⟹ **the parity barrier is the multiplicity law read at $q=2$**, and its "blocking the lower bound" is equivalent to the identity "that row of $q=2$ has $\nu_H=q-1$", which is already booked by the conservation law $c_0=1=m_+-m_-$.
 
-So the barrier is not a counterexample but a **cost**: crossing it costs one coin (cost rate $0.944465$), and once paid the two sides become comparable.
+So the barrier is not a counterexample but a **cost**: crossing it costs one coin (cost rate $0.944465$, an archive probe reading), and once paid the two sides become comparable.
 
 ### 5.5 Conclusion
 

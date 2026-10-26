@@ -43,7 +43,7 @@ After this section every main formula is followed by a line of "reciprocal accou
 
 - **Substance** = the spacing of the compact spectrum `Δ = √λ₁/R`; **projection** = the finite-volume coupling `Λ = μ e^{−8π²/(β₀g²)}`.
 - Reciprocal account: `Δ · R / √λ₁ = 1` (gap and radius stand in a reciprocal relation, `λ₁ = 3` forces `Δ/Λ = √3`); on the coupling side `g² ↔ 1/g²` interchange inside the exponent of `Λ` — **asymptotic freedom is exactly "the reciprocal slows down as g→0"**.
-- Machine witness: `Δ/Λ = 1.7320508076 = √3` (dev 0); `(Λ/μ)/g¹⁰ → 3.475528e−10` (essential singularity, not a power law); Euler vs closed-form error ratio 10.2096/10.0204/10.0020 (O(h)).
+- Machine witness: `Δ/Λ = √3` follows in closed form from the spectrum, `λ₁ = 3` (namely `Δ=√λ₁/R`, not a fit); the irrationality of `√3` is computed by P9 through integer bracketing (`17320508² ≤ 3·10¹⁴ < 17320509²`, and `3·10¹⁴` is not a square); `(Λ/μ)/g¹⁰ → 3.475528e−10` (essential singularity, not a power law); Euler vs closed-form error ratio 10.2096/10.0204/10.0020 (O(h)).
 - Truncated-chain deletion: the open string `E = σr` crossing `2m_q` necessarily creates a pair ⟹ closure is self-satisfied (integer winding ⟺ closed; non-integer 1.7 seam 1.6180).
 
 
@@ -234,7 +234,7 @@ Dividing by $g^{10}$ still tends to $0$ ⟹ **essential singularity**: $\Lambda$
 
 $$\Delta=\frac{\sqrt{\lambda_1}}{R}=\sqrt3\Lambda .$$
 
-($R$ is the compactification radius, scale $R=1/\Lambda$.) Machine witness (P9): $\Delta/\Lambda=\sqrt3=1.7320508076$ (dev $<10^{-15}$).
+($R$ is the compactification radius, scale $R=1/\Lambda$.) Machine witness (P9): $\Delta/\Lambda=\sqrt3$ is **closed form** ($\Delta=\sqrt{\lambda_1}/R$ with $\lambda_1=3$); what P9 computes is the irrationality of $\sqrt3$ ($17320508^2\le 3\cdot10^{14}<17320509^2$ and $3\cdot10^{14}$ is not a square) plus the rational-point witness $\min|3q^2-p^2|=1$ over `q≤200`.
 
 **External anchor (as it stands)**: $2373=3\cdot7\cdot113$ hard-matches the $2373$ MeV of the $2^{++}$ glueball (archive Q5, background $0.2\text{ per cent}$). Hence, taking $2373$ MeV as the gap anchor, $\Lambda=2373/\sqrt3=1370.05$ MeV.
 

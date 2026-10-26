@@ -456,18 +456,19 @@ L^{(r)}(1)/r! = (#Ш · Reg · ∏_p c_p) / #E(ℚ)_tors²
 | P10 | Hasse 界 `a_p² ≤ 4p` | `0` 违例 / 95 素数 | 精确 |
 | P11 | 伸缩交换 / 纯虚不交换 | `0.000e+00` | `1e−15` |
 | P12 | 乘积范数 = 范数之积 | `9.447e−15` | `1e−14` |
-| P13 | 极：`163 = 2·9²+1`、`(T+1)²=327` | `9.095e−13` | `5e−12` |
+| P13 | 类数（约化型枚举数出）：`h(−163)=1`、`h(−167)=11` | `0.000e+00`（`[sanity]`，不计入判据数） | 精确（整数相等） |
 
 ```
-RESULT PASS=13 FAIL=0  max dev=9.095e-13
-k=13 fiber=1.000000 保真度=1.000000 判别力=0.923077
-res=9.094947e-13 domain=13 dc=97 order=2
+[sanity] P13 h(-163)=1（约化型枚举）与 -167 过 pole dev=0.000e+00 (identity/sanity, not counted)
+RESULT PASS=12 FAIL=0  max dev=9.447e-15
+k=12 fiber=1.000000 保真度=1.000000 判别力=0.916667
+res=9.446710e-15 domain=12 dc=97 order=2
 EXIT=0
 ```
 
-**四判据数**：`res=9.094947e−13`（P13 外部常数截断主导，见下）、`domain=13`（判项数）、`dc=97`（被测量的值域基数：奇素数 `≤ 503` 共 95 个 + 2 个代数恒等见证）、`order=2`（对合阶）。
+**四判据数**：`res=9.446710e−15`（乘积范数的 double 累积，见下）、`domain=12`（判项数，P13 已降为 `[sanity]`）、`dc=97`（被测量的值域基数：奇素数 `≤ 503` 共 95 个 + 2 个代数恒等见证）、`order=2`（对合阶）。
 
-**P13 容差由机制给**（不是拍脑袋）：库值 `T_crit = 17.0831413200251` 只给到 `1e−13` 位，平方把截断放大为 `2(T+1)δ = 2×18.083×5e−14 ≈ 1.81e−12`，故容差取其一阶上邻 `5e−12`。这与 `2262` 的「外部值截断地板」同型。
+**P13 现在没有容差**：类数由约化型枚举逐格数出（`a²≤|D|/3`、`|b|≤a≤c`），判据是**整数相等**（`h(−163)=1`、`h(−167)=11`），不存在可调的 `δ`。段内最大偏差 `9.447e−15` 来自 P12 的乘积范数，容差 `1e−14` 由 double 累积深度给出（12 项连乘）。
 
 **9bis. `code/verify_bsd.c` 十判项（阶=秩 + 常数账 · 本刀）**
 
@@ -497,7 +498,7 @@ EXIT=0
 
 ```bash
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o bsd.exe code/verify_bsd.c && ./bsd.exe
-# 五段小计 12 · 13 · 10 · 10 · 9，末行 RESULT PASS=54 FAIL=0 ； EXIT=0（最大偏差 4.119e-11）
+# 五段小计 12 · 13 · 10 · 10 · 9，末行 RESULT PASS=54 FAIL=0 ； EXIT=0（最大偏差 8.238e-11）
 
 # containers(matrix, domain=onestep, out=矩阵_onestep_层格缺口.csv)
 # 层数 41 · 预算 368 · 已发 41 · 缺口 [] · 41 层全 D1=0/S2=1/CLOSED=1
@@ -544,7 +545,7 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o bsd.exe code/verify_bsd.c && ./bsd.exe
 
 ## §5quater　构造层：Reg / c_p / #Ш 全账
 
-**一句话**：账的四件里，$\Omega$ 与 $\mathrm{Reg}$ 是**实数（体积）**，$\prod_p c_p$ 与 $|\mathrm{Sha}|$ 是**整数（结构）**，而「$L$ 对 $|\mathrm{tors}|^2$ 的整除」正是把两侧焊在一起的那道缝。本节把这四件各自的可判形式落成机器见证（`code/verify_bsd.c`，9 判项全过，`maxdev = 4.119e-11`）。
+**一句话**：账的四件里，$\Omega$ 与 $\mathrm{Reg}$ 是**实数（体积）**，$\prod_p c_p$ 与 $|\mathrm{Sha}|$ 是**整数（结构）**，而「$L$ 对 $|\mathrm{tors}|^2$ 的整除」正是把两侧焊在一起的那道缝。本节把这四件各自的可判形式落成机器见证（`code/verify_bsd.c`，9 判项全过，`maxdev = 8.238e-11`）。
 
 ### 5quater.1　Reg 是体积，不是估计
 
@@ -568,13 +569,13 @@ $$L(E,1)\cdot|\text{tors}|^2 = \Omega\cdot\prod_p c_p\cdot|\text{Ш}|$$
 
 | 量 | 值 | 来源 |
 |---|---|---|
-| $L(32a1,1)$ | $0.6555143886$ | `code/verify_bsd.c` 实跑 |
+| $L(32a1,1)$ | $0.6555143886$ | 外部锚（库值；本仓不重算 $L$，只用来与自算 $\Omega$ 联立） |
 | $\Omega$ | $5.244115108584$ | `code/verify_bsd.c` 实跑（dev $1.578e-11$）|
 | $|\text{tors}|$ | $4$ | 本机点枚举：$x^3-x$ 的三根 $0,\pm1$ 各给一个二阶点 ⟹ $\mathrm{tors}\cong(\mathbb Z/2)^2$ |
 | $c_2$ | $2$ | **推论**（$\Delta$ 的素因子集 + Tate 分流 + 账 + 平方类，见 §5quater.4；`bs_sha` J3·J6）|
 | $|\text{Ш}|$ | $1$ | **推论**（同上；`bs_sha` J5–J7）|
 
-左 $=0.6555143886\times16=10.4882302176$，右 $=5.244115108584\times2\times1=10.4882302172$，**dev $=4.119e-11$**；且右$/\Omega=2.0000000000$ ⟹ **整数 $2$**（$\prod c_p\cdot|\text{Ш}|=2$）。这一步把库内那张表的**五项**变成一个**整数等式**。
+左 $=0.6555143886\times16=10.4882302176$，右 $=5.244115108584\times2\times1=10.4882302172$（绝对差 $4.1\times10^{-11}$），**判据 dev $=8.238e-11$**（由 $|\text{左}/\Omega-2|$ 主导）；且左$/\Omega=2.0000000001$ ⟹ **整数 $2$**（$\prod c_p\cdot|\text{Ш}|=2$）。这一步把库内那张表的**五项**变成一个**整数等式**。
 
 ### 5quater.3　形状：Reg 只出现一次
 
@@ -605,15 +606,15 @@ P1 Gram positive definite        dev 0
 P2 det(U^T G U) = det(U)^2 det G dev 0
 P3 h(nP)=n^2 h(P), det ~ n^{2r}  dev 0
 P4 parallelogram law             dev 1.776e-15
-P5 ledger rank 0                 dev 4.119e-11   (rhs/Omega = 2.0000000000)
+P5 ledger rank 0                 dev 8.238e-11   (lhs/Omega = 2.0000000001)
 P6 Reg appears exactly once      dev 0
 P7 Delta=2^6 => only p=2 bad   dev 0
 P8 c*|Sha|=2, |Sha| square      dev 0   -> (c2,|Sha|)=(2,1)
 P9 r=0 => Reg=1; r>=1 => Reg>0   dev 0
-RESULT PASS=9 FAIL=0 maxdev=4.119e-11 EXIT=0
+RESULT PASS=9 FAIL=0 maxdev=8.238e-11 EXIT=0
 ```
 
-复现：`gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o bsd.exe code/verify_bsd.c && ./bsd.exe`（本节是 part 5/5，段尾 `RESULT PASS=9 FAIL=0 maxdev=4.119e-11`）
+复现：`gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o bsd.exe code/verify_bsd.c && ./bsd.exe`（本节是 part 5/5，段尾 `RESULT PASS=9 FAIL=0 maxdev=8.238e-11`）
 
 ### 5quater.6　读数四条（定义域写清）
 

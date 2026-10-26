@@ -462,12 +462,19 @@ static double S1_p2_monotone_decrease(void)
 /* ---------------- P3 diffusionthreshold Gamma* = 4 nu / c 与 Re* = 4 pi ---------------- */
 static double S1_p3_threshold(void)
 {
-    const double nu = 0.01, lam = 1.0, c = 2.0 * lam;
-    double Gs = 4.0 * nu / c;
-    double lhs = Gs * lam / (4.0 * S1_PI * nu);
-    printf("  [P3] Gamma* = 4 nu/c = %.10f   Gamma* lambda/(4 pi nu) = %.10f\n", Gs, lhs);
-    /* 唯一外部常数：Re* = 4 pi（无量纲组合的固定值，不是拟合） */
-    return fabs(lhs - 1.0 / (2.0 * S1_PI));
+    /* 多组 (nu, lam) 全扫：c = 2 lam ⟹ 组合 Γ*λ/(4πν) 恒等于 1/(2π)，不是单点巧合 */
+    const double nus[4] = {0.01, 0.02, 0.005, 0.1};
+    const double lams[4] = {1.0, 2.5, 0.5, 3.0};
+    double mx = 0.0; int i;
+    for (i = 0; i < 4; i++) {
+        double nu = nus[i], lam = lams[i], c = 2.0 * lam;
+        double Gs = 4.0 * nu / c;
+        double lhs = Gs * lam / (4.0 * S1_PI * nu);
+        double d = fabs(lhs - 1.0 / (2.0 * S1_PI));
+        printf("  [P3] nu=%.3f lam=%.1f: Gamma* = %.10f  combo = %.10f\n", nu, lam, Gs, lhs);
+        if (d > mx) mx = d;
+    }
+    return mx;
 }
 
 /* ---------------- P4 iterationlockconvergence到 Gamma* ---------------- */

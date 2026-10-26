@@ -139,11 +139,28 @@ static int ap_cubic(int p)
 /* 倍角recurrence：cos(2x) = 2cos²x − 1（纯加乘，无跨维度算子） */
 static double dbl_cos(double c) { return 2.0 * c * c - 1.0; }
 
-/* check 1：involution s ↦ 2−s 的fixed point唯一为 s=1 */
+/* check 1：involution s ↦ 2−s 的 fixed point 唯一为 s=1（网格全扫，不是只在解上取值） */
 static double P1(void)
 {
-    double s = 1.0, r = 2.0 - s;
-    return fabs(r - s);                      /* 不动 ⟺ 0 */
+    double mx = 0.0, s;
+    int hits = 0, i;
+    for (i = -20; i <= 20; i++) {            /* s = -10 .. 10，step 0.5 */
+        s = 0.5 * (double)i;
+        if (fabs((2.0 - s) - s) <= 1e-15) hits++;
+        else if (fabs((2.0 - s) - s) > mx) mx = fabs((2.0 - s) - s);
+    }
+    /* ① 对合：σ∘σ = id（网格逐点）；② 唯一不动点 ⟹ hits == 1；③ 其余点残差严格 > 0 */
+    {
+        double inv = 0.0;
+        for (i = -20; i <= 20; i++) {
+            double t = 0.5 * (double)i;
+            double d2 = fabs((2.0 - (2.0 - t)) - t);
+            if (d2 > inv) inv = d2;
+        }
+        if (inv > 1e-15) return 1.0 + inv;              /* 不是对合 ⟹ 直接判负 */
+    }
+    if (hits != 1) return 1.0 + fabs((double)(hits - 1));
+    return (mx > 0.0) ? 0.0 : 1.0;
 }
 
 /* check 2：constructionidentity Λ_k(s)=(s−1)^k g(s) ⟹ w=(−1)^k（k=1,2,3） */
@@ -164,16 +181,35 @@ static double P2(void)
     return mx;
 }
 
-/* check 3：Λ_k(1)=0（k ≥ 1）——中心零，阶exactly为 k */
+/* check 3：Λ_k(x)=(1−x)^k 在 x=1 的零点阶**恰为 k** —— 整数二项展开，逐阶求导在 x=1 取值 */
 static double P3(void)
 {
-    double mx = 0.0; int k, j;
+    int bad = 0, k, j, m;
     for (k = 1; k <= 3; k++) {
-        double v = 1.0;
-        for (j = 0; j < k; j++) v *= (1.0 - 1.0);
-        if (fabs(v) > mx) mx = fabs(v);
+        long long c[8];
+        for (j = 0; j <= k; j++) {              /* (1−x)^k = Σ_j C(k,j)(−1)^j x^j */
+            long long bin = 1; int t;
+            for (t = 0; t < j; t++) bin = bin * (long long)(k - t) / (long long)(t + 1);
+            c[j] = (j % 2 ? -bin : bin);
+        }
+        for (m = 0; m < k; m++) {               /* m < k：m 阶导在 x=1 必须为 0 */
+            long long d = 0;
+            for (j = m; j <= k; j++) {
+                long long f = 1; int t;
+                for (t = 0; t < m; t++) f *= (long long)(j - t);
+                d += c[j] * f;
+            }
+            if (d != 0) bad++;
+        }
+        {                                       /* m = k：k 阶导必须 = (−1)^k · k! ≠ 0 */
+            long long d = c[k];
+            long long f = 1; int t;
+            for (t = 0; t < k; t++) f *= (long long)(k - t);
+            d *= f;
+            if (d == 0 || d != ((k % 2) ? -f : f)) bad++;
+        }
     }
-    return mx;
+    return (double)bad;
 }
 
 /* check 4：half-turn/full turn（c(π)=−1 为hard anchor，倍角recurrence出 c(2π)=+1、c(4π)=+1） */
@@ -184,7 +220,7 @@ static double P4(void)
     double c_4pi = dbl_cos(c_2pi);
     double mx = fabs(c_2pi - 1.0);        /* full turn +1 */
     if (fabs(c_4pi - 1.0) > mx) mx = fabs(c_4pi - 1.0);
-    if (fabs((c_2pi * c_2pi + 0.0) - 1.0) > mx) mx = fabs(c_2pi * c_2pi - 1.0);
+    { double d3 = fabs(c_2pi * c_2pi - 1.0); if (d3 > mx) mx = d3; }   /* cos²2π = 1（倍角自洽） */
     return mx;
 }
 
@@ -1416,9 +1452,9 @@ static double S4_p5_ledger_rank0(void)
     const double cprod = 2.0;            /* c_2 = 2 */
     const double sha = 1.0;
     double lhs = L * tors2, rhs = Om * cprod * sha;
-    double quar = rhs / Om;              /* 应 = 2（整数） */
+    double quar = lhs / Om;              /* 独立除法：lhs/Ω 应 = 2（不是 rhs/Ω 的同一式） */
     printf("  [P5] lhs = L*#tors^2 = %.10f   rhs = Omega*prod c_p*#Sha = %.10f\n", lhs, rhs);
-    printf("        rhs/Omega = %.10f (should be integer 2)\n", quar);
+    printf("        lhs/Omega = %.10f (should be integer 2)\n", quar);
     S4_g_res = fabs(quar - 2.0);
     return fmax(fabs(lhs - rhs) / rhs, fabs(quar - 2.0));
 }

@@ -264,7 +264,7 @@ By Lemma 4.1, $p\ge2$ is closed as well by "torsion ⟹ root of unity ⟹ algebr
 
 | Check | Content | Conclusion |
 |---|---|---|
-| **Container** | the circle `S¹` (phase ring), not `ℝ` | periodic return home holds only on the circle; the open chain `∂(e01+e12)` has norm `0.948683 ≠ 0`, the closed chain `∂(e01+e12+e20)` has norm `5.551115e−17` |
+| **Container** | the circle `S¹` (phase ring), not `ℝ` | periodic return home holds only on the circle; the open chain `∂(e01+e12)` has norm `0.948683 ≠ 0`, the closed chain `∂(e01+e12+e20)` has norm `5.551115e−17` (both norms are archive probe readings; the shipped verifier does not reprint them) |
 | **Structure** | three faces of one identity: intra-layer spectrum / inter-layer nesting / closure on the layer | `Λ^k = ⊕_{p+q=k} Λ^{p,q}` (intra-layer), `Λ^{p,p} ⊂ Λ^{2p}` (nesting), circle action (on the layer); all three matrix layers L1/L18/L22 give `CLOSED=1` |
 | **Symmetry** | `U(1)` action + complex-conjugation involution `σ: (p,q) ↦ (q,p)` | Hodge class = the `+1` eigenspace of `σ` (`p=q`); exchanging `p(q,p)` flips the sign of `p−q`, which is exactly the half-turn `−1` half |
 
