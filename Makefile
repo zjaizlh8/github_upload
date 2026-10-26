@@ -2,7 +2,6 @@
 #
 #   make                 编译 7 个验证器到 bin/         (7 verifiers)
 #   make run             编译 + 逐支实跑 7 个验证器      (build + run the 7)
-#   make tools           （可选）编 5 支归档检查工具      (optional: archive tools)
 #   make clean           清理 bin/
 #
 # 编译旗标固定 -Wall -Wextra -O2 -D_GNU_SOURCE，力求零告警。
@@ -27,11 +26,8 @@ VERIFS  := \
 
 BINS    := $(patsubst %.c,$(BIN)/%,$(VERIFS))
 
-# —— 可选归档工具（不属于七篇，不参与 make run）——
-TOOLS_SRC := $(wildcard shared/tools/*.c)
-TOOLS_BIN := $(patsubst shared/tools/%.c,$(BIN)/tools/%,$(TOOLS_SRC))
 
-.PHONY: all run tools clean
+.PHONY: all run clean
 all: $(BINS)
 
 $(BIN)/%: %.c
@@ -45,12 +41,5 @@ run: all
 	    echo "$$(printf '%s\n' "$$out" | grep -oE 'RESULT PASS=[0-9]+ FAIL=[0-9]+' | tail -1) OK"; \
 	  else echo "EXIT!=0"; fail=1; fi; \
 	done; exit $$fail
-
-tools: $(TOOLS_BIN)
-
-$(BIN)/tools/%: shared/tools/%.c
-	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -o $@ $< $(LDLIBS)
-
 clean:
 	rm -rf $(BIN)

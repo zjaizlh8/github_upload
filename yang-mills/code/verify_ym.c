@@ -2,7 +2,9 @@
 #include <stdio.h>
 #include <math.h>
 
-/* ===== part 0: verify_ym.c ===== */
+static int g_pass = 0, g_fail = 0;   /* totals across sections */
+
+/* ===== section 0 ===== */
 /*
  * NOTE: comments and output labels in this file were translated from Chinese.
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
@@ -302,18 +304,19 @@ int seg0_main(void)
     printf("结印：生成之保modulo即group之紧，筛法之convergence去其核，闭合者谱离散；\n");
     printf("      离散者去核而有间——间隙不在底空间之紧，而在观测者之合。\n");
     printf("==========================================================\n");
+    g_pass += S0_g_pass; g_fail += S0_g_fail;
     printf("\nRESULT PASS=%d FAIL=%d max dev = %.3e\n", S0_g_pass, S0_g_fail, mx);
     return S0_g_fail == 0 ? 0 : 1;
 }
 
-/* ===== part 1: verify_ym_tech.c ===== */
+/* ===== section 1 ===== */
 /*
  * NOTE: comments and output labels in this file were translated from Chinese.
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
  * the translation keeps line structure, check names and all numeric values unchanged.
  */
 /* ============================================================================
-   verify_ym_tech.c  ——  Yang–Mills 篇 · construction layer：physical 扇区与连续pole限
+   [part 2/2]  ——  Yang–Mills 篇 · construction layer：physical 扇区与连续pole限
    ----------------------------------------------------------------------------
    五行六步（阶段直序）：
      base S 锚定 —— 离散圆上的谱先钉死：λ₁ L² → (2π)²（three steps N + Richardson extrapolation）
@@ -546,7 +549,7 @@ int seg1_main(void)
 {
     double d1, d2, d3, d4, d5, d6, d7, d8, d9;
 
-    printf("== verify_ym_tech : construction layer —— physical 扇区与连续pole限 ==\n");
+    printf("== [part 2/2] construction layer —— physical 扇区与连续pole限 ==\n");
     S1_print_wuxing();
     printf("\n");
 
@@ -560,6 +563,7 @@ int seg1_main(void)
     d8 = S1_p8_linear_potential();  S1_judge("P8 E(R) = sigma R", d8, 0.0);
     d9 = S1_p9_gap_vs_a();          S1_judge("P9 gap in lattice units / a = E2-E1", d9, 1e-09);
 
+    g_pass += S1_g_pass; g_fail += S1_g_fail;
     printf("\nRESULT PASS=%d FAIL=%d maxdev=%.3e\n", S1_g_pass, S1_g_fail, S1_g_maxdev_d);
     printf("k=%d fiber=1.000000 fidelity=1.000000 discriminability=%.6f\n", S1_NJ, 1.0 - 1.0 / (double)S1_NJ);
     printf("res=%.6e domain=%d dc=%d order=%d\n", S1_g_res, S1_NJ, 5, 2);
@@ -583,7 +587,7 @@ static int run_all(void)
 int main(void)
 {
     int rc = run_all();
-    printf("RESULT: %s parts, overall %s\n", "2", rc ? "FAIL" : "PASS");
+    printf("RESULT PASS=%d FAIL=%d   (all criteria in this file)\n", g_pass, g_fail);
     printf("EXIT=%d\n", rc ? 1 : 0);
     return rc ? 1 : 0;
 }

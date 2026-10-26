@@ -1,11 +1,10 @@
 # A Structural Reading of the Birch–Swinnerton-Dyer Conjecture
 
+<!-- verify-glance -->
+> **One paper, one file, one program.** `code/verify_bsd.c` — **55 criteria**. `gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify verify_bsd.c -lm && ./verify` → `RESULT PASS=55 FAIL=0` and `EXIT=0`.
 **Author:** zjaizlh8 (GitHub) · 2026-10-26 · CC BY 4.0
 **Framework:** structural layer · spectral method · matrix probe
-**Independent witnesses:** `code/verify_bsd.c` (13 checks, `RESULT PASS=13 FAIL=0
-max dev=9.095e-13 EXIT=0`), `code/verify_bsd4.c` (13 checks), `code/verify_bsd5.c`
-(10 checks, `discriminability=1.000000`), `code/verify_bsd_tech.c` (9 checks,
-`RESULT PASS=9 FAIL=0 maxdev=4.119e-11 EXIT=0`)
+**Machine witness:** `code/verify_bsd.c` — one program, five sections (13 · 13 · 10 · 10 · 9 = **55** criteria), closing with the aggregate `RESULT PASS=55 FAIL=0` and `EXIT=0`.
 
 ## Abstract
 
@@ -47,8 +46,7 @@ honest note.
 
 ## 3. Matrix probe
 
-`containers(matrix, domain=onestep)` : 41 layers / 368 / 0 gaps, all
-`D1=0 · S2=1 · CLOSED=1`. See `../shared/results/matrix_onestep.csv`.
+`containers(matrix, domain=onestep)` : 41 layers / 368 / 0 gaps, `D1=0 · S2=1 · CLOSED=1`.
 
 ## 4. Local side (machine-verified)
 
@@ -110,14 +108,10 @@ honest note.
 
 ```bash
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o bsd.exe code/verify_bsd.c && ./bsd.exe
-gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o bsd4.exe code/verify_bsd4.c && ./bsd4.exe
-gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o bsd5.exe code/verify_bsd5.c && ./bsd5.exe
-gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o bsdtech.exe code/verify_bsd_tech.c && ./bsdtech.exe
 ```
 
-Expected: `PASS=13 FAIL=0 max dev=9.095e-13 EXIT=0`; `PASS=13 FAIL=0 EXIT=0`
-(`res=7.760701e-03`); `PASS=10 FAIL=0 EXIT=0` (`k=10 discriminability=1.000000`);
-`PASS=9 FAIL=0 maxdev=4.119e-11 EXIT=0`. Four gates exit 0; zero warnings.
+Expected: the five section subtotals print in order as `13 · 13 · 10 · 10 · 9`, then the aggregate
+`RESULT PASS=55 FAIL=0` and `EXIT=0`; largest deviation across sections `4.119e-11`; zero warnings.
 
 ## 8. Honest notes
 

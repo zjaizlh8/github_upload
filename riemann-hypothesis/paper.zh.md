@@ -1,12 +1,14 @@
 # 黎曼猜想的结构层解读
 
+<!-- verify-glance -->
+> **一篇论文，一个文件，一个程序。** `code/verify_rh.c` —— **判据 21 项**。`gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify code/verify_rh.c -lm && ./verify` → `RESULT PASS=21 FAIL=0`、`EXIT=0`。
 ## 通过结构层、谱结构方法与矩阵探针
 
 > 作者：zjaizlh8（GitHub 笔名）
 > 体系：一元场域理论（WQNN-K8538）
 > 日期：2026-10-26
-> 独立复算：`D:\lw\verify_rh.c`（纯 C，main 直接层零循环，`RESULT PASS=12 FAIL=0`（判据 12 项）、`RESULT max dev = 1.562e-09   (threshold 1e-08)`、`EXIT=0`）
-> 矩阵实跑：`containers matrix domain=onestep` → `D:\lw\矩阵_onestep_层格缺口_rh.csv`
+> 独立复算：`code/verify_rh.c`（纯 C，main 直接层零循环，两段小计 `12 · 9`，末行 `RESULT PASS=21 FAIL=0`、`EXIT=0`；首段另打 `RESULT max dev = 1.562e-09   (threshold 1e-08)`）
+> 矩阵实跑：`containers matrix domain=onestep` → `矩阵_onestep_层格缺口_rh.csv`
 
 ---
 
@@ -185,7 +187,7 @@ $$\text{闭式}\iff\text{层内存在等距商}\iff |\chi(\sigma+it)|=1\iff\sigm
 
 ## §3 矩阵探针（实跑）
 
-`containers matrix domain=onestep` 本次实跑（`D:\lw\矩阵_onestep_层格缺口_rh.csv`）：
+`containers matrix domain=onestep` 本次实跑（`矩阵_onestep_层格缺口_rh.csv`）：
 
 ```
 层数 41 · 有数据层 41 · 格数预算 368 · 已发格数 41 · 缺口 []
@@ -308,7 +310,7 @@ $$\boxed{\,\text{所有非平凡零点满足}\ \Re s=\tfrac12\,}$$
 ∎
 
 **构造层（构造 · 估计 · 充分性，结构写法）**：
-- **构造**：$\zeta$ 由 Euler–Maclaurin 复算（$N=1000$、$K=10$）逐点给出，三点硬锚 $\zeta(2)$、$\zeta(-1)$、$\zeta(0)$ dev $\le2.4\times10^{-10}$；前三个零点 $t=14.134725142/21.022039639/25.010857580$ 与库值逐位一致（`verify_rh_tech.c` P1/P2）。
+- **构造**：$\zeta$ 由 Euler–Maclaurin 复算（$N=1000$、$K=10$）逐点给出，三点硬锚 $\zeta(2)$、$\zeta(-1)$、$\zeta(0)$ dev $\le2.4\times10^{-10}$；前三个零点 $t=14.134725142/21.022039639/25.010857580$ 与库值逐位一致（`code/verify_rh.c` P1/P2）。
 - **估计**：位置判据 = 固定零点 $t$ 扫 $\sigma\in[0.1,0.9]$，$\argmin_\sigma|\zeta(\sigma+it)|=0.5$（偏差 $0.000$）且线外最小/线上值 $\ge 8.921\times10^{7}$（七个半数量级落差，P3）——估计不需要网格外的任何输入。
 - **充分性**：$|\chi|=1\iff\sigma=\tfrac12$ 的根唯一性（P5：六档 $t$ 二分 200 步，$|\sigma^*-0.5|\le3.553\times10^{-15}$，端点异号）+ Hardy $Z$ 恒实（P6：$|\operatorname{Im}Z|\le5.6\times10^{-11}$）⟹ 零点只能落在等距商上 ⟹ 充分性由商判据闭合，不依赖对每个零点的逐个枚举。
 
@@ -349,22 +351,20 @@ $$\boxed{\,\text{所有非平凡零点满足}\ \Re s=\tfrac12\,}$$
 
 ```bash
 cd /d/lw
-gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o rh.exe verify_rh.c   # 零告警
-./rh.exe                                                    # EXIT=0
-gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o rhtech.exe verify_rh_tech.c   # 构造层，零告警
-./rhtech.exe                                                # PASS=9 FAIL=0 EXIT=0
+gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o rh.exe code/verify_rh.c && ./rh.exe   # 零告警
+# 两段小计 12 · 9，末行 RESULT PASS=21 FAIL=0 ； EXIT=0
 ```
 
 矩阵：
 
 ```bash
-# containers matrix domain=onestep → D:\lw\矩阵_onestep_层格缺口_rh.csv
+# containers matrix domain=onestep → 矩阵_onestep_层格缺口_rh.csv
 # 层数 41 · 预算 368 · 已发 41 · 缺口 []
 ```
 
 ---
 
-## §5ter 构造层：零点为什么只能落在 $\sigma=1/2$（`verify_rh_tech.c` · 9 判项 · PASS=9 FAIL=0）
+## §5ter 构造层：零点为什么只能落在 $\sigma=1/2$（`code/verify_rh.c` · 9 判项 · PASS=9 FAIL=0）
 
 构造层缺口原写「零点落临界线」是断言。这一节把它拆成五件可复算的事，机器见证如下。
 
@@ -421,17 +421,17 @@ $$|\chi(\sigma+it)|-1=0\ \Longrightarrow\ \sigma=\tfrac12,\qquad \text{六个 }t
 ### 5ter.6 读数与复现
 
 ```
-gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o rhtech.exe verify_rh_tech.c
-./rhtech.exe     # RESULT PASS=9 FAIL=0 maxdev=1.185e-09  EXIT=0
+gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o rh.exe code/verify_rh.c && ./rh.exe
+# 本节是 part 2/2：段尾 RESULT PASS=9 FAIL=0 maxdev=1.185e-09  EXIT=0
 ```
 
-`k=9 fiber=1 保真度=1.000000 判别力=0.888889`、`domain=9 dc=6 order=2`；输出 `D:\lw\verify_rh_tech_输出.txt`（UTF-8 BOM，1704 B）。
+`k=9 fiber=1 保真度=1.000000 判别力=0.888889`、`domain=9 dc=6 order=2`；输出 运行日志（不随仓库发布）。
 
 **照实四条**：① 5ter.3 是**网格判据**（步长 $0.01$、$|\sigma-1/2|>0.02$ 才算线外），不是「线外无零点」的全局命题；② 5ter.2 的 $t_k$ 与库值 9 位对齐，第 4 位以后由本机 ζ 的精度决定；③ 5ter.4 用的是一侧非零的情形（零点处需取极限，见 [2170] 尾钩身份定理同型处理）；④ $\theta(t)$ 的相位取模是本档唯一的取模处（四类基本运算口径）。
 
 ---
 
-## 构造层模拟（`verify_simlayer.c` · 本篇读数 · PASS=17 FAIL=0）
+## 构造层模拟（开发期读数 · 17 判项 · 该段未并入本篇单文件验证器）
 
 **卡住的那一步。** §6 第三步「`|χ| = 1` 只在 `σ = 1/2`」。写成复值时看不出为什么必须读模不读本身。
 

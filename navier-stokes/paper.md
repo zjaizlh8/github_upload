@@ -1,10 +1,10 @@
 # A Structural Reading of Navier–Stokes Existence and Smoothness
 
+<!-- verify-glance -->
+> **One paper, one file, one program.** `code/verify_ns.c` — **19 criteria**. `gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify verify_ns.c -lm && ./verify` → `RESULT PASS=19 FAIL=0` and `EXIT=0`.
 **Author:** zjaizlh8 (GitHub) · 2026-10-26 · CC BY 4.0
 **Framework:** structural layer · spectral method · matrix probe
-**Independent witnesses:** `code/verify_ns.c` (10 checks, `RESULT PASS=10 FAIL=0
-max dev=1.869e-14 EXIT=0`), `code/verify_ns_tech.c` (9 checks, `RESULT PASS=9 FAIL=0
-maxdev=4.070e-07 EXIT=0`)
+**Machine witness:** `code/verify_ns.c` — one program, two sections (10 · 9 = **19** criteria), closing with the aggregate `RESULT PASS=19 FAIL=0` and `EXIT=0`.
 
 ## Abstract
 
@@ -40,8 +40,7 @@ The load-bearing step is **Lemma 6.1** (reconnection monotonicity), stated with 
 
 ## 3. Matrix probe
 
-`containers(matrix, domain=onestep)` : 41 layers / 368 / 0 gaps, all
-`D1=0 · S2=1 · CLOSED=1`. See `../shared/results/matrix_onestep.csv`.
+`containers(matrix, domain=onestep)` : 41 layers / 368 / 0 gaps, `D1=0 · S2=1 · CLOSED=1`.
 
 ## 4. Conditional theorem — four steps
 
@@ -86,11 +85,10 @@ The load-bearing step is **Lemma 6.1** (reconnection monotonicity), stated with 
 
 ```bash
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o ns.exe code/verify_ns.c && ./ns.exe
-gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o nstech.exe code/verify_ns_tech.c && ./nstech.exe
 ```
 
-Expected: `RESULT PASS=10 FAIL=0 max dev=1.869e-14 EXIT=0` (`k=10 discriminability=0.9 dc=512`) and
-`RESULT PASS=9 FAIL=0 maxdev=4.070e-07 EXIT=0`. Four gates exit 0; zero warnings.
+Expected: subtotals `10 · 9`, then the aggregate `RESULT PASS=19 FAIL=0` and `EXIT=0`
+(first section `max dev 1.869e-14`, `k=10 discriminability=0.9 dc=512`; second `4.070e-07`); zero warnings.
 
 ## 7. Honest notes
 

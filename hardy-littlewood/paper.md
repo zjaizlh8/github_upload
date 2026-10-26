@@ -1,8 +1,10 @@
 # A Structural Reading of the Hardy–Littlewood Twin-Prime Conjecture
 
+<!-- verify-glance -->
+> **One paper, one file, one program.** `code/verify_hl.c` — **36 criteria**. `gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify verify_hl.c -lm && ./verify` → `RESULT PASS=36 FAIL=0` and `EXIT=0`.
 **Author:** zjaizlh8 (GitHub) · 2026-10-26 · CC BY 4.0
 **Framework:** structural layer · spectral method · matrix probe
-**Independent witnesses:** `code/verify_hl.c` (11 checks, `EXIT=0`), `code/verify_hl_tech.c` (9 checks, `EXIT=0`)
+**Machine witness:** `code/verify_hl.c` — one program, four sections (11 · 9 · 6 · 10 = **36** criteria), closing with the aggregate `RESULT PASS=36 FAIL=0` and `EXIT=0`.
 
 ## Abstract
 
@@ -49,8 +51,7 @@ branch is the measure side, the odd branch the fiber side) — both are forced b
 ## 3. Matrix probe
 
 `containers(matrix, domain=onestep)` : **41 layers / budget 368 / emitted 41 / gaps []**,
-all `D1=0 · S2=1 · CLOSED=1` (two rows `8/17`, `21/41` are caliber differences: grids counted
-per parameter surface, checks per structural proposition). See `../shared/results/matrix_onestep.csv`.
+all `D1=0 · S2=1 · CLOSED=1`; the two rows (`8/17`, `21/41`) are caliber differences, not gaps.
 
 ## 4. Two-sided ledger and the welded interface
 
@@ -112,12 +113,11 @@ water-side expansion: `(k)_2 = k(k+1)` (integer identity, zero tolerance).
 
 ```bash
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hl.exe code/verify_hl.c && ./hl.exe
-gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hltech.exe code/verify_hl_tech.c && ./hltech.exe
 ```
 
-Expected: `RESULT PASS=11 FAIL=0 maxdev=1.105190e+00` + `EXIT=0` (res = 1.105190, P11 internal dev by design) and
-`RESULT PASS=9 FAIL=0 maxdev=1.284e-02 EXIT=0`. Four gates exit 0; zero compiler warnings.
-Run logs: `../shared/results/verify_hl.out.txt`, `verify_hl_tech.out.txt`.
+Expected: the four section subtotals print in order as `11 · 9 · 6 · 10`, then the aggregate
+`RESULT PASS=36 FAIL=0` and `EXIT=0`. The first subtotal carries `maxdev=1.105190e+00` by design
+(P11 reads an internal ratio); the others report `1.284e-02` and `7.039e-03`; zero warnings.
 
 ## 9. Honest notes
 
@@ -126,7 +126,7 @@ Run logs: `../shared/results/verify_hl.out.txt`, `verify_hl_tech.out.txt`.
 2. The ρ values differ from the archive table (0.980213/0.990418/1.003850) by ≤1.28e−3 — a
    caliber difference of `Li₂` evaluation (archive uses 80 fixed terms past the optimal cutoff).
 3. Both calibers are reported without mixing: whole caliber `π₂/(2C₂Li₂)` and `A₁ = π₂ − π₂(√x)`.
-4. This section gives order-of-magnitude control of `E_micro` and the monotone decay of the `|E_macro|` share, not a pointwise sign control of `E_micro(x)`.
+4. This gives order-of-magnitude control of `E_micro` and the monotone decay of the `|E_macro|` share, not a pointwise sign control of `E_micro(x)`.
 
 ## Acknowledgments
 
@@ -174,8 +174,7 @@ up to `√N` is complete. The honest note records exactly what this lemma is equ
 
 ## 3. Matrix probe
 
-`containers(matrix, domain=onestep)` : 41 layers / 368 budget / 0 gaps, all
-`D1=0 · S2=1 · CLOSED=1`. See `../shared/results/matrix_onestep.csv`.
+`containers(matrix, domain=onestep)` : 41 layers / 368 budget / 0 gaps, `D1=0 · S2=1 · CLOSED=1`.
 
 ## 4. Conditional theorem — four steps
 
@@ -214,7 +213,7 @@ up to `√N` is complete. The honest note records exactly what this lemma is equ
 
 ## 5. Construction layer (construct · estimate · sufficiency)
 
-- **Construct:** per-layer enumeration + trial division (sieve to 1e7, `verify_twin_count.c`
+- **Construct:** per-layer enumeration + trial division (sieve to 1e7, `verify_hl.c` part 2
   bit-sieve to 1e9).
 - **Estimate:** `s(x) = π₂(x)/⌊x/6⌋ = 0.073443 / 0.049014 / 0.035388` (monotone down);
   `π₂/x = 0.012240 / 0.008169 / 0.005898`; lower bound tiers `⌊log₂x/6⌋ = 2/3/3` with zero
@@ -240,13 +239,16 @@ up to `√N` is complete. The honest note records exactly what this lemma is equ
 
 ## 7. Reproduction
 
+This chapter rides on the same binary as the main note — sections 3 and 4 of
+`code/verify_hl.c` carry the twin-prime case:
+
 ```bash
-gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o twin_count.exe code/verify_twin_count.c && ./twin_count.exe
-gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o twintech.exe code/verify_twin_tech.c && ./twintech.exe
+gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hl.exe code/verify_hl.c && ./hl.exe
 ```
 
-Expected: the five-tier table plus `RESULT PASS=6 FAIL=0` (count) and `RESULT PASS=10 FAIL=0 maxdev=7.039249e-03` (tech)
-(`k=9 fiber=1 fidelity=1 discriminability=0.888889`). Four gates exit 0; zero compiler warnings.
+Expected: the five-tier table plus `RESULT PASS=6 FAIL=0` (count) and `RESULT PASS=10 FAIL=0
+maxdev=7.039249e-03` (tech, `k=9 fiber=1 fidelity=1 discriminability=0.888889`), then the
+file-wide `RESULT PASS=36 FAIL=0` and `EXIT=0`; zero compiler warnings.
 
 ## 8. Honest notes
 

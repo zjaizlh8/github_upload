@@ -1,9 +1,10 @@
 # A Structural Reading of P vs NP
 
+<!-- verify-glance -->
+> **One paper, one file, one program.** `code/verify_pvsnp.c` — **26 criteria**. `gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify verify_pvsnp.c -lm && ./verify` → `RESULT PASS=26 FAIL=0` and `EXIT=0`.
 **Author:** zjaizlh8 (GitHub) · 2026-10-26 · CC BY 4.0
 **Framework:** structural layer · spectral method · matrix probe
-**Independent witnesses:** `code/verify_pvsnp.c` (PASS, `EXIT=0`),
-`code/verify_pvsnp_tech.c` (9 checks, `RESULT PASS=9 FAIL=0 maxdev=0.000e+00` + `EXIT=0`); main witness `code/verify_pvsnp.c` (17 checks, `RESULT PASS=17 FAIL=0  (GF(2) 判据 17 项…)` + `EXIT=0`)
+**Machine witness:** `code/verify_pvsnp.c` — one program, two sections (17 · 9 = **26** criteria), closing with the aggregate `RESULT PASS=26 FAIL=0` and `EXIT=0`.
 
 ## Abstract
 
@@ -39,8 +40,7 @@ arithmetic circuit = Valiant's VP≠VNP), stated with its honest note.
 
 ## 3. Matrix probe
 
-`containers(matrix, domain=onestep)` : 41 layers / 368 / 0 gaps, all
-`D1=0 · S2=1 · CLOSED=1`. See `../shared/results/matrix_onestep.csv`.
+`containers(matrix, domain=onestep)` : 41 layers / 368 / 0 gaps, `D1=0 · S2=1 · CLOSED=1`.
 
 ## 4. Cancellation law (machine-verified)
 
@@ -95,11 +95,11 @@ arithmetic circuit = Valiant's VP≠VNP), stated with its honest note.
 
 ```bash
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o pvsnp.exe code/verify_pvsnp.c && ./pvsnp.exe
-gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o pvnp_tech.exe code/verify_pvsnp_tech.c && ./pvnp_tech.exe
 ```
 
-Expected: main `RESULT PASS=17 FAIL=0  (GF(2) 判据 17 项；数值判据另由此前 max dev 把门)` + `EXIT=0`; tech `RESULT PASS=9 FAIL=0 maxdev=0.000e+00` + `EXIT=0` (`k=9 fiber=1 discriminability=0.888889`).
-Four gates exit 0; zero compiler warnings.
+Expected: subtotals `17 · 9`, then the aggregate `RESULT PASS=26 FAIL=0` and `EXIT=0`
+(the GF(2) section prints its 17 criteria in one line; the numeric section prints
+`maxdev=0.000e+00 k=9 fiber=1 discriminability=0.888889`); zero warnings.
 
 ## 9. Honest notes
 

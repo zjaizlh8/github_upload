@@ -1,10 +1,10 @@
 # A Structural Reading of the Hodge Conjecture
 
+<!-- verify-glance -->
+> **One paper, one file, one program.** `code/verify_hodge.c` — **19 criteria**. `gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify verify_hodge.c -lm && ./verify` → `RESULT PASS=19 FAIL=0` and `EXIT=0`.
 **Author:** zjaizlh8 (GitHub) · 2026-10-26 · CC BY 4.0
 **Framework:** structural layer · spectral method · matrix probe
-**Independent witnesses:** `code/verify_hodge.c` (10 checks, `RESULT PASS=10 FAIL=0
-max dev=2.998e-15 EXIT=0`), `code/verify_hodge_tech.c` (9 checks, `RESULT PASS=9 FAIL=0
-maxdev=0.000e+00 EXIT=0`)
+**Machine witness:** `code/verify_hodge.c` — one program, two sections (10 · 9 = **19** criteria), closing with the aggregate `RESULT PASS=19 FAIL=0` and `EXIT=0`.
 
 ## Abstract
 
@@ -38,8 +38,7 @@ The load-bearing step is **Lemma 4.1** (AJ torsionness for p ≥ 2), stated with
 
 ## 3. Matrix probe
 
-`containers(matrix, domain=onestep)` : 41 layers / 368 / 0 gaps, all
-`D1=0 · S2=1 · CLOSED=1`. See `../shared/results/matrix_onestep.csv`.
+`containers(matrix, domain=onestep)` : 41 layers / 368 / 0 gaps, `D1=0 · S2=1 · CLOSED=1`.
 
 ## 4. Circle-average identity (machine-verified)
 
@@ -99,11 +98,10 @@ The load-bearing step is **Lemma 4.1** (AJ torsionness for p ≥ 2), stated with
 
 ```bash
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hodge.exe code/verify_hodge.c && ./hodge.exe
-gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hodgetech.exe code/verify_hodge_tech.c && ./hodgetech.exe
 ```
 
-Expected: `RESULT PASS=10 FAIL=0 max dev=2.998e-15 EXIT=0` (`k=10 discriminability=0.9 dc=25`) and
-`RESULT PASS=9 FAIL=0 maxdev=0.000e+00 EXIT=0` (`dc=8`). Four gates exit 0; zero warnings.
+Expected: subtotals `10 · 9`, then the aggregate `RESULT PASS=19 FAIL=0` and `EXIT=0`
+(first section `max dev 2.998e-15`, `k=10 discriminability=0.9 dc=25`; second `dc=8`); zero warnings.
 
 ## 9. Honest notes
 

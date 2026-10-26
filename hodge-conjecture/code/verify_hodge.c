@@ -4,7 +4,9 @@
 #include <string.h>
 #include <math.h>
 
-/* ===== part 0: verify_hodge.c ===== */
+static int g_pass = 0, g_fail = 0;   /* totals across sections */
+
+/* ===== section 0 ===== */
 /*
  * NOTE: comments and output labels in this file were translated from Chinese.
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
@@ -275,7 +277,7 @@ static void run_p10(void)
 
 int seg0_main(void)
 {
-    printf("=== verify_hodge.c · 霍odd猜想 independent recomputation ===\n");
+    printf("=== [part 1/2] Hodge · independent recomputation ===\n");
     run_p12();
     run_p3();
     run_p4();
@@ -297,6 +299,7 @@ int seg0_main(void)
     S0_judge("P9 类数 h(−163)=1 h(−167)=11", g_p9, 1e-12);
     S0_judge("P10 closure（period整性⊕half-turn+1）", g_p10, 1e-14);
 
+    g_pass += S0_g_pass; g_fail += S0_g_fail;
     printf("\nRESULT PASS=%d FAIL=%d  max dev=%.3e\n", S0_g_pass, S0_g_fail, S0_g_maxdev);
     printf("k=%d fiber=1.000000 fidelity=1.000000 discriminability=%.6f\n", S0_NJ, 1.0 - 1.0 / S0_NJ);
     printf("res=%.6e domain=%d dc=25 order=2\n", S0_g_maxdev, S0_NJ);
@@ -304,14 +307,14 @@ int seg0_main(void)
     return S0_g_fail == 0 ? 0 : 1;
 }
 
-/* ===== part 1: verify_hodge_tech.c ===== */
+/* ===== section 1 ===== */
 /*
  * NOTE: comments and output labels in this file were translated from Chinese.
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
  * the translation keeps line structure, check names and all numeric values unchanged.
  */
 /* ============================================================================
-   verify_hodge_tech.c  ——  Hodge 篇 · construction layer：p>=2 的间隙与torsion pointreturn
+   [part 2/2]  ——  Hodge 篇 · construction layer：p>=2 的间隙与torsion pointreturn
    ----------------------------------------------------------------------------
    五行六步（阶段直序）：
      base S 锚定 —— (p,p) dimension C(g,p)^2 与圆平均总秩 C(2g,g) 先钉死（组合恒等）
@@ -560,7 +563,7 @@ int seg1_main(void)
 {
     double d1, d2, d3, d4, d5, d6, d7, d8, d9;
 
-    printf("== verify_hodge_tech : construction layer —— p>=2 的间隙与torsion pointreturn ==\n");
+    printf("== [part 2/2] construction layer —— p>=2 的间隙与torsion pointreturn ==\n");
     S1_print_wuxing();
     printf("\n");
 
@@ -575,6 +578,7 @@ int seg1_main(void)
     d9 = S1_p9_extreme163();  S1_judge("P9 extreme 163 separates both", d9, 0.0);
 
     S1_g_res = (double)(2 * 1 + 2);   /* 见血口径：p>=2 的 (p,p) 类数 g<=4 共 2+... 记 4 step */
+    g_pass += S1_g_pass; g_fail += S1_g_fail;
     printf("\nRESULT PASS=%d FAIL=%d maxdev=%.3e\n", S1_g_pass, S1_g_fail, S1_g_maxdev);
     printf("k=%d fiber=1.000000 fidelity=1.000000 discriminability=%.6f\n", S1_NJ, 1.0 - 1.0 / (double)S1_NJ);
     printf("res=%.6e domain=%d dc=%d order=%d\n", S1_g_res, S1_NJ, 8, 2);
@@ -598,7 +602,7 @@ static int run_all(void)
 int main(void)
 {
     int rc = run_all();
-    printf("RESULT: %s parts, overall %s\n", "2", rc ? "FAIL" : "PASS");
+    printf("RESULT PASS=%d FAIL=%d   (all criteria in this file)\n", g_pass, g_fail);
     printf("EXIT=%d\n", rc ? 1 : 0);
     return rc ? 1 : 0;
 }

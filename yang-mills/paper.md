@@ -1,10 +1,10 @@
 # A Structural Reading of the Yang–Mills Existence and Mass Gap
 
+<!-- verify-glance -->
+> **One paper, one file, one program.** `code/verify_ym.c` — **18 criteria**. `gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify verify_ym.c -lm && ./verify` → `RESULT PASS=18 FAIL=0` and `EXIT=0`.
 **Author:** zjaizlh8 (GitHub) · 2026-10-26 · CC BY 4.0
 **Framework:** structural layer · spectral method · matrix probe
-**Independent witnesses:** `code/verify_ym.c` (9 checks, `RESULT PASS=9 FAIL=0
-max dev=2.044e-02 EXIT=0`), `code/verify_ym_tech.c` (9 checks, `RESULT PASS=9 FAIL=0
-maxdev=1.606e-03 EXIT=0`)
+**Machine witness:** `code/verify_ym.c` — one program, two sections (9 · 9 = **18** criteria), closing with the aggregate `RESULT PASS=18 FAIL=0` and `EXIT=0`.
 
 ## Abstract
 
@@ -40,8 +40,7 @@ limit), stated with its honest note.
 
 ## 3. Matrix probe
 
-`containers(matrix, domain=onestep)` : 41 layers / 368 / 0 gaps, all
-`D1=0 · S2=1 · CLOSED=1`. See `../shared/results/matrix_onestep.csv`.
+`containers(matrix, domain=onestep)` : 41 layers / 368 / 0 gaps, `D1=0 · S2=1 · CLOSED=1`.
 
 ## 4. Conditional theorem — four steps
 
@@ -100,11 +99,10 @@ different order from √3).
 
 ```bash
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o ym.exe code/verify_ym.c && ./ym.exe
-gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o ymtech.exe code/verify_ym_tech.c && ./ymtech.exe
 ```
 
-Expected: `RESULT PASS=9 FAIL=0 max dev=2.044e-02 EXIT=0` and `RESULT PASS=9 FAIL=0
-maxdev=1.606e-03 EXIT=0` (`res=6.109e-11`). Four gates exit 0; zero warnings.
+Expected: subtotals `9 · 9`, then the aggregate `RESULT PASS=18 FAIL=0` and `EXIT=0`
+(first section `max dev 2.044e-02`, second `1.606e-03` with `res=6.109e-11`); zero warnings.
 
 ## 8. Honest notes
 

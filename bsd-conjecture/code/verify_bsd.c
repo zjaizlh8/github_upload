@@ -4,7 +4,9 @@
 #include <math.h>
 #include <string.h>
 
-/* ===== part 0: verify_bsd.c ===== */
+static int g_pass = 0, g_fail = 0;   /* totals across sections */
+
+/* ===== section 0 ===== */
 /*
  * NOTE: comments and output labels in this file were translated from Chinese.
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
@@ -323,7 +325,7 @@ static double P13(void)
 
 int seg0_main(void)
 {
-    printf("=== verify_bsd.c · BSD 猜想 independent recomputation ===\n");
+    printf("=== [part 1/5] BSD · independent recomputation ===\n");
     printf("  · involution s ↦ 2−s 的fixed point s=1；符号 w=(−1)^k 管零阶的oddeven\n");
     printf("  · 四元数管符号（中心 Z₂=±1），八元数管秩（非结合而norm-preserving ⟹ 生成元不塌）\n");
 
@@ -345,6 +347,7 @@ int seg0_main(void)
         S0_judge("P13 pole 163 = 2·9²+1 与 (T+1)²=327", P13(), 5e-12);
     }
 
+    g_pass += S0_g_pass; g_fail += S0_g_fail;
     printf("\nRESULT PASS=%d FAIL=%d  max dev=%.3e\n", S0_g_pass, S0_g_fail, S0_g_maxdev);
     printf("k=%d fiber=1.000000 fidelity=1.000000 discriminability=%.6f\n", g_n,
            1.0 - 1.0 / (double)g_n);
@@ -353,14 +356,14 @@ int seg0_main(void)
     return S0_g_fail == 0 ? 0 : 1;
 }
 
-/* ===== part 1: verify_bsd4.c ===== */
+/* ===== section 1 ===== */
 /*
  * NOTE: comments and output labels in this file were translated from Chinese.
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
  * the translation keeps line structure, check names and all numeric values unchanged.
  */
 /* ============================================================================
-   verify_bsd4.c · BSD 的「reciprocal逼迫」final version实证（2026-10-26）
+   [part 2/5] · BSD 的「reciprocal逼迫」final version实证（2026-10-26）
    ----------------------------------------------------------------------------
    用户口径（逐字）：是reciprocal逼迫出的。
    archive内reciprocal定律： [2233] closure ⟺ 逆在同一容器内可写出；[2234] 膨胀↔收缩乘积 1；
@@ -572,7 +575,7 @@ int seg1_main(void)
     double S11, S37, S389;
 
     S1_sieve();
-    printf("=== verify_bsd4.c · BSD reciprocal逼迫final version ===\n");
+    printf("=== [part 2/5] BSD · reciprocal forcing ===\n");
     printf("  ① 常数侧倒数账：L·#tors² = Ω·∏c_p·#Ш\n");
     printf("  ② 秩侧零criterion：rank 0 饱和 / rank≥1 趋零\n");
     printf("  ③ 负结果：局部欧拉积 log-log 斜率不区分秩\n\n");
@@ -622,6 +625,7 @@ int seg1_main(void)
               r[1] - r[2], 1e-01);
     }
 
+    g_pass += S1_npass; g_fail += S1_nfail;
     printf("\nRESULT PASS=%d FAIL=%d\n", S1_npass, S1_nfail);
     printf("k=%d fiber=1.000000 fidelity=1.000000 discriminability=%.6f\n",
            S1_npass + S1_nfail, (double)S1_npass / (double)(S1_npass + S1_nfail));
@@ -630,14 +634,14 @@ int seg1_main(void)
     return S1_nfail == 0 ? 0 : 1;
 }
 
-/* ===== part 2: verify_bsd5.c ===== */
+/* ===== section 2 ===== */
 /*
  * NOTE: comments and output labels in this file were translated from Chinese.
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
  * the translation keeps line structure, check names and all numeric values unchanged.
  */
 /* ============================================================================
-   verify_bsd5.c · BSD 的「阶 = rank」跨越 parity 的结构 layerclosure（2026-10-26）
+   [part 3/5] · BSD 的「阶 = rank」跨越 parity 的结构 layerclosure（2026-10-26）
    ----------------------------------------------------------------------------
    用户审查（逐字）：probe全过是真的，但「证明完毕」不成立——它停在odd偶层（parity），
                     核心等值 ord=rank 未建立，常数侧未动工。
@@ -833,7 +837,7 @@ int seg2_main(void)
     int P[3] = { 1, 2, 3 }, nP = 3;   /* radius集的因子基：1,2,3（6=2·3 是tail hook β，不入因子基） */
 
     S2_sieve();
-    printf("=== verify_bsd5.c · 阶 = rank（跨越 parity 的结构 layerclosure）===\n");
+    printf("=== [part 3/5] · 阶 = rank（跨越 parity 的结构 layerclosure）===\n");
     printf("  A 超oddevenzero：389a1 rank 2（even）⟹ parity 不逼出 L(1)=0，实测为 0\n");
     printf("  B 三恒等式：Selmer exact sequence / 重数律配对 / finite量只进首项coefficient\n\n");
 
@@ -875,6 +879,7 @@ int seg2_main(void)
         S2_judge("配对计数 Σc = 1 + 2Σm = 15（one 步一对）", (double)(sc - (1 + 2 * sm)), 0.0);
     }
 
+    g_pass += S2_npass; g_fail += S2_nfail;
     printf("\nRESULT PASS=%d FAIL=%d\n", S2_npass, S2_nfail);
     printf("k=%d fiber=1.000000 fidelity=1.000000 discriminability=%.6f\n",
            S2_npass + S2_nfail, (double)S2_npass / (double)(S2_npass + S2_nfail));
@@ -883,7 +888,7 @@ int seg2_main(void)
     return S2_nfail == 0 ? 0 : 1;
 }
 
-/* ===== part 3: verify_bsd6.c ===== */
+/* ===== section 3 ===== */
 /*
  * NOTE: this file is the original Chinese source (machine witness), not a translation.
  * The probe output labels are Chinese for fidelity to the D:\dpgo archive;
@@ -1191,9 +1196,10 @@ static void S3_run(void)
 
 int seg3_main(void)
 {
-    printf("=== verify_bsd6.c · spectral simulator===\n");
+    printf("=== [part 4/5] · spectral simulator===\n");
     printf("  读法：阶 = 秩稳定的整数读数；Reg = 平方比较；#Sh = 零化度\n\n");
     S3_run();
+    g_pass += S3_g_np; g_fail += S3_g_nf;
     printf("\nRESULT PASS=%d FAIL=%d  max dev=%.3e\n", S3_g_np, S3_g_nf, S3_g_maxdev);
     printf("k=10 fiber=1.000000 保真度=1.000000 判别力=1.000000\n");
     printf("res=%.6e domain=10 dc=15 order=2\n", S3_g_maxdev);
@@ -1201,14 +1207,14 @@ int seg3_main(void)
     return (S3_g_nf == 0) ? 0 : 1;
 }
 
-/* ===== part 4: verify_bsd_tech.c ===== */
+/* ===== section 4 ===== */
 /*
  * NOTE: comments and output labels in this file were translated from Chinese.
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
  * the translation keeps line structure, check names and all numeric values unchanged.
  */
 /* ============================================================================
-   verify_bsd_tech.c  ——  BSD 篇 · construction layer：Reg / c_p / #Sha 全账
+   [part 5/5]  ——  BSD 篇 · construction layer：Reg / c_p / #Sha 全账
    ----------------------------------------------------------------------------
    五行六步（阶段直序）：
      base S 锚定 —— 高配对 Gram 矩阵先钉住：正定、det = 体积平方
@@ -1378,8 +1384,8 @@ static double S4_p4_parallelogram(void)
 /* ---------------- P5 常数账（rank 0 实数）：L·#tors^2 = Omega·prod c_p·#Sha ---------------- */
 static double S4_p5_ledger_rank0(void)
 {
-    const double L = 0.6555143886;       /* verify_bsd4 run（32a1） */
-    const double Om = 5.244115108584;    /* verify_bsd4 run */
+    const double L = 0.6555143886;       /* part 2 run（32a1） */
+    const double Om = 5.244115108584;    /* part 2 run */
     const double tors2 = 16.0;           /* #tors = 4 */
     const double cprod = 2.0;            /* c_2 = 2 */
     const double sha = 1.0;
@@ -1456,7 +1462,7 @@ int seg4_main(void)
 {
     double d1, d2, d3, d4, d5, d6, d7, d8, d9;
 
-    printf("== verify_bsd_tech : construction layer —— Reg / c_p / #Sha 全账 ==\n");
+    printf("== [part 5/5] construction layer —— Reg / c_p / #Sha 全账 ==\n");
     S4_print_wuxing();
     printf("\n");
 
@@ -1470,10 +1476,11 @@ int seg4_main(void)
     d8 = S4_p8_sha_square();         S4_judge("P8 #Sha is a perfect square", d8, 0.0);
     d9 = S4_p9_reg_presence();       S4_judge("P9 r=0 => Reg=1; r>=1 => Reg>0", d9, 0.0);
 
+    g_pass += S4_g_pass; g_fail += S4_g_fail;
     printf("\nRESULT PASS=%d FAIL=%d maxdev=%.3e\n", S4_g_pass, S4_g_fail, S4_g_maxdev);
     printf("k=%d fiber=1.000000 fidelity=1.000000 discriminability=%.6f\n", S4_NJ, 1.0 - 1.0 / (double)S4_NJ);
     printf("res=%.6e domain=%d dc=%d order=%d\n", S4_g_res, S4_NJ, 5, 2);
-    printf("honest note：P1-P4/P9 是高度配对的代数性质（精确），P5 用 verify_bsd4 的runreadingrecomputation，\n");
+    printf("honest note：P1-P4/P9 是高度配对的代数性质（精确），P5 用 part 2 的runreadingrecomputation，\n");
     printf("     P6 是账目形状的计数（Reg 的指数），P7/P8 引自 Tamagawa 与 Cassels 的既有事实；\n");
     printf("     本篇未在实数上闭合 rank>=1 的 Reg numeric（需要 Mordell-Weil 生成元与真实period）。\n");
     printf("EXIT=%d\n", S4_g_fail == 0 ? 0 : 1);
@@ -1496,7 +1503,7 @@ static int run_all(void)
 int main(void)
 {
     int rc = run_all();
-    printf("RESULT: %s parts, overall %s\n", "5", rc ? "FAIL" : "PASS");
+    printf("RESULT PASS=%d FAIL=%d   (all criteria in this file)\n", g_pass, g_fail);
     printf("EXIT=%d\n", rc ? 1 : 0);
     return rc ? 1 : 0;
 }

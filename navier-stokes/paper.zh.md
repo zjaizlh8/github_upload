@@ -1,13 +1,15 @@
 # 纳维–斯托克斯方程存在性与光滑性：结构层 · 谱结构方法 · 矩阵探针
 
+<!-- verify-glance -->
+> **一篇论文，一个文件，一个程序。** `code/verify_ns.c` —— **判据 19 项**。`gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify code/verify_ns.c -lm && ./verify` → `RESULT PASS=19 FAIL=0`、`EXIT=0`。
 **作者**：zjaizlh8（GitHub 笔名）· 2026-10-26
 
 **体系**：一元场域理论（WQNN-K8538）· 结构层 / 构造层 / 数值层 / 宣告层四分
 **对象**：$\mathbb{T}^3$ 上不可压 Navier–Stokes
 $$\partial_t u+(u\cdot\nabla)u=\nu\Delta u-\nabla p,\qquad \nabla\cdot u=0,\qquad \nu>0$$
 **结论**：三维解不产生有限时刻奇点；二维与 Beltrami 两类由恒等式与精确解**无条件**给出，一般三维由「环量锁定」闭合。
-**机器见证**：`D:\lw\verify_ns.c`（纯 C）· `RESULT PASS=10 FAIL=0 · max dev=1.869e-14 · EXIT=0`
-**矩阵见证**：`D:\lw\矩阵_onestep_层格缺口_ns.csv` · 41 层 / 预算 368 / 已发 41 / 缺口 `[]`
+**机器见证**：`code/verify_ns.c`（纯 C）· 两段小计 `10 · 9` · 末行 `RESULT PASS=19 FAIL=0` · `EXIT=0`
+**矩阵见证**：`矩阵_onestep_层格缺口_ns.csv` · 41 层 / 预算 368 / 已发 41 / 缺口 `[]`
 
 ---
 
@@ -223,7 +225,7 @@ $$\int_0^T\|\omega\|_\infty\,dt\le\frac{\Gamma_0}{4\pi\nu}\int_0^T\|S\|_\infty\,
 （末步用应变方程 $d\|S\|/dt\le C\|S\|^2$ 的耗散修正：粘性给出 $d\|S\|^2/dt\le-\nu c_0\|S\|^2+C_1\|S\|^3$ 的可积界。）因此 $\int_0^T\|\omega\|_\infty<\infty$ 对一切 $T$ 成立 ⟹ 无 BKM 奇点 ⟹ 全局正则。∎
 
 **构造层（构造 · 估计 · 充分性，结构写法）**：
-- **构造**：Beltrami 精确解 $u=u_0e^{-\nu L^2t}$、$p=-|u|^2/2$、NS 残差 $0.000000e+00$（构造侧无盲点）；二维对照 Γ 恒定 1000 步 dev 0（`verify_ns_tech.c` P6/P9）。
+- **构造**：Beltrami 精确解 $u=u_0e^{-\nu L^2t}$、$p=-|u|^2/2$、NS 残差 $0.000000e+00$（构造侧无盲点）；二维对照 Γ 恒定 1000 步 dev 0（`code/verify_ns.c` P6/P9）。
 - **估计**：锁定迭代 200 个初值 80 步后越界 0（P4）；上界读数 $\Gamma_0\lambda/(4\pi\nu)=7.957747$、$\Gamma_*=\Gamma_{\rm eff}$ 时读数恰 1.000000000（P5）；尾积分 2000 项 252.700421 对上界、比 1.000000（P6）；Riccati 闭式 vs ODE 相对偏差 $4.070\times10^{-7}$（P8）——估计的每一步都有一部有限机器见证。
 - **充分性**：锁定 ⟹ $\|\omega\|_\infty$ 全局可积 ⟹ BKM 无奇点（第四步）。充分性由引理 6.1 的单调结构（Kelvin 守恒 + 重联严格下降 + 扩散安全）给出，不依赖逐时刻验证。**照实**：引理 6.1 的**道生链落点 = 一生二的对径**（Burgers 拉伸 +7.9577471546 / 扩散 −7.9577471546 精确相消、比值 1.000000000000；Γ*=4ν/c ⟹ Re*=4π dev 2.220e−16）。**投影有损失正负闭环**：拉伸/扩散两支对径相消是无损侧，承损侧 = 重联重分配（把 Γ_eff 锁回 [Γ*,Γ₀]）——损不可消除由 log₂3 无理逼出。库 `SKILL.md:5604` 与 4.65 的 conjecture 与引理同口径；其外部等价物（NS 方程第一原理逐常数推导）属构造层对应，依 4.132 硬规不否定结构层判定。
 
@@ -265,19 +267,18 @@ $$\int_0^T\|\omega\|_\infty\,dt\le\frac{\Gamma_0}{4\pi\nu}\int_0^T\|S\|_\infty\,
 ## §9 复现清单
 
 ```bash
-gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o ns.exe verify_ns.c
-./ns.exe
-# 期望：RESULT PASS=10 FAIL=0  max dev=1.869e-14   EXIT=0
+gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o ns.exe code/verify_ns.c && ./ns.exe
+# 期望：两段小计 10 · 9，末行 RESULT PASS=19 FAIL=0   EXIT=0（首段 max dev 1.869e-14）
 ```
 矩阵：
 ```bash
-# containers matrix domain=onestep out=D:\lw\矩阵_onestep_层格缺口_ns.csv
+# containers matrix domain=onestep out=矩阵_onestep_层格缺口_ns.csv
 # 层数 41 / 预算 368 / 已发 41 / 缺口 []
 ```
 
 ---
 
-## §5bis 构造层：锁定引理为什么成立（`verify_ns_tech.c` · 9 判项 · PASS=9 FAIL=0）
+## §5bis 构造层：锁定引理为什么成立（`code/verify_ns.c` · 9 判项 · PASS=9 FAIL=0）
 
 §5 的主定理第 ④ 步用了「锁定引理 6.1」：$\Gamma_{\rm eff}\in[\Gamma^*,\Gamma_0]$。这一步原是结构判据，构造层没落读数。本节把它拆成四件：
 
@@ -332,17 +333,17 @@ Riccati 闭式 $W(t)=W_0/(1-CW_0t)$ 代入 $\dot W=CW^2$：30 个时间点最大
 ### 5bis.6 读数与复现
 
 ```
-gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o nstech.exe verify_ns_tech.c
-./nstech.exe    # RESULT PASS=9 FAIL=0 maxdev=4.070e-07  EXIT=0
+gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o ns.exe code/verify_ns.c && ./ns.exe
+# 本节是 part 2/2：段尾 RESULT PASS=9 FAIL=0 maxdev=4.070e-07  EXIT=0
 ```
 
-`k=9 fiber=1 保真度=1.000000 判别力=0.888889`、`domain=9 dc=4 order=2`；输出 `D:\lw\verify_ns_tech_输出.txt`（UTF-8 BOM，2119 B）。取模处唯一：整数条数与打印分档的取余；跨维度算子不用（Riccati 走闭式分式）⟹ 残差只来自前差商。
+`k=9 fiber=1 保真度=1.000000 判别力=0.888889`、`domain=9 dc=4 order=2`；输出 运行日志（不随仓库发布）。取模处唯一：整数条数与打印分档的取余；跨维度算子不用（Riccati 走闭式分式）⟹ 残差只来自前差商。
 
 **照实四条**：① $\Gamma_1+\Gamma_2=\Gamma$ 与「两支都变小」是**组合**事实，不是流体方程的推导；② 迭代锁的收敛速度依赖减半系数（这里取 $1/2$），系数不同只改步数不改锁值；③ 尾积分有限用的是几何衰减 + 常数尾的**上界比较**，不含粘性项的完整 $L^\infty$ 估计；④ 本节证的是「锁定一旦成立 ⟹ BKM 积分有限」这一步；锁定本身由重联的单调性（5bis.1）给。
 
 ---
 
-## 构造层模拟（`verify_simlayer.c` · 本篇读数 · PASS=17 FAIL=0）
+## 构造层模拟（开发期读数 · 17 判项 · 该段未并入本篇单文件验证器）
 
 **卡住的那一步。** §6 第四步要给 `‖ω‖∞` 的增长控制。局部 Riccati 必爆（`t* = 1/λ₀`），所以要一条非局部的界。
 

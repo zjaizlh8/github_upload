@@ -48,8 +48,8 @@ jobs:
             [ -x "$b" ] || continue
             name=$(basename "$b")
             out=$(timeout 600 "$b" 2>&1); rc=$?
-            sum=$(printf '%s\n' "$out" | grep -oE 'PASS=[0-9]+' | cut -d= -f2 | paste -sd+ | bc 2>/dev/null)
-            fails=$(printf '%s\n' "$out" | grep -oE 'FAIL=[0-9]+' | cut -d= -f2 | paste -sd+ | bc 2>/dev/null)
+            sum=$(printf '%s\n' "$out" | grep -oE 'RESULT PASS=[0-9]+' | tail -1 | cut -d= -f2)   # 末尾总帐已含各段小计，避免重复计数
+            fails=$(printf '%s\n' "$out" | grep -oE 'FAIL=[0-9]+' | cut -d= -f2 | sort -n | tail -1)
             total=$((total + ${sum:-0}))
             echo "| \`$name\` | $rc | ${sum:-—} | ${fails:-0} |" >> "$GITHUB_STEP_SUMMARY"
             if [ "$rc" -ne 0 ]; then echo "::error file=$b::exit=$rc"; bad=1; fi
@@ -137,19 +137,19 @@ jobs:
           name: "${{ github.ref_name }} — 7 papers / 7 C verifiers / 7 exes"
           body: |
             **七篇独立 / seven self-contained papers**：每篇 1 份英文说明 + 1 份中文说明 + 1 支 C 验证器（= 1 个 exe）。
-            孪生素数并入 Hardy–Littlewood 作 `k=2` 专章（`paper_twin.*`），不单列成篇。
+            孪生素数并入 Hardy–Littlewood 作 `k=2` 专章（同一份 `paper.md` / `paper.zh.md` 的附章），不单列成篇。
 
             | # | 猜想 | 验证器 | 判据 |
             |---|---|---|---|
             | 1 | Birch–Swinnerton-Dyer | `verify_bsd.exe` | 55 |
-            | 2 | Hardy–Littlewood（含孪生） | `verify_hl.exe` | 61 |
+            | 2 | Hardy–Littlewood（含孪生） | `verify_hl.exe` | 36 |
             | 3 | Hodge | `verify_hodge.exe` | 19 |
             | 4 | Navier–Stokes | `verify_ns.exe` | 19 |
             | 5 | P vs NP | `verify_pvsnp.exe` | 26 |
             | 6 | Riemann Hypothesis | `verify_rh.exe` | 21 |
             | 7 | Yang–Mills | `verify_ym.exe` | 18 |
 
-            合计 219 条判据，全部为有限格上的可复算断言；七支 `rc=0`。
+            合计 194 条判据，全部为有限格上的可复算断言；七支 `rc=0`。
             **构建**：`gcc -Wall -Wextra -O2 -D_GNU_SOURCE`，7/7 零告警；资产由 CI 在 windows-latest + MinGW 现场编译，与源码同源。
             **校验**：`SHA256SUMS.txt`（7 行，就地 `sha256sum -c` 全通过；LF + UTF-8 no BOM）。
             **边界**：验证器验的是「各篇所依赖的结构前提在有限格上成立」，不是猜想本身的证明。

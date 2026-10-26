@@ -29,15 +29,15 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o t bsd-conjecture/code/verify_bsd.c -lm &&
 | # | 猜想 / conjecture | 英文说明 | 中文说明 | 验证器（C） | 判据数 |
 |---|---|---|---|---|---|
 | 1 | Birch–Swinnerton-Dyer | [`paper.md`](bsd-conjecture/paper.md) | [`paper.zh.md`](bsd-conjecture/paper.zh.md) | [`verify_bsd.c`](bsd-conjecture/code/verify_bsd.c) | 55 |
-| 2 | Hardy–Littlewood（含孪生专章） | [`paper.md`](hardy-littlewood/paper.md) | [`paper.zh.md`](hardy-littlewood/paper.zh.md) | [`verify_hl.c`](hardy-littlewood/code/verify_hl.c) | 61 |
+| 2 | Hardy–Littlewood（含孪生专章） | [`paper.md`](hardy-littlewood/paper.md) | [`paper.zh.md`](hardy-littlewood/paper.zh.md) | [`verify_hl.c`](hardy-littlewood/code/verify_hl.c) | 36 |
 | 3 | Hodge | [`paper.md`](hodge-conjecture/paper.md) | [`paper.zh.md`](hodge-conjecture/paper.zh.md) | [`verify_hodge.c`](hodge-conjecture/code/verify_hodge.c) | 19 |
 | 4 | Navier–Stokes | [`paper.md`](navier-stokes/paper.md) | [`paper.zh.md`](navier-stokes/paper.zh.md) | [`verify_ns.c`](navier-stokes/code/verify_ns.c) | 19 |
 | 5 | P vs NP | [`paper.md`](p-vs-np/paper.md) | [`paper.zh.md`](p-vs-np/paper.zh.md) | [`verify_pvsnp.c`](p-vs-np/code/verify_pvsnp.c) | 26 |
 | 6 | Riemann Hypothesis | [`paper.md`](riemann-hypothesis/paper.md) | [`paper.zh.md`](riemann-hypothesis/paper.zh.md) | [`verify_rh.c`](riemann-hypothesis/code/verify_rh.c) | 21 |
 | 7 | Yang–Mills | [`paper.md`](yang-mills/paper.md) | [`paper.zh.md`](yang-mills/paper.zh.md) | [`verify_ym.c`](yang-mills/code/verify_ym.c) | 18 |
 
-合计 **219 条判据**，全部为有限格上的可复算断言；`make run` 七支全 `rc=0`。
-Total **219 machine-checked criteria** on finite grids; `make run` returns `rc=0` for all seven.
+合计 **194 条判据**，全部为有限格上的可复算断言；`make run` 七支全 `rc=0`。
+Total **194 machine-checked criteria** on finite grids; `make run` returns `rc=0` for all seven.
 
 **孪生素数**作为 Hardy–Littlewood 的 `k=2` 特例，写在同篇的附章里（`hardy-littlewood/paper.md` 的
 `## Chapter: the twin-prime case`），共用 `2C₂·Li₂` 常数与同一支验证器 —— 论文仍是七篇。
@@ -50,8 +50,8 @@ not a separate paper — the count stays at seven.
 
 | 验证器 | 实跑读数 | 它验的 / 它不验的 |
 |---|---|---|
-| `verify_bsd.c` | 5 段 · 55 判据全过 · `max dev 4.119e-11` | 有限椭圆曲线族的秩/torsion/L-值恒等式、`w=(−1)^k` 奇偶律；**不验** BSD 本身 |
-| `verify_hl.c` | 6 段 · 61 判据全过 · `max dev 1.105` | π₂ 复算对齐 archive、`E=π₂−2C₂Li₂` 的三档同阶、`Q₆=Q₃□Q₃` 嵌套、闭链周期；**不验** HL 猜想 |
+| `verify_bsd.c` | 55 判据全过 · `max dev 4.119e-11` | 有限椭圆曲线族的秩/torsion/L-值恒等式、`w=(−1)^k` 奇偶律；**不验** BSD 本身 |
+| `verify_hl.c` | 36 判据全过 · `max dev 1.105` | π₂ 复算对齐 archive、`E=π₂−2C₂Li₂` 的三档同阶、`Q₆=Q₃□Q₃` 嵌套、闭链周期；**不验** HL 猜想 |
 | `verify_hodge.c` | 19 判据全过 · `max dev 0` | 有限复形上 Hodge 分解与对偶数格恒等式；**不验** Hodge 猜想 |
 | `verify_ns.c` | 19 判据全过 · `max dev 4.070e-07` | 有限模上的涡量/能量不等式与守恒残差；**不验** NS 全局正则性 |
 | `verify_pvsnp.c` | 26 判据全过 | GF(2) 秩表（`rank=(n−1)²+1`，17 项）、SAT 0/512 · 0/65536、布尔传递恒等式；**不验** P≠NP |
@@ -71,8 +71,10 @@ One line: each verifier checks the paper's structural premises on a finite grid,
 | **对称** | 对合 `σ`（反读）、`τ`（时间反演）、`w=(−1)^k` | BSD / HL / RH / YM |
 | **闭环** | `R(F(x))=x` 的双向复算，残差 `res` 必须**跑出来**而非声明 | 七篇全部 |
 
-三件事**同构但分别陈述**，不合并成一条跨篇统一定理 —— 接口留白见
-[`shared/docs/registry.md`](shared/docs/registry.md) / [`registry.zh.md`](shared/docs/registry.zh.md)。
+三件事**同构但分别陈述**，不合并成一条跨篇统一定理 —— 三件各自的证据分散在七支验证器里，
+接口留白处即已知缺口（见第五节）。
+The three are isomorphic yet stated separately; each is witnessed inside the seven verifiers,
+and the interface is deliberately left open rather than closed by a cross-paper theorem.
 
 ---
 
@@ -80,14 +82,21 @@ One line: each verifier checks the paper's structural premises on a finite grid,
 
 ```bash
 make run                                   # 七支：编 + 跑（应全 rc=0）
-make tools                                 # 可选：5 支归档检查工具（不参与 make run）
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o t <paper>/code/verify_<x>.c -lm && ./t
 ```
 
-判据输出约定：每段打 `[PASS]/[FAIL]` 明细，段尾打 `RESULT PASS=n FAIL=m`，
-整个文件末尾打 `RESULT TOTAL segments=<k> rc=<0|1>`，进程退出码 = 是否有失败。
-Output contract: per-criterion `[PASS]/[FAIL]`, per-segment `RESULT PASS=n FAIL=m`,
-per-file `RESULT TOTAL segments=k rc=…`, process exit code = any failure.
+判据输出约定：每条判据打一行 `[PASS]/[FAIL]`，每段结束打 `RESULT PASS=n FAIL=m`，
+整个文件末尾打一行总帐 `RESULT PASS=<总数> FAIL=0   (all criteria in this file)` 加 `EXIT=0`；
+进程退出码 = 是否存在失败（有失败即非 0）。每支验证器自带若干段，各段小计相加即该支总数。
+Output contract: one `[PASS]/[FAIL]` line per criterion, `RESULT PASS=n FAIL=m` per section,
+and a closing aggregate `RESULT PASS=<total> FAIL=0   (all criteria in this file)` plus `EXIT=0`;
+the process exit code is non-zero if any criterion fails.
+
+**只发布验证器**：`containers(matrix, domain=onestep)` 与 `矩阵_*_层格缺口*.csv` 属于归档工作区
+（DSH 工具 + 本地实跑件，路径 `D:\dpgo\`），**不随本仓发布**；本仓可复现的只有每篇那一支
+`code/verify_*.c`。文中所有「41 层 / 预算 368 / 缺口 0」是那次实跑的读数，引用而非随仓可跑。
+Only the verifiers ship here: the matrix probe and its CSVs live in the archive workspace and are
+quoted as readings, not shipped as runnable artifacts.
 
 ---
 

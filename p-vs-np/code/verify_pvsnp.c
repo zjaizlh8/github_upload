@@ -4,7 +4,9 @@
 #include <stdint.h>
 #include <string.h>
 
-/* ===== part 0: verify_pvsnp.c ===== */
+static int g_pass = 0, g_fail = 0;   /* totals across sections */
+
+/* ===== section 0 ===== */
 /*
  * NOTE: comments and output labels in this file were translated from Chinese.
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
@@ -422,6 +424,7 @@ int seg0_main(void)
     printf("\n");
     monotone_table();
     print_tail();
+    g_pass += gGF2_PASS; g_fail += gGF2_BAD;
     printf("\nRESULT PASS=%d FAIL=%d  (GF(2) 判据 17 项；数值判据另由此前 max dev 把门)\n",
            gGF2_PASS, gGF2_BAD);
     exit_code = (gGF2_BAD == 0 && de < 1e-9) ? 0 : 1;
@@ -429,14 +432,14 @@ int seg0_main(void)
     return exit_code;
 }
 
-/* ===== part 1: verify_pvsnp_tech.c ===== */
+/* ===== section 1 ===== */
 /*
  * NOTE: comments and output labels in this file were translated from Chinese.
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
  * the translation keeps line structure, check names and all numeric values unchanged.
  */
 /* ============================================================================
-   verify_pvsnp_tech.c  ——  P vs NP 篇 · construction layer：为什么 per 没有闭式（mod 2 商）
+   [part 2/2]  ——  P vs NP 篇 · construction layer：为什么 per 没有闭式（mod 2 商）
    ----------------------------------------------------------------------------
    五行六步（阶段直序）：
      base S 锚定 —— 先把 det 与 per 的三条独立路径钉在hard 锚上（2×2、3×3 手算值）
@@ -753,7 +756,7 @@ int seg1_main(void)
 {
     double d1, d2, d3, d4, d5, d6, d7, d8, d9;
 
-    printf("== verify_pvsnp_tech : construction layer —— per 为什么没有闭式（mod 2 商）==\n");
+    printf("== [part 2/2] construction layer —— per 为什么没有闭式（mod 2 商）==\n");
     S1_print_wuxing();
     printf("\n");
 
@@ -784,6 +787,7 @@ int seg1_main(void)
     d9 = S1_p9_affine_rank();
     S1_judge("P9 GF(2) affine rank = (n-1)^2+1", d9, 0.0);
 
+    g_pass += S1_g_pass; g_fail += S1_g_fail;
     printf("\nRESULT PASS=%d FAIL=%d maxdev=%.3e\n", S1_g_pass, S1_g_fail, S1_g_maxdev);
     printf("k=%d fiber=1.000000 fidelity=1.000000 discriminability=%.6f\n", S1_NJ, 1.0 - 1.0 / (double)S1_NJ);
     printf("res=%.6e domain=%d dc=%d order=%d\n", S1_g_res, S1_NJ, 6, 2);
@@ -807,7 +811,7 @@ static int run_all(void)
 int main(void)
 {
     int rc = run_all();
-    printf("RESULT: %s parts, overall %s\n", "2", rc ? "FAIL" : "PASS");
+    printf("RESULT PASS=%d FAIL=%d   (all criteria in this file)\n", g_pass, g_fail);
     printf("EXIT=%d\n", rc ? 1 : 0);
     return rc ? 1 : 0;
 }

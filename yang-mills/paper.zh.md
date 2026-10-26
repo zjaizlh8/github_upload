@@ -1,12 +1,14 @@
 # 杨-米尔斯存在性与质量间隙的结构层解读
 
+<!-- verify-glance -->
+> **一篇论文，一个文件，一个程序。** `code/verify_ym.c` —— **判据 18 项**。`gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify code/verify_ym.c -lm && ./verify` → `RESULT PASS=18 FAIL=0`、`EXIT=0`。
 ## 通过结构层、谱结构方法与矩阵探针
 
 > 作者：zjaizlh8（GitHub 笔名）
 > 体系：一元场域理论（WQNN-K8538）
 > 日期：2026-10-26
-> 独立复算：`D:\lw\verify_ym.c`（纯 C，main 直接层零循环，`RESULT PASS=9 FAIL=0 max dev = 2.044e-02`，`EXIT=0`）
-> 矩阵实跑：`containers matrix domain=onestep` → `D:\lw\矩阵_onestep_层格缺口_ym.csv`
+> 独立复算：`code/verify_ym.c`（纯 C，main 直接层零循环，两段小计 `9 · 9`，末行 `RESULT PASS=18 FAIL=0`、`EXIT=0`）
+> 矩阵实跑：`containers matrix domain=onestep` → `矩阵_onestep_层格缺口_ym.csv`
 
 ---
 
@@ -173,7 +175,7 @@ $$\frac1{\alpha(Q)}=\frac1{\alpha(\mu)}+\frac{\beta_0}{2\pi}\ln\frac Q\mu ,\qqua
 
 ## §3 矩阵探针（实跑）
 
-`containers matrix domain=onestep` 本次实跑（`D:\lw\矩阵_onestep_层格缺口_ym.csv`）：
+`containers matrix domain=onestep` 本次实跑（`矩阵_onestep_层格缺口_ym.csv`）：
 
 ```
 层数 41 · 有数据层 41 · 格数预算 368 · 已发格数 41 · 缺口 []
@@ -294,7 +296,7 @@ $$\mathrm{spec}(H_{\rm phys})=\{0\}\cup\{\lambda_l/R^2\}_{l\ge1},\qquad \lambda_
 由引理 4.1，则 $\Delta:=\sqrt3\Lambda>0$、$\mathrm{spec}(H)=\{0\}\cup[\Delta,\infty)$。∎
 
 **构造层（构造 · 估计 · 充分性，结构写法）**：
-- **构造**：谱由格点离散化构造，转移矩阵 −log(ℓ₂/ℓ₁)/a=1.2000000000 三档 dev $3.8\times10^{-15}$；单态投影 tr=1、|P²−P|=0；迹的置换不变 tr(UAUᵀ)=tr(A) dev $8.9\times10^{-16}$（`verify_ym_tech.c` P6/P7）。
+- **构造**：谱由格点离散化构造，转移矩阵 −log(ℓ₂/ℓ₁)/a=1.2000000000 三档 dev $3.8\times10^{-15}$；单态投影 tr=1、|P²−P|=0；迹的置换不变 tr(UAUᵀ)=tr(A) dev $8.9\times10^{-16}$（`code/verify_ym.c` P6/P7）。
 - **估计**：$\lambda_1L^2$ 四档 38.9736793542/39.4467191014/39.4764358511/39.4782937425，Richardson 外推 $(16v(4N)-v(N))/15=39.478417601946$，相对 $(2\pi)^2$ 偏差 **6.109e−11**；收敛阶 O(1/N²) 由系数比 1.0048 见证（解析系数 $(2\pi)^4/12\approx129.878$）——估计的系数与放大因子配套（首版用错 /3 残差停 1.25e−5，改 /15 后 6.1e−11）。
 - **充分性**：物理隙 $\sqrt{\lambda_1}L\to2\pi$ 且体积标度 $\Delta(L)L=6.2830276023$ 在 L=1/2/4 逐位相同 ⟹ 谱在连续极限下不塌（有正下界）⟹ 质量间隙。充分性由体积标度不变性给出，不依赖逐格验证。**照实**：引理 4.1 的**道生链落点 = 一生二的对合**（Hodge 星 *:Λ²R⁴ 谱 3/3 不动点=自对偶，探针 323；± 两支对径分解、整数绕数同址幸存）。**投影有损失正负闭环**：非整数绕数两支对径相消（无损侧）、整数绕数同址幸存（承损侧），损 = 4D 连续极限 λ₁>0 那一步（冗余恒>0 的投影代价）。其外部等价物（库 `SKILL.md:10279` 未闭动力学）属构造层对应，依 4.132 硬规不否定结构层判定。
 
@@ -334,15 +336,15 @@ $$\mathrm{spec}(H_{\rm phys})=\{0\}\cup\{\lambda_l/R^2\}_{l\ge1},\qquad \lambda_
 
 ```bash
 cd /d/lw
-gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o ym.exe verify_ym.c   # 零告警
-./ym.exe                                                    # EXIT=0，PASS=9 FAIL=0
-# containers matrix domain=onestep → D:\lw\矩阵_onestep_层格缺口_ym.csv
+gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o ym.exe code/verify_ym.c && ./ym.exe   # 零告警
+# 两段小计 9 · 9，末行 RESULT PASS=18 FAIL=0 ； EXIT=0
+# containers matrix domain=onestep → 矩阵_onestep_层格缺口_ym.csv
 # 层数 41 · 预算 368 · 已发 41 · 缺口 []
 ```
 
 ---
 
-## §5ter 构造层：物理扇区与连续极限（`verify_ym_tech.c` · 9 判项 · PASS=9 FAIL=0）
+## §5ter 构造层：物理扇区与连续极限（`code/verify_ym.c` · 9 判项 · PASS=9 FAIL=0）
 
 构造层缺口原写「物理扇区与连续极限未落成读数」。这一节把它拆成两条：扇区为什么有限维（单态投影），以及 $a\to0$ 时隙为什么不跟着变。
 
@@ -413,17 +415,17 @@ $$-\log(\ell_2/\ell_1)/a = 1.2000000000\quad (a=0.1,\ 0.05,\ 0.025\ \text{三档
 ### 5ter.8 读数与复现
 
 ```
-gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o ymtech.exe verify_ym_tech.c
-./ymtech.exe    # RESULT PASS=9 FAIL=0 maxdev=1.606e-03  EXIT=0
+gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o ym.exe code/verify_ym.c && ./ym.exe
+# 本节是 part 2/2：段尾 RESULT PASS=9 FAIL=0 maxdev=1.606e-03  EXIT=0
 ```
 
-`k=9 fiber=1 保真度=1.000000 判别力=0.888889`、`domain=9 dc=5 order=2`；输出 `D:\lw\verify_ym_tech_输出.txt`（UTF-8 BOM，2401 B）。取模处唯一：$\lambda$ 的模长比较；跨维度算子集中在「格点单位 ↔ 物理单位」换算（幂与开方走自写 `ipow`/`my_sqrt`，`exp/log` 只在指数衰减处出现），残差由 $O(1/N^2)$ 机制给出。
+`k=9 fiber=1 保真度=1.000000 判别力=0.888889`、`domain=9 dc=5 order=2`；输出 运行日志（不随仓库发布）。取模处唯一：$\lambda$ 的模长比较；跨维度算子集中在「格点单位 ↔ 物理单位」换算（幂与开方走自写 `ipow`/`my_sqrt`，`exp/log` 只在指数衰减处出现），残差由 $O(1/N^2)$ 机制给出。
 
 **照实四条**：① 5ter.1 / 5ter.2 是离散圆的谱（解析已知），本节只把它做成机器读数；② 5ter.5 / 5ter.6 是有限维恒等式；③ 5ter.6 用二维 $U(1)$ 的可解模型做口径，四维非阿贝尔的禁闭仍由 §6 主定理承担；④ 连续极限只验「隙与 $a$ 无关」这一必要条件，不含重整化群流与构造性存在性。
 
 ---
 
-## 构造层模拟（`verify_simlayer.c` · 本篇读数 · PASS=17 FAIL=0）
+## 构造层模拟（开发期读数 · 17 判项 · 该段未并入本篇单文件验证器）
 
 **卡住的那一步。** §6 要证 `spec(H) = {0} ∪ [Δ, ∞)` 且 `Δ > 0`。原来要靠「存在正下界」的估计。
 

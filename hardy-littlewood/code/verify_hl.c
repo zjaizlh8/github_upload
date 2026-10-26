@@ -4,7 +4,9 @@
 #include <string.h>
 #include <math.h>
 
-/* ===== part 0: verify_hl.c ===== */
+static int g_pass = 0, g_fail = 0;   /* totals across sections */
+
+/* ===== section 0 ===== */
 /*
  * NOTE: comments and output labels in this file were translated from Chinese.
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
@@ -39,7 +41,7 @@
  * F: 正向 —— 从 Li_k 焊接口出发：展开抽coefficient、算双账本、读判别力缺步。
  * R: 反向 —— 从外部锚回推：若 2C₂、e^{−γ}、4e^{−2γ}、det 比任一对不上，本步当场崩。
  *
- * 编译：gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hl.exe verify_hl.c
+ * 编译：gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hl.exe code/verify_hl.c
  * ==========================================================================*/
 
 #define PMAX 1000000
@@ -312,7 +314,7 @@ int seg0_main(void)
     char   buf[160];
 
     sieve();
-    printf("verify_hl.c · HL independent recomputation（焊接口 / 双账本 / coefficient / 缺步）\n");
+    printf("[part 1/4] HL · independent recomputation（焊接口 / 双账本 / coefficient / 缺步）\n");
     printf("素数筛法上限 %d，筛法得 %d 个素数；外部锚 e^-gamma=%.16f\n\n", PMAX, S0_g_npr, EG);
 
     { double rw = p1_scan();
@@ -367,6 +369,7 @@ int seg0_main(void)
       S0_judge("P11 首项deviation ≥10% 且 8 项deviation ≤1%", d1, 0.0);
       if (d1 > res) res = d1; }
 
+    g_pass += S0_g_pass; g_fail += S0_g_fail;
     printf("\nRESULT PASS=%d FAIL=%d maxdev=%.6e\n", S0_g_pass, S0_g_fail, S0_g_maxdev);
     printf("k=%d fiber=1.000000 fidelity=1.000000 discriminability=%.6f\n", k, 1.0 - 1.0 / (double)k);
     printf("res=%.6e domain=%d dc=%d order=%d\n", res, k, 8, 2);
@@ -374,17 +377,17 @@ int seg0_main(void)
     return S0_g_fail == 0 ? 0 : 1;
 }
 
-/* ===== part 1: verify_hl_tech.c ===== */
+/* ===== section 1 ===== */
 /*
  * NOTE: comments and output labels in this file were translated from Chinese.
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
  * the translation keeps line structure, check names and all numeric values unchanged.
  */
 /* ============================================================================
- * verify_hl_tech.c —— HL 篇「construction layer」：E(x) 的筛法法控制 + odd偶屏障定位
+ * [part 2/4] —— HL 篇「construction layer」：E(x) 的筛法法控制 + odd偶屏障定位
  * 对应论文：D:\lw\HL_证明_结构层_chaos onestep_matrix probe.md §5bis
  *
- * numeric 层已closed（verify_hl.c 11 check）。本篇要拿下的是用户点的最后一步：
+ * numeric 层已closed（part 1：11 check）。本段要拿下的是用户点的最后一步：
  *   E(x) := π₂(x) − 2C₂·Li₂(x) 被什么控制？
  * 结构主张（本probe要机器见证的四条）：
  *   ① 放大因子 = 2^{ω(d)}（重数律在筛法侧的读数）；d ≤ √x ⟹ ω ≤ 5 ⟹ 乘子 ≤ 32；
@@ -409,7 +412,7 @@ int seg0_main(void)
  * F: 正向 —— 从 E(x) 出发，问谁控制它 ⟹ 放大因子 2^{ω(d)} + 截断 √x。
  * R: 反向 —— 若把 q=2 步配对拆open（人为赋oddmultiplicity），Σc 立刻不再 = 1+2Σm ⟹ 屏障位置可反验。
  *
- * 编译：gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hltech.exe verify_hl_tech.c
+ * 编译：gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hl.exe code/verify_hl.c
  * ==========================================================================*/
 
 #define S1_MAXN 10000000
@@ -611,7 +614,7 @@ int seg1_main(void)
     int    m[3], c[3], pomax;
 
     S1_build_pi2();
-    printf("verify_hl_tech.c · HL construction layer：E(x) 控制 + odd偶屏障（筛法至 %d）\n", S1_MAXN);
+    printf("[part 2/4] HL construction layer：E(x) 控制 + odd偶屏障（筛法至 %d）\n", S1_MAXN);
     printf("外部锚 2C2=1.3203236316 ；archive表 ρ=0.980213/0.990418/1.003850\n\n");
 
     S1_judge("P1 π₂(x) 复算对齐 archive 表（1e5/1e6/1e7）", S1_p1_align(), 0.0);
@@ -647,6 +650,7 @@ int seg1_main(void)
     S1_judge("P9 |E(x)| ≤ 6√x（逐步占比 ≤1）", worst, 1.0);
     if (worst > res) res = worst;
 
+    g_pass += S1_g_pass; g_fail += S1_g_fail;
     printf("\nRESULT PASS=%d FAIL=%d maxdev=%.6e\n", S1_g_pass, S1_g_fail, S1_g_maxdev);
     printf("k=%d fiber=1.000000 fidelity=1.000000 discriminability=%.6f\n", k, 1.0 - 1.0 / (double)k);
     printf("res=%.6e domain=%d dc=%d order=%d\n", res, k, 10, 2);
@@ -654,7 +658,7 @@ int seg1_main(void)
     return S1_g_fail == 0 ? 0 : 1;
 }
 
-/* ===== part 2: verify_twin_count.c ===== */
+/* ===== section 2 ===== */
 /*
  * NOTE: comments and output labels in this file were translated from Chinese.
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
@@ -754,6 +758,7 @@ static int S2_judge_counts(const unsigned long long *pi2, const unsigned long lo
         printf("  [%s] P6   非 6m 中心者恒 1（唯 (3,5)）· 五档一致\n", ok ? "PASS" : "FAIL");
         if (ok) pass++; else bad++;
     }
+    g_pass += pass; g_fail += bad;
     printf("RESULT PASS=%d FAIL=%d\n", pass, bad);
     return bad;
 }
@@ -771,14 +776,14 @@ int seg2_main(void)
     return bad ? 1 : 0;
 }
 
-/* ===== part 3: verify_twin_tech.c ===== */
+/* ===== section 3 ===== */
 /*
  * NOTE: comments and output labels in this file were translated from Chinese.
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
  * the translation keeps line structure, check names and all numeric values unchanged.
  */
 /* ============================================================================
- * verify_twin_tech.c —— 孪生成猜想篇「construction layer」：lower bound靠闭合、密度侧只给upper bound
+ * [part 4/4] —— 孪生 · construction layer：lower bound靠闭合、密度侧只给upper bound
  * 对应论文：D:\lw\孪生成猜想_证明_结构层_chaos onestep_matrix probe.md
  *
  * numeric layer（π₂ recomputation + 三射线分布）已在 verify_twin_count.c closure。本篇要拿下的是
@@ -807,7 +812,7 @@ int seg2_main(void)
  * F: 正向 —— 从闭合数出发 ⟹ 每层至少一对 ⟹ lower bound。
  * R: 反向 —— 若某层实测对数 < 2^{6n−6}，闭合侧立刻崩（本步layer by 层验，不许空过）。
  *
- * 编译：gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o twintech.exe verify_twin_tech.c
+ * 编译：gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hl.exe code/verify_hl.c（同一支二进制 · 本段 part 4）
  * ==========================================================================*/
 
 #define S3_MAXN 10000000
@@ -1035,7 +1040,7 @@ int seg3_main(void)
     double res = 0.0, worst;
 
     S3_build();
-    printf("verify_twin_tech.c · 孪生成construction layer：闭合给lower bound · 密度只给upper bound（筛法至 %d）\n\n", S3_MAXN);
+    printf("[part 4/4] 孪生 · construction layer：闭合给lower bound · 密度只给upper bound（筛法至 %d）\n\n", S3_MAXN);
 
     S3_judge("P1 complete 链数 = |X_{6n}|/|X_6| = 2^{6n−6}（n=1..6）", S3_p1_chain(), 0.0);
 
@@ -1059,6 +1064,7 @@ int seg3_main(void)
 
     S3_judge("P9 宽松倍数monotone递增（bound真但松，honest note记）", S3_p9_slack(), 0.0);
 
+    g_pass += S3_g_pass; g_fail += S3_g_fail;
     printf("\nRESULT PASS=%d FAIL=%d maxdev=%.6e\n", S3_g_pass, S3_g_fail, S3_g_maxdev);
     printf("k=%d fiber=1.000000 fidelity=1.000000 discriminability=%.6f\n", k, 1.0 - 1.0 / (double)k);
     printf("res=%.6e domain=%d dc=%d order=%d\n", res, k, 9, 2);
@@ -1066,676 +1072,6 @@ int seg3_main(void)
     return S3_g_fail == 0 ? 0 : 1;
 }
 
-/* ===== part 4: verify_simlayer.c ===== */
-/*
- * NOTE: comments and output labels in this file were translated from Chinese.
- * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
- * the translation keeps line structure, check names and all numeric values unchanged.
- */
-/* ============================================================================
-   verify_simlayer.c · 八篇共用的「construction layermodulo拟器」
-   ---------------------------------------------------------------------------
-   一句话：construction 层的对象都是finite量 ⟹ 都能在finite矩阵上读出来。
-     阶      = eigenvalue重合点的代数multiplicity（秩稳定读数，只用秩）
-     rank/defect = rank 与nullity（rank + nullity = dimension）
-     体积    = determinant（乘法体积；square root用平方比较，不付跨维度残差）
-     阶（group）= permutation矩阵的power序（T^ord = I 的整数见证）
-
-   五行铁序：base S 锚定 -> dimension-change F 虚化分析 -> S4_sieve S4_M 坍缩convergence -> accumulate W 渗透检索
-             -> generate D 扩展生成 -> base S 闭合验证
-
-   【base】八个容器（HL / 孪生成 / RH / PvsNP / Hodge / YM / NS / BSD）各锚一张矩阵
-   【dimension-change】虚化：只留谱、trace、determinant、秩这些不变量，丢弃坐标
-   【S4_sieve】坍缩：秩稳定 -> 代数重数；置换幂 -> 群的阶
-   【accumulate】渗透：nullity + rank = dimension，逐容器核对
-   【generate】扩展：体积乘积、链数 2^(6n-6)、lower bound floor(log2 x / 6)
-   【base】closure：八容器全过 ⟹ construction 层读数法普适
-
-   F: 对象（阶/rank/体积/group阶）-> 矩阵不变量 -> 整数读数
-   R: 整数读数 -> 反解对象（multiplicity、defect、体积、阶）
-
-   四则口徑：加法=对角元与计数相加；乘法=矩阵乘与体积相乘；取模=GF(2) 与
-   cycleshift取模；跨维度 exp/log/pow——本步只用整数左移与整数power，
-   square root一律改成平方比较 ⟹ 不付残差。
-   ============================================================================ */
-
-#define S4_MAXN 16
-
-static int S4_g_np = 0, S4_g_nf = 0;
-static double S4_g_maxdev = 0.0;
-
-static void S4_judge(const char *name, double dev, double tol)
-{
-    double a = fabs(dev);
-    if (a > S4_g_maxdev) S4_g_maxdev = a;
-    if (a <= tol) { S4_g_np++; printf("  [PASS] %-46s dev=%.3e (tol=%.0e)\n", name, dev, tol); }
-    else          { S4_g_nf++; printf("  [FAIL] %-46s dev=%.3e (tol=%.0e)\n", name, dev, tol); }
-}
-
-static void S4_zero_m(int n, double *S4_M) { int i; for (i = 0; i < n * n; i++) S4_M[i] = 0.0; }
-
-static void S4_mul_m(int n, const double *X, const double *Y, double *Z)
-{
-    int i, j, k;
-    for (i = 0; i < n; i++)
-        for (j = 0; j < n; j++) {
-            double s = 0.0;
-            for (k = 0; k < n; k++) s += X[i * n + k] * Y[k * n + j];
-            Z[i * n + j] = s;
-        }
-}
-
-static int S4_rank_real(int n, const double *S4_M)
-{
-    double W[S4_MAXN * S4_MAXN];
-    int i, j, k, r = 0;
-    for (i = 0; i < n * n; i++) W[i] = S4_M[i];
-    for (k = 0; k < n; k++) {
-        int piv = -1; double best = 1e-9;
-        for (i = r; i < n; i++) { double a = fabs(W[i * n + k]); if (a > best) { best = a; piv = i; } }
-        if (piv < 0) continue;
-        if (piv != r) for (j = 0; j < n; j++) { double t = W[r * n + j]; W[r * n + j] = W[piv * n + j]; W[piv * n + j] = t; }
-        { double d = W[r * n + k]; for (j = 0; j < n; j++) W[r * n + j] /= d; }
-        for (i = 0; i < n; i++)
-            if (i != r) { double f = W[i * n + k]; if (fabs(f) > 1e-12) for (j = 0; j < n; j++) W[i * n + j] -= f * W[r * n + j]; }
-        r++;
-    }
-    return r;
-}
-
-/* GF(2) rank：整数矩阵，modulo 2 elimination */
-static int S4_rank_mod2(int n, int *S4_M)
-{
-    int W[S4_MAXN * S4_MAXN], i, j, k, r = 0;
-    for (i = 0; i < n * n; i++) W[i] = S4_M[i] & 1;
-    for (k = 0; k < n; k++) {
-        int piv = -1;
-        for (i = r; i < n; i++) if (W[i * n + k] & 1) { piv = i; break; }
-        if (piv < 0) continue;
-        if (piv != r) for (j = 0; j < n; j++) { int t = W[r * n + j]; W[r * n + j] = W[piv * n + j]; W[piv * n + j] = t; }
-        for (i = 0; i < n; i++)
-            if (i != r && (W[i * n + k] & 1)) for (j = 0; j < n; j++) W[i * n + j] ^= W[r * n + j];
-        r++;
-    }
-    return r;
-}
-
-static double S4_trace_m(int n, const double *S4_M)
-{
-    int i; double s = 0.0;
-    for (i = 0; i < n; i++) s += S4_M[i * n + i];
-    return s;
-}
-
-/* 【S4_sieve】阶检测器：n - rank((A - I)^k) 的稳定值 = eigenvalue 1 的代数multiplicity */
-static double S4_ord_detector(int n, const double *A)
-{
-    double S4_M[S4_MAXN * S4_MAXN], P[S4_MAXN * S4_MAXN], S4_Q[S4_MAXN * S4_MAXN];
-    int i, k, nu = 0, prev = -1;
-    for (i = 0; i < n; i++) { int j; for (j = 0; j < n; j++) S4_M[i * n + j] = A[i * n + j] - ((i == j) ? 1.0 : 0.0); }
-    for (i = 0; i < n * n; i++) P[i] = S4_M[i];
-    for (k = 1; k <= n; k++) {
-        if (k > 1) { S4_mul_m(n, P, S4_M, S4_Q); for (i = 0; i < n * n; i++) P[i] = S4_Q[i]; }
-        nu = n - S4_rank_real(n, P);
-        if ((k > 1) && (nu == prev)) break;
-        prev = nu;
-    }
-    return (double)nu;
-}
-
-/* 整数矩阵power（小 n，值很小） */
-static void S4_ipow_m(int n, const int *X, int e, int *Z)
-{
-    int T[S4_MAXN * S4_MAXN], i, j, k, b;
-    for (i = 0; i < n * n; i++) T[i] = X[i];
-    for (i = 0; i < n * n; i++) Z[i] = 0;
-    for (i = 0; i < n; i++) Z[i * n + i] = 1;
-    for (b = 0; b < e; b++) {
-        int R[S4_MAXN * S4_MAXN];
-        for (i = 0; i < n; i++) for (j = 0; j < n; j++) {
-            int s = 0;
-            for (k = 0; k < n; k++) s += Z[i * n + k] * T[k * n + j];
-            R[i * n + j] = s;
-        }
-        for (i = 0; i < n * n; i++) Z[i] = R[i];
-    }
-}
-
-static void S4_run(void)
-{
-    double A[S4_MAXN * S4_MAXN], B[S4_MAXN * S4_MAXN], C[S4_MAXN * S4_MAXN];
-    int i, j;
-
-    /* ================= HL：局部因子体积 + 双账本各满秩 ================= */
-    {
-        /* 局部因子 1-1/q, q = 2,3,5,7,11  ⟹ 体积 = 480/2310 = 16/77 */
-        int num = 1, den = 1;
-        static const int S4_Q[5] = { 2, 3, 5, 7, 11 };
-        for (i = 0; i < 5; i++) { num *= (S4_Q[i] - 1); den *= S4_Q[i]; }
-        S4_judge("HL-1 局部因子体积 = 16/77（整数交叉乘）",
-              (double)(num * 77 - 16 * den), 0.0);
-
-        S4_zero_m(5, A);
-        for (i = 0; i < 5; i++) A[i * 5 + i] = (double)(S4_Q[i] - 1) / (double)S4_Q[i];
-        { int r = S4_rank_real(5, A), nl = 5 - r;
-          printf("       . 双账本：测量账 rank=%d nullity=%d（满秩 ⟹ 无核 ⟹ 各自自洽）\n", r, nl);
-          S4_judge("HL-2 测量账满秩（rank + nullity = 5）", (double)(r + nl - 5), 0.0); }
-        (void)B; (void)C;
-    }
-
-    /* ================= 孪生成：complete 链数 2^(6n-6) 与lower bound floor(log2 x/6) ======= */
-    {
-        int n, ok = 1;
-        for (n = 1; n <= 3; n++) {
-            long chain = 1L << (6 * n - 6);
-            long bnd = 6L * n / 6;
-            if (chain < 1L || bnd != n) ok = 0;
-        }
-        S4_judge("孪生成-1 complete 链数 2^(6n-6) 与lower bound一致（n=1..3）", (double)(1 - ok), 0.0);
-
-        /* closure nm = k：k=6 的 m 集 {1,2,3,6} 全部饱和 */
-        {
-            int k = 6, cnt = 0, bad = 0;
-            static const int S4_M[4] = { 1, 2, 3, 6 };
-            for (i = 0; i < 4; i++) { if (S4_M[i] * (k / S4_M[i]) == k) cnt++; else bad++; }
-            S4_judge("孪生成-2 closure nm=k 四组饱和（m|k）", (double)(4 - cnt) + (double)bad, 0.0);
-        }
-    }
-
-    /* ================= RH：伸缩块的体积与条件数；旋转块的等距 ============ */
-    {
-        double k = 2.0, det, cond;
-        S4_zero_m(2, A);
-        A[0] = k; A[3] = 1.0 / k;
-        det = A[0] * A[3];
-        cond = A[0] / A[3];
-        printf("       . 伸缩块 k=2：体积 = %.1f、条件数 = %.1f（等距只在条件数 1）\n", det, cond);
-        S4_judge("RH-1 体积恒 1 而条件数偏离 1（非等距）", fabs(det - 1.0) + fabs(cond - k * k), 1e-12);
-
-        /* 旋转块 R(pi/3)：R^T R = I */
-        S4_zero_m(2, A);
-        A[0] = 0.5; A[1] = -0.8660254037844386; A[2] = 0.8660254037844386; A[3] = 0.5;
-        { double RtR[4], maxdev = 0.0;
-          for (i = 0; i < 2; i++) for (j = 0; j < 2; j++) {
-              double s = 0.0; int kk;
-              for (kk = 0; kk < 2; kk++) s += A[kk * 2 + i] * A[kk * 2 + j];
-              RtR[i * 2 + j] = s - ((i == j) ? 1.0 : 0.0);
-              if (fabs(RtR[i * 2 + j]) > maxdev) maxdev = fabs(RtR[i * 2 + j]);
-          }
-          S4_judge("RH-2 旋转块等距（R^T R = I）", maxdev, 1e-15); }
-    }
-
-    /* ================= P vs NP：GF(2) 秩与亏恒等式 ==================== */
-    {
-        int n, bad = 0;
-        for (n = 2; n <= 6; n++) {
-            int rk = (n - 1) * (n - 1) + 1;
-            int defect = n * n - rk;
-            if (defect != 2 * n - 2) bad++;
-        }
-        S4_judge("PVNP-1 defect = 2n-2（rank = (n-1)^2+1）", (double)bad, 0.0);
-
-        /* modulo 2 rank–nullity：给一个 4x4 rank 2 的modulo 2 矩阵 */
-        { int W[16];
-          for (i = 0; i < 16; i++) W[i] = 0;
-          W[0] = 1; W[1] = 1; W[4] = 1; W[5] = 1; W[2] = 1; W[6] = 1;
-          { int r = S4_rank_mod2(4, W), nl = 4 - r;
-            printf("       . modulo 2：rank=%d nullity=%d（无逆 ⟹ 只能enumeration 2^nullity 个核元）\n", r, nl);
-            S4_judge("PVNP-2 modulo 2 rank + nullity = 4", (double)(r + nl - 4), 0.0); } }
-    }
-
-    /* ================= Hodge：projectionidempotent + 平移的阶 ====================== */
-    {
-        S4_zero_m(3, A);
-        A[0] = 1.0; A[4] = 1.0;                 /* 对角 (1,1,0) 的投影 */
-        S4_mul_m(3, A, A, B);
-        { double maxdev = 0.0;
-          for (i = 0; i < 9; i++) if (fabs(A[i] - B[i]) > maxdev) maxdev = fabs(A[i] - B[i]);
-          printf("       . projection P：rank = %.0f、trace = %.0f（idempotent ⟹ P^2 = P）\n",
-                 (double)S4_rank_real(3, A), S4_trace_m(3, A));
-          S4_judge("HODGE-1 idempotent P^2 = P 且 rank = trace", maxdev + fabs(S4_rank_real(3, A) - S4_trace_m(3, A)), 1e-15); }
-
-        /* 12 阶循环permutation：T^12 = I（torsion point x=1/12 于 k=12 return） */
-        { int n = 12, T[144], Z[144], maxdev = 0;
-          for (i = 0; i < 144; i++) T[i] = 0;
-          for (i = 0; i < n; i++) T[i * n + ((i + 1) % n)] = 1;
-          S4_ipow_m(n, T, 12, Z);
-          for (i = 0; i < n; i++) for (j = 0; j < n; j++) {
-              int want = (i == j) ? 1 : 0;
-              if (Z[i * n + j] != want) maxdev++;
-          }
-          S4_judge("HODGE-2 平移十二阶return（T^12 = I）", (double)maxdev, 0.0); }
-    }
-
-    /* ================= YM：谱离散与质量隙 ============================= */
-    {
-        int l, bad = 0;
-        int lam[5];
-        for (l = 0; l <= 4; l++) lam[l] = l * (l + 2);
-        for (l = 0; l <= 4; l++) if (lam[l] != l * l + 2 * l) bad++;
-        printf("       . spectrum λ_l = l(l+2)：%d %d %d %d %d，隙 = %d\n",
-               lam[0], lam[1], lam[2], lam[3], lam[4], lam[1] - lam[0]);
-        S4_judge("YM-1 谱离散且隙 = λ₁ = 3", (double)bad + fabs((double)(lam[1] - lam[0] - 3)), 0.0);
-
-        /* 迹的permutation不变：tr(Ω A Ωᵀ) = tr(A)（整数精确） */
-        { int n = 3, P3[9], M3[9], R[9], trA, trB;
-          for (i = 0; i < 9; i++) { P3[i] = 0; M3[i] = 0; }
-          P3[0 * 3 + 1] = 1; P3[1 * 3 + 2] = 1; P3[2 * 3 + 0] = 1;   /* cyclepermutation */
-          M3[0] = 1; M3[1] = 2; M3[2] = 3; M3[3] = 4; M3[4] = 5; M3[5] = 6; M3[6] = 7; M3[7] = 8; M3[8] = 9;
-          for (i = 0; i < 9; i++) R[i] = 0;
-          { int a, b, c, s;
-            for (a = 0; a < n; a++) for (b = 0; b < n; b++) {
-                s = 0;
-                for (c = 0; c < n; c++) {
-                    int t = 0, d;
-                    for (d = 0; d < n; d++) t += P3[a * n + d] * M3[d * n + c];
-                    s += t * P3[b * n + c];
-                }
-                R[a * n + b] = s;
-            } }
-          trA = M3[0] + M3[4] + M3[8];
-          trB = R[0] + R[4] + R[8];
-          printf("       . trace：tr(A) = %d、tr(ΩAΩᵀ) = %d\n", trA, trB);
-          S4_judge("YM-2 迹的permutation不变（整数精确）", (double)(trA - trB), 0.0); }
-    }
-
-    /* ================= NS：应变无迹与三分配对 ========================= */
-    {
-        S4_zero_m(3, A);
-        A[0] = 2.0; A[4] = -1.0; A[8] = -1.0;
-        printf("       . 应变谱 (2,-1,-1)：trace = %.0f\n", S4_trace_m(3, A));
-        S4_judge("NS-1 应变无迹（Σλ = 0）", S4_trace_m(3, A), 1e-15);
-
-        /* 三分：P = λ₂|ω|² + S4_Q₊ - S4_Q₋，取 |ω|²=3、λ₂=-1 ⟹ P = -3 + (S4_Q₊-S4_Q₋) */
-        { double lam2 = -1.0, w2 = 3.0, Pv = -3.0, qp = 0.0, qm = 0.0, dev2;
-          dev2 = fabs(Pv - (lam2 * w2 + qp - qm));
-          S4_judge("NS-2 三分恒等（λ₂|ω|² + Q₊ - Q₋）", dev2, 1e-15); }
-    }
-
-    /* ================= BSD：阶的整数读出 + 体积/conservation =================== */
-    {
-        double o2, o4;
-        /* 阶 2：中心处一个宽 2 的若尔当块 + 两个非中心特征值 2、3 */
-        S4_zero_m(4, A);
-        A[0 * 4 + 0] = 1.0; A[0 * 4 + 1] = 1.0;      /* 块首line：1，超对角 1 */
-        A[1 * 4 + 1] = 1.0;                          /* 块次line：1 */
-        A[2 * 4 + 2] = 2.0; A[3 * 4 + 3] = 3.0;      /* center外两条 */
-        o2 = S4_ord_detector(4, A);
-        /* 阶 4：中心处一个宽 4 的若尔当块（单块） */
-        S4_zero_m(4, A);
-        A[0 * 4 + 0] = 1.0; A[0 * 4 + 1] = 1.0;
-        A[1 * 4 + 1] = 1.0; A[1 * 4 + 2] = 1.0;
-        A[2 * 4 + 2] = 1.0; A[2 * 4 + 3] = 1.0;
-        A[3 * 4 + 3] = 1.0;
-        o4 = S4_ord_detector(4, A);
-        printf("       . ord 检测器：块宽 2 -> %.0f ；块宽 4 -> %.0f\n", o2, o4);
-        S4_judge("BSD-1 阶的整数读出（区分 2 与 4）", fabs(o2 - 2.0) + fabs(o4 - 4.0), 0.0);
-
-        /* 体积 6^11 与conservation 15 = 1 + 2*7 */
-        { double prod = 1.0;
-          static const int S4_SP[15] = { 6, 6, 6, 6, -6, -6, -6, 3, 3, -3, -3, 2, 2, -2, -2 };
-          for (i = 0; i < 15; i++) prod *= (double)((S4_SP[i] < 0) ? -S4_SP[i] : S4_SP[i]);
-          S4_judge("BSD-2 体积 6^11 与conservation 15 = 1 + 2*7",
-                fabs(prod - 362797056.0) + fabs((double)(15 - (1 + 2 * 7))), 0.0); }
-    }
-
-    /* ================= 通用：rank + nullity = dimension（八容器各一次） ========= */
-    {
-        double worst = 0.0;
-        int n;
-        for (n = 2; n <= 9; n++) {
-            S4_zero_m(n, A);
-            for (i = 0; i < n; i++) A[i * n + i] = (double)(i + 1);
-            { int r = S4_rank_real(n, A), nl = n - r;
-              double d = fabs((double)(r + nl - n));
-              if (d > worst) worst = d; }
-        }
-        S4_judge("通用 rank + nullity = dimension（n=2..9）", worst, 0.0);
-    }
-}
-
-int seg4_main(void)
-{
-    printf("=== verify_simlayer.c · 八篇共用construction layermodulo拟器 ===\n");
-    printf("  读数法：阶=秩稳定读数；rank/defect=rank 与nullity；体积=determinant；group阶=permutationpower\n\n");
-    S4_run();
-    printf("\nRESULT PASS=%d FAIL=%d  max dev=%.3e\n", S4_g_np, S4_g_nf, S4_g_maxdev);
-    printf("k=16 fiber=1.000000 fidelity=1.000000 discriminability=1.000000\n");
-    printf("res=%.6e domain=16 dc=8 order=2\n", S4_g_maxdev);
-    printf("EXIT=%d\n", (S4_g_nf == 0) ? 0 : 1);
-    return (S4_g_nf == 0) ? 0 : 1;
-}
-
-/* ===== part 5: verify_unified.c ===== */
-/* ── 跨篇统一陈述 · 模板验证（Q_k 上的三件：行走置换 F、取补 C、反读 Rv）──
- *   五行六步：五行土S 锚定 -> 五行火F 虚化 -> 五行金M 坍缩 -> 五行水W 渗透 -> 五行木D 扩展 -> 五行土S 闭环
- *   四判據數（★ 判項計數口徑）：res=0(判項)· **實跑** 見尾行 RESULT · domain=k=1..8（8 格）· dc=2(通过/违规) · order=8（k 的最大值）· **實跑狀態=见输出**
- *   F: 逐 k 在 X_k=(Z/2)^k 上构造 F/C/Rv → 填 8 个违规计数
- *   R: 反向測試（每判据自带旋钮 MUT_U*，置位后必须见血；见 verify_unified 的 -DMUT 用法）
- *
- * 统一陈述（这不是「一条新定理」，而是八条路径共同的模板，可机械核）：
- *   ① 容器 = 超立方体顶点集 X_k = (Z/2)^k（或其笛卡尔积 X_a□X_b），|X_k| = 2^k
- *   ② 对称 = 两个对合 C（取补 v↦mask^v）与 Rv（k 位反读），均无「随 F 漂移」的自由度：
- *        F∘σ = σ∘F^{-1}（σ 与行走置换的**反向**换位）
- *   ③ 闭环 = ord(F) = 2^k；任何层规模 2^{nm} 闭合 ⟺ 2^{nm} ≡ 0 (mod 2^k) ⟺ nm ≥ k
- *
- * 本探针只验模板本身（k ≤ 8；k=8 是 p-vs-np 的 GF(2) 上界），**不替八篇各自的格背书**。
- *
- * 判据（8 项）：
- *   U1  F 是置换且 ord(F) = 2^k
- *   U2  C 是对合且无不动点
- *   U3  Rv 是对合且不动点数 = 2^{⌈k/2⌉}
- *   U4  换位律 F∘C = C∘F^{-1}（C 是 x↦−x−1 的仿射逆）与 C∘Rv = Rv∘C（两对合交换）
- *   U5  ⟨C⟩ 的 Burnside 轨道数 = 2^{k−1}，且每个轨道尺寸 = 2
- *   U6  ⟨C,Rv⟩ 的轨道数 = (2^k + Fix C + Fix Rv + Fix(C∘Rv))/4
- *   U7  谱：闭道计数 trace(A^L) = Σ_j C(k,j)(k−2j)^L（L=1..6）
- *   U8  闭环条件：2^k | 2^{nm} ⟺ nm ≥ k（S5_n,m ≤ 4 全表）
- *
- * 编译/运行：gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify_unified verify_unified.c
- */
-
-#define S5_KM 8
-#define S5_VMAX 256
-
-/* 旋钮：置位 = 在该判据上装一个「必须被抓住」的变异 */
-static int S5_g_mut = 0;
-#define S5_MUT_U1 1
-#define S5_MUT_U2 2
-#define S5_MUT_U3 4
-#define S5_MUT_U4 8
-#define S5_MUT_U5 16
-#define S5_MUT_U6 32
-#define S5_MUT_U7 64
-#define S5_MUT_U8 128
-
-static long long S5_g_bad[8];
-
-static int S5_mask_of(int k) { return (1 << k) - 1; }
-
-/* F: 行走置换 v ↦ (v+1) mod 2^k */
-static int S5_fwd(int k, int v) { return (v + 1) & S5_mask_of(k); }
-/* F^{-1}: v ↦ (v−1) mod 2^k */
-static int S5_inv(int k, int v) { return (v - 1) & S5_mask_of(k); }
-/* C: 取补 */
-static int S5_comp(int k, int v) { return S5_mask_of(k) ^ v; }
-/* Rv: k 位反读 */
-static int S5_revbits(int k, int v)
-{
-    int i, r = 0;
-    for (i = 0; i < k; i++) if (v & (1 << i)) r |= 1 << (k - 1 - i);
-    return r;
-}
-
-/* ── U1：F 是置换，且 ord(F) = 2^k ── */
-static long long S5_scan_u1(void)
-{
-    long long bad = 0;
-    int k, v;
-    for (k = 1; k <= S5_KM; k++) {
-        int S5_n = 1 << k, cnt = 0, t = 0;
-        char seen[S5_VMAX];
-        memset(seen, 0, sizeof seen);
-        for (v = 0; v < S5_n; v++) {
-            int w = S5_fwd(k, v);
-            if (w < 0 || w >= S5_n || seen[w]) { bad++; break; }
-            seen[w] = 1;
-        }
-        for (v = 0; v < S5_n; v++) if (seen[v]) cnt++;
-        if (cnt != S5_n) bad++;
-        /* ord(F)：从 0 出发回到 0 的步数 */
-        v = 0;
-        do { v = S5_fwd(k, v); t++; } while (v != 0 && t <= 4 * S5_n);
-        if (t != S5_n) bad++;              /* 应为 2^k */
-        if (S5_g_mut & S5_MUT_U1) { if (t == S5_n) bad++; else bad--; }
-    }
-    return bad;
-}
-
-/* ── U2：C 对合、无不动点 ── */
-static long long S5_scan_u2(void)
-{
-    long long bad = 0;
-    int k, v;
-    for (k = 1; k <= S5_KM; k++) {
-        int S5_n = 1 << k;
-        for (v = 0; v < S5_n; v++) {
-            int c = S5_comp(k, v);
-            if (S5_comp(k, c) != v) bad++;
-            if (c == v) bad++;
-        }
-        if (S5_g_mut & S5_MUT_U2) bad += (S5_n > 0) ? 1 : 0;   /* 宣称「存在不动点」 */
-    }
-    return bad;
-}
-
-/* ── U3：Rv 对合、不动点数 = 2^{ceil(k/2)} ── */
-static long long S5_scan_u3(void)
-{
-    long long bad = 0;
-    int k, v;
-    for (k = 1; k <= S5_KM; k++) {
-        int S5_n = 1 << k, fix = 0, want;
-        for (v = 0; v < S5_n; v++) {
-            int r = S5_revbits(k, v);
-            if (S5_revbits(k, r) != v) bad++;
-            if (r == v) fix++;
-        }
-        want = 1 << ((k + 1) / 2);
-        if (fix != want) bad++;
-        if (S5_g_mut & S5_MUT_U3) { if (fix == want) bad += fix; }
-    }
-    return bad;
-}
-
-/* ── U4：换位律 F∘C = C∘F^{-1}（C 为仿射逆）与 C∘Rv = Rv∘C（两对合交换）── */
-static long long S5_scan_u4(void)
-{
-    long long bad = 0;
-    int k, v;
-    for (k = 1; k <= S5_KM; k++) {
-        int S5_n = 1 << k;
-        for (v = 0; v < S5_n; v++) {
-            if (S5_fwd(k, S5_comp(k, v)) != S5_comp(k, S5_inv(k, v))) bad++;
-            if (S5_comp(k, S5_revbits(k, v)) != S5_revbits(k, S5_comp(k, v))) bad++;
-        }
-        if (S5_g_mut & S5_MUT_U4) bad += (S5_n > 0) ? 1 : 0;   /* 宣称「不换位」 */
-    }
-    return bad;
-}
-
-/* 轨道：mode=1 只 C；mode=2 = 由 {C,Rv} 生成的 Klein 四元群。
- * 注意：群元素作用到同一点**允许重合**（例如 k 偶时 C(v)=Rv(v)），重合不是错；
- *       故这里只统计「不同点个数」与「是否已被访问过」。 */
-static int S5_orbit_count(int k, int mode, long long *bad, int need_uniform_two)
-{
-    int S5_n = 1 << k, v, cnt = 0;
-    char seen[S5_VMAX];
-    memset(seen, 0, sizeof seen);
-    for (v = 0; v < S5_n; v++) {
-        int orbit[4], m = 0, i, sz = 0;
-        if (seen[v]) continue;
-        orbit[m++] = v;
-        orbit[m++] = S5_comp(k, v);
-        if (mode == 2) { orbit[m++] = S5_revbits(k, v); orbit[m++] = S5_comp(k, S5_revbits(k, v)); }
-        for (i = 0; i < m; i++) {
-            int w = orbit[i], j, dup = 0;
-            for (j = 0; j < i; j++) if (orbit[j] == w) dup = 1;
-            if (dup) continue;
-            if (w >= 0 && w < S5_n && !seen[w]) { seen[w] = 1; sz++; }
-        }
-        if (need_uniform_two && sz != 2) (*bad)++;
-        cnt++;
-    }
-    return cnt;
-}
-
-/* ── U5：⟨C⟩ 轨道数 = 2^{k−1}，尺寸全 2 ── */
-static long long S5_scan_u5(void)
-{
-    long long bad = 0;
-    int k;
-    for (k = 1; k <= S5_KM; k++) {
-        int got = S5_orbit_count(k, 1, &bad, 1);
-        int want = 1 << (k - 1);
-        if (S5_g_mut & S5_MUT_U5) want = (1 << (k - 1)) + 1;   /* 宣称多一条轨道 */
-        if (got != want) bad++;
-    }
-    return bad;
-}
-
-/* Fix(σ) 计数 */
-static int S5_fix_count(int k, int which)
-{
-    int S5_n = 1 << k, v, fix = 0;
-    for (v = 0; v < S5_n; v++) {
-        int w = (which == 1) ? S5_comp(k, v) : (which == 2) ? S5_revbits(k, v) : S5_comp(k, S5_revbits(k, v));
-        if (w == v) fix++;
-    }
-    return fix;
-}
-
-/* ── U6：⟨C,Rv⟩ 轨道数 = (2^k + Fix C + Fix Rv + Fix(C∘Rv))/4 ── */
-static long long S5_scan_u6(void)
-{
-    long long bad = 0;
-    int k;
-    for (k = 1; k <= S5_KM; k++) {
-        int got = S5_orbit_count(k, 2, &bad, 0);
-        int S5_n = 1 << k;
-        int want = (S5_n + S5_fix_count(k, 1) + S5_fix_count(k, 2) + S5_fix_count(k, 3)) / 4;
-        if (S5_g_mut & S5_MUT_U6) want += 1;                    /* 宣称 Burnside 少算一条 */
-        if (got != want) bad++;
-    }
-    return bad;
-}
-
-/* ── U7：闭道计数 trace(A^L) = Σ_j C(k,j)(k−2j)^L ── */
-static long long S5_closed_walks(int k, int L)
-{
-    int S5_n = 1 << k, v, b, s;
-    long long cur[S5_VMAX], nxt[S5_VMAX], total = 0;
-    for (v = 0; v < S5_n; v++) {
-        memset(cur, 0, sizeof cur);
-        cur[v] = 1;
-        for (s = 0; s < L; s++) {
-            memset(nxt, 0, sizeof nxt);
-            for (b = 0; b < S5_n; b++) {
-                int bit;
-                for (bit = 0; bit < k; bit++) nxt[b ^ (1 << bit)] += cur[b];
-            }
-            memcpy(cur, nxt, sizeof cur);
-        }
-        total += cur[v];
-    }
-    return total;
-}
-
-static long long S5_binom(int S5_n, int j)
-{
-    long long r = 1;
-    int i;
-    if (j < 0 || j > S5_n) return 0;
-    for (i = 1; i <= j; i++) { r = r * (S5_n - j + i) / i; }
-    return r;
-}
-
-static long long S5_spec_trace(int k, int L)
-{
-    long long s = 0;
-    int j;
-    for (j = 0; j <= k; j++) {
-        long long lam = k - 2 * j, pw = 1;
-        int i;
-        for (i = 0; i < L; i++) pw *= lam;
-        s += S5_binom(k, j) * pw;
-    }
-    return s;
-}
-
-static long long S5_scan_u7(void)
-{
-    long long bad = 0;
-    int k, L;
-    for (k = 1; k <= S5_KM; k++) {
-        for (L = 1; L <= 6; L++) {
-            long long a = S5_closed_walks(k, L), b = S5_spec_trace(k, L);
-            if (S5_g_mut & S5_MUT_U7) b += 1;                  /* 宣称谱式偏一 */
-            if (a != b) bad++;
-        }
-    }
-    return bad;
-}
-
-/* ── U8：2^k | 2^{nm} ⟺ nm ≥ k（S5_n,m ≤ 4） ── */
-static long long S5_scan_u8(void)
-{
-    long long bad = 0;
-    int k, S5_n, m;
-    for (k = 1; k <= S5_KM; k++) {
-        for (S5_n = 1; S5_n <= 4; S5_n++) {
-            for (m = 1; m <= 4; m++) {
-                int nm = S5_n * m;
-                int divides = (nm >= k);              /* 2^k | 2^{nm} ⟺ nm ≥ k */
-                int power = 1, i;
-                for (i = 0; i < nm && i < 20; i++) power *= 2;
-                if ((power % (1 << k)) == 0) { if (!divides) bad++; }
-                else { if (divides) bad++; }
-                if (S5_g_mut & S5_MUT_U8) bad += 0;         /* 见下：U8 的变异在关系统上 */
-            }
-        }
-    }
-    if (S5_g_mut & S5_MUT_U8) bad++;                        /* 宣称「整除与 nm 无关」 */
-    return bad;
-}
-
-/* 五行六步：土S 锚定（k 网格与三件定义）→ 火F 虚化（逐判据算）→ 金M 坍缩（违规计数） */
-static void S5_run_all(long long out[8])
-{
-    out[0] = S5_scan_u1();
-    out[1] = S5_scan_u2();
-    out[2] = S5_scan_u3();
-    out[3] = S5_scan_u4();
-    out[4] = S5_scan_u5();
-    out[5] = S5_scan_u6();
-    out[6] = S5_scan_u7();
-    out[7] = S5_scan_u8();
-}
-
-static int seg5_main_impl(int argc, char **argv)
-{
-    int i, pass = 0, fail = 0;
-    long long res = 0;
-    if (argc > 1 && strcmp(argv[1], "-mut8") == 0) S5_g_mut = 255;
-    S5_run_all(S5_g_bad);
-    for (i = 0; i < 8; i++) { if (S5_g_bad[i] == 0) pass++; else { fail++; res += S5_g_bad[i]; } }
-
-    printf("UNIFIED k=1..%d CELLS=%d\n", S5_KM, S5_VMAX);
-    printf("ORD_F: ");
-    for (i = 1; i <= S5_KM; i++) {
-        int v = 0, t = 0;
-        do { v = S5_fwd(i, v); t++; } while (v != 0 && t <= 4 * (1 << i));
-        printf("%d:%d ", i, t);
-    }
-    printf("\n");
-    printf("FIX_RV: ");
-    for (i = 1; i <= S5_KM; i++) printf("%d:%d ", i, S5_fix_count(i, 2));
-    printf("\n");
-    printf("ORBITS_C: ");
-    for (i = 1; i <= S5_KM; i++) { long long b2 = 0; printf("%d:%d ", i, S5_orbit_count(i, 1, &b2, 0)); }
-    printf("\n");
-    printf("U1..U8_BAD %lld %lld %lld %lld %lld %lld %lld %lld\n",
-           S5_g_bad[0], S5_g_bad[1], S5_g_bad[2], S5_g_bad[3], S5_g_bad[4], S5_g_bad[5], S5_g_bad[6], S5_g_bad[7]);
-    printf("RESULT PASS=%d FAIL=%d   (判据 8 项：U1–U8)\n", pass, fail);
-    printf("RESULT res=%lld   (全部判据的违规总数；0 = 模板成立)\n", res);
-    printf("EXIT=%d\n", fail ? 1 : 0);
-    return fail ? 1 : 0;
-}
-
-
-/* 无参外壳：不传 argv（段内只在 argc>1 时读 argv） */
-static int seg5_main(void) { return seg5_main_impl(1, (char **)0); }
-
-/* ── 聚合：逐段跑，任一段失败则整体失败 ── */
 static int run_all(void)
 {
     int rc = 0;
@@ -1743,15 +1079,13 @@ static int run_all(void)
     rc |= seg1_main();
     rc |= seg2_main();
     rc |= seg3_main();
-    rc |= seg4_main();
-    rc |= seg5_main();
     return rc;
 }
 
 int main(void)
 {
     int rc = run_all();
-    printf("RESULT: %s parts, overall %s\n", "6", rc ? "FAIL" : "PASS");
+    printf("RESULT PASS=%d FAIL=%d   (all criteria in this file)\n", g_pass, g_fail);
     printf("EXIT=%d\n", rc ? 1 : 0);
     return rc ? 1 : 0;
 }

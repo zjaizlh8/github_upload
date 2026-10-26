@@ -1,5 +1,7 @@
 # P vs NP 的结构解读：反在式内者相消，反在式外者不可贴
 
+<!-- verify-glance -->
+> **一篇论文，一个文件，一个程序。** `code/verify_pvsnp.c` —— **判据 26 项**。`gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify code/verify_pvsnp.c -lm && ./verify` → `RESULT PASS=26 FAIL=0`、`EXIT=0`。
 **作者：zjaizlh8（GitHub 笔名）** · WQNN-K8538 一元场域理论 · 2026-10-26
 **工具链**：结构层（基础三件 · 基系统唯一 · 四类基本运算）+ 谱结构方法（三面同一 · 闭合条件 $nm=k$）+ 矩阵探针（containers，两域实跑）
 **独立见证**：`verify_pvsnp.c`（纯 C，`EXIT=0`）
@@ -363,24 +365,20 @@ $\mathrm{per}$ 无 $\bmod 2$ 商（推论 1.5），且 $\bmod 2$ 商不可外贴
 ## §9 复现清单
 
 ```
-# 独立复算（纯 C，无外部库）
-gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o pvsnp.exe verify_pvsnp.c
-./pvsnp.exe            # 期望末尾 EXIT=0
-
-# 构造层（§5ter，mod 2 商）
-gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o pvnp_tech.exe verify_pvsnp_tech.c
-./pvnp_tech.exe        # PASS=9 FAIL=0 EXIT=0
+# 独立复算（纯 C，无外部库；两段：GF(2) 17 项 + 构造层 9 项）
+gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o pvsnp.exe code/verify_pvsnp.c && ./pvsnp.exe
+# 期望：两段小计 17 · 9，末行 RESULT PASS=26 FAIL=0，EXIT=0
 
 # 矩阵探针（两步）
-containers(matrix, domain=onestep, out=D:\lw\矩阵_onestep_层格缺口_pvsnp.csv)
-containers(matrix, domain=abacus,  out=D:\lw\矩阵_abacus_层格缺口.csv)
+containers(matrix, domain=onestep, out=矩阵_onestep_层格缺口_pvsnp.csv)
+containers(matrix, domain=abacus,  out=矩阵_abacus_层格缺口.csv)
 ```
 
 论文/代码/CSV 全部位于 `D:\lw`。
 
 ---
 
-## §5ter 构造层：`per` 为什么没有闭式 —— 缺的是 $\mathbb{Z}_2$ 商（`verify_pvsnp_tech.c` · 9 判项 · PASS=9 FAIL=0）
+## §5ter 构造层：`per` 为什么没有闭式 —— 缺的是 $\mathbb{Z}_2$ 商（`code/verify_pvsnp.c` · 9 判项 · PASS=9 FAIL=0）
 
 构造层原话「per 的枚举墙是结构性的」只是断言。这一节把它拆成九件可复算的事：先把 `det` 与 `per` 各自钉住，再看两者的**符号结构**差在哪，最后量出这个差正好是「有没有 mod 2 商」。
 
@@ -463,17 +461,17 @@ $$\det(A)\equiv\operatorname{per}(A)\pmod 2$$
 ### 5ter.8 读数与复现
 
 ```
-gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o pvnp_tech.exe verify_pvsnp_tech.c
-./pvnp_tech.exe    # RESULT PASS=9 FAIL=0 maxdev=0.000e+00  EXIT=0
+gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o pvsnp.exe code/verify_pvsnp.c && ./pvsnp.exe
+# 本节是 part 2/2：段尾 RESULT PASS=9 FAIL=0 maxdev=0.000e+00  EXIT=0
 ```
 
-`k=9 fiber=1 保真度=1.000000 判别力=0.888889`、`domain=9 dc=6 order=2`；输出 `D:\lw\verify_pvsnp_tech_输出.txt`（UTF-8 BOM，2092 B）。取模处唯一：$\det\bmod 2$ 与 $\operatorname{per}\bmod 2$ 的奇偶比较；跨维度算子一个不用 ⟹ 不付残差，故 `maxdev=0`。
+`k=9 fiber=1 保真度=1.000000 判别力=0.888889`、`domain=9 dc=6 order=2`；输出 运行日志（不随仓库发布）。取模处唯一：$\det\bmod 2$ 与 $\operatorname{per}\bmod 2$ 的奇偶比较；跨维度算子一个不用 ⟹ 不付残差，故 `maxdev=0`。
 
 **照实四条**：① 5ter.4 / 5ter.5 / 5ter.7 是**全枚举**（$n\le4$ / $n\le6$ / $n\le4$），不是对一切 $n$ 的定理；② 5ter.3 的「正负各半」是**项数**计数，不是值的相消幅度；③ 5ter.6 是必要条件型论证（1 比特装不下 $n\log n$ 比特），不单独构成 $\#$P-困难性的证明；④ 「$2^n$ 墙」的定量口径仍由 §6 给，本节只补「墙为什么是结构性的」。
 
 ---
 
-## 构造层模拟（`verify_simlayer.c` · 本篇读数 · PASS=17 FAIL=0）
+## 构造层模拟（开发期读数 · 17 判项 · 该段未并入本篇单文件验证器）
 
 **卡住的那一步。** §7 主定理要排除「`per` 有未知闭式」。原来只能说「找不到」，这是负面断言，不够。
 

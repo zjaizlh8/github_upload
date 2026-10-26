@@ -4,7 +4,9 @@
 #include <string.h>
 #include <stdlib.h>
 
-/* ===== part 0: verify_rh.c ===== */
+static int g_pass = 0, g_fail = 0;   /* totals across sections */
+
+/* ===== section 0 ===== */
 /*
  * NOTE: comments and output labels in this file were translated from Chinese.
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
@@ -397,13 +399,14 @@ int seg0_main(void)
     printf(" 判据阈值（机制给，不拍脑袋）：ζ 由复 Euler–Maclaurin 实现（N=1000 · K=10 · t≤50），\n");
     printf(" 该实现下限实测 max|Im Z| = 1.562e-09 ⟹ 阈值取 1e-08（下限的一阶上邻）；\n");
     printf(" 主判据 P10/P12/P11 为代数恒等，dev 由 double 舍入决定（≤2.2e-16）。\n");
+    g_pass += pass; g_fail += fail;
     printf("\nRESULT PASS=%d FAIL=%d   (判据 12 项：P1–P12)\n", pass, fail);
     printf("RESULT max dev = %.3e   (threshold 1e-08)\n", mx);
     printf("EXIT=%d\n", (fail == 0 && mx < 1e-08) ? 0 : 1);
     return (fail == 0 && mx < 1e-08) ? 0 : 1;
 }
 
-/* ===== part 1: verify_rh_tech.c ===== */
+/* ===== section 1 ===== */
 /*
  * NOTE: comments and output labels in this file were translated from Chinese.
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
@@ -731,7 +734,7 @@ int seg1_main(void)
 {
     double d1, d2, dmin, d4, d5, d6, d7, d8, d9, rres;
 
-    printf("== verify_rh_tech : construction layer —— 零落临bound线（本篇independent recomputation）==\n");
+    printf("== [part 2/2] construction layer —— 零落临bound线（本篇independent recomputation）==\n");
     printf("zeta via Euler-Maclaurin (N=1000,K=10); Gamma via Lanczos g=7\n\n");
 
     d1 = S1_p1_zeta_anchors();
@@ -763,6 +766,7 @@ int seg1_main(void)
     S1_judge("P9 |chi(s)|*|chi(1-s)|=1", d9, 1.0e-09);
 
     rres = fmax(fmax(d4, d7), fmax(d5, d9));
+    g_pass += S1_g_pass; g_fail += S1_g_fail;
     printf("\nRESULT PASS=%d FAIL=%d maxdev=%.3e\n", S1_g_pass, S1_g_fail, S1_g_maxdev);
     printf("k=9 fiber=1 fidelity=1.000000 discriminability=0.888889\n");
     printf("res=%.6e domain=9 dc=6 order=2\n", rres);
@@ -785,7 +789,7 @@ static int run_all(void)
 int main(void)
 {
     int rc = run_all();
-    printf("RESULT: %s parts, overall %s\n", "2", rc ? "FAIL" : "PASS");
+    printf("RESULT PASS=%d FAIL=%d   (all criteria in this file)\n", g_pass, g_fail);
     printf("EXIT=%d\n", rc ? 1 : 0);
     return rc ? 1 : 0;
 }

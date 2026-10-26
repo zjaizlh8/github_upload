@@ -1,9 +1,10 @@
 # A Structural Reading of the Riemann Hypothesis
 
+<!-- verify-glance -->
+> **One paper, one file, one program.** `code/verify_rh.c` — **21 criteria**. `gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify verify_rh.c -lm && ./verify` → `RESULT PASS=21 FAIL=0` and `EXIT=0`.
 **Author:** zjaizlh8 (GitHub) · 2026-10-26 · CC BY 4.0
 **Framework:** structural layer · spectral method · matrix probe
-**Independent witnesses:** `code/verify_rh.c` (12 checks, `RESULT PASS=12 FAIL=0` + `RESULT max dev = 1.562e-09   (threshold 1e-08)` + `EXIT=0`),
-`code/verify_rh_tech.c` (9 checks, `RESULT PASS=9 FAIL=0 EXIT=0`)
+**Machine witness:** `code/verify_rh.c` — one program, two sections (12 · 9 = **21** criteria), closing with the aggregate `RESULT PASS=21 FAIL=0` and `EXIT=0`.
 
 ## Abstract
 
@@ -41,8 +42,7 @@ proved from the unique-radius theorem; its honest note states the structural-cal
 
 ## 3. Matrix probe
 
-`containers(matrix, domain=onestep)` : 41 layers / 368 / 0 gaps, all
-`D1=0 · S2=1 · CLOSED=1`. See `../shared/results/matrix_onestep.csv`.
+`containers(matrix, domain=onestep)` : 41 layers / 368 / 0 gaps, `D1=0 · S2=1 · CLOSED=1`.
 
 ## 4. Conditional theorem — four steps
 
@@ -102,11 +102,11 @@ sign at every tier (root uniqueness). `Λ(s) = Λ(1−s)` to `8.295e−10`; `R²
 
 ```bash
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o rh.exe code/verify_rh.c && ./rh.exe
-gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o rhtech.exe code/verify_rh_tech.c && ./rhtech.exe
 ```
 
-Expected: `RESULT PASS=12 FAIL=0   (判据 12 项：P1–P12)` + `RESULT max dev = 1.562e-09   (threshold 1e-08)` + `EXIT=0` (12 checks) and `RESULT PASS=9 FAIL=0
-maxdev=1.185e-09 EXIT=0`. Four gates exit 0; zero compiler warnings.
+Expected: subtotals `12 · 9`, then the aggregate `RESULT PASS=21 FAIL=0` and `EXIT=0`
+(the 12-criterion section also prints `RESULT max dev = 1.562e-09   (threshold 1e-08)`;
+the second reports `maxdev=1.185e-09`); zero warnings.
 
 ## 8. Honest notes
 

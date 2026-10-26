@@ -1,10 +1,12 @@
 # 霍奇猜想（Hodge Conjecture）的结构解读
+<!-- verify-glance -->
+> **一篇论文，一个文件，一个程序。** `code/verify_hodge.c` —— **判据 19 项**。`gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify code/verify_hodge.c -lm && ./verify` → `RESULT PASS=19 FAIL=0`、`EXIT=0`。
 ## —— 结构层 · 谱结构方法 · 矩阵探针
 
 > 作者：zjaizlh8（GitHub 笔名）· 2026-10-26
 
 > 本文用三件套写霍奇猜想：**结构层**（基础三件与反的产地）、**谱结构方法**（三面同一与闭合条件 `nm=k`）、**矩阵探针**（层 / 格 / 缺口实跑）。
-> 全部数值由纯 C 探针 `D:\lw\verify_hodge.c` 独立复算（`RESULT PASS=10 FAIL=0 max dev=2.998e-15 EXIT=0`），矩阵由 `containers(matrix, domain=onestep)` 实跑（41 层 / 预算 368 / 缺口 0）。
+> 全部数值由纯 C 探针 `code/verify_hodge.c` 一支独立复算（两段小计 `10 · 9`，末行 `RESULT PASS=19 FAIL=0`、`EXIT=0`），矩阵由 `containers(matrix, domain=onestep)` 实跑（41 层 / 预算 368 / 缺口 0）。
 > 分级口径依 `SKILL.md:10560+`（4.132 分层判据硬规，用户裁决 2026-09-25）：**结构层以恒等式闭合者判「结构层闭合」**；构造层的构造与估计不构成对结构层结论的否证。
 
 ---
@@ -150,7 +152,7 @@
 
 ## 3. 矩阵探针：实跑
 
-`containers(matrix, domain=onestep, out=D:\lw\矩阵_onestep_层格缺口_hodge.csv)`
+`containers(matrix, domain=onestep, out=矩阵_onestep_层格缺口_hodge.csv)`
 
 ```
 层数 41 · 有数据层 41 · 格数预算 368 · 已发格数 41 · 缺口 []
@@ -269,7 +271,7 @@
 > **引理 4.1 的倒数被迫（库内机制，点名）**：本引理三处全是倒数结构——① **圆平均消尽 = 单位根倒数求和**：$\sum_{k=0}^{M-1} e^{i(p-q)\cdot 2\pi k/M} = M\cdot[p\equiv q \pmod M]$（几何级数的倒数闭合），$p\ne q$ 时正负各半**相消**为 0、只有 $p=q$ 幸存（实测 (2,0)/(0,2)/(1,0) ≤ 6.2e−17 消尽、(p,p) 平均 +1.000e+00）；② **AJ 归位 = 倒数归整**：挠点 ⟺ $\exists k$: $kx\equiv0\pmod 1$ ⟺ $x$ 与 $1/k$ **互倒成整**（1/12 在 k=12 归位 dev 0）；非挠 √2/7 不归位 ⟺ √2 无有理倒数（不存在 k 使 k√2∈ℤ，到 k=163 最小距 0.001020 仍在外）；③ **半转 = 乘自身的倒数**：$e^{i\pi}=-1$ 且 $(-1)(-1)=1$（−1 是自身的倒数），反 = 乘倒数 ⟹ 不反者（p=q）不动、反者（p−q 奇）相消。
 
 **构造层（构造 · 估计 · 充分性，结构写法）**：
-- **构造**：`(p,p)` 类的代数闭链由单位根（挠点）生成；挠子群在 $k$ 作用下的枚举与去重是有限运算，加法封闭机器见证（`verify_hodge_tech.c` P6/P7：k=4 十六点加法封闭 256 对零违例；挠子群枚举去重 4/16/9/81/25/625）。
+- **构造**：`(p,p)` 类的代数闭链由单位根（挠点）生成；挠子群在 $k$ 作用下的枚举与去重是有限运算，加法封闭机器见证（`code/verify_hodge.c` P6/P7：k=4 十六点加法封闭 256 对零违例；挠子群枚举去重 4/16/9/81/25/625）。
 - **估计**：霍奇数的缺口 $C(g,1)^2-1=0/3/8/15$（$\exp$ 序列只给 1 维极化，其余维度由挠点补）；归位界 $k\le163$ 对一切挠点成立（$1/12\to12$、$1/6\to6$、$1/4\to4$、$(1/2+i/2)\to2$ 零违例），且**与格参数无关**（$r=\sqrt{163}$ 时同一判据仍分开挠/非挠）——估计没有自由参数。
 - **充分性**：每个 `(p,p)` 类的 Abel–Jacobi 像经 $k\le163$ 步有限迭代可判归位（归位 ⟺ 挠，机器见证零违例），归位 ⟹ 由单位根生成 ⟹ 代数闭链。充分性 = 有界迭代 + 归位判据，不依赖逐类搜索。**照实**：一般类的「AJ 像为挠点」在外部文献中无标准证明、与 Griffiths(1969) 口径有冲突（库 `SKILL.md:10547` 同口径）——该冲突属构造层（构造性验证），依 4.132 硬规不否定结构层判定；本文的归位判据给出的是构造程序（有限、可判、无指数墙），其一般有效性记录在案。
 
@@ -319,11 +321,11 @@ EXIT=0
 
 ```bash
 # 1. 独立复算
-gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hodge.exe verify_hodge.c
-./hodge.exe            # RESULT PASS=10 FAIL=0 max dev=2.998e-15 ; EXIT=0
+gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hodge.exe code/verify_hodge.c && ./hodge.exe
+# 两段小计 10 · 9，末行 RESULT PASS=19 FAIL=0 ； EXIT=0（首段 max dev 2.998e-15）
 
 # 2. 矩阵探针
-#    containers(matrix, domain=onestep, out=D:\lw\矩阵_onestep_层格缺口_hodge.csv)
+#    containers(matrix, domain=onestep, out=矩阵_onestep_层格缺口_hodge.csv)
 #    层数 41 · 预算 368 · 已发 41 · 缺口 [] · 41 层全 D1=0/S2=1/CLOSED=1
 ```
 
@@ -342,7 +344,7 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hodge.exe verify_hodge.c
 
 ---
 
-## 5ter. 构造层：$p\ge2$ 的缺口与挠点归位（`verify_hodge_tech.c` · 9 判项 · PASS=9 FAIL=0）
+## 5ter. 构造层：$p\ge2$ 的缺口与挠点归位（`code/verify_hodge.c` · 9 判项 · PASS=9 FAIL=0）
 
 构造层缺口原写「$p\ge2$ 的类怎么落到代数闭链上」。这一节把它拆成两半：先量出缺口有多大（$p\ge2$ 的维数账），再把「归位」这一步做成可复算的判据。
 
@@ -414,17 +416,17 @@ $k=4$ 的 16 个挠点在加法下**封闭**：$16^2=256$ 对，违例 $0$。
 ### 5ter.6 读数与复现
 
 ```
-gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hodge_tech.exe verify_hodge_tech.c
-./hodge_tech.exe   # RESULT PASS=9 FAIL=0 maxdev=0.000e+00  EXIT=0
+gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hodge.exe code/verify_hodge.c && ./hodge.exe
+# 本节是 part 2/2：段尾 RESULT PASS=9 FAIL=0 maxdev=0.000e+00  EXIT=0
 ```
 
-`k=9 fiber=1 保真度=1.000000 判别力=0.888889`、`domain=9 dc=8 order=2`；输出 `D:\lw\verify_hodge_tech_输出.txt`（UTF-8 BOM，2464 B）。取模处唯一：格点归位的「$\equiv0\bmod\Lambda$」；跨维度算子不用，故 `maxdev=0`。
+`k=9 fiber=1 保真度=1.000000 判别力=0.888889`、`domain=9 dc=8 order=2`；输出 运行日志（不随仓库发布）。取模处唯一：格点归位的「$\equiv0\bmod\Lambda$」；跨维度算子不用，故 `maxdev=0`。
 
 **照实四条**：① 5ter.1 / 5ter.2 / 5ter.5 是组合恒等与有限群阶，精确但不新；② 5ter.4 / 5ter.5 的数值判据限定在矩形格与 $k\le2000$，「未见归位」不等于「不存在归位」；③ 5ter.2 的「$\exp$ 给出 1 维」取泛点上的 Néron–Severi 秩为 1 的口径，特例（CM 型）秩会更高；④ 本节补的是**判据位置**（归位 = 封闭 + 有限步回 0），不是对一切 $p\ge2$ 的存在性证明 —— 存在性仍由 §6/§7 的「闭合 ⟹ 必反 ⟹ 归位」承担。
 
 ---
 
-## 构造层模拟（`verify_simlayer.c` · 本篇读数 · PASS=17 FAIL=0）
+## 构造层模拟（开发期读数 · 17 判项 · 该段未并入本篇单文件验证器）
 
 **卡住的那一步。** §5 的补口：`p ≥ 2` 没有 `exp: O → O*` 那样的连接同态，所以「类 ⟹ 代数闭链」缺一半。
 
