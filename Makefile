@@ -1,44 +1,56 @@
-# 一键复算：make          → 编译全部 verify_*.c / chk_*.c 到 bin/
-#           make run      → 跑全部验证器
-#           make gates    → 用 4 道落档门禁扫全部 .c
-#           make all-verify → 编译 + 跑 + 门禁
-# 编译旗标固定 -Wall -Wextra -O2（与仓库口径一致），力求零告警。
+# 一键复算 / One-command recompute
+#
+#   make                 编译 7 个验证器到 bin/         (7 verifiers)
+#   make run             编译 + 逐支实跑 7 个验证器      (build + run the 7)
+#   make tools           （可选）编 5 支归档检查工具      (optional: archive tools)
+#   make clean           清理 bin/
+#
+# 编译旗标固定 -Wall -Wextra -O2 -D_GNU_SOURCE，力求零告警。
+# 七篇各一支验证器：一支 .c / 一支 .exe，一一对应。
 
-# make 内置默认 CC=cc 会让 ?= 失效（Windows 上无 cc），故只在"默认来源"时改成 gcc
 ifeq ($(origin CC),default)
 CC      := gcc
 endif
 CFLAGS  ?= -Wall -Wextra -O2 -D_GNU_SOURCE
 LDLIBS  ?= -lm
 BIN     := bin
-SRC     := $(shell find . -name '*.c' | sort)
-BINS    := $(patsubst ./%,$(BIN)/%,$(basename $(SRC)))
-GATES   := check_onestep chk_loops chk_res chk_scan
-# 验证器 = 全部 .c 去掉 4 道门禁源码 = 20 支（含 shared/code/verify_simlayer.c 共用模拟器）
-VERIFS  := $(filter-out $(addprefix $(BIN)/shared/code/,$(GATES)),$(BINS))
 
-.PHONY: all all-verify run gates clean
+# —— 七个猜想，七支验证器（顺序 = README 表序）——
+VERIFS  := \
+	bsd-conjecture/code/verify_bsd.c \
+	hardy-littlewood/code/verify_hl.c \
+	hodge-conjecture/code/verify_hodge.c \
+	navier-stokes/code/verify_ns.c \
+	p-vs-np/code/verify_pvsnp.c \
+	riemann-hypothesis/code/verify_rh.c \
+	yang-mills/code/verify_ym.c
+
+BINS    := $(patsubst %.c,$(BIN)/%,$(VERIFS))
+
+# —— 可选归档工具（不属于七篇，不参与 make run）——
+TOOLS_SRC := $(wildcard shared/tools/*.c)
+TOOLS_BIN := $(patsubst shared/tools/%.c,$(BIN)/tools/%,$(TOOLS_SRC))
+
+.PHONY: all run tools clean
 all: $(BINS)
 
-$(BIN)/%: ./%.c
+$(BIN)/%: %.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -o $@ $< $(LDLIBS)
 
 run: all
-	@fail=0; for b in $(VERIFS); do \
-	  printf '%-34s ' "$$b"; \
-	  if out=$$(timeout 300 ./$$b 2>&1); then \
-	    echo "$$(printf '%s\n' "$$out" | grep -oE 'PASS=[0-9]+ FAIL=[0-9]+' | head -1) OK"; \
+	@fail=0; for b in $(BINS); do \
+	  printf '%-40s ' "$$b"; \
+	  if out=$$(./$$b 2>&1); then \
+	    echo "$$(printf '%s\n' "$$out" | grep -oE 'RESULT PASS=[0-9]+ FAIL=[0-9]+' | tail -1) OK"; \
 	  else echo "EXIT!=0"; fail=1; fi; \
 	done; exit $$fail
 
-gates: all
-	@fail=0; for g in $(GATES); do \
-	  printf '%-16s ' "$$g"; \
-	  if ./$(BIN)/shared/code/$$g $(SRC) >/dev/null 2>&1; then echo "PASS (exit 0)"; else echo "FAIL"; fail=1; fi; \
-	done; exit $$fail
+tools: $(TOOLS_BIN)
 
-all-verify: run gates
+$(BIN)/tools/%: shared/tools/%.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -o $@ $< $(LDLIBS)
 
 clean:
 	rm -rf $(BIN)

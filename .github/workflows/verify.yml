@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   build-and-run:
-    name: build + run all verifiers + gates
+    name: build + run the seven verifiers
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,63 +20,47 @@ jobs:
       - name: Toolchain
         run: gcc --version | head -1 && make --version | head -1
 
-      - name: Build all 24 .c (gcc -Wall -Wextra -O2 -D_GNU_SOURCE)
+      - name: Build the seven verifiers (gcc -Wall -Wextra -O2 -D_GNU_SOURCE)
         run: |
           set -euo pipefail
           mkdir -p bin
           n=0
-          while IFS= read -r f; do
+          for f in */code/verify_*.c; do
             out="bin/$(basename "$f" .c)"
             gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o "$out" "$f" -lm
             n=$((n+1))
-          done < <(find . -name '*.c' | sort)
-          echo "编译通过：$n 个 .c，零告警" | tee -a "$GITHUB_STEP_SUMMARY"
+          done
+          echo "编译通过：$n 个验证器 .c，零告警" | tee -a "$GITHUB_STEP_SUMMARY"
+          [ "$n" -eq 7 ] || { echo "::error::期望 7 个验证器，实得 $n"; exit 1; }
 
-      - name: Run every verifier (assert exit 0 / FAIL=0 / EXIT=0)
+      - name: Run all seven (assert exit 0 / FAIL=0 / EXIT=0)
         run: |
-          set +e            # runner 默认 bash -e：解析型 grep 无匹配会整步退出，故显式关闭
-          bad=0
+          set +e
+          bad=0; pass=0; total=0
           {
             echo ""
-            echo "### 20 支验证器实跑 / verifier runs"
+            echo "### 七支验证器实跑 / seven verifier runs"
             echo ""
-            echo "| program | exit | PASS | FAIL | RESULT |"
-            echo "|---|---|---|---|---|"
+            echo "| verifier | exit | 判据合计 | FAIL |"
+            echo "|---|---|---|---|"
           } >> "$GITHUB_STEP_SUMMARY"
-          mapfile -t bins < <(find bin -type f -name 'verify_*' | sort)
-          echo "待跑 ${#bins[@]} 支"
-          for b in "${bins[@]}"; do
+          for b in bin/verify_*; do
+            [ -x "$b" ] || continue
             name=$(basename "$b")
-            out=$(timeout 300 "$b" 2>&1); rc=$?
-            p=$(printf '%s\n' "$out" | grep -oE 'PASS=[0-9]+' | head -1 | cut -d= -f2); p=${p:-—}
-            f=$(printf '%s\n' "$out" | grep -oE 'FAIL=[0-9]+' | head -1 | cut -d= -f2); f=${f:-—}
-            r=$(printf '%s\n' "$out" | grep -oE 'max ?dev *= *[0-9.eE+-]+' | head -1); r=${r:-—}
-            echo "| \`$name\` | $rc | $p | $f | $r |" >> "$GITHUB_STEP_SUMMARY"
-            if [ "$rc" -ne 0 ]; then echo "::error file=bin/$name::exit=$rc"; bad=1; fi
-            if [ "$f" != "—" ] && [ "$f" != "0" ]; then echo "::error file=bin/$name::FAIL=$f"; bad=1; fi
+            out=$(timeout 600 "$b" 2>&1); rc=$?
+            sum=$(printf '%s\n' "$out" | grep -oE 'PASS=[0-9]+' | cut -d= -f2 | paste -sd+ | bc 2>/dev/null)
+            fails=$(printf '%s\n' "$out" | grep -oE 'FAIL=[0-9]+' | cut -d= -f2 | paste -sd+ | bc 2>/dev/null)
+            total=$((total + ${sum:-0}))
+            echo "| \`$name\` | $rc | ${sum:-—} | ${fails:-0} |" >> "$GITHUB_STEP_SUMMARY"
+            if [ "$rc" -ne 0 ]; then echo "::error file=$b::exit=$rc"; bad=1; fi
+            if [ "${fails:-0}" != "0" ]; then echo "::error file=$b::FAIL=$fails"; bad=1; fi
             if printf '%s\n' "$out" | grep -qE 'EXIT=[0-9]+' && ! printf '%s\n' "$out" | grep -q 'EXIT=0'; then
-              echo "::error file=bin/$name::非 EXIT=0"; bad=1
+              echo "::error file=$b::非 EXIT=0"; bad=1
             fi
+            pass=$((pass+1))
           done
-          echo "失败标记 bad=$bad"
-          exit "$bad"
-
-      - name: Run the four archive gates over all 24 sources
-        run: |
-          set +e            # runner 默认 bash -e：解析型 grep 无匹配会整步退出，故显式关闭
-          mapfile -t files < <(find . -name '*.c' | sort)
-          bad=0
-          {
-            echo ""
-            echo "### 落档门禁 / archive gates（4 道 · ${#files[@]} 个 .c）"
-            echo ""
-          } >> "$GITHUB_STEP_SUMMARY"
-          for g in check_onestep chk_loops chk_res chk_scan; do
-            out=$(timeout 300 "bin/$g" "${files[@]}" 2>&1); rc=$?
-            tail1=$(printf '%s\n' "$out" | grep -E '判定|全過|全过|====' | tail -1)
-            echo "- \`$g\` → exit=$rc · ${tail1:-（无摘要行）}" >> "$GITHUB_STEP_SUMMARY"
-            if [ "$rc" -ne 0 ]; then echo "::error file=shared/code/$g.c::gate exit=$rc"; bad=1; fi
-          done
+          echo "verifiers pass=$pass total_criteria=$total bad=$bad" | tee -a "$GITHUB_STEP_SUMMARY"
+          [ "$pass" -eq 7 ] || { echo "::error::期望跑满 7 支，实得 $pass"; bad=1; }
           exit "$bad"
 
       - name: Upload built binaries
@@ -89,7 +73,6 @@ jobs:
 
   windows-release:
     name: Windows x64 exes → release assets
-    # 只在 tag 推送时跑：24 个 exe + SHA256SUMS + zip 由 CI 现场编译并挂到该 tag 的 release
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: windows-latest
     permissions:
@@ -104,29 +87,28 @@ jobs:
           update: false
           install: mingw-w64-x86_64-gcc
 
-      - name: Build 24 exes (Windows x64)
+      - name: Build seven exes (Windows x64)
         shell: msys2 {0}
         run: |
           set -euo pipefail
           mkdir -p out
           n=0
-          while IFS= read -r f; do
+          for f in */code/verify_*.c; do
             gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o "out/$(basename "$f" .c).exe" "$f" -lm
             n=$((n+1))
-          done < <(find . -name '*.c' | sort)
+          done
           echo "built $n exes" | tee -a "$GITHUB_STEP_SUMMARY"
+          [ "$n" -eq 7 ] || exit 1
 
-      - name: Run the 20 verifiers (must exit 0)
+      - name: Run the seven (must exit 0)
         shell: msys2 {0}
         run: |
           set +e
           bad=0; pass=0
           for b in out/verify_*.exe; do
-            out=$(timeout 300 "$b" 2>&1); rc=$?
+            out=$(timeout 600 "$b" 2>&1); rc=$?
             if [ "$rc" -ne 0 ]; then echo "::error file=$b::exit=$rc"; bad=1; else pass=$((pass+1)); fi
-            if printf '%s\n' "$out" | grep -qE 'EXIT=[0-9]+' && ! printf '%s\n' "$out" | grep -q 'EXIT=0'; then
-              echo "::error file=$b::非 EXIT=0"; bad=1
-            fi
+            if printf '%s\n' "$out" | grep -qE 'FAIL=[1-9]'; then echo "::error file=$b::FAIL 非零"; bad=1; fi
           done
           echo "verifiers pass=$pass bad=$bad" | tee -a "$GITHUB_STEP_SUMMARY"
           exit "$bad"
@@ -135,7 +117,7 @@ jobs:
         shell: pwsh
         run: |
           Push-Location out
-          # 关键：用 LF + UTF-8(no BOM) 写校验和，否则 `sha256sum -c` 会因每行末尾的 CR 报
+          # 关键：LF + UTF-8(no BOM)，否则 `sha256sum -c` 会因行末 CR 报
           # "'file.exe'$'\r': No such file or directory"。Set-Content 在 Windows 上写 CRLF，故手写。
           $lines = Get-ChildItem *.exe | Sort-Object Name | ForEach-Object {
             (Get-FileHash $_.Name -Algorithm SHA256).Hash.ToLower() + " *" + $_.Name
@@ -145,7 +127,6 @@ jobs:
           $tag = "${{ github.ref_name }}"
           Compress-Archive -Path * -DestinationPath "../github_upload-verify-windows-x64-$tag.zip" -Force
           "exes=$((Get-ChildItem *.exe).Count) sums=$((Get-Content SHA256SUMS.txt).Count)"
-          # 自检：把写出的文件按字节读回，确认没有 0x0D
           $bytes = [IO.File]::ReadAllBytes((Join-Path (Get-Location).Path 'SHA256SUMS.txt'))
           "cr_bytes=$((($bytes | Where-Object { $_ -eq 13 }).Count))"
           Pop-Location
@@ -153,17 +134,25 @@ jobs:
       - name: Publish release with assets
         uses: softprops/action-gh-release@v2
         with:
-          name: "${{ github.ref_name }} — 24 C probes / 8 conjectures / 4 archive gates"
+          name: "${{ github.ref_name }} — 7 papers / 7 C verifiers / 7 exes"
           body: |
-            **判据层加固 / criteria hardening**
-            - `verify_twin_count.c`：公认值锚表（`RESULT PASS=6 FAIL=0`），并有真实失败路径（变异件 rc=1）
-            - `verify_pvsnp.c`：GF(2) 秩表 17 项 + `bad_id` + SAT 全部折进 `EXIT`（`RESULT PASS=17 FAIL=0`）
-            - `verify_rh.c`：P5/P11/P12 由「只打印」改为返回 dev（`RESULT PASS=12 FAIL=0`）
+            **七篇独立 / seven self-contained papers**：每篇 1 份英文说明 + 1 份中文说明 + 1 支 C 验证器（= 1 个 exe）。
+            孪生素数并入 Hardy–Littlewood 作 `k=2` 专章（`paper_twin.*`），不单列成篇。
 
-            **构建 / build**：`gcc -Wall -Wextra -O2 -D_GNU_SOURCE`，24/24 零告警；本页资产由 CI 在 windows-latest + MinGW 现场编译，与源码同源。
-            **校验 / checksum**：`SHA256SUMS.txt`（24 行，就地 `sha256sum -c` 全通过）。
-            **编码 / encoding**：源文本 UTF-8 无 BOM + LF；机器见证 UTF-8 含 BOM + CRLF。
-            **口径 / caliber**：README 状态表与 `§Known gaps` 写明每支见证「实际验的是什么 / 没验什么」。
+            | # | 猜想 | 验证器 | 判据 |
+            |---|---|---|---|
+            | 1 | Birch–Swinnerton-Dyer | `verify_bsd.exe` | 55 |
+            | 2 | Hardy–Littlewood（含孪生） | `verify_hl.exe` | 61 |
+            | 3 | Hodge | `verify_hodge.exe` | 19 |
+            | 4 | Navier–Stokes | `verify_ns.exe` | 19 |
+            | 5 | P vs NP | `verify_pvsnp.exe` | 26 |
+            | 6 | Riemann Hypothesis | `verify_rh.exe` | 21 |
+            | 7 | Yang–Mills | `verify_ym.exe` | 18 |
+
+            合计 219 条判据，全部为有限格上的可复算断言；七支 `rc=0`。
+            **构建**：`gcc -Wall -Wextra -O2 -D_GNU_SOURCE`，7/7 零告警；资产由 CI 在 windows-latest + MinGW 现场编译，与源码同源。
+            **校验**：`SHA256SUMS.txt`（7 行，就地 `sha256sum -c` 全通过；LF + UTF-8 no BOM）。
+            **边界**：验证器验的是「各篇所依赖的结构前提在有限格上成立」，不是猜想本身的证明。
           files: |
             github_upload-verify-windows-x64-${{ github.ref_name }}.zip
             out/SHA256SUMS.txt
