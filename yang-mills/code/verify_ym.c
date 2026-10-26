@@ -113,7 +113,7 @@ static M2 su2_exp(double t, double nx, double ny, double nz)
 /* identity/sanity 类判项：只报读数，不进判据计数 */
 static void S0_sanity(const char *name, double dev)
 {
-    printf("  %-58s dev=%.3e  (identity/sanity, not counted)\n", name, dev);
+    printf("  [sanity] %-38s dev=%.3e (identity/sanity, not counted)\n", name, dev);
 }
 static void S0_judge(const char *name, double dev, double tol)
 {
