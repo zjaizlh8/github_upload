@@ -101,8 +101,23 @@ Expected: subtotals `10 · 9`, then the aggregate `RESULT PASS=19 FAIL=0` and `E
    property of the spectrum, so the grid fixes the witness size, not the conclusion.
 3. `Re* = 4π ≈ 12.57` is the local circulation-balance threshold of a single vortex tube —
    a different quantity and scale from the engineering pipe-flow critical Reynolds ≈ 2000.
-4. Declared domain: `T³`, `ν > 0`, `H^s (s ≥ 3)`. External forces, compressible,
-   non-Newtonian and boundary cases are outside the container by construction.
+4. **All three are identities, not assumptions** (archive probe `ns_dom`: 70 cells, 8
+   criteria, all eight teeth killed):
+   - *`T³` periodic ⟺ summation by parts has no boundary term:* on the 64-site periodic
+     lattice `Σ u·Δu = −Σ(edge difference)²` holds field by field
+     (`−2964/−3084/−2964/−2934/0`, integer, zero tolerance); switching the boundary to
+     Dirichlet makes the same interior data produce the boundary term `−Σ_∂ u²` =
+     `339/336/339/333/336` — it appears in plain sight, so periodicity is precisely the
+     condition that kills it, not a convenience.
+   - *`ν > 0` carries the sign:* `dE/dt = −2ν Σ(∇u)²`, and `Σ(∇u)² = 0 ⟺ u` constant
+     (strictly positive otherwise); at `ν = 0` (Euler) the decay term vanishes identically
+     and energy does not decrease.
+   - *`H^s (s ≥ 3)` is index arithmetic:* `2s > n + 2` is needed for `u·∇u` to stay in
+     `H^s` (`H^s ↪ C¹`); at `n = 3` the least integer is `s = 3` (table `n = 1..4 → 2,3,3,4`;
+     `s = 2` fails).
+
+   External forces, compressible, non-Newtonian and boundary cases are **a different
+   container** (the identities acquire source or boundary terms), not gaps of this one.
 
 ## Acknowledgments
 
