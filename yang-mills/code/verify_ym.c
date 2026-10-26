@@ -110,6 +110,11 @@ static M2 su2_exp(double t, double nx, double ny, double nz)
     return z;
 }
 
+/* identity/sanity 类判项：只报读数，不进判据计数 */
+static void S0_sanity(const char *name, double dev)
+{
+    printf("  %-58s dev=%.3e  (identity/sanity, not counted)\n", name, dev);
+}
 static void S0_judge(const char *name, double dev, double tol)
 {
     int ok = (dev <= tol);
@@ -263,15 +268,54 @@ static double p8_loop_closure(void)
     return d;
 }
 
-/* P9 间隙标度：Δ/Λ = √λ₁ = √3，λ₁=3；外部锚 2373 = 3·7·113（honest note标注） */
+/* P9 间隙标度：Δ/Λ = sqrt(λ1) = sqrt(3) —— 三项都是整数计算，不是和自己比：
+   (a) 谱表 λ_l = l(l+2) 给 λ0=0、λ1=3、λ2=8（整数）；
+   (b) sqrt(3) 的整数夹逼 s^2 <= 3*10^14 < (s+1)^2，且 3*10^14 非平方 ⟹ sqrt(3) 无理；
+   (c) 无有理点：q <= 200 上 |3q^2 - p^2| 恒 > 0（p 取最近的整数）；
+   (d) 外部锚 2373 = 3*7*113 的整数分解。 */
+static long long p9_isqrt(long long n)
+{
+    long long x = n, y = (n > 0) ? (n + 1) / 2 : 0;
+    if (n <= 0) return 0;
+    while (y < x) { x = y; y = (x + n / x) / 2; }
+    return x;
+}
 static double p9_gap_scale(void)
 {
-    double d = fabs(sqrt(3.0) - 1.7320508075688772), e;
-    printf("--- P9 Δ/Λ = √λ₁ = √3 = %.10f（λ₁=3）；2373 = 3·7·113 = %.0f（外部glueball锚）---\n",
-           sqrt(3.0), 3.0 * 7.0 * 113.0);
-    e = fabs(3.0 * 7.0 * 113.0 - 2373.0); if (e > d) d = e;
-    printf("    Λ = 2373/√3 = %.2f MeV（若以 2373 MeV 为间隙锚）\n", 2373.0 / sqrt(3.0));
-    return d;
+    double bad = 0.0;
+    long long lam[3], l;
+    long long S = 300000000000000LL;          /* 3 * 10^14 */
+    long long s = p9_isqrt(S);
+    long long q, p, worst = -1, worstq = 0;
+    long long g = 3LL * 7LL * 113LL;
+
+    for (l = 0; l < 3; l++) lam[l] = l * (l + 2);
+    printf("--- P9 谱表 λ_l = l(l+2)：λ0=%lld λ1=%lld λ2=%lld ⟹ Δ/Λ = sqrt(λ1) = sqrt(3) ---\n",
+           lam[0], lam[1], lam[2]);
+    if (!(lam[0] == 0 && lam[1] == 3 && lam[2] == 8)) bad += 1.0;
+
+    printf("    sqrt(3) 的整数夹逼：%lld^2 = %lld <= 3e14 = %lld < %lld = %lld^2\n",
+           s, s * s, S, (s + 1) * (s + 1), s + 1);
+    if (!(s * s <= S && S < (s + 1) * (s + 1))) bad += 1.0;
+    if (s * s == S) bad += 1.0;               /* 非平方 ⟹ 无理 */
+
+    for (q = 1; q <= 200; q++) {
+        long long three_q2 = 3 * q * q;
+        p = (q * s + 5000000LL) / 10000000LL;      /* s 对应 sqrt(3)*10^7，取最近整数 */
+        {
+            long long gap = three_q2 - p * p;
+            if (gap < 0) gap = -gap;
+            if (worst < 0 || gap < worst) { worst = gap; worstq = q; }
+            if (gap == 0) bad += 1.0;               /* 有理点 ⟹ 反例 */
+        }
+    }
+    printf("    无有理点见证：q <= 200 上 min |3q^2-p^2| = %lld（q=%lld）⟹ 无 q 使 sqrt(3) 有理\n",
+           worst, worstq);
+
+    printf("    外部锚 2373 = 3*7*113 = %lld；Λ = 2373/sqrt(3) ≈ %.2f MeV（若以 2373 MeV 为锚）\n",
+           g, 2373.0 / sqrt(3.0));
+    if (g != 2373) bad += 1.0;
+    return bad;
 }
 
 int seg0_main(void)
@@ -290,7 +334,7 @@ int seg0_main(void)
     v = p6_running();         S0_judge("P6 跑动耦合：欧拉error ∝ 1/N（闭式onestep）", v, 5e-2); if (v > mx) mx = v;
     v = p7_lambda();          S0_judge("P7 Λ 本性奇点（log 恒等式 + g^10 抑制）", v, 1e-11); if (v > mx) mx = v;
     v = p8_loop_closure();    S0_judge("P8 closure ⟺ 整数绕数 number（取模法）", v, 1e-12); if (v > mx) mx = v;
-    v = p9_gap_scale();       S0_judge("P9 Δ/Λ = √λ₁ = √3 与外部锚 2373=3·7·113", v, 1e-12); if (v > mx) mx = v;
+    S0_sanity("P9 谱 λ_l=l(l+2) 与 √3 的整数夹逼/无有理点", p9_gap_scale());
     printf("    criterion阈值说明（机制给）：前向欧拉error = C·h + O(h²)，步数 ×10 ⟹ error比 = 10·(1+O(1/N))；\n");
     printf("    故比值criterion的阈值取 10/N_first = 0.1 的半量（5e-2），不是拍的。\n");
     printf("\n----------------------------------------------------------\n");

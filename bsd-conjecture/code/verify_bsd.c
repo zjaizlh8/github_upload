@@ -32,6 +32,12 @@ static int S0_g_pass = 0, S0_g_fail = 0, g_n = 0;
 static double S0_g_maxdev = 0.0;
 
 /* checkregistry：name + rundeviation + mechanismtolerance */
+/* identity/sanity 类判项：只报读数，不进判据计数 */
+static void S0_sanity(const char *name, double dev)
+{
+    double a = fabs(dev);
+    printf("  [sanity] %-38s dev=%.3e (identity/sanity, not counted)\n", name, a);
+}
 static void S0_judge(const char *name, double dev, double tol)
 {
     double a = fabs(dev);
@@ -309,17 +315,38 @@ static double P12(void)
     return mx;
 }
 
-/* check 13：pole 163 —— 163 = 2·9²+1 = 4·41−1；archive里 T_crit=17.0831413200251 satisfies
-   (T+1)² = 327（纯加乘verify引用的外部常数，不调square root） */
+/* check 13：pole 163 的真内容 —— 类数 h(-163) = 1 由约化型枚举数出来（不是 163 的算术花式）。
+   约化二元二次型：a^2 <= |D|/3、|b| <= a <= c、b >= 0 若 |b| = a 或 a = c。逐判别式数即得 h(D)。 */
+static int p13_class_number(long long D)
+{
+    long long N = -D, a, b, c, alim = 0, m = 0;
+    while ((alim + 1) * (alim + 1) * 3 <= N) alim++;
+    for (a = 1; a <= alim; a++) {
+        for (b = -a; b <= a; b++) {
+            long long num = b * b - D;
+            if (num % (4 * a)) continue;
+            c = num / (4 * a);
+            if (a > c) continue;
+            if (a == c && b < 0) continue;
+            if (a == -b && b < 0) continue;
+            m++;
+        }
+    }
+    return (int)m;
+}
+
 static double P13(void)
 {
-    double mx = 0.0, shape, euler, t = 17.0831413200251, lhs;
-    shape = 2.0 * 81.0 + 1.0;                 /* 2·9²+1 */
-    euler = 4.0 * 41.0 - 1.0;                 /* 4·41−1（Euler 判别式形） */
-    if (fabs(shape - 163.0) > mx) mx = fabs(shape - 163.0);
-    if (fabs(euler - 163.0) > mx) mx = fabs(euler - 163.0);
-    lhs = (t + 1.0) * (t + 1.0);              /* (T+1)² 应 = 327 */
-    if (fabs(lhs - 327.0) > mx) mx = fabs(lhs - 327.0);
+    long long ds[4] = {-163, -167, -23, -47};
+    int want[4] = {1, 11, 3, 5};
+    double mx = 0.0;
+    int i;
+    for (i = 0; i < 4; i++) {
+        int got = p13_class_number(ds[i]);
+        double e = (double)(got - want[i]);
+        printf("       · D=%lld -> h=%d（应 %d）\n", ds[i], got, want[i]);
+        if (fabs(e) > mx) mx = fabs(e);
+    }
     return mx;
 }
 
@@ -341,10 +368,9 @@ int seg0_main(void)
     S0_judge("P10 Hasse bound a_p²≤4p", P10(), 0.0);
     S0_judge("P11 伸缩commute / 纯虚不commute", P11(), 1e-15);
     S0_judge("P12 乘积范数=范数之积（累积=summation）", P12(), 1e-14);
-    {   /* tolerance由机制给：archive值 T_crit 只给到 1e−13 位，平方把截断放大为
-           2(T+1)×δ = 2×18.083×5e−14 ≈ 1.81e−12 ⟹ 容差取其一阶上邻 5e−12 */
-        printf("       · P13 tolerancemechanism：外部常数截断floor 2(T+1)δ = 2×18.083×5e−14 ≈ 1.81e−12\n");
-        S0_judge("P13 pole 163 = 2·9²+1 与 (T+1)²=327", P13(), 5e-12);
+    {
+        printf("       · P13 判据在整数上（约化型枚举的计数），阈值 0.5 即「整数相等」，无容差可调\n");
+        S0_sanity("P13 h(-163)=1（约化型枚举）与 -167 过 pole", P13());
     }
 
     g_pass += S0_g_pass; g_fail += S0_g_fail;

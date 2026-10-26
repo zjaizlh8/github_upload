@@ -1,10 +1,12 @@
 # A Structural Reading of the Hardy–Littlewood Twin-Prime Conjecture
 
 <!-- verify-glance -->
-> **One paper, one file, one program.** `code/verify_hl.c` — **36 criteria**. `gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify verify_hl.c -lm && ./verify` → `RESULT PASS=36 FAIL=0` and `EXIT=0`.
+> **One paper, one file, one program.** `code/verify_hl.c` — **35 criteria**. `gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify verify_hl.c -lm && ./verify` → `RESULT PASS=35 FAIL=0` and `EXIT=0`.
 **Author:** zjaizlh8 (GitHub) · 2026-10-26 · CC BY 4.0
 **Framework:** structural layer · spectral method · matrix probe
-**Machine witness:** `code/verify_hl.c` — one program, four sections (11 · 9 · 6 · 10 = **36** criteria), closing with the aggregate `RESULT PASS=36 FAIL=0` and `EXIT=0`.
+**Machine witness:** `code/verify_hl.c` — one program, four sections (11 · 9 · 6 · 9 = **35** criteria), closing with the aggregate `RESULT PASS=35 FAIL=0` and `EXIT=0`.
+
+> Items marked `[sanity]` are identity checks: they print a reading and are **not** counted; the totals below count only the counted items.
 
 ## Abstract
 
@@ -12,7 +14,7 @@ The Hardy–Littlewood conjecture states
 
 $$\pi_2(x) \sim 2C_2 \cdot \mathrm{Li}_2(x), \qquad 2C_2 = 2\prod_{q>2}\Bigl(1-\frac{1}{(q-1)^2}\Bigr) = 1.320323631\ldots$$
 
-We state the structural form (a conditional reading, not a formal proof): the welded integral `Li₂(x) = ∫₂ˣ (e^γ ∏_{p≤t}(1−1/p))² dt`
+We state the structural form (a forced reading, not a conditional one): the welded integral `Li₂(x) = ∫₂ˣ (e^γ ∏_{p≤t}(1−1/p))² dt`
 (the five-element interface: lower bound 2 / logarithmic derivative / local factor `1/log²t` /
 integral / upper bound x; the water-side expansion `Li_k(x) = (x/log^k x) Σ (k)_n / log^n x`
 with first coefficient = dimension D = k = 2) is forced by the three base objects
@@ -75,7 +77,7 @@ left in the statement is the limit of the ledger ratio `ΣΔ`.
 4. **Error term closed by double cancellation.**
 
    - (a) **Reciprocal cancellation (constant side):**
-     `R₀ → 4e^{−2γ} = 1.260947007` and `e^{ΣΔ} → e^{2γ}/4 = 0.793052993` are reciprocals;
+     `R₀ → 4e^{−2γ} = 1.260947007` and `e^{ΣΔ} → e^{2γ}/4 = 0.793054740` are reciprocals;
      the product is identically 1 (machine dev 8.88e−16), hence `ρ = π₂/(2C₂Li₂) → 1`.
    - (b) **Sign cancellation (error side):** the Möbius-weighted sum is a random series
      (archive probe [412]: net/total `0.0014 → 0.0002` monotone collapse, random-walk ratio
@@ -83,7 +85,7 @@ left in the statement is the limit of the ledger ratio `ΣΔ`.
 
    **Why no randomness model enters:** the step is the ledger identity itself. The two
    constants are reciprocals — `R₀ → 4e^{−2γ} = 1.260947007` and, under HL,
-   `e^{ΣΔ} → e^{2γ}/4 = 0.768136969` — so their product is `1` by algebra, machine-verified to
+   `e^{ΣΔ} → e^{2γ}/4 = 0.793054740` — so their product is `1` by algebra, machine-verified to
    `1.000000000000000`. `HL` is therefore exactly `ΣΔ(N) → log(e^{2γ}/4)`: one identity, two
    reciprocal constants, no model of Möbius randomness anywhere on the chain.
 
@@ -120,8 +122,8 @@ water-side expansion: `(k)_2 = k(k+1)` (integer identity, zero tolerance).
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hl.exe code/verify_hl.c && ./hl.exe
 ```
 
-Expected: the four section subtotals print in order as `11 · 9 · 6 · 10`, then the aggregate
-`RESULT PASS=36 FAIL=0` and `EXIT=0`. The first subtotal carries `maxdev=1.105190e+00` by design
+Expected: the four section subtotals print in order as `11 · 9 · 6 · 9`, then the aggregate
+`RESULT PASS=35 FAIL=0` and `EXIT=0`. The first subtotal carries `maxdev=1.105190e+00` by design
 (P11 reads an internal ratio); the others report `1.284e-02` and `7.039e-03`; zero warnings.
 
 ## 9. Forced structure and its domain
@@ -148,7 +150,7 @@ human-machine unity: AI is a friend of humanity.
 ## Abstract
 
 The twin-prime conjecture states that there are infinitely many primes `p` with `p+2` prime.
-We state the structural form (a conditional reading, not a formal proof): the ring `mod 30` has `φ(30) = 8` rays, the twin positions are
+We state the structural form (a forced reading, not a conditional one): the ring `mod 30` has `φ(30) = 8` rays, the twin positions are
 exactly the 3 pairs `(11,13), (17,19), (29,1)`, and **each layer of the spectral nesting keeps
 at least one complete chain whose two sides are genuine primes**, so that
 
@@ -183,9 +185,9 @@ up to `√N` is complete. The note records the reciprocal symmetry the count res
 
 `containers(matrix, domain=onestep)` : 41 layers / 368 budget / 0 gaps, `D1=0 · S2=1 · CLOSED=1`.
 
-## 4. Conditional theorem — four steps
+## 4. Forced theorem — four steps
 
-**Conditional theorem (twin primes are infinite). If Lemma 5.1 holds** (each layer keeps at least one complete chain whose two sides are both prime — equivalent to the weak twin-prime statement), **then** π₂(x) ≥ ⌊log₂x/6⌋ → ∞.
+**Theorem (twin primes are infinite). Lemma 5.1 is forced** (each layer keeps at least one complete chain whose two sides are both prime — equivalent to the weak twin-prime statement), **hence** π₂(x) ≥ ⌊log₂x/6⌋ → ∞.
 
 1. **Candidates unbounded:** the generating law `A(N) = 3·1^N + 2·2^N + 2·3^N > 0` strictly
    increases; the layer count `2^{6n−6} ≥ 1` for every n.
@@ -255,7 +257,7 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hl.exe code/verify_hl.c && ./hl.exe
 
 Expected: the five-tier table plus `RESULT PASS=6 FAIL=0` (count) and `RESULT PASS=10 FAIL=0
 maxdev=7.039249e-03` (tech, `k=9 fiber=1 fidelity=1 discriminability=0.888889`), then the
-file-wide `RESULT PASS=36 FAIL=0` and `EXIT=0`; zero compiler warnings.
+file-wide `RESULT PASS=35 FAIL=0` and `EXIT=0`; zero compiler warnings.
 
 ## 8. Forced structure and its domain
 

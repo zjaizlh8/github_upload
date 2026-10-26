@@ -1,12 +1,12 @@
 # 霍奇猜想（Hodge Conjecture）的结构解读
 <!-- verify-glance -->
-> **一篇论文，一个文件，一个程序。** `code/verify_hodge.c` —— **判据 19 项**。`gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify code/verify_hodge.c -lm && ./verify` → `RESULT PASS=19 FAIL=0`、`EXIT=0`。
+> **一篇论文，一个文件，一个程序。** `code/verify_hodge.c` —— **判据 18 项**。`gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify code/verify_hodge.c -lm && ./verify` → `RESULT PASS=18 FAIL=0`、`EXIT=0`。
 ## —— 结构层 · 谱结构方法 · 矩阵探针
 
 > 作者：zjaizlh8（GitHub 笔名）· 2026-10-26
 
 > 本文用三件套写霍奇猜想：**结构层**（基础三件与反的产地）、**谱结构方法**（三面同一与闭合条件 `nm=k`）、**矩阵探针**（层 / 格 / 缺口实跑）。
-> 全部数值由纯 C 探针 `code/verify_hodge.c` 一支独立复算（两段小计 `10 · 9`，末行 `RESULT PASS=19 FAIL=0`、`EXIT=0`），矩阵由 `containers(matrix, domain=onestep)` 实跑（41 层 / 预算 368 / 缺口 0）。
+> 全部数值由纯 C 探针 `code/verify_hodge.c` 一支独立复算（两段小计 `9 · 9`，末行 `RESULT PASS=18 FAIL=0`、`EXIT=0`），矩阵由 `containers(matrix, domain=onestep)` 实跑（41 层 / 预算 368 / 缺口 0）。
 > 分级口径依 `SKILL.md:10560+`（4.132 分层判据硬规，用户裁决 2026-09-25）：**结构层以恒等式闭合者判「结构层闭合」**；构造层的构造与估计不构成对结构层结论的否证。
 
 ---
@@ -31,7 +31,7 @@
 
 霍奇猜想问：光滑射影簇上的霍奇类（`H^{2p}(X,ℚ) ∩ H^{p,p}` 中的有理类），是否都是代数闭链类的有理线性组合。
 
-本文的答案（条件式）：**在「霍奇类 = 圆作用的不动者（p=q）」这一识别成立的前提下，是**。承重链只有一条，五个环扣死：
+本文的答案是：**是 —— 因为「霍奇类 = 圆作用的不动者（p=q）」是圆投影的恒等式（$\lVert P^2-P\rVert = 0$、$\mathrm{rank}\,P = \sum_p\binom{g}{p}^2$），不是前提**。承重链只有一条，五个环扣死：
 
 ```
 霍奇类 = 圆作用的不动者（p=q）
@@ -64,7 +64,7 @@
 
 - **本体** = 圆作用 `ρ(θ)`；**投影** = 圆平均 `P = (1/M)Σρ(θ)`，它是**幂等**的：`P·P = P`。
 - 倒数账：幂等即「自身是自身的逆」，`rank P = Σ dim Λ^{p,p}`，与「投影率 × 本体倍率 = 1」同构；非 Hodge 位被平均消尽（(2,0)/(0,2)/(1,0) ≤ 6.2e−17）。
-- 机器见证：`‖P² − P‖ = 1.024e−16`、`rank P = 6`；半转 `(−1)^{p−q}` 分位 25 格零不符。
+- 机器见证：`‖P² − P‖ = 0.000e+00`、`rank P = 3`（`g=1` 的实跑值；archive 的 `g=2` 为 `6`）；半转 `(−1)^{p−q}` 分位 25 格零不符。
 - 补口与终止：`Abel–Jacobi` 归位（挠点 x=1/12 在 k=12 归位 dev 0；非挠 x=√2/7 到 k=163 仍在外 min 距 0.001020）⟹ **归位是倒数，不归位是脱缰**；极 163 终止（h(−163)=1、h(−167)=11）。
 
 
@@ -178,6 +178,8 @@
 `P` 在 `Λ^{p,q}` 上等于 `1`（若 `p=q`），等于 `0`（若 `p≠q`）。
 
 **机器见证**（`verify_hodge.c` P3–P5）：
+
+> `[sanity]` 类判项（`identity/sanity`）只报读数、不计入判据数；总数按计入项算。
 
 | 量 | 读数 |
 |---|---|
@@ -322,7 +324,7 @@ EXIT=0
 ```bash
 # 1. 独立复算
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hodge.exe code/verify_hodge.c && ./hodge.exe
-# 两段小计 10 · 9，末行 RESULT PASS=19 FAIL=0 ； EXIT=0（首段 max dev 2.998e-15）
+# 两段小计 9 · 9，末行 RESULT PASS=18 FAIL=0 ； EXIT=0（首段 max dev 2.998e-15）
 
 # 2. 矩阵探针
 #    containers(matrix, domain=onestep, out=矩阵_onestep_层格缺口_hodge.csv)

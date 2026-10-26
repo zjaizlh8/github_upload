@@ -216,7 +216,7 @@ $$\int P=\int\lambda_2|\omega|^2+\int (Q_+-Q_-)$$
 
 > **为什么「分裂即严格下降」是被迫的**：`tr S = Σλ = 0` ⟹ `λ₁ = −(λ₂+λ₃)`，只要有一个方向在拉伸（`λ₂ > 0`，由 §5.1 的三分读数给），另外两个方向必然收缩、且收缩率之和等于拉伸率。环量在重联中守恒（Kelvin），故分裂后每管的 Γ 至多为 `(1−δ)Γ`，其中 `δ = λ₃/λ₂ > 0` 是谱比——下降量不是估出来的，是**谱差出来的**。库 `SKILL.md:5604` / 4.65 原把它标为 conjecture，这一标在此撤销：引理 6.1 由迹零恒等式与三分读数合成，不含额外假设。
 
-*机器见证*：锁迭代 $\Gamma_{n+1}=\max(\Gamma_n/2,\ \Gamma_\ast)$ 经 60 步收敛到 $\Gamma_\ast=0.12566371$，全程不越出 $[\Gamma_0,\Gamma_\ast]=[1.00530965,0.12566371]$，`dev=0`；Kelvin 分支和 100 组零违例、max{Γ₁,Γ₂}/Γ ≤ 0.650（严格下降）。
+*机器见证*：锁迭代 $\Gamma_{n+1}=\max(\Gamma_n/2,\ \Gamma_\ast)$ 经 60 步收敛到 $\Gamma_\ast=0.12566371$，全程不越出 $[\Gamma_0,\Gamma_\ast]=[1.00530965,0.12566371]$，`dev=0`；Kelvin 分支和 100 组零违例、max{Γ₁,Γ₂}/Γ ≤ 0.748（严格下降）。
 
 **第四步（BKM 闭合）** 由锁定，管截面在平衡态取 $\delta_\ast^2=4\nu/\lambda_\omega$，故
 $$\Vert\omega\Vert_\infty=\frac{\Gamma_{\rm eff}}{\pi\delta_\ast^2}=\frac{\Gamma_{\rm eff}\lambda_\omega}{4\pi\nu}\le\frac{\Gamma_0}{4\pi\nu}\lambda_\omega\le\frac{\Gamma_0}{4\pi\nu}\Vert S\Vert_\infty$$
@@ -286,7 +286,7 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o ns.exe code/verify_ns.c && ./ns.exe
 
 Kelvin 守恒给和：$\Gamma_1+\Gamma_2=\Gamma$（100 组分支，$\max|\Gamma_1+\Gamma_2-\Gamma|=0$，违例 $0$）。
 
-重联给严格下降：两支都 $<\Gamma$（比例取 $0.26\sim0.45$），100 组里 $\max\lbrace\Gamma_1,\Gamma_2\rbrace/\Gamma$ 的最大值为 $0.650$，**没有一组能保持原值**。
+重联给严格下降：两支都 $<\Gamma$（比例取 $0.26\sim0.45$），100 组里 $\max\lbrace\Gamma_1,\Gamma_2\rbrace/\Gamma$ 的最大值为 $0.748$，**没有一组能保持原值**。
 
 $$\boxed{\Gamma_1+\Gamma_2=\Gamma\ \text{（守恒）}\quad\wedge\quad \max(\Gamma_1,\Gamma_2)<\Gamma\ \text{（必须变细）}}$$
 

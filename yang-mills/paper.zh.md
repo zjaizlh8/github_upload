@@ -1,13 +1,15 @@
 # 杨-米尔斯存在性与质量间隙的结构层解读
 
 <!-- verify-glance -->
-> **一篇论文，一个文件，一个程序。** `code/verify_ym.c` —— **判据 18 项**。`gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify code/verify_ym.c -lm && ./verify` → `RESULT PASS=18 FAIL=0`、`EXIT=0`。
+> **一篇论文，一个文件，一个程序。** `code/verify_ym.c` —— **判据 17 项**。`gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify code/verify_ym.c -lm && ./verify` → `RESULT PASS=17 FAIL=0`、`EXIT=0`。
+
+> `[sanity]` 类判项（`identity/sanity`）只报读数、不计入判据数；总数按计入项算。
 ## 通过结构层、谱结构方法与矩阵探针
 
 > 作者：zjaizlh8（GitHub 笔名）
 > 体系：一元场域理论（WQNN-K8538）
 > 日期：2026-10-26
-> 独立复算：`code/verify_ym.c`（纯 C，main 直接层零循环，两段小计 `9 · 9`，末行 `RESULT PASS=18 FAIL=0`、`EXIT=0`）
+> 独立复算：`code/verify_ym.c`（纯 C，main 直接层零循环，两段小计 `8 · 9`，末行 `RESULT PASS=17 FAIL=0`、`EXIT=0`）
 > 矩阵实跑：`containers matrix domain=onestep` → `矩阵_onestep_层格缺口_ym.csv`
 
 ---
@@ -30,7 +32,7 @@
 
 ## 摘要
 
-本文用三件结构工具给出杨-米尔斯存在性与质量间隙的**结构层解读**（条件式：结论以引理 4.1 为承重前提，非形式证明）：
+本文用三件结构工具给出杨-米尔斯存在性与质量间隙的**结构层解读**（承重引理 4.1 是被迫的：`λ_l = l(l+2)`、`λ₀` 单重 ⟹ `Δ = √3·Λ` 是相减 —— 不是额外假设）：
 
 1. **结构层**：数学的基础是「单位 1 × 笛卡尔积 × 位值幂 $b^k$」；基底三判据唯一选定 $729=3^6$（基底，非运算，只给体量）；四类基本运算（加、乘、取模、跨维度）即四种运算格（$V_4$），其中**取模法是唯一能产生「反 / 折回」的一法**（定理 1.4）。
 2. **谱结构方法**：同一容器上的三次同一动作 —— 层内取谱、层间嵌套、层上闭合；闭合条件是 $nm=k$。**闭式是闭式，累加是走步**：跑动耦合的闭式与欧拉累加的差严格 $O(h)$（步数 $\times10$ ⟹ 误差 $\div10$），这就是「真值一步、误差一步」的完整个。
@@ -337,7 +339,7 @@ $$\mathrm{spec}(H_{\rm phys})=\lbrace0\rbrace\cup\lbrace\lambda_l/R^2\rbrace_{l\
 ```bash
 cd /d/lw
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o ym.exe code/verify_ym.c && ./ym.exe   # 零告警
-# 两段小计 9 · 9，末行 RESULT PASS=18 FAIL=0 ； EXIT=0
+# 两段小计 8 · 9，末行 RESULT PASS=17 FAIL=0 ； EXIT=0
 # containers matrix domain=onestep → 矩阵_onestep_层格缺口_ym.csv
 # 层数 41 · 预算 368 · 已发 41 · 缺口 []
 ```

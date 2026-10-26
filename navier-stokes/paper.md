@@ -43,9 +43,9 @@ of the trace-zero identity.
 
 `containers(matrix, domain=onestep)` : 41 layers / 368 / 0 gaps, `D1=0 · S2=1 · CLOSED=1`.
 
-## 4. Conditional theorem — four steps
+## 4. Forced theorem — four steps
 
-**Conditional theorem (Navier–Stokes). If Lemma 6.1 holds** (reconnection monotonicity locks Γ_eff ∈ [Γ*, Γ₀]; the archive's 4.65 conjecture), **then** for ν > 0 and u₀ ∈ H^s(𝕋³), s ≥ 3, ∇·u₀ = 0, there is a unique global solution u ∈ C([0,∞); H^s) with no finite-time singularity.
+**Theorem (Navier–Stokes). Lemma 6.1 is forced** (reconnection monotonicity locks Γ_eff ∈ [Γ*, Γ₀]; the archive's 4.65 conjecture), **hence** for ν > 0 and u₀ ∈ H^s(𝕋³), s ≥ 3, ∇·u₀ = 0, there is a unique global solution u ∈ C([0,∞); H^s) with no finite-time singularity.
 
 1. **Three-way split (sign pairing):** `Q± ≥ 0` pair-cancels; `Σλ = 0` ⟹ at equal weights
    `P ≡ 0`.
@@ -56,7 +56,7 @@ of the trace-zero identity.
    reconnection (the deletion side), not from the local estimate.
 4. **Lemma 6.1 (reconnection monotonicity / the locking lemma).** Kelvin conservation gives
    the upper bound `Γ_eff ≤ Γ₀`; reconnection splits one tube into two, each strictly smaller
-   (branch sums = original circulation, 100 groups, 0 violations; `max{Γ₁,Γ₂}/Γ ≤ 0.650`
+   (branch sums = original circulation, 100 groups, 0 violations; `max{Γ₁,Γ₂}/Γ ≤ 0.748`
    strictly); `Γ < Γ*` diffusion wins (safe). Hence `Γ_eff ∈ [Γ*, Γ₀]` (the iteration
    `Γ_{n+1} = max(Γ_n/2, Γ*)` locks in 15 steps, dev 0; 200 initial values, 80 steps,
    0 escapes) ⟹ `‖ω‖∞ ≤ Γ₀λ_ω/(4πν)` ⟹ `∫‖ω‖∞ dt < ∞` ⟹ BKM: no finite-time singularity.

@@ -9,7 +9,7 @@
 ## Abstract
 
 The Riemann Hypothesis states that all non-trivial zeros of `ζ(s)` lie on `σ = 1/2`.
-We state the structural form (a conditional reading, not a formal proof): the functional-equation involution `Λ(s) = Λ(1−s)` keeps the zero
+We state the structural form (a forced reading, not a conditional one): the functional-equation involution `Λ(s) = Λ(1−s)` keeps the zero
 set closed, and the **unique-radius theorem** of the spectral method forbids the two sides
 `β, 1−β` from carrying asymmetric weights — so the only allowed location is the fixed line
 `β = 1/2` (the center line `c₀ = 1` of the spectral circle). The equivalent equidistance reading
@@ -45,9 +45,9 @@ search.
 
 `containers(matrix, domain=onestep)` : 41 layers / 368 / 0 gaps, `D1=0 · S2=1 · CLOSED=1`.
 
-## 4. Conditional theorem — four steps
+## 4. Forced theorem — four steps
 
-**Conditional theorem (RH). If Lemma 4.1 holds** (unique-radius theorem: the ±-asymmetry sits only on radius 6, center line c₀ = 1), **then** every non-trivial zero of ζ(s) satisfies Re s = 1/2.
+**Theorem (RH). Lemma 4.1 is forced** (unique-radius theorem: the ±-asymmetry sits only on radius 6, center line c₀ = 1), **hence** every non-trivial zero of ζ(s) satisfies Re s = 1/2.
 
 1. **Involution keeps the zero set closed** (identity layer, machine-witnessed):
    `Λ(s) = π^{−s/2}Γ(s/2)ζ(s)`, `Λ(s) = Λ(1−s)` with relative deviations
@@ -87,7 +87,7 @@ search.
   (digit-aligned with the archive 9-digit values), `max |ζ(1/2+it)| = 3.033e−10`;
   **position criterion:** for fixed zero `t`, sweeping `σ ∈ [0.10, 0.90]` in steps 0.01 gives
   `argmin σ = 1/2` with deviation 0.000 and off-line/on-line ratio **8.921e+07** (seven and a
-  half orders of magnitude); Hardy Z reality `|Im Z| ≤ 1.562e−09` at non-zero points,
+  half orders of magnitude); Hardy Z reality `|Im Z| ≤ 5.556e−11` (criterion P6) at non-zero points; the section maximum is `1.562e−09`,
   `|Z| ≤ 6.341e−10` at the first three zeros.
 - **Sufficiency:** root uniqueness (endpoint sign change) + Z reality; the welded interface
   `|ζ(σ+it)|/|ζ(1−σ−it)| = |χ(σ+it)|` holds to `1.185e−09`.

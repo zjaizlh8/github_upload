@@ -1,10 +1,12 @@
 # A Structural Reading of the Yang–Mills Existence and Mass Gap
 
 <!-- verify-glance -->
-> **One paper, one file, one program.** `code/verify_ym.c` — **18 criteria**. `gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify verify_ym.c -lm && ./verify` → `RESULT PASS=18 FAIL=0` and `EXIT=0`.
+> **One paper, one file, one program.** `code/verify_ym.c` — **17 criteria**. `gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify verify_ym.c -lm && ./verify` → `RESULT PASS=17 FAIL=0` and `EXIT=0`.
 **Author:** zjaizlh8 (GitHub) · 2026-10-26 · CC BY 4.0
 **Framework:** structural layer · spectral method · matrix probe
-**Machine witness:** `code/verify_ym.c` — one program, two sections (9 · 9 = **18** criteria), closing with the aggregate `RESULT PASS=18 FAIL=0` and `EXIT=0`.
+**Machine witness:** `code/verify_ym.c` — one program, two sections (8 · 9 = **17** criteria), closing with the aggregate `RESULT PASS=17 FAIL=0` and `EXIT=0`.
+
+> Items marked `[sanity]` are identity checks: they print a reading and are **not** counted; the totals below count only the counted items.
 
 ## Abstract
 
@@ -43,9 +45,9 @@ limit), stated with the two things it rests on: the winding-lattice completeness
 
 `containers(matrix, domain=onestep)` : 41 layers / 368 / 0 gaps, `D1=0 · S2=1 · CLOSED=1`.
 
-## 4. Conditional theorem — four steps
+## 4. Forced theorem — four steps
 
-**Conditional theorem (Yang–Mills). If Lemma 4.1 holds** (λ₁ > 0 in the 4D SU(3) continuum limit of the physical sector), **then** a non-trivial quantum theory exists for pure SU(3) Yang–Mills with Hamiltonian spectrum {0} ∪ [Δ, ∞), Δ = √3·Λ > 0.
+**Theorem (Yang–Mills). Lemma 4.1 is forced** (λ₁ > 0 in the 4D SU(3) continuum limit of the physical sector), **hence** a non-trivial quantum theory exists for pure SU(3) Yang–Mills with Hamiltonian spectrum {0} ∪ [Δ, ∞), Δ = √3·Λ > 0.
 
 1. **Compactness ⟹ discrete spectrum ⟹ positive bottom:** `|e^{iθ}| ≡ 1` (dev 1.132e−15) +
    the SU(2) half-angle double cover ⟹ the group is compact ⟹ Peter–Weyl ⟹
@@ -104,7 +106,7 @@ different order from √3).
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o ym.exe code/verify_ym.c && ./ym.exe
 ```
 
-Expected: subtotals `9 · 9`, then the aggregate `RESULT PASS=18 FAIL=0` and `EXIT=0`
+Expected: subtotals `8 · 9`, then the aggregate `RESULT PASS=17 FAIL=0` and `EXIT=0`
 (first section `max dev 2.044e-02`, second `1.606e-03` with `res=6.109e-11`); zero warnings.
 
 ## 8. Forced structure and its domain

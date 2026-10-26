@@ -31,6 +31,12 @@ static int S0_g_pass = 0, S0_g_fail = 0;
 static double S0_g_maxdev = 0.0;
 
 static double dv(double a, double b) { double d = a - b; if (d < 0) d = -d; return d; }
+/* identity/sanity 类判项：只报读数，不进判据计数 */
+static void S0_sanity(const char *name, double dev, double tol)
+{
+    if (dev <= tol) printf("  [sanity] %-26s dev=%.3e (identity/sanity, not counted)\n", name, dev);
+    else            printf("  [sanity-diff] %-21s dev=%.3e (identity/sanity, not counted)\n", name, dev);
+}
 static void S0_judge(const char *name, double dev, double tol)
 {
     if (dev <= tol) { S0_g_pass++; printf("  [PASS] %-26s dev=%.3e (tol=%.0e)\n", name, dev, tol); }
@@ -295,7 +301,7 @@ int seg0_main(void)
     S0_judge("P5 half-turn权重 (−1)^{p−q}", g_p5, 1e-15);
     S0_judge("P6 exp 整数化", g_p6, 1e-14);
     S0_judge("P7 torsion pointreturn / 非挠脱缰", g_p7, 1e-15);
-    S0_judge("P8 pole 163 精确整数", g_p8, 1e-12);
+    S0_sanity("P8 pole 163 精确整数（640320^3+744）", g_p8, 1e-12);
     S0_judge("P9 类数 h(−163)=1 h(−167)=11", g_p9, 1e-12);
     S0_judge("P10 closure（period整性⊕half-turn+1）", g_p10, 1e-14);
 

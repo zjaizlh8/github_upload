@@ -149,7 +149,7 @@ jobs:
             | 6 | Riemann Hypothesis | `verify_rh.exe` | 21 |
             | 7 | Yang–Mills | `verify_ym.exe` | 18 |
 
-            合计 194 条判据，全部为有限格上的可复算断言；七支 `rc=0`。
+            合计 190 条判据，全部为有限格上的可复算断言；七支 `rc=0`。
             **构建**：`gcc -Wall -Wextra -O2 -D_GNU_SOURCE`，7/7 零告警；资产由 CI 在 windows-latest + MinGW 现场编译，与源码同源。
             **校验**：`SHA256SUMS.txt`（7 行，就地 `sha256sum -c` 全通过；LF + UTF-8 no BOM）。
             **边界**：验证器验的是「各篇所依赖的结构前提在有限格上成立」，不是猜想本身的证明。

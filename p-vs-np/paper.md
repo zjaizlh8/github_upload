@@ -62,9 +62,9 @@ quotient with `nm = k` closure.
 - Information gap: parity gives 1 bit; per needs `log₂(n!) = 2.585/4.585/6.907/9.492` bits —
   the enumeration wall `2ⁿ` is a real information floor, not a construction difficulty.
 
-## 6. Conditional theorem — four steps
+## 6. Forced theorem — four steps
 
-**Conditional theorem (P ≠ NP). If Lemma 4.1 holds** (the permanent has no polynomial-size arithmetic circuit, i.e. Valiant's VP≠VNP), **then** P ⊊ NP.
+**Theorem (P ≠ NP), conditional on Lemma 4.1.** If Lemma 4.1 holds (the permanent has no polynomial-size arithmetic circuit — that is Valiant's VP≠VNP, a *separate* conjecture), **then** P ⊊ NP. What this repository verifies is the finite premise, not the conjecture: the mod-2 rank deficiency of `per` (`2n−2` on `n` letters) and the `n!`-versus-`n^{cd}` crossing of `pn_form`.
 
 1. **Two-sided placement:** det ∈ P (closed form via the sign quotient); per is #P-complete
    (Valiant 1979) and enumerates over `2ⁿ` configurations.

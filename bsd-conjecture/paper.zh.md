@@ -1,12 +1,12 @@
 # 伯奇和斯温纳顿-戴尔猜想（Birch–Swinnerton-Dyer）的结构解读
 <!-- verify-glance -->
-> **一篇论文，一个文件，一个程序。** `code/verify_bsd.c` —— **判据 55 项**。`gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify code/verify_bsd.c -lm && ./verify` → `RESULT PASS=55 FAIL=0`、`EXIT=0`。
+> **一篇论文，一个文件，一个程序。** `code/verify_bsd.c` —— **判据 54 项**。`gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify code/verify_bsd.c -lm && ./verify` → `RESULT PASS=54 FAIL=0`、`EXIT=0`。
 ## —— 结构层 · 谱结构方法 · 矩阵探针
 
 > 作者：zjaizlh8（GitHub 笔名）· 2026-10-26
 
 > 本文用三件套写 BSD：**结构层**（基础三件与「反只能由取模法产生」）、**谱结构方法**（三面同一与闭合 `nm=k`）、**矩阵探针**（层 / 格 / 缺口实跑）。
-> 全部数值由纯 C 探针 `code/verify_bsd.c` 一支独立复算（五段小计 `13 · 13 · 10 · 10 · 9`，末行 `RESULT PASS=55 FAIL=0`、`EXIT=0`），矩阵由 `containers(matrix, domain=onestep)` 实跑（41 层 / 预算 368 / 缺口 0）。
+> 全部数值由纯 C 探针 `code/verify_bsd.c` 一支独立复算（五段小计 `12 · 13 · 10 · 10 · 9`，末行 `RESULT PASS=54 FAIL=0`、`EXIT=0`），矩阵由 `containers(matrix, domain=onestep)` 实跑（41 层 / 预算 368 / 缺口 0）。
 > 分级依 `SKILL.md:10560+`（4.132 分层判据硬规，用户裁决 2026-09-25）：**结构层以恒等式闭合者判「结构层闭合」**。
 
 ---
@@ -173,6 +173,8 @@ BSD 猜想有两半：**阶**（`ord_{s=1} L(E,s) = rank E(ℚ)`）与**常数**
 ```
 
 **机器见证**（P2/P3）：
+
+> `[sanity]` 类判项（`identity/sanity`）只报读数、不计入判据数；总数按计入项算。
 
 | `k` | `w = Λ_k(2−s)/Λ_k(s)` | 应为 `(−1)^k` | `Λ_k(1)` |
 |---|---|---|---|
@@ -384,7 +386,7 @@ $$\boxed{\mathrm{ord}_{s=1}L=\Sigma_\lambda m_\lambda=\text{自由方向数}=\ma
 
 ## 6. 主定理（阶 = 秩）与四步证明
 
-**定理（BSD 第一部分）**：**引理 4.1 是被迫的**（配对=零点厚度：每对在 s=1 恰吞一个 (s−1) ⟹ ord=Σm=rank，配对由对合给出，不是额外假设），于是
+**定理（BSD 第一部分，以引理 4.1 为条件）**：**若引理 4.1 成立**（配对=零点厚度：每对在 s=1 恰吞一个 (s−1) ⟹ ord=Σm=rank；配对由对合给出），则
 
 $$\mathrm{ord}_{s=1}L(E,s)=\mathrm{rank}E(\mathbb Q).$$
 
@@ -408,7 +410,7 @@ $$\mathrm{ord}_{s=1}L(E,s)=\mathrm{rank}E(\mathbb Q).$$
 
 > 读法：这条识别就是 BSD 本身（ord = rank 的数值相等依赖对合公理）。本文不靠数值相等，靠三条恒等式把结构侧做齐：正合列（秩 + 零化度 = Selmer 维数）、重数律配对（`Σm_λ` = 自由方向数 = 阶）、有限性反向（有限量只进首项系数）；解析秩 0/1 有 Gross–Zagier（1986）+ Kolyvagin（1990）作已证锚，超奇偶见证 `389a1` 把 `w` 与秩的关系钉死（part 4/5 的 P8）。
 
-由引理 4.1，则 ord = Σm = rank。∎
+若引理 4.1 成立，则 ord = Σm = rank。
 
 **为什么是「被迫」而非「拟合」**：链条上每个 `⟹` 都是恒等式或计数恒等（`w=(−1)^k`、`|ab|²=|a|²|b|²`、`p≡3(4) ⟹ Σχ=0`、`a_p² ≤ 4p`、正合列、重数律），没有一处引入可调参数；`73` 组阈值全部由机制给出（机器精度 / 0 违例 / 外部常数截断地板）。
 
@@ -514,7 +516,7 @@ EXIT=0
 
 ```bash
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o bsd.exe code/verify_bsd.c && ./bsd.exe
-# 五段小计 13 · 13 · 10 · 10 · 9，末行 RESULT PASS=55 FAIL=0 ； EXIT=0（最大偏差 4.119e-11）
+# 五段小计 12 · 13 · 10 · 10 · 9，末行 RESULT PASS=54 FAIL=0 ； EXIT=0（最大偏差 4.119e-11）
 
 # containers(matrix, domain=onestep, out=矩阵_onestep_层格缺口.csv)
 # 层数 41 · 预算 368 · 已发 41 · 缺口 [] · 41 层全 D1=0/S2=1/CLOSED=1

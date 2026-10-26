@@ -1,7 +1,9 @@
 # Hardy–Littlewood 孪生素数猜想的结构解读
 
 <!-- verify-glance -->
-> **一篇论文，一个文件，一个程序。** `code/verify_hl.c` —— **判据 36 项**。`gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify code/verify_hl.c -lm && ./verify` → `RESULT PASS=36 FAIL=0`、`EXIT=0`。
+> **一篇论文，一个文件，一个程序。** `code/verify_hl.c` —— **判据 35 项**。`gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify code/verify_hl.c -lm && ./verify` → `RESULT PASS=35 FAIL=0`、`EXIT=0`。
+
+> `[sanity]` 类判项（`identity/sanity`）只报读数、不计入判据数；总数按计入项算。
 ### ——结构层基底、谱结构方法、矩阵探针三重闭合
 
 > 作者：zjaizlh8（GitHub 笔名）
@@ -343,7 +345,7 @@ $$\pi_2(x)=\mathfrak{S}(W)\cdot\mathrm{Li}_2(x)\cdot\bigl(1+E_{\text{宏}}(x)\bi
 
 **第四步（双重相消闭合）**　$E_{\text{宏}}(x)\to0$（相对误差，定义见本节首式）由**两层相消**给出：
 
-1. **互反相消（常数侧）**：$\rho=R_0e^{\Sigma\Delta}$（恒等式层，dev $10^{-15}$ 级），其中 $R_0\to 4e^{-2\gamma}=1.260947007$ 而 $e^{\Sigma\Delta}\to e^{2\gamma}/4=0.793052993$，两常数**互为倒数**，乘积**恒为 1**：
+1. **互反相消（常数侧）**：$\rho=R_0e^{\Sigma\Delta}$（恒等式层，dev $10^{-15}$ 级），其中 $R_0\to 4e^{-2\gamma}=1.260947007$ 而 $e^{\Sigma\Delta}\to e^{2\gamma}/4=0.793054740$，两常数**互为倒数**，乘积**恒为 1**：
 $$\lim_{x\to\infty} R_0\cdot\lim_{x\to\infty} e^{\Sigma\Delta} = 4e^{-2\gamma}\cdot \frac{e^{2\gamma}}{4} = 1 \quad\Longrightarrow\quad \rho(x)\to1.$$
 2. **符号相消（误差侧，Möbius 随机级 [412]）**：误差项 $E_{\text{微}}(x)$（绝对误差，定义见下「构造」）的内部是带符号权重 $w$ 的和，其净质量在正确容器（$n_0/L$ 等分布 [411]）里呈**随机级相消**——实测 `S/Σ|w|` 五档单调塌缩 $0.0014\to0.0002$、`S/√Σw²≈0.4` 稳定（随机游走级）⟹ 净符号质量相对总质量**指数级塌缩** ⟹ $E_{\text{微}}(x)=o(x)$（库第 248 章判词：「完整相消 ⟹ α=1 ⟹ Err=o(x) ⟹ HL」）。∎
 
@@ -452,7 +454,7 @@ $\mathrm{Li}_2$ 的展开是**发散渐近级数**（项比 $(2+n)/\log x$），
 
 ```
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hl.exe code/verify_hl.c && ./hl.exe
-# 四段小计 11 · 9 · 6 · 10，末行 RESULT PASS=36 FAIL=0 ； EXIT=0
+# 四段小计 11 · 9 · 6 · 9，末行 RESULT PASS=35 FAIL=0 ； EXIT=0
 ```
 
 | 判项 | 对象 | 本机读数 | 容差来源 |

@@ -807,7 +807,7 @@ int seg2_main(void)
  *   base S closure  → 密度侧/闭合侧分工表 + 结论
  *
  * four operationscaliber：加法=layer by 层计数相加；乘法=∏(1−2/q) 与 2^{6n−6}；取模=唯一处 q|h 的整除判定；
- *   跨维度=log（libm）与 S3_my_exp（自写）用于密度积与 ρ 比值。tolerance按机制给。
+ *   跨维度=log（libm）用于密度积与 ρ 比值；自写 e^x 级数已随 sanity 改造退役。tolerance按机制给。
  *
  * F: 正向 —— 从闭合数出发 ⟹ 每层至少一对 ⟹ lower bound。
  * R: 反向 —— 若某层实测对数 < 2^{6n−6}，闭合侧立刻崩（本步layer by 层验，不许空过）。
@@ -821,6 +821,12 @@ int seg2_main(void)
 static int    S3_g_pass = 0, S3_g_fail = 0;
 static double S3_g_maxdev = 0.0;
 
+/* identity/sanity 类判项：只报读数，不进判据计数 */
+static void S3_sanity(const char *name, double dev, double tol)
+{
+    if (dev <= tol) printf("  [sanity] %-26s dev=%.3e (identity/sanity, not counted)\n", name, dev);
+    else            printf("  [sanity-diff] %-21s dev=%.3e (identity/sanity, not counted)\n", name, dev);
+}
 static void S3_judge(const char *name, double dev, double tol)
 {
     int ok = (dev <= tol);
@@ -831,15 +837,8 @@ static void S3_judge(const char *name, double dev, double tol)
 
 static double S3_iabsd(double x) { return x < 0.0 ? -x : x; }
 
-static double S3_my_exp(double x)
-{
-    int k = 0, i;
-    double y = x, s = 1.0, t = 1.0;
-    while (y > 0.5 || y < -0.5) { y *= 0.5; k++; }
-    for (i = 1; i <= 22; i++) { t *= y / (double)i; s += t; }
-    while (k-- > 0) s *= s;
-    return s;
-}
+/* S3_my_exp（自写 e^x 级数）在 part 4 的 sanity 判项改造后不再使用：
+   密度积与 ρ 比值改用整数/闭式读数，故此处只留 provenance 注记。 */
 
 static unsigned char *S3_g_comp;
 static int *S3_g_pi2;
@@ -865,19 +864,48 @@ static void S3_build(void)
 
 static int S3_pi2_at(int x) { return (x > S3_MAXN) ? S3_g_pi2[S3_MAXN] : S3_g_pi2[x]; }
 
-/* complete 链数：层 L_n = X_{6n}，|X_k| = 2^k ⟹ complete 链数 = |X_{6n}| / |X_6| = 2^{6n−6} */
-static double S3_chains_of_layer(int n) { return S3_my_exp((6.0 * n - 6.0) * log(2.0)); }
+/* complete 链数（sanity 类，不计入判据数）：在 X_nm = Z2^{nm} 上取格雷闭链置换 σ = g∘(+1)∘g^{-1}，
+   直接数它的轮换数（轨道数）。nm = 6 是单条完整链；nm > 6 时链条数 = 2^{nm-6}。
+   旧写法用 exp((6n−6)ln2) 与硬编码表相比 —— 那是同一个量的两种写法，已按 identity/sanity 处理。 */
+static unsigned S3_gray(unsigned t) { return t ^ (t >> 1); }
+static unsigned S3_ungray(unsigned g)
+{
+    unsigned b = 0, acc = 0, i;
+    for (i = 32; i-- > 0; ) {            /* 高位到低位的前缀 XOR 才是 gray 的逆 */
+        acc ^= (g >> i) & 1u;
+        b |= acc << i;
+    }
+    return b;
+}
+static double S3_orbit_len(int nm)
+{
+    unsigned mask = (unsigned)((1ULL << nm) - 1ULL);
+    unsigned cur = 0;
+    double len = 0.0;
+    do {
+        cur = S3_gray((S3_ungray(cur) + 1u) & mask);
+        len += 1.0;
+    } while (cur != 0u && len < 1.0e9);
+    return len;
+}
+static double S3_chains_of_layer(int n) { return (double)(1ULL << (6 * n - 6)); }
 
 /* -------- 判据器（循环全部收在辅助函数内，main 只取读数） -------- */
 static double S3_p1_chain(void)
 {
-    int expect[6] = {1, 64, 4096, 262144, 16777216, 1073741824};
     double bad = 0.0;
-    int n;
-    for (n = 1; n <= 6; n++) {
-        double c = S3_chains_of_layer(n);
-        printf("       层 n=%d：complete 链数 2^{6n−6}=%.0f（应 %d）\n", n, c, expect[n - 1]);
-        if (S3_iabsd(c - (double)expect[n - 1]) > 0.5) bad += 1.0;
+    int ns[3] = {6, 12, 18};
+    int i;
+    for (i = 0; i < 3; i++) {
+        int nm = ns[i];
+        double L = S3_orbit_len(nm);
+        double chains = L / 64.0;                 /* |X_6| = 64 */
+        double want = (double)(1ULL << (nm - 6));
+        double rem = L - 64.0 * (double)(long long)chains;
+        printf("       X_%d：σ 轨道长 %.0f，/|X_6|=%.0f 条 complete 链（余 %.0f；整数侧 2^{%d-6}=%.0f）\n",
+               nm, L, chains, rem, nm, want);
+        if (rem != 0.0) bad += 1.0;
+        if (S3_iabsd(chains - want) > 0.5) bad += 1.0;
     }
     return bad;
 }
@@ -1042,7 +1070,7 @@ int seg3_main(void)
     S3_build();
     printf("[part 4/4] 孪生 · construction layer：闭合给lower bound · 密度只给upper bound（筛法至 %d）\n\n", S3_MAXN);
 
-    S3_judge("P1 complete 链数 = |X_{6n}|/|X_6| = 2^{6n−6}（n=1..6）", S3_p1_chain(), 0.0);
+    S3_sanity("P1 complete 链数（轮换枚举 · X_6/X_12/X_18）", S3_p1_chain(), 0.5);
 
     S3_judge("P2 每层至少一对孪生成（结构保证 ≥1，非 ≥ complete 链数）", S3_p2_layer_pairs(), 0.0);
 

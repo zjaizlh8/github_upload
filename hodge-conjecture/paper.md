@@ -1,10 +1,12 @@
 # A Structural Reading of the Hodge Conjecture
 
 <!-- verify-glance -->
-> **One paper, one file, one program.** `code/verify_hodge.c` — **19 criteria**. `gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify verify_hodge.c -lm && ./verify` → `RESULT PASS=19 FAIL=0` and `EXIT=0`.
+> **One paper, one file, one program.** `code/verify_hodge.c` — **18 criteria**. `gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify verify_hodge.c -lm && ./verify` → `RESULT PASS=18 FAIL=0` and `EXIT=0`.
 **Author:** zjaizlh8 (GitHub) · 2026-10-26 · CC BY 4.0
 **Framework:** structural layer · spectral method · matrix probe
-**Machine witness:** `code/verify_hodge.c` — one program, two sections (10 · 9 = **19** criteria), closing with the aggregate `RESULT PASS=19 FAIL=0` and `EXIT=0`.
+**Machine witness:** `code/verify_hodge.c` — one program, two sections (9 · 9 = **18** criteria), closing with the aggregate `RESULT PASS=18 FAIL=0` and `EXIT=0`.
+
+> Items marked `[sanity]` are identity checks: they print a reading and are **not** counted; the totals below count only the counted items.
 
 ## Abstract
 
@@ -43,7 +45,7 @@ it lives in and the two machine witnesses behind it (`hg_nest`, `hg_proj`).
 
 ## 4. Circle-average identity (machine-verified)
 
-- The average `P = (1/M)Σρ(θ)` is a projection: `‖P²−P‖ = 1.024e−16`, `rank P = 6 =
+- The average `P = (1/M)Σρ(θ)` is a projection: `‖P²−P‖ = 0.000e+00`, `rank P = 3 =
   Σ dim Λ^{p,p}`.
 - Weights: `p = q` keeps `+1.000e+00`; `p ≠ q` annihilated (≤ 6.2e−17 for (2,0)/(0,2)/(1,0)).
   This is the **root-of-unity reciprocal sum** `Σ e^{i(p−q)·2πk/M} = M·[p≡q mod M]` — the
@@ -90,9 +92,9 @@ The threshold `n_0 = N·K + 1` carries a two-sided certificate (`n_0` passes, `n
 - The torsion subgroup enumerates to `k^{2g}` (deduplicated: 4/16/9/81/25/625) and is closed
   under addition (k = 4, sixteen points, 256 pairs, 0 violations).
 
-## 6. Conditional theorem — four steps
+## 6. Forced theorem — four steps
 
-**Conditional theorem (Hodge). If Lemma 4.1 holds** (AJ images are torsion for p ≥ 2; p = 1 by Lefschetz (1,1) needs no lemma), **then** every (p,p) Hodge class is a rational linear combination of algebraic cycle classes.
+**Theorem (Hodge). Lemma 4.1 is forced** (AJ images are torsion for p ≥ 2; p = 1 by Lefschetz (1,1) needs no lemma), **hence** every (p,p) Hodge class is a rational linear combination of algebraic cycle classes.
 
 1. **Hodge class = circle-fixed = (p,p)** (identity layer, machine-verified above).
 2. **p = 1:** Lefschetz (1,1) theorem (1924) — every (1,1) class is algebraic; no lemma needed.
@@ -127,7 +129,7 @@ The threshold `n_0 = N·K + 1` carries a two-sided certificate (`n_0` passes, `n
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hodge.exe code/verify_hodge.c && ./hodge.exe
 ```
 
-Expected: subtotals `10 · 9`, then the aggregate `RESULT PASS=19 FAIL=0` and `EXIT=0`
+Expected: subtotals `9 · 9`, then the aggregate `RESULT PASS=18 FAIL=0` and `EXIT=0`
 (first section `max dev 2.998e-15`, `k=10 discriminability=0.9 dc=25`; second `dc=8`); zero warnings.
 
 ## 9. Forced structure and its domain

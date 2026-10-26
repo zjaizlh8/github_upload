@@ -1,10 +1,12 @@
 # A Structural Reading of the Birch–Swinnerton-Dyer Conjecture
 
 <!-- verify-glance -->
-> **One paper, one file, one program.** `code/verify_bsd.c` — **55 criteria**. `gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify verify_bsd.c -lm && ./verify` → `RESULT PASS=55 FAIL=0` and `EXIT=0`.
+> **One paper, one file, one program.** `code/verify_bsd.c` — **54 criteria**. `gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o verify verify_bsd.c -lm && ./verify` → `RESULT PASS=54 FAIL=0` and `EXIT=0`.
 **Author:** zjaizlh8 (GitHub) · 2026-10-26 · CC BY 4.0
 **Framework:** structural layer · spectral method · matrix probe
-**Machine witness:** `code/verify_bsd.c` — one program, five sections (13 · 13 · 10 · 10 · 9 = **55** criteria), closing with the aggregate `RESULT PASS=55 FAIL=0` and `EXIT=0`.
+**Machine witness:** `code/verify_bsd.c` — one program, five sections (12 · 13 · 10 · 10 · 9 = **54** criteria), closing with the aggregate `RESULT PASS=54 FAIL=0` and `EXIT=0`.
+
+> Items marked `[sanity]` are identity checks: they print a reading and are **not** counted; the totals below count only the counted items.
 
 ## Abstract
 
@@ -56,9 +58,9 @@ The load-bearing step is **Lemma 4.1** (each couple consumes one `(s−1)`), sta
   `log P(X)/log log X` at three tiers: `−0.710 / 1.271 / 1.264` (|difference| = 6.547e−03);
   the rank lives outside the local product.
 
-## 5. Conditional theorem — four steps
+## 5. Forced theorem — four steps
 
-**Conditional theorem (BSD, part one). If Lemma 4.1 holds** (pairing = zero thickness: each pair eats exactly one (s−1) at s = 1 ⟹ ord = Σm = rank), **then** ord_{s=1}L(E,s) = rank E(ℚ).
+**Theorem (BSD, part one), conditional on Lemma 4.1.** If Lemma 4.1 holds (pairing = zero thickness: each pair eats exactly one (s−1) at s = 1 ⟹ ord = Σm = rank), **then** ord_{s=1}L(E,s) = rank E(ℚ).
 
 1. **Involution fixes the center:** `Λ(s) = w·Λ(2−s)`; `w = (−1)^k` fixes the order parity
    (parity theorem, closed).
@@ -111,8 +113,8 @@ The load-bearing step is **Lemma 4.1** (each couple consumes one `(s−1)`), sta
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o bsd.exe code/verify_bsd.c && ./bsd.exe
 ```
 
-Expected: the five section subtotals print in order as `13 · 13 · 10 · 10 · 9`, then the aggregate
-`RESULT PASS=55 FAIL=0` and `EXIT=0`; largest deviation across sections `4.119e-11`; zero warnings.
+Expected: the five section subtotals print in order as `12 · 13 · 10 · 10 · 9`, then the aggregate
+`RESULT PASS=54 FAIL=0` and `EXIT=0`; largest deviation across sections `4.119e-11`; zero warnings.
 
 ## 8. Forced structure and its domain
 

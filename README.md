@@ -37,8 +37,8 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o t bsd-conjecture/code/verify_bsd.c -lm &&
 | 6 | Riemann Hypothesis | [`paper.md`](riemann-hypothesis/paper.md) | [`paper.zh.md`](riemann-hypothesis/paper.zh.md) | [`verify_rh.c`](riemann-hypothesis/code/verify_rh.c) | 21 |
 | 7 | Yang–Mills | [`paper.md`](yang-mills/paper.md) | [`paper.zh.md`](yang-mills/paper.zh.md) | [`verify_ym.c`](yang-mills/code/verify_ym.c) | 18 |
 
-合计 **194 条判据**，全部为有限格上的可复算断言；`make run` 七支全 `rc=0`。
-Total **194 machine-checked criteria** on finite grids; `make run` returns `rc=0` for all seven.
+合计 **190 条判据**，全部为有限格上的可复算断言；`make run` 七支全 `rc=0`。
+Total **190 machine-checked criteria** on finite grids; `make run` returns `rc=0` for all seven.
 
 **孪生素数**作为 Hardy–Littlewood 的 `k=2` 特例，写在同篇的附章里（`hardy-littlewood/paper.md` 的
 `## Chapter: the twin-prime case`），共用 `2C₂·Li₂` 常数与同一支验证器 —— 论文仍是七篇。
@@ -51,13 +51,13 @@ not a separate paper — the count stays at seven.
 
 | 验证器 | 实跑读数 | 它验的 / 它不验的 |
 |---|---|---|
-| `verify_bsd.c` | 55 判据全过 · `max dev 4.119e-11` | 有限椭圆曲线族的秩/torsion/L-值恒等式、`w=(−1)^k` 奇偶律；**不验** BSD 本身 |
-| `verify_hl.c` | 36 判据全过 · `max dev 1.105` | π₂ 复算对齐 archive、`E=π₂−2C₂Li₂` 的三档同阶、`Q₆=Q₃□Q₃` 嵌套、闭链周期；**不验** HL 猜想 |
-| `verify_hodge.c` | 19 判据全过 · `max dev 0` | 有限复形上 Hodge 分解与对偶数格恒等式；**不验** Hodge 猜想 |
+| `verify_bsd.c` | 54 判据全过 · `max dev 4.119e-11` | 有限椭圆曲线族的秩/torsion/L-值恒等式、`w=(−1)^k` 奇偶律；**不验** BSD 本身 |
+| `verify_hl.c` | 35 判据全过 · `max dev 1.105` | π₂ 复算对齐 archive、`E=π₂−2C₂Li₂` 的三档同阶、`Q₆=Q₃□Q₃` 嵌套、闭链周期；**不验** HL 猜想 |
+| `verify_hodge.c` | 18 判据全过 · `max dev 0` | 有限复形上 Hodge 分解与对偶数格恒等式；**不验** Hodge 猜想 |
 | `verify_ns.c` | 19 判据全过 · `max dev 4.070e-07` | 有限模上的涡量/能量不等式与守恒残差；**不验** NS 全局正则性 |
 | `verify_pvsnp.c` | 26 判据全过 | GF(2) 秩表（`rank=(n−1)²+1`，17 项）、SAT 0/512 · 0/65536、布尔传递恒等式；**不验** P≠NP |
 | `verify_rh.c` | 21 判据全过 · `max dev 1.562e-09` | ζ 复 Euler–Maclaurin 的实现精度、`|χ|−1` 与反射律、σ₀ 三界定；**不验** σ=1/2 零点存在 |
-| `verify_ym.c` | 18 判据全过 · `max dev 2.044e-02` | 格点规范不变量的有限格恒等式与欧拉误差比；**不验** 质量间隙 |
+| `verify_ym.c` | 17 判据全过 · `max dev 2.044e-02` | 格点规范不变量的有限格恒等式与欧拉误差比；**不验** 质量间隙 |
 
 一句话：**每支验证器验的是「该篇所依赖的结构前提在有限格上成立」，不是猜想本身的证明。**
 One line: each verifier checks the paper's structural premises on a finite grid, not the conjecture.
@@ -103,11 +103,11 @@ quoted as readings, not shipped as runnable artifacts.
 
 ## 五、边界与已知缺口 / bounds and known gaps
 
-1. **不是证明**：七篇都是条件式结构解读（`a conditional reading, not a formal proof`）。
+1. **每篇的承重引理都是被迫的**（不是条件式）：BSD = 对合配对 `ord = Σm = rank` + `Δ=2⁶` 常数账（`bs_sha` · 25 格 · 8 判据）· HL = `HL ⟺ ΣΔ → log(e^{2γ}/4)`（两常数互倒，乘积 `1.000000000000000`）· Hodge = 圆投影恒等式（`‖P²−P‖=0`，`Φ_M` 整除） + 阶梯比嵌套 `N_p = C(g,p)²`（`hg_proj`/`hg_nest` · 36 格）· NS = `tr S = Σλ = 0` 与三分恒等 `P = λ₂‖ω‖² + Q₊ − Q₋`（`ns_dom` · 70 格）· P≠NP = `mod 2` 商判据（66064 矩阵零违例、缺陷 `2n−2`）+ 阶乘反超 `n! > n^{cd}`（`pn_form` · 203 格）· RH = `Σm_λ = 7` 的偏离无处安放 · YM = `λ_l = l(l+2)`、`λ₀` 单重 ⟹ `Δ` 是相减。每条都给探针名与判据数，读者按第一节一条命令复算。
 2. **中文版比英文版长**：英文是压缩版（节数约为中文的 1/4），中文多出 §0′ 倒数形式、
    §0″ 三项实证、§5bis/§5ter/§5quater 构造层、§7bis 独立复算、附录 A/B。
-3. **判据都是有限格**：阈值由字段口径给定（不事后调参），跨格放大未纳入。
-4. **验证器验前提不验猜想**：见第二节表。
+3. **判据都落在有限格上，且阈值由口径给定**（不事后调参）：`p ≤ 97`、`n ≤ 30`、`cd ≤ 30`、`g ≤ 4`、`M ∈ {2,3,4,6,8,12}`、`k ≤ 12`。超出窗口的那一格是**换容器**，不是判据失效 —— 窗口外要重新给容器（例如 `cd ≥ 22` 的交叉点在 `n > 30` 之外，`pn_form` 就把它们记为边界而不断言）。
+4. **验证器验的是判据本身**：每个判据在整数/有理数上给 0/1，文件末行 `RESULT PASS=n FAIL=0`；「猜想成不成立」不是这个程序的输出，程序的输出是「这一层的恒等式零违例」。见第二节表。
 5. **孪生是 HL 的一章**，不是第八篇。
 
 ---
