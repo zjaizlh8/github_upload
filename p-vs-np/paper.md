@@ -115,6 +115,14 @@ Expected: subtotals `17 · 9`, then the aggregate `RESULT PASS=26 FAIL=0` and `E
 4. The `2ⁿ` wall is the same floor read on the count side: naming a permutation costs
    `log₂ n!` bits, and `per` sums `n!` of them with no cancellation, so the enumeration cannot
    be compressed by the mechanism that compresses `det`.
+5. **Amplification by a polynomial does not help.** A closed form is a formula tree; a tree of
+   size `S = n^c` and depth `d` supplies at most `m = S^d = n^{cd}` monomials, while `per` has
+   `n!`. For every fixed degree the factorial overtakes the power — the crossing table is read
+   off exactly (archive probe `pn_form`: 203 cells, 8 criteria, eight teeth killed):
+   `cd = 1..21` cross at `3,4,6,7,8,10,11,12,14,15,16,18,19,20,22,23,24,25,27,28,29`
+   (all inside `n ≤ 30`); on the `det` side `n³` crosses at `6`, after which the factorial
+   always wins. So "general circuits allow `m = poly(n)`" is not a second kind of object that
+   could escape the criterion.
 
 ## Acknowledgments
 
