@@ -3,6 +3,7 @@ name: verify
 on:
   push:
     branches: [main]
+    tags: ['v*']
   pull_request:
   workflow_dispatch:
 
@@ -85,3 +86,78 @@ jobs:
           name: verifiers-linux-x64
           path: bin/
           retention-days: 14
+
+  windows-release:
+    name: Windows x64 exes → release assets
+    # 只在 tag 推送时跑：24 个 exe + SHA256SUMS + zip 由 CI 现场编译并挂到该 tag 的 release
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: MinGW toolchain (msys2)
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: false
+          install: mingw-w64-x86_64-gcc
+
+      - name: Build 24 exes (Windows x64)
+        shell: msys2 {0}
+        run: |
+          set -euo pipefail
+          mkdir -p out
+          n=0
+          while IFS= read -r f; do
+            gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o "out/$(basename "$f" .c).exe" "$f" -lm
+            n=$((n+1))
+          done < <(find . -name '*.c' | sort)
+          echo "built $n exes" | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Run the 20 verifiers (must exit 0)
+        shell: msys2 {0}
+        run: |
+          set +e
+          bad=0; pass=0
+          for b in out/verify_*.exe; do
+            out=$(timeout 300 "$b" 2>&1); rc=$?
+            if [ "$rc" -ne 0 ]; then echo "::error file=$b::exit=$rc"; bad=1; else pass=$((pass+1)); fi
+            if printf '%s\n' "$out" | grep -qE 'EXIT=[0-9]+' && ! printf '%s\n' "$out" | grep -q 'EXIT=0'; then
+              echo "::error file=$b::非 EXIT=0"; bad=1
+            fi
+          done
+          echo "verifiers pass=$pass bad=$bad" | tee -a "$GITHUB_STEP_SUMMARY"
+          exit "$bad"
+
+      - name: Checksums + zip
+        shell: pwsh
+        run: |
+          Push-Location out
+          Get-ChildItem *.exe | Sort-Object Name | ForEach-Object {
+            (Get-FileHash $_.Name -Algorithm SHA256).Hash.ToLower() + " *" + $_.Name
+          } | Set-Content -Path SHA256SUMS.txt -Encoding ascii
+          $tag = "${{ github.ref_name }}"
+          Compress-Archive -Path * -DestinationPath "../github_upload-verify-windows-x64-$tag.zip" -Force
+          "exes=$((Get-ChildItem *.exe).Count) sums=$((Get-Content SHA256SUMS.txt).Count)"
+          Pop-Location
+
+      - name: Publish release with assets
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "${{ github.ref_name }} — 24 C probes / 8 conjectures / 4 archive gates"
+          body: |
+            **判据层加固 / criteria hardening**
+            - `verify_twin_count.c`：公认值锚表（`RESULT PASS=6 FAIL=0`），并有真实失败路径（变异件 rc=1）
+            - `verify_pvsnp.c`：GF(2) 秩表 17 项 + `bad_id` + SAT 全部折进 `EXIT`（`RESULT PASS=17 FAIL=0`）
+            - `verify_rh.c`：P5/P11/P12 由「只打印」改为返回 dev（`RESULT PASS=12 FAIL=0`）
+
+            **构建 / build**：`gcc -Wall -Wextra -O2 -D_GNU_SOURCE`，24/24 零告警；本页资产由 CI 在 windows-latest + MinGW 现场编译，与源码同源。
+            **校验 / checksum**：`SHA256SUMS.txt`（24 行，就地 `sha256sum -c` 全通过）。
+            **编码 / encoding**：源文本 UTF-8 无 BOM + LF；机器见证 UTF-8 含 BOM + CRLF。
+            **口径 / caliber**：README 状态表与 `§Known gaps` 写明每支见证「实际验的是什么 / 没验什么」。
+          files: |
+            github_upload-verify-windows-x64-${{ github.ref_name }}.zip
+            out/SHA256SUMS.txt
+          fail_on_unmatched_files: true
