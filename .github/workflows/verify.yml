@@ -135,12 +135,19 @@ jobs:
         shell: pwsh
         run: |
           Push-Location out
-          Get-ChildItem *.exe | Sort-Object Name | ForEach-Object {
+          # 关键：用 LF + UTF-8(no BOM) 写校验和，否则 `sha256sum -c` 会因每行末尾的 CR 报
+          # "'file.exe'$'\r': No such file or directory"。Set-Content 在 Windows 上写 CRLF，故手写。
+          $lines = Get-ChildItem *.exe | Sort-Object Name | ForEach-Object {
             (Get-FileHash $_.Name -Algorithm SHA256).Hash.ToLower() + " *" + $_.Name
-          } | Set-Content -Path SHA256SUMS.txt -Encoding ascii
+          }
+          $text = ($lines -join "`n") + "`n"
+          [IO.File]::WriteAllText((Join-Path (Get-Location).Path 'SHA256SUMS.txt'), $text, (New-Object System.Text.UTF8Encoding($false)))
           $tag = "${{ github.ref_name }}"
           Compress-Archive -Path * -DestinationPath "../github_upload-verify-windows-x64-$tag.zip" -Force
           "exes=$((Get-ChildItem *.exe).Count) sums=$((Get-Content SHA256SUMS.txt).Count)"
+          # 自检：把写出的文件按字节读回，确认没有 0x0D
+          $bytes = [IO.File]::ReadAllBytes((Join-Path (Get-Location).Path 'SHA256SUMS.txt'))
+          "cr_bytes=$((($bytes | Where-Object { $_ -eq 13 }).Count))"
           Pop-Location
 
       - name: Publish release with assets
