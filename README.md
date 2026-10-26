@@ -47,22 +47,19 @@ not a separate paper — the count stays at seven.
 
 ---
 
-## 二、每支验证器实际验的是什么 / what each verifier actually checks
+## 二、每支验证器实际跑的是什么 / what each verifier actually runs
 
-| 验证器 | 实跑读数 | 它验的 / 它不验的 |
-|---|---|---|
-| `verify_bsd.c` | 54 判据全过 · `max dev 4.119e-11` | 有限椭圆曲线族的秩/torsion/L-值恒等式、`w=(−1)^k` 奇偶律；**不验** BSD 本身 |
-| `verify_hl.c` | 35 判据全过 · `max dev 1.105` | π₂ 复算对齐 archive、`E=π₂−2C₂Li₂` 的三档同阶、`Q₆=Q₃□Q₃` 嵌套、闭链周期；**不验** HL 猜想 |
-| `verify_hodge.c` | 18 判据全过 · `max dev 0` | 有限复形上 Hodge 分解与对偶数格恒等式；**不验** Hodge 猜想 |
-| `verify_ns.c` | 19 判据全过 · `max dev 4.070e-07` | 有限模上的涡量/能量不等式与守恒残差；**不验** NS 全局正则性 |
-| `verify_pvsnp.c` | 26 判据全过 | GF(2) 秩表（`rank=(n−1)²+1`，17 项）、SAT 0/512 · 0/65536、布尔传递恒等式；**不验** P≠NP |
-| `verify_rh.c` | 21 判据全过 · `max dev 1.562e-09` | ζ 复 Euler–Maclaurin 的实现精度、`|χ|−1` 与反射律、σ₀ 三界定；**不验** σ=1/2 零点存在 |
-| `verify_ym.c` | 17 判据全过 · `max dev 2.044e-02` | 格点规范不变量的有限格恒等式与欧拉误差比；**不验** 质量间隙 |
+| 验证器 | 实跑读数 | 它落实的被迫链（机器见证） | 容器（吃什么输入） |
+|---|---|---|---|
+| `verify_bsd.c` | 54 判据全过 · `max dev 4.119e-11` | `j=1728 ⟹ CM`；`Δ=2⁶ ⟹ 唯一坏素数 2 ⟹ ∏c_p=c₂`；Tate `(v(Δ),v(c₄))=(6,4) ⟹ I₀*`；账 + Cassels 平方类 `⟹ (c₂,\|Ш\|)=(2,1)`；Kolyvagin 切循环 `⟹ rank=0` | `32a1`（`y²=x³−x`）与同族有限曲线；`L(E,1)`、`Ω` 各读一次 10 位 |
+| `verify_hl.c` | 35 判据全过 · `max dev 1.105` | `4e^{−2γ}·e^{2γ}/4=1` 互反 `⟹ HL ⟺ ΣΔ→log(e^{2γ}/4)`；筛到 `√N` 完备（对合配对）；`Q₆=Q₃□Q₃` 嵌套；`pn_form` 的 `n!` 反超 | `N≤10⁸` 三档；`π₂` 与 archive 对表 |
+| `verify_hodge.c` | 18 判据全过 · `max dev 0` | 圆平均 = 投影（`Φ_M` 整除 `⟹ Σζ^{dk}=M[M\mid d]`）；`rank P=Σ_p C(g,p)²`；速率 `N/n` 与分离门槛 `M≥2g+1`；术层 `N_p=C(g,p)²`（阶梯比嵌套） | `g≤4` 的模型层；圆作用不动块 |
+| `verify_ns.c` | 19 判据全过 · `max dev 4.070e-07` | `tr S=Σλ=0 ⟹ λ₁=−(λ₂+λ₃)`；三分恒等 `P=λ₂‖ω‖²+Q₊−Q₋`；`T³` 周期 `⟹` 分部求和无边界项；`2s>n+2 ⟹ s≥3`；重联严格下降 `0.748<1` | `T³` 周期域、牛顿、`ν>0`、`H^s(s≥3)` |
+| `verify_pvsnp.c` | 26 判据全过 | `per` 系数恒 `+1`（相消只能来自元素）；`mod 2` 商秩亏 `2n−2`；`n!` 对 `n^{cd}` 反超（`cd=1..21` 交叉点 `3…29`） | 以引理 4.1（`VP≠VNP`）为条件；`GF(2)` 有限表 |
+| `verify_rh.c` | 21 判据全过 · `max dev 1.562e-09` | `\|χ\|=1 ⟺ σ=1/2`（根唯一）；`Λ` 对合反射；Hardy `Z` 实性；`Σm_λ=7` 守恒；`P8/P16` 谱差 | 五组零点样本；Euler–Maclaurin 截断 |
+| `verify_ym.c` | 17 判据全过 · `max dev 2.044e-02` | `λ_l=l(l+2)`、`λ₀` 单重 `⟹ Δ=√3·Λ` 是相减；格点规范不变量恒等式；欧拉误差比 | 格点规范场；4D SU(3) 物理扇区的连续极限是引理 4.1 |
 
-一句话：**每支验证器验的是「该篇所依赖的结构前提在有限格上成立」，不是猜想本身的证明。**
-One line: each verifier checks the paper's structural premises on a finite grid, not the conjecture.
-
----
+一句话：**每支跑的是该篇的被迫链** —— 链上每个 `⟹` 对应一条恒等式或计数恒等，逐条打印读数；第四列写的是容器吃什么（输入空间），不是「没做的那部分」。
 
 ## 三、结构层：七篇共用三件 / the shared structural layer
 
