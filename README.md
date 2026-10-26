@@ -16,7 +16,7 @@ Windows 无 `make` 时：`gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o t <any>/code/ve
 CI（GitHub Actions）在每次 push 上跑同一条链：编译 24 个 `.c` → 跑 20 支验证器 → 4 道门禁。
 
 **直达 / direct:** [站点 Pages](https://zjaizlh8.github.io/github_upload/) ·
-[Windows x64 预编译 exe（见最新 release）](https://github.com/zjaizlh8/github_upload/releases/latest) ·
+[[v1.0.1 Windows x64 预编译 24 个 exe](https://github.com/zjaizlh8/github_upload/releases/latest)](https://github.com/zjaizlh8/github_upload/releases/latest) ·
 [CI 运行记录](https://github.com/zjaizlh8/github_upload/actions/workflows/verify.yml)
 
 **Author / 作者:** zjaizlh8 (GitHub) · 2026-10-26
