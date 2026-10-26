@@ -143,7 +143,7 @@ shipped here; what ships and reproduces is one `code/verify_*.c` per paper. Ever
 **中文**
 
 1. **承重引理分两类，写在纸上**：五篇的承重引理在容器内被迫 —— HL（`HL ⟺ ΣΔ→log(e^{2γ}/4)`，两常数互倒、乘积 `1.000000000000000`）· Hodge（圆投影恒等式 `Φ_M` 整除 + 阶梯比嵌套 `N_p=C(g,p)²`）· NS（`tr S=Σλ=0` + 三分恒等 `P=λ₂‖ω‖²+Q₊−Q₋`）· RH（`Σm_λ=7` 的偏离无处安放）· YM（`λ_l=l(l+2)`、`λ₀` 单重 ⟹ `Δ` 是相减）；两篇的承重引理是**另一条猜想**，因此正文写成条件式 —— BSD（引理 4.1：每对在 `s=1` 恰吞一个 `(s−1)`）与 P≠NP（引理 4.1：`per` 无多项式大小算术电路 ＝ Valiant `VP≠VNP`）。条件式不是让步：它把「哪一步是别人的猜想」写清楚，其余每一步都由恒等式承担。
-2. **两版说明的篇幅不同，判据相同**：中文是完整版（§0′ 倒数形式、§0″ 三项实证、§5bis/§5ter/§5quater 构造层、§7bis 独立复算、附录 A/B），英文是同一判据集的压缩版。两版的判据数、段小计、`RESULT` 总帐、`[sanity]` 口径一律相同。
+2. **中英两版是同一份说明的两种语言，逐节对应**：节号与子节一一相同（§0′ / §0″ / §1–§11、§5bis / §5ter / §5quater、§7bis、附录 A/B/C、附章），公式、表格、读数也一一相同；判据数、段小计、`RESULT` 总帐、`[sanity]` 口径两边一致。
 3. **判据都落在有限格上，阈值由口径给定**（不事后调参）：`p ≤ 97`、`n ≤ 30`、`cd ≤ 30`、`g ≤ 4`、`M ∈ {2,3,4,6,8,12}`、`k ≤ 12`。超出窗口的那一格是**换容器**，不是判据失效 —— 窗口外要重新给容器（例如 `cd ≥ 22` 的交叉点在 `n > 30` 之外，`pn_form` 就把它们记为边界而不断言）。
 4. **程序的输出是判据，不是猜想的真值**：每个判据在整数/有理数上给 0/1，文件末行 `RESULT PASS=n FAIL=0`；读法是「这一层的恒等式零违例」，见第二节表。
 5. **孪生是 HL 的一章**，不是第八篇。
@@ -159,10 +159,10 @@ shipped here; what ships and reproduces is one `code/verify_*.c` per paper. Ever
    pair eats exactly one `(s−1)` at `s=1`) and P≠NP (Lemma 4.1: `per` has no polynomial-size arithmetic
    circuit, i.e. Valiant's `VP≠VNP`). The conditional form is not a hedge: it names whose conjecture a
    step is, and every other step is carried by an identity.
-2. **The two notes differ in length, not in criteria.** The Chinese note is the full version (§0′, §0″,
-   §5bis/§5ter/§5quater construction layers, §7bis recomputation, appendices A/B); the English note is a
-   condensed version of the same criterion set. Counts, section subtotals, `RESULT` totals and the
-   `[sanity]` rule are identical in both.
+2. **The two notes are one document in two languages, section by section.** Section numbers and
+   subsections match one to one (§0′, §0″, §1–§11, §5bis / §5ter / §5quater, §7bis,
+   appendices A/B/C, the twin chapter), as do formulas, tables and readings. Counts, section
+   subtotals, `RESULT` totals and the `[sanity]` rule are identical on both sides.
 3. **Every criterion sits on a finite grid with a threshold fixed by the container** (no post-hoc
    tuning): `p ≤ 97`, `n ≤ 30`, `cd ≤ 30`, `g ≤ 4`, `M ∈ {2,3,4,6,8,12}`, `k ≤ 12`. A cell outside the
    window is a **different container**, not a failed criterion — e.g. the `cd ≥ 22` crossings lie beyond
