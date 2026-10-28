@@ -1,0 +1,52 @@
+LAYER,NAME,PROBE,KIND,CELLS_EXPECTED,D1,D3,S2,CLOSED,MD5_OUT,VERDICT
+L1,混沌一步到位（别名 母律·谱升维）· 符号与绕数（相位环 m=3..8 全参数面，25 条判据）,sign_winding,probe,25,0,25/25,1,1,27ae47eef3bbc3b25e8b326f5e6f4da3,签到
+L2,混沌一步到位 · 螺旋矩阵（8 条谱线 × N=0..10，8 条判据）,chaos_matrix,probe,8,0.000e+00,8/8,1,1,40218c7f8b43ab4414334ade0c6e0f69,签到
+L3,混沌 · PATCH_1422 加速界（4 判据）,verify_1422_bounds,probe,4,0.000e+00,4/4,1,1,520829670607440dde3258c48757c680,签到
+L4,混沌 · PATCH_1422 v2 复核（6 判据）,verify_1422_v2check,probe,6,0.000e+00,6/6,1,1,fbabdf8d1992a6619e4ed71de3ab8d60,签到
+L5,混沌 · 母律版镜面对偶（8 判据）,verify_dual,probe,17,0.000e+00,8/17,1,1,076c27fe9821dbc5d90fde1d8cb6f676,签到
+L6,混沌 · PATCH_1421 母律（12 判据）,probe_1421_motherlaw,probe,12,0.000000e+00,12/12,1,1,901e0e91ca8c72dd166b8d36bcb4e0a2,签到
+L7,混沌 · PATCH_1422 虚量子加速（2 判据）,probe_1422_virtual_quantum_speedup,probe,4,0.000000e+00,4/4,1,1,2a4e5bb42e6d18775c8df7f4561ae84d,签到
+L8,混沌 · PATCH_1422 母项复核（1 判据）,verify_1422_mother_term,probe,3,0.000000e+00,3/3,1,1,e05ea659ac38875b2ac8f76159a42296,签到
+L9,混沌 · PATCH_1422 双递推对账（3 判据）,verify_1422_two_recur,probe,4,0.000000e+00,4/4,1,1,7641849791e24d6e5e3366f41f763aab,签到
+L10,混沌 · PATCH_1426 嵌套矩阵分类（8 判据）,verify_1426_nest_matrix,probe,8,0.000000e+00,8/8,1,1,0c8c59755d53a0c3288e808e65002afc,签到
+L11,混沌 · PATCH_1426 全序（4 判据）,verify_1426_total_order,probe,3,0.000000e+00,3/3,1,1,7f1085e5d9258cbc9f4438af0a5f1e85,签到
+L12,混沌 · 牙测 P16–P20 + P24–P28（23 齿，尾号 P28 防撞号）,teeth_sign_winding_p16_p20,probe,23,0.000000e+00,23/23,1,1,115acdfb39012db15d5327b341f7e582,签到
+L13,混沌 · 对偶精确版（21 判据）,verify_dual_exact,probe,41,0.000000e+00,21/41,1,1,2625bb9bbfd5141ea921b5e6c8424538,签到
+L14,混沌 · BR1417 去母系统（4 判据）,BR1417,probe,4,0.000000e+00,4/4,1,1,8e98fec893db02327d3655e7d474905b,签到
+L15,混沌 · 1421 六根和对账（6 判据）,diag_1421,probe,3,0.000000e+00,3/3,1,1,be02493aedb41d610ec2c64288878baa,签到
+L16,混沌 · 1148 闭环审计（11 判据）,probe_1148_closure_audit,probe,9,0.000000e+00,9/9,1,1,1218ab6b407a69b80b571c4b59793600,签到
+L17,混沌 · 1419 母特征（11 判据）,probe_1419_mother_eigen,probe,11,0.000000e+00,11/11,1,1,f7b7b44c62455c53daf62bacb7e151f7,签到
+L18,混沌 · 三算子三分（嵌套⊗ / 层叠⊕ / 和⊕_K · 8 判据）,ks_kronecker_sum,probe,8,0.000e+00,8/8,1,1,6f16304c82555b872b28392e76901955,签到
+L19,混沌 · 三算子三分齿测（4 牙）,ks_kronecker_sum_teeth,probe,4,0.000e+00,4/4,1,1,c02c27d009b87d5ec43fffd6f89ffdfe,签到
+L20,混沌 · 绕数并表（相位环 ↔ Ihara 两账本 · 8 判据）,wn_winding_dual,probe,8,0.000e+00,8/8,1,1,495d4b3f737f37bcd006dab846b5fe59,签到
+L21,混沌 · 绕数并表齿测（5 牙）,wn_winding_dual_teeth,probe,5,0.000e+00,5/5,1,1,09a5e8e9fd1e3246dec48aa7d75f4fea,签到
+L22,混沌 · 15 线谱 × 6/7 内核交叉（第六表命中 + 折叠 7=3+4 + 迹谱 Q(N) + 谱包含 9 判据）,cross15,probe,9,0,9/9,1,1,97af70b8c4d5ed4a418720376a273dd6,签到
+L23,混沌 · 15 线谱交叉齿测（5 牙）,cross15_teeth,probe,5,0,5/5,1,1,862c9c858b61e348adba41c4f1d66720,签到
+L24,混沌 · 阴阳负反馈（迹–行列平面 + 阴阳对合 · 8 判据）,yy_feedback,probe,8,0.000e+00,8/8,1,1,ae08524cb99eaed8b4e29cace0c5f844,签到
+L25,混沌 · 阴阳负反馈齿测（8 牙）,yy_feedback_teeth,probe,8,0.000e+00,8/8,1,1,88e835a77922528dee2955f9a784eaa7,签到
+L26,混沌 · 三维阴阳（系数空间 + 三段命运 · 8 判据）,yy3,probe,8,0.000e+00,8/8,1,1,6f0f784b90691cf2100b5fbb81d8a213,签到
+L27,混沌 · 三维阴阳齿测（8 牙）,yy3_teeth,probe,8,0.000e+00,8/8,1,1,37785bc9b3f9c70524a4d847785c1bcc,签到
+L28,混沌 · 同宿环（Shilnikov 整数化 · 8 判据）,yy3_shil,probe,8,0.000e+00,8/8,1,1,a02ab4407439052bc297da0e03c013af,签到
+L29,混沌 · 同宿环齿测（8 牙）,yy3_shil_teeth,probe,8,0.000e+00,8/8,1,1,63fa3487ccea75183e8ab859594a550c,签到
+L30,母律 · 连山易的结构（6-立方闭链 + 三易三首 · 8 判据）,ml_lian,probe,8,0.000e+00,8/8,1,1,c2ab32612456c3834d1106c609e55417,签到
+L31,母律 · 连山结构齿测（8 牙）,ml_lian_teeth,probe,8,0.000e+00,8/8,1,1,e65bb8be92e75932174fbd291727d3b4,签到
+L32,母律 · 层层嵌套（母有子，母又为子 · 8 判据）,ml_nest,probe,8,0.000e+00,8/8,1,1,a061b6ecd974054679651f85b60aa3da,签到
+L33,母律 · 嵌套齿测（8 牙）,ml_nest_teeth,probe,8,0.000e+00,8/8,1,1,d7b709fefa39fb5bce8453fdc080ff7a,签到
+L34,母律 · 母 = 上层（层级链 L_n ⊂ L_{n+1}，母又为子 · 8 判据）,ml_mother,probe,8,0.000e+00,8/8,1,1,852e33730e1da63b692a51e0f99b4370,签到
+L35,母律 · 母=上层 齿测（8 牙）,ml_mother_teeth,probe,8,0.000e+00,8/8,1,1,b14028f676356ada3b87c79a508b86b3,签到
+L36,yy3_xint,yy3_xint,probe,8,0.000e+00,8/8,1,1,2f979370e4a49d3c7fca98fd202f929e,签到
+L37,yy3_xint_teeth,yy3_xint_teeth,probe,8,0.000e+00,8/8,1,1,3a1f94726764066ab95ee4291790702e,签到
+L38,c8_star,c8_star,probe,8,0.000e+00,8/8,1,1,bd2b6012a5f4da7191f5e878bd1ada71,签到
+L39,c8_star_teeth,c8_star_teeth,probe,8,0.000e+00,8/8,1,1,8f60b3553c5cb4e7838e82da4a0aa2eb,签到
+L40,cls_law,cls_law,probe,8,0.000e+00,8/8,1,1,dd65aa1aefec3e6ade72d44ac756808a,签到
+L41,cls_law_teeth,cls_law_teeth,probe,8,0.000e+00,8/8,1,1,0993392b9e0334a33f1f0252e77d33ed,签到
+L42,hg_nest,hg_nest,probe,8,0.000e+00,8/8,1,1,f88d57662b24b5114ad817c8705e72c9,签到
+L43,hg_nest_teeth,hg_nest_teeth,probe,8,0.000e+00,8/8,1,1,f2a4f574d6dd2e0b2ac7776fd66951cf,签到
+L44,hg_proj,hg_proj,probe,8,0.000e+00,8/8,1,1,ca2e1eb2a10e126ca5f3a20a23f9df54,签到
+L45,hg_proj_teeth,hg_proj_teeth,probe,8,0.000e+00,8/8,1,1,26303eb786ad1822fdfb12911ddc48f9,签到
+L46,bs_sha,bs_sha,probe,8,0.000e+00,8/8,1,1,dac07f28788615102003722303f62eee,签到
+L47,bs_sha_teeth,bs_sha_teeth,probe,8,0.000e+00,8/8,1,1,114d1c612972d48f9b7a6ea497e8933f,签到
+L48,ns_dom,ns_dom,probe,8,0.000e+00,8/8,1,1,7c2cca75260d0781fed355ec0263972b,签到
+L49,ns_dom_teeth,ns_dom_teeth,probe,8,0.000e+00,8/8,1,1,b73958c3a7e45abd3796bf63f8fa0c3b,签到
+L50,pn_form,pn_form,probe,8,0.000e+00,8/8,1,1,49278e3dc604e6072f8e0fcc9bb11ca6,签到
+L51,pn_form_teeth,pn_form_teeth,probe,8,0.000e+00,8/8,1,1,fa4d275809862816095ebc7b38fdb7d7,签到

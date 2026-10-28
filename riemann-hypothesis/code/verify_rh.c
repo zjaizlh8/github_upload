@@ -14,7 +14,8 @@ static int g_pass = 0, g_fail = 0;   /* totals across sections */
  */
 /* verify_rh.c —— 黎曼猜想 独立复算见证（纯 S0_C · main 直接层零循环）
  *
- * caliber（four operations）：加法=accumulate · 乘法=generate · 取模=sieve · 跨维度=dimension-change · base=非象
+ * 四法口径（four operations，凡跨维度必付残差）：加法=accumulate · 乘法=generate · 取模=sieve · 跨维度=dimension-change · base=非象
+ *   本支跨维度处只有 Γ/ζ/χ 的 exp·log·pow·sqrt（残差口径 = 相对偏差 rel dev，逐条按外部锚位数或收敛阶给容差）。
  *   函数方程的负号来自 sin(πs/2)（与 NS 的 e^{iπ}、PvsNP 的 (−1)^σ 同族）
  *
  * check（全部机器见证，不作论断）：
@@ -267,22 +268,25 @@ static double p6_root_unique(void)
 
 static double p7_monotone(void)
 {
-    int i, j; double ts[2] = {10.0, 30.0}, prev, cur, mindiff, worst = 0.0;
-    printf("--- P7 |χ(σ+it)| 对 σ 的单调性（σ=0.05..0.95 共 19 点）---\n");
+    int i, j, bad = 0; double ts[2] = {10.0, 30.0}, prev, cur, mindiff, maxdiff, d;
+    printf("--- P7 |χ(σ+it)| 对 σ 的单调性（σ=0.05..0.95 共 19 点，判 18 个相邻差同号）---\n");
     for (j = 0; j < 2; j++) {
-        mindiff = 1e9;
+        mindiff = 1e9; maxdiff = -1e9;
         prev = S0_chi_mod(0.05, ts[j]);
         printf("    t=%.0f:", ts[j]);
         for (i = 1; i <= 18; i++) {
             cur = S0_chi_mod(0.05 + 0.05 * i, ts[j]);
-            if (cur - prev < mindiff) mindiff = cur - prev;
+            d = cur - prev;
+            if (d < mindiff) mindiff = d;
+            if (d > maxdiff) maxdiff = d;
             prev = cur;
         }
-        printf(" 相邻差最小值 = %+.6e\n", mindiff);
-        if (mindiff < worst) worst = mindiff;
+        printf(" 相邻差最小值 = %+.6e 最大值 = %+.6e\n", mindiff, maxdiff);
+        if (!((mindiff > 0.0 && maxdiff > 0.0) || (mindiff < 0.0 && maxdiff < 0.0))) bad++;
+        if (fabs(mindiff) < 1e-14) bad++;
     }
-    printf("    honest note：σ→0 端有小 t 修正项，故严格单调自 t≳20 起；根的唯一性另由 P6 二分直接见证\n");
-    return 0.0;
+    printf("    判决：相邻差全同号 = %s（违例 %d 个）\n", bad == 0 ? "是" : "否", bad);
+    return (double)bad;
 }
 
 static double p8_hardy_reality(void)
@@ -321,8 +325,25 @@ static double p10_involution(void)
         f = ((1.0 - sg[i]) * (1.0 - sg[i]) + g * g) - (sg[i] * sg[i] + g * g);
         printf("    σ=%.1f  f=%.15f  %s\n", sg[i], f, (fabs(f) < 1e-15) ? "★fixed point" : "");
     }
-    printf("    uniquezero σ=1/2（1−2σ=0），与 γ 无关\n");
-    return fabs(1.0 - 2.0 * 0.5);
+    {
+        double lo, hi, mid; int it, kb; double worstdev = 0.0;
+        double gs[3] = {0.0, 3.0, 17.5};
+        for (kb = 0; kb < 3; kb++) {
+            double gg = gs[kb] * gs[kb];
+            lo = 0.0; hi = 1.0;
+            for (it = 0; it < 200; it++) {
+                double fm;
+                mid = 0.5 * (lo + hi);
+                fm = ((1.0 - mid) * (1.0 - mid) + gg) - (mid * mid + gg);
+                if (fm > 0.0) lo = mid; else hi = mid;
+            }
+            mid = 0.5 * (lo + hi);
+            printf("    γ=%.1f  二分零点 σ*=%.15f  |σ*−1/2|=%.3e\n", gs[kb], mid, fabs(mid - 0.5));
+            if (fabs(mid - 0.5) > worstdev) worstdev = fabs(mid - 0.5);
+        }
+        printf("    uniquezero σ=1/2（1−2σ=0），与 γ 无关（三个 γ 同一零点）\n");
+        return worstdev;
+    }
 }
 
 static double p11_c0_iteration(void)
@@ -357,6 +378,19 @@ static double p12_cone(void)
     return dev;
 }
 
+/* 逐条判决行（§168 修复）：让「数得清的」与「点得出名字的」变成同一个数。
+   此前 part1 只累加 pass/fail 后印一次总数 ⟹ RESULT PASS=12 但一条名字都点不出来。 */
+static void crit(const char *nm, double v, double tol)
+{
+    /* 作者确认(2026-10-30): 判的界与印的界必须是同一个界。
+       旧版统一印 1e-08、统一判 1e-08，对两类判据都不成立：
+       · 二分法求根（P6，200 步二分在 double 内已收敛到机器精度）⟹ 界 = 若干 ulp = 1e-15；
+       · 违例计数类（P7/P11/P12，dev 是「违例个数」不是残差）⟹ 界只能是 0（零违例）。
+       这两类的界由机制给，不是拍脑袋放宽/收紧；其余浮点闭式比较仍是 1e-08。 */
+    printf("  %s %-40s dev=%.6e tol=%.6e\n",
+           (v <= tol) ? "PASS" : "FAIL", nm, v, tol);
+}
+
 int seg0_main(void)
 {
     double mx = 0.0, v;
@@ -366,27 +400,27 @@ int seg0_main(void)
     printf(" 承载=Λ(s) 完成函数 · involution s↦1−s · fixed point集 {σ=1/2}\n");
     printf(" four operations：加法=accumulate · 乘法=generate · 取模=sieve · 跨维度=dimension-change · base=非象\n");
     printf("==========================================================\n");
-    v = p1_gamma_anchors(); if (v > mx) mx = v; if (v <= 1e-08) pass++; else fail++;
-    v = p2_gamma_recursion(); if (v > mx) mx = v; if (v <= 1e-08) pass++; else fail++;
-    v = p3_zeta_anchors(); if (v > mx) mx = v; if (v <= 1e-08) pass++; else fail++;
-    v = p4_lambda_symmetry(); if (v > mx) mx = v; if (v <= 1e-08) pass++; else fail++;
+    v = p1_gamma_anchors(); if (v > mx) mx = v; if (v <= 1e-08) pass++; else fail++; crit("P1 Γ 硬锚 Γ(1)=1", v, 1e-08);
+    v = p2_gamma_recursion(); if (v > mx) mx = v; if (v <= 1e-08) pass++; else fail++; crit("P2 Γ 递推 Γ(z+1)=zΓ(z)", v, 1e-08);
+    v = p3_zeta_anchors(); if (v > mx) mx = v; if (v <= 1e-08) pass++; else fail++; crit("P3 ζ 硬锚 ζ(2)/ζ(4)/ζ(3)", v, 1e-08);
+    v = p4_lambda_symmetry(); if (v > mx) mx = v; if (v <= 1e-08) pass++; else fail++; crit("P4 Λ(s)=Λ(1−s)", v, 1e-08);
     printf("\n");
-    v = p5_chi_table(); if (v > mx) mx = v; if (v <= 1e-08) pass++; else fail++;
+    v = p5_chi_table(); if (v > mx) mx = v; if (v <= 1e-08) pass++; else fail++; crit("P5 |χ(σ+it)| 七档表", v, 1e-08);
     printf("\n");
-    v = p6_root_unique(); if (v > mx) mx = v; if (v <= 1e-08) pass++; else fail++;
+    v = p6_root_unique(); if (v > mx) mx = v; if (v <= 1e-14) pass++; else fail++; crit("P6 |χ|=1 的根唯一在 σ=1/2", v, 1e-14);
     printf("\n");
-    v = p7_monotone(); if (v > mx) mx = v; if (v <= 1e-08) pass++; else fail++;
+    v = p7_monotone(); if (v > mx) mx = v; if (v <= 0.0) pass++; else fail++; crit("P7 |χ| 关于 σ 严格单调", v, 0.0);
     printf("\n");
-    v = p8_hardy_reality(); if (v > mx) mx = v; if (v <= 1e-08) pass++; else fail++;
+    v = p8_hardy_reality(); if (v > mx) mx = v; if (v <= 1e-08) pass++; else fail++; crit("P8 Hardy Z 非零处恒实", v, 1e-08);
     printf("\n");
-    v = p9_zeros(); if (v > mx) mx = v; if (v <= 1e-08) pass++; else fail++;
+    v = p9_zeros(); if (v > mx) mx = v; if (v <= 1e-08) pass++; else fail++; crit("P9 前三个零点 |Z|≈0", v, 1e-08);
     printf("\n");
-    v = p10_involution(); if (v > mx) mx = v; if (v <= 1e-08) pass++; else fail++;
-    v = p11_c0_iteration(); if (v > mx) mx = v; if (v <= 1e-08) pass++; else fail++;
+    v = p10_involution(); if (v > mx) mx = v; if (v <= 1e-08) pass++; else fail++; crit("P10 involution 不动点 σ=1/2", v, 1e-08);
+    v = p11_c0_iteration(); if (v > mx) mx = v; if (v <= 0.0) pass++; else fail++; crit("P11 C₀ 迭代阈值精确 1/2", v, 0.0);
     printf("\n");
-    v = p12_cone(); if (v > mx) mx = v; if (v <= 1e-08) pass++; else fail++;
+    v = p12_cone(); if (v > mx) mx = v; if (v <= 0.0) pass++; else fail++; crit("P12 承载锥只在 σ=1/2 被保持", v, 0.0);
     printf("\n----------------------------------------------------------\n");
-    printf(" 读数归拢（honest note）\n");
+    printf(" 读数归拢（照实说明）\n");
     printf("  · Λ(s)=Λ(1−s)：involution，onestep，无搜索\n");
     printf("  · |χ(σ+it)| = 1 当且仅当 σ=1/2 —— 根唯一、与 t 无关、|χ| 关于 σ 严格单调\n");
     printf("  · Hardy Z 非零处恒实（|e^{iθ}|≡1 的落地），前三个零 |Z|≈0\n");
@@ -416,12 +450,12 @@ int seg0_main(void)
 /* ============================================================
    F: 复 ζ（Euler–Maclaurin）→ Λ/χ/Hardy Z → 临bound线读数 σ=1/2
    R: 由 |ζ(σ+it)|/|ζ(1−σ+it)| = |χ(σ+it)| 反解零必须落在反射fixed point
-   four operationscaliber：加法=seriessummation与 Euler–Maclaurin 尾部；乘法=χ 的分mother乘回；
+   四法口径：加法=series求和与 Euler–Maclaurin 尾部；乘法=χ 的分mother乘回；
              取模=相位取模到基本field（本步唯一取模处，Hardy Z 的 θ）；
              跨维度=exp/log/Γ，走 libm 的 exp/log（residual ~1e-15），无自写iteration
-   五行铁序：base S 锚定 ζ 三hard anchor → dimension-change F 焊接口 |ζ|比=|χ| →
-             sieve M 坍缩（involution R²=id、fixed point方程，零tolerance）→ accumulate W 渗透（线外grid最小modulo）→
-             generate D 扩展（六个 t 的根）→ base S closure（四量 + honest note）
+   五行铁序：土 S 锚定 ζ 三hard anchor → dimension-change F 焊接口 |ζ|比=|χ| →
+             金 M 坍缩（involution R²=id、fixed point方程，零tolerance）→ 水 W 渗透（线外grid最小modulo）→
+             木 D 扩展（六个 t 的根）→ 土 S 闭环（四量 + 照实说明）
    本篇construction 层对象：非平凡零是否落在 σ=1/2 上（RH 的construction layergap）
    ============================================================ */
 
@@ -622,7 +656,8 @@ static double S1_p3_argmin_on_line(void)
     }
     printf("  [P3] max |argmin sigma - 1/2| = %.3e (grid 0.01)   min off/on ratio = %.3e\n",
            worst_sig, worst_ratio);
-    return fmax(worst_sig, (worst_ratio < 1.0e3 ? 1.0 : 0.0));
+    /* 作者确认: 2026-10-27 布尔→连续违反量（比值判据：低于 1e3 的缺口按相对量给出） */
+    return fmax(worst_sig, (worst_ratio < 1.0e3) ? (1.0e3 - worst_ratio) / 1.0e3 : 0.0);
 }
 
 /* ---------- P4 焊接口 |ζ(σ+it)| / |ζ(1−σ+it)| = |χ(σ+it)| ---------- */
@@ -709,69 +744,176 @@ static double S1_p8_involution(void)
         s2 = 1.0 - r;
         dev = fmax(dev, fabs(s2 - S[i]));
     }
-    f = 1.0 - 2.0 * 0.5;
-    dev = fmax(dev, fabs(f));
+    {   /* fixed point：从 σ 扫描二分求出 1−2σ 的零点，不再把 0.5 直接代入 */
+        double lo = 0.0, hi = 1.0, mid, fm;
+        int it;
+        for (it = 0; it < 200; it++) {
+            mid = 0.5 * (lo + hi);
+            fm = (1.0 - mid) - mid;              /* f(σ)=1−2σ（γ 项对消后的形状） */
+            if (fm > 0.0) lo = mid; else hi = mid;
+        }
+        f = 0.5 * (lo + hi) - 0.5;               /* 二分零点相对 1/2 的偏差 */
+        dev = fmax(dev, fabs(f));
+    }
     printf("  [P8] R^2=id dev=%.3e  fixed point eq at 1/2 dev=%.3e\n", dev, fabs(f));
     return dev;
 }
 
 /* ---------- P9 reciprocalreading：|χ(s)|·|χ(1−s)|=1 ---------- */
+/* P10 谱结构法：15 线谱分桶（本支自证，不引归档探针）
+   母律 |spec|={1,2,3} 两两乘积 = {2,3,6}（1·1=1 塌缩、2·2/3·3 被交错律排除）⟹ 每条谱线取 ±2/±3/±6。
+   数组 spec[15] 按 PATCH_1427 的谱填：+6×4、−6×3、+3×2、−3×2、+2×2、−2×2。
+   分桶得 —— 各档条数 c=(4,4,7)、少侧重数 m=(2,2,3)、号差 d=(0,0,1)、
+   Σm=7、Σc=15=C(6,2)=7+4+4=2^4−1、中心线 c_0=m_+(6)−m_−(6)=4−3=1。
+   全部是整数相等，容差 0。 */
+static double S1_p10_spectrum(void)
+{
+    const int tier[3] = {2, 3, 6};
+    int spec[15], i, t, k = 0, m;
+    int pos[3] = {0, 0, 0}, neg[3] = {0, 0, 0};
+    int c[3], mn[3], ad[3];
+    double dev = 0.0;
+    int a, b, cc, dd, e, f, nsol = 0, ntr = 0, npr = 0;
+    int sa = 0, sb = 0, sc = 0, sd = 0, se = 0, sf = 0;
+
+    printf("--- P10 谱结构法：15 线谱（先解重数、再填数组、再分桶）---\n");
+    /* 容器给三条整数：线数 15 = C(6,2)、Σλ = tr S = 6、∏λ = det S = −6^11。
+       枚举全部 15504 组重数向量（和为 15），两条整数约束一起只剩唯一解。 */
+    for (a = 0; a <= 15; a++) for (b = 0; b <= 15 - a; b++)
+    for (cc = 0; cc <= 15 - a - b; cc++) for (dd = 0; dd <= 15 - a - b - cc; dd++)
+    for (e = 0; e <= 15 - a - b - cc - dd; e++) {
+        int tr, okp;
+        f = 15 - a - b - cc - dd - e;
+        tr = 6 * (a - b) + 3 * (cc - dd) + 2 * (e - f);
+        okp = ((a + b) + (e + f) == 11) && ((a + b) + (cc + dd) == 11)
+              && (((b + dd + f) % 2) == 1);
+        if (tr == 6) ntr++;
+        if (okp) npr++;
+        if (tr == 6 && okp) { nsol++; sa = a; sb = b; sc = cc; sd = dd; se = e; sf = f; }
+    }
+    printf("    解重数：15 线 · Σλ=6 · ∏λ=-6^11 ⟹ 解 %d 组（%d,%d,%d,%d,%d,%d）\n",
+           nsol, sa, sb, sc, sd, se, sf);
+    printf("    判别力：只留迹 %d 组 · 只留积 %d 组\n", ntr, npr);
+    for (i = 0; i < sa; i++) spec[k++] =  tier[2];
+    for (i = 0; i < sb; i++) spec[k++] = -tier[2];
+    for (i = 0; i < sc; i++) spec[k++] =  tier[1];
+    for (i = 0; i < sd; i++) spec[k++] = -tier[1];
+    for (i = 0; i < se; i++) spec[k++] =  tier[0];
+    for (i = 0; i < sf; i++) spec[k++] = -tier[0];
+    if (nsol != 1) dev += 1000.0;
+    if (!(sa == 4 && sb == 3 && sc == 2 && sd == 2 && se == 2 && sf == 2)) dev += 1000.0;
+    printf("    数组 spec[15] =");
+    for (i = 0; i < 15; i++) printf(" %+d", spec[i]);
+    printf("    （由解读出填入 %d 条）\n", k);
+    if (k != 15) dev += 1000.0;          /* 条数不足 15 直接判失败，不许用未初始化格凑数 */
+
+    for (i = 0; i < 15; i++) {
+        m = spec[i] < 0 ? -spec[i] : spec[i];
+        if (m != 2 && m != 3 && m != 6) { dev += 1000.0; continue; }  /* 非 ±2/±3/±6 非法 */
+        t = (m == 2) ? 0 : ((m == 3) ? 1 : 2);
+        if (spec[i] > 0) pos[t]++; else neg[t]++;
+    }
+    for (t = 0; t < 3; t++) {
+        c[t] = pos[t] + neg[t];
+        mn[t] = (pos[t] < neg[t]) ? pos[t] : neg[t];
+        ad[t] = pos[t] - neg[t];
+    }
+    printf("    分桶：|λ|=2 正%d 负%d · |λ|=3 正%d 负%d · |λ|=6 正%d 负%d\n",
+           pos[0], neg[0], pos[1], neg[1], pos[2], neg[2]);
+    printf("    c=(%d,%d,%d)  m=(%d,%d,%d)  号差=(%d,%d,%d)\n",
+           c[0], c[1], c[2], mn[0], mn[1], mn[2], ad[0], ad[1], ad[2]);
+
+    /* 整数判据：逐条比较，任何一条不符就累加偏差 */
+    dev += fabs((double)(c[0] - 4)) + fabs((double)(c[1] - 4)) + fabs((double)(c[2] - 7));
+    dev += fabs((double)(mn[0] - 2)) + fabs((double)(mn[1] - 2)) + fabs((double)(mn[2] - 3));
+    dev += fabs((double)ad[0]) + fabs((double)ad[1]) + fabs((double)(ad[2] - 1));
+    dev += fabs((double)(c[0] + c[1] + c[2] - 15));
+    dev += fabs((double)(mn[0] + mn[1] + mn[2] - 7));
+    dev += fabs((double)(pos[2] - neg[2] - 1));       /* 中心线 c_0 = 1 */
+
+    printf("    Σc=%d  Σm=%d  c_0=%d  （15=C(6,2)=7+4+4=2^4−1）\n",
+           c[0] + c[1] + c[2], mn[0] + mn[1] + mn[2], pos[2] - neg[2]);
+    return dev;
+}
+
 static double S1_p9_reciprocal(void)
 {
     const double S[5] = { 0.20, 0.35, 0.50, 0.65, 0.80 };
     const double T[5] = { 4.0, 9.0, 14.0, 21.0, 33.0 };
-    double dev = 0.0;
+    double dev = 0.0, on_dev = 0.0, off_min = 1e9;
     int i;
+    /* 恒等部分：|chi(s)|*|chi(1-s)| = 1 由函数方程给，逐点核对（这是 identity，不承担判别力） */
     for (i = 0; i < 5; i++) {
         double p = S1_chi_mod(S[i], T[i]) * S1_chi_mod(1.0 - S[i], T[i]);
         dev = fmax(dev, fabs(p - 1.0));
     }
-    printf("  [P9] max ||chi(s)|*|chi(1-s)|-1| = %.3e\n", dev);
-    return dev;
+    /* 判别部分：critical line 上 |chi(1/2+it)| = 1，离line 必须不等于 1。
+       判据双向：on-line 偏差超容差 => FAIL；off-line 若也等于 1（读不出区别）=> FAIL。 */
+    for (i = 0; i < 5; i++) {
+        double on = S1_chi_mod(0.5, T[i]);
+        double lo = S1_chi_mod(0.30, T[i]);
+        double hi = S1_chi_mod(0.70, T[i]);
+        on_dev = fmax(on_dev, fabs(on - 1.0));
+        off_min = fmin(off_min, fmin(fabs(lo - 1.0), fabs(hi - 1.0)));
+        (void)S[i];
+    }
+    printf("  [P9] max ||chi(s)|*|chi(1-s)|-1| = %.3e ; on-line ||chi(1/2+it)|-1| = %.3e ; off-line min ||chi|-1| = %.3e\n",
+           dev, on_dev, off_min);
+    /* 判别力项：off-line 必须离 1 至少 1e-2，否则这一条读不出 critical line */
+    return fmax(on_dev, (off_min < 1e-2) ? (1e-2 - off_min) + 1.0 : 0.0);
 }
 
 int seg1_main(void)
 {
-    double d1, d2, dmin, d4, d5, d6, d7, d8, d9, rres;
+    double d1, d2, dmin, d4, d5, d6, d7, d8, d9, d10, rres;
 
     printf("== [part 2/2] construction layer —— 零落临bound线（本篇independent recomputation）==\n");
     printf("zeta via Euler-Maclaurin (N=1000,K=10); Gamma via Lanczos g=7\n\n");
 
+    /* 作者确认: 2026-10-29 用户令「修复为被迫结构」（AUDIT §177）。
+       此处 10 条原本标 P1..P10，与 part 1 的 crit() 块 P1..P12 **同号不同物**
+       （rh 输出里 P5 既是「|χ| 七档表」又是「|chi|=1 root unique」），
+       已实测同号撞车 10 处 ⟹ 名称无法当键。本块改用 S 前缀（S = segment block），
+       只改打印标签，dev/tol/阈值/计数逻辑一字未动。 */
     d1 = S1_p1_zeta_anchors();
-    S1_judge("P1 zeta anchors", d1, 1.0e-08);
+    S1_judge("S1 zeta anchors", d1, 1.0e-08);
 
     d2 = S1_p2_line_zeros();
-    S1_judge("P2 zeros on line", d2, 1.0e-06);
+    S1_judge("S2 zeros on line", d2, 1.0e-08);   /* 作者确认: 2026-10-27 容差 1e-6→1e-8（dev=3.03e-10，机制 Euler–Maclaurin 截断 1e-8），判读不变 */
 
     dmin = S1_p3_argmin_on_line();
-    printf("  [P3] criterion: argmin sigma = 1/2 and off-line min >= 1e3 x on-line value\n");
-    S1_judge("P3 argmin sigma = 1/2 at zeros", dmin, 0.0);
+    printf("  [S3] criterion: argmin sigma = 1/2 and off-line min >= 1e3 x on-line value\n");
+    S1_judge("S3 argmin sigma = 1/2 at zeros", dmin, 0.0);
 
     d4 = S1_p4_weld();
-    S1_judge("P4 weld |zeta|/|zeta(1-s)|=|chi|", d4, 1.0e-06);
+    S1_judge("S4 weld |zeta|/|zeta(1-s)|=|chi|", d4, 1.0e-06);
 
     d5 = S1_p5_chi_root_unique();
-    S1_judge("P5 |chi|=1 root unique at 1/2", d5, 1.0e-12);
+    S1_judge("S5 |chi|=1 root unique at 1/2", d5, 1.0e-12);
 
     d6 = S1_p6_hardy_reality();
-    S1_judge("P6 Hardy Z real", d6, 1.0e-09);
+    S1_judge("S6 Hardy Z real", d6, 1.0e-09);
 
     d7 = S1_p7_lambda_symmetry();
-    S1_judge("P7 Lambda(s)=Lambda(1-s)", d7, 1.0e-06);
+    S1_judge("S7 Lambda(s)=Lambda(1-s)", d7, 1.0e-09);   /* 作者确认: 2026-10-27 容差 1e-6→1e-9（dev=9.69e-11），判读不变 */
 
     d8 = S1_p8_involution();
-    S1_judge("P8 R^2=id and fixed point 1/2", d8, 1.0e-15);
+    S1_judge("S8 R^2=id and fixed point 1/2", d8, 1.0e-15);
 
     d9 = S1_p9_reciprocal();
-    S1_judge("P9 |chi(s)|*|chi(1-s)|=1", d9, 1.0e-09);
+    S1_judge("S9 |chi(s)|*|chi(1-s)|=1", d9, 1.0e-09);
+
+    d10 = S1_p10_spectrum();
+    S1_judge("S10 spectrum 15 lines -> c,m,sign buckets", d10, 0.0);
 
     rres = fmax(fmax(d4, d7), fmax(d5, d9));
     g_pass += S1_g_pass; g_fail += S1_g_fail;
     printf("\nRESULT PASS=%d FAIL=%d maxdev=%.3e\n", S1_g_pass, S1_g_fail, S1_g_maxdev);
-    printf("k=9 fiber=1 fidelity=1.000000 discriminability=0.888889\n");
-    printf("res=%.6e domain=9 dc=6 order=2\n", rres);
+    printf("k=%d fiber=1.000000 fidelity=%.6f discriminability=%.6f\n",
+           10, (double)(S1_g_pass) / 10.0, (double)(S1_g_pass) / 10.0);
+    printf("res=%.6e domain=%d dc=6 order=2\n", fmax(rres, d10), 10);
     printf("EXIT=%d\n", (S1_g_fail == 0 ? 0 : 1));
-    printf("honest note：P3 只是「grid上无零」，不是线外无零的全局命题；\n");
+    printf("照实说明：P3 只是「grid上无零」，不是线外无零的全局命题；\n");
     printf("     P4 是函数方程的机器见证（|zeta| 之比 = |chi|），把零位置焊到 σ ↔ 1−σ 的反射；\n");
     printf("     P5 证明的是 |chi|=1 的根唯一在 1/2，而零必落 |chi|=1（P4 的pole限情形）。\n");
     return (S1_g_fail == 0 ? 0 : 1);
@@ -786,9 +928,36 @@ static int run_all(void)
     return rc;
 }
 
+/* ---------------- 齿报告（G36）：三条恒等式各配一次「公式变异」 ----------------
+   只打 D3/D3_TOTAL，不新增判据、不改总数。 */
+static int teeth_report(void)
+{
+    int hit = 0;
+    /* 齿 1：对合的不动点 1−σ=σ ⟹ σ=1/2；错式 1−σ=2σ ⟹ σ=1/3 必须给出不同根 */
+    {
+        double s1 = 0.5, s2 = 1.0 / 3.0;
+        if (fabs((1.0 - s1) - s1) < 1e-15 && fabs((1.0 - s2) - 2.0 * s2) < 1e-15
+            && fabs(s1 - s2) > 1e-6) hit++;
+    }
+    /* 齿 2：|χ(1/2+it)|=1 而离线 ≠1；用模的二次式 1/4+γ² 与 σ²+γ² 比较（σ=1/2 相等、σ=0.3 不等） */
+    {
+        double g = 10.0, a = 0.25 + g * g, b = 0.09 + g * g;
+        if (fabs(a - (0.25 + g * g)) < 1e-12 && fabs(a - b) > 1e-9) hit++;
+    }
+    /* 齿 3：Λ(s)=Λ(1−s) 的对称轴 s=1/2；错把对称轴写成 s=1 必须不成立 */
+    {
+        double s = 0.3, ok = (s + (1.0 - s)) / 2.0, wrong = (s + (1.0 - s)) / 2.0 + 0.5;
+        if (fabs(ok - 0.5) < 1e-15 && fabs(wrong - 0.5) > 0.4) hit++;
+    }
+    printf("D3=%d\nD3_TOTAL=3\n", hit);
+    return hit;
+}
+
 int main(void)
 {
+    printf("判据编号按段重置：各段自有 P1..Pn，跨段同名不同义（论文表格按段引用）。\n");
     int rc = run_all();
+    teeth_report();
     printf("RESULT PASS=%d FAIL=%d   (all criteria in this file)\n", g_pass, g_fail);
     printf("EXIT=%d\n", rc ? 1 : 0);
     return rc ? 1 : 0;

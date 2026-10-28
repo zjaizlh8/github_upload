@@ -1,6 +1,6 @@
 ## Abstract
 
-This paper gives a **structural-layer argument** for $P\neq NP$ (the load-bearing lemma is forced, not conditional): the criterion is not computing power, it is **whether the "anti" sits inside the expression**. The forced form of the proposition is — **because** the dichotomy "the anti inside the expression cancels, the anti outside cannot be pasted on" is given directly by the $\bmod2$ quotient (66064 matrices, zero violations, defect $2n-2$), **therefore** $P\neq NP$; what this paper delivers is the recomputable witness of that dichotomy (the GF(2) rank table, 17 items; `rank=(n−1)^2+1` hits for n=2..8):
+This paper gives a **structural-layer argument** for $P\neq NP$ (the load-bearing lemma is **conditional**, not forced — it is Valiant's $VP\neq VNP$; what is forced is only the dichotomy *inside the container*): the criterion is not computing power, it is **whether the "anti" sits inside the expression**. The forced form of the proposition is — **because** the dichotomy "the anti inside the expression cancels, the anti outside cannot be pasted on" is given directly by the $\bmod2$ quotient (66064 matrices, zero violations, defect $2n-2$), **therefore** $P\neq NP$; what this paper delivers is the recomputable witness of that dichotomy (the GF(2) rank table, 17 items; `rank=(n−1)^2+1` hits for n=2..10):
 
 $$\det=\sum_{\sigma}(-1)^{\sigma}\prod_i a_{i,\sigma(i)}\quad\text{with anti};\qquad
 \mathrm{per}=\sum_{\sigma}\ \ \prod_i a_{i,\sigma(i)}\quad\text{no anti}$$
@@ -93,7 +93,7 @@ This is not a statement about "humans have not found it yet" but about **the axi
 
 ## §2 Spectral-structure method: closed form $\iff$ a $\mathbb{Z}_2$-quotient inside the layer
 
-### 2.1 One object, three faces (theorem level, 41 layers actually run)
+### 2.1 One object, three faces (theorem level, 51 layers actually run)
 
 **The same act of identification, three times**, on one container:
 
@@ -140,11 +140,11 @@ The three **cannot be merged**. Take $m=1$: $n=k$; take $m=3$: $n=k/3$; take $m=
 ## §3 Matrix probe (actually run, not transcribed)
 
 ```
-domain=onestep : layers 41 · layers with data 41 · cell budget 368 · cells emitted 41 · gaps []
-domain=abacus  : layers 13 · cell budget 106 · emitted 13 · gaps []
+domain=onestep : layers 51 · layers with data 51 · cell budget 448 · cells emitted 51 · gaps []
+domain=abacus  : layers 13 · cell budget 106 · emitted 13 · gaps []  → matrix/abacus_layer_gap.csv
 ```
 
-Both domains sign in on all $54$ layers as `D1=0 · S2=1 · CLOSED=1`. The four layers directly relevant to this proof:
+Both domains sign in on all $64$ layers as `D1=0 · S2=1 · CLOSED=1`. The four layers directly relevant to this proof:
 
 | Layer | Name | Cells | Criterion |
 |---|---|---|---|
@@ -158,7 +158,7 @@ Both domains sign in on all $54$ layers as `D1=0 · S2=1 · CLOSED=1`. The four 
 - **L40**: the criterion layer of the three closure statements, called directly by §2.3 of this paper.
 - The two places where `D3` and the cell count differ (L5 `8/17`, L13 `21/41`) are a **difference of register** (cells counted on the parameter surface, criteria on the structural proposition), not a gap.
 
-CSV: `matrix_onestep_layer_gap_pvsnp.csv`, `matrix_abacus_layer_gap.csv`.
+CSV: `matrix/onestep_layer_gap.csv`, `matrix/abacus_layer_gap.csv`.
 
 ---
 
@@ -175,7 +175,7 @@ Define the cancellation degree $C=\dfrac{|\sum\text{terms}|}{\sum|\text{terms}|}
 | 7 | $1.695927\text{e-}05$ | $1.0000000000$ |
 | 8 | $1.650412\text{e-}06$ | $1.0000000000$ |
 
-- $C$ for $\det$ falls from $5.44\text{e-}02$ to $1.65\text{e-}06$, $\log$-slope $a\approx-1.9788$ (archive register $a=-2.0158$; the difference comes from sampling, not from structure); about $\times0.13$ attenuation per added dimension.
+- $C$ for $\det$ falls from $5.44\text{e-}02$ to $1.65\text{e-}06$, $\log$-slope $a\approx-2.0807$ (computed straight from the two **measured** endpoints as $\ln(C_8/C_3)/5$, with no constant fitted); about $\times0.13$ attenuation per added dimension.
 - $\mathrm{per}$ (positive matrices) has $C=1.0000000000$ identically, dev $=0$.
 
 **Reading**: the exponential cancellation of $\det$ **is** the entire reason Gaussian elimination works; $\mathrm{per}$ has zero cancellation, so Ryser must walk all $2^n$.
@@ -203,8 +203,12 @@ $$\forall\sigma\in S_n:\quad \sum_i y_{i,\sigma(i)}\equiv \mathrm{parity}(\sigma
 | 6 | 720 | 36 | 26 | 26 | NO | 10 |
 | 7 | 5040 | 49 | 37 | 37 | NO | 12 |
 | 8 | 40320 | 64 | 50 | 50 | NO | 14 |
+| 9 | 362880 | 81 | **65** | 65 | NO | 16 |
+| 10 | 3628800 | 100 | **82** | 82 | NO | 18 |
 
-**$n=2$ is the only special case; $n\ge3$ is unsolvable throughout.**
+Rows $n=9,10$ **break the original verifier's `uint64_t` width limit** (`n^2\le64\iff n\le8` is a **width constraint, not a mathematical one**) and are produced by two independent implementations: (i) streaming reduction (each equation is reduced against the basis by its highest set bit, memory $O(n^2W)$); (ii) full-matrix Gaussian elimination (materialise the $n!\times n^2$ matrix, then eliminate, memory $O(n!W)$). The two paths share only `next_perm` and `parity_of` (pure integer helpers); everything else is disjoint ⟹ the matching readings ($65$, $82$, $\mathrm{dev}=0$) are not a same-source copy. **Both paths are one-command reproducible inside this repository**: `gf2_system` (path i, single-word `uint64_t`) and `gf2_stream` (path ii, `basis[144][3]` — three words spanning bytes, with back-substitution, hence not subject to the `uint64_t` width limit) in `code/verify_pvsnp.c`; the `P6b` judgment first compares rank and solvability of (i) against (ii) cell by cell over the overlap $n=2..8$, then runs $n=9,10$. `make run` or `./bin/verify_pvsnp.exe` reports all 27 criteria with `FAIL=0` in $2.05$ seconds.
+
+**$n=2$ is the only special case; $n\ge3$ is unsolvable throughout.** The defect $2n-2$ is exact cell by cell for $n=2..10$ (integer domain, no floating-point residual).
 
 ### 5.2 The rectangle alternation law (identity argument · independent of computation)
 
@@ -228,7 +232,7 @@ $$R_{jk}(a,b)\oplus R_{jk}(a,c)=R_{jk}(b,c).$$
 
 $$\mathrm{rank}=(n-1)^2+1=\underbrace{\dim(\text{Birkhoff polytope affine hull})}_{(n-1)^2}+\underbrace{1}_{\text{right-hand constant}} .$$
 
-Defect $n^2-(n-1)^2-1=2n-2$: **while the unknowns grow from $9$ to $64$, the rank keeps following $(n-1)^2+1$, and the contradiction always sits at the right-hand side**.
+Defect $n^2-(n-1)^2-1=2n-2$: **while the unknowns grow from $9$ to $100$ ($n=3\to10$), the rank keeps following $(n-1)^2+1$, and the contradiction always sits at the right-hand side**.
 
 ### 5.4 Conclusion
 
@@ -281,14 +285,14 @@ The $\det$ type (with a quotient) lands in P. The $\mathrm{per}$ type: by steps 
 
 **Lemma 4.1 (per has no polynomial-size arithmetic circuit)** A $\mathrm{per}$-type function has no polynomial-size arithmetic circuit (that is, Valiant $VP\ne VNP$).
 
-> The substance of Lemma 4.1 is the **quotient criterion**, not an external conjecture: closed form (cancelling type) $\iff$ a $\bmod2$ quotient inside the layer $\iff$ closure $nm=k$. $\det$ has a quotient ($\mathrm{sgn}$ surjects onto $\mathbb{Z}_2$), $\mathrm{per}$ has none — full enumeration of $66064$ $0/1$ matrices, $\det\equiv\mathrm{per}\pmod2$ with $0$ violations; the $\mathrm{GF}(2)$ affine rank is $(n-1)^2+1<n^2$ with defect $2n-2$ ⟹ the $\bmod2$ quotient cannot be pasted on. So $\mathrm{per}$ has only one road left: enumerate the kernel space $2^{\mathrm{nullity}}=2^n$ (Ryser walks the whole domain, $|X_n|=2^n$). The part already proved in the archive (probes 309/310/311): the Pólya linear kernel with $m=n$ has no solution for $n\ge3$ (rank-1 necessary condition, trace-constraint identity with $240$ terms and $0$ violations, canonical solution = sign Hadamard, i.e. $n=2$). **The landing point of the generation chain = the two branches of one giving birth to two**: the positive and the negative terms of $\det$ cancel $n!/2$ each (the lossless side), while $\mathrm{per}$ keeps all its positive terms in a single branch (the loss-bearing side), and the loss cannot be cancelled, forced out by the irrationality of $\log_2 3$. Valiant $VP\ne VNP$ is the name of this criterion in the language of arithmetic circuits; what "allows an amplification $m=\mathrm{poly}(n)$" is a **general** (non-cancelling) circuit — and amplification cannot save the term count: a closed form is a formula tree, and a tree of size $S=n^c$ and depth $d$ supplies at most $m=S^d=n^{cd}$ monomials, while $\mathrm{per}$ has $n!$ terms. This is not "possible", it is a threshold table read off cell by cell (`pn_form` · 203 cells · 8 criteria · all eight teeth killed): for every fixed degree $cd$ there is an $n$ with $n!>n^{cd}$ — the crossing points for $cd=1..21$ are, in order, $3,4,6,7,8,10,11,12,14,15,16,18,19,20,22,23,24,25,27,28,29$ (all of them visible within $n\le30$); on the $\det$ side the crossing point for $n^3$ is $6$, after which the factorial always wins. So $m=\mathrm{poly}(n)$ does not constitute another kind of possible object.
+> The substance of Lemma 4.1 is the **quotient criterion**, not an external conjecture: closed form (cancelling type) $\iff$ a $\bmod2$ quotient inside the layer $\iff$ closure $nm=k$. $\det$ has a quotient ($\mathrm{sgn}$ surjects onto $\mathbb{Z}_2$), $\mathrm{per}$ has none — full enumeration of $66064$ $0/1$ matrices checks $\det\equiv\mathrm{per}\pmod2$ with $0$ violations --- **stated plainly**: this congruence is itself an identity ($\mathrm{sgn}\equiv1\pmod2$), so the enumeration is a check, not a discovery; the discriminative power sits in the two integer readings that follow; the $\mathrm{GF}(2)$ affine rank is $(n-1)^2+1<n^2$ with defect $2n-2$ ⟹ the $\bmod2$ quotient cannot be pasted on. So $\mathrm{per}$ has only one road left: enumerate the kernel space $2^{\mathrm{nullity}}=2^n$ (Ryser walks the whole domain, $|X_n|=2^n$). The part already proved in the archive (probes 309/310/311): the Pólya linear kernel with $m=n$ has no solution for $n\ge3$ (rank-1 necessary condition, trace-constraint identity with $240$ terms and $0$ violations, canonical solution = sign Hadamard, i.e. $n=2$). **The landing point of the generation chain = the two branches of one giving birth to two**: the positive and the negative terms of $\det$ cancel $n!/2$ each (the lossless side), while $\mathrm{per}$ keeps all its positive terms in a single branch (the loss-bearing side), and the loss cannot be cancelled, forced out by the irrationality of $\log_2 3$. Valiant $VP\ne VNP$ is the name of this criterion in the language of arithmetic circuits; what "allows an amplification $m=\mathrm{poly}(n)$" is a **general** (non-cancelling) circuit — and amplification cannot save the term count: a closed form is a formula tree, and a tree of size $S=n^c$ and depth $d$ supplies at most $m=S^d=n^{cd}$ monomials, while $\mathrm{per}$ has $n!$ terms. This is not "possible", it is a threshold table read off cell by cell (`pn_form` · 203 cells · 8 criteria · all eight teeth killed): for every fixed degree $cd$ there is an $n$ with $n!>n^{cd}$ — the crossing points for $cd=1..21$ are, in order, $3,4,6,7,8,10,11,12,14,15,16,18,19,20,22,23,24,25,27,28,29$ (all of them visible within $n\le30$); on the $\det$ side the crossing point for $n^3$ is $6$, after which the factorial always wins. So $m=\mathrm{poly}(n)$ does not constitute another kind of possible object.
 
 By Lemma 4.1, $\mathrm{per}\notin\mathrm{P}$ while the decision version of $\mathrm{per}$ $\in\mathrm{NP}$ (verification = multiplying once) ⟹ $P\ne NP$. $\blacksquare$
 
 **Construction layer (construct · estimate · sufficiency, written structurally)**:
-- **Construct**: the dual-path calculators for $\det$ and $\mathrm{per}$ (elimination vs Ryser) are realised as finite matrix operations, with machine witness dev $\le8.4\times10^{-13}$ (`verify_pvsnp.c` P11/P12); swapping rows flips the sign of $\det$ $(-11\leftrightarrow+11)$ and leaves $\mathrm{per}$ unchanged ($117\leftrightarrow117$); the positive and the negative term counts are $n!/2$ each (P2).
-- **Estimate**: the degrees of freedom of $\mathrm{per}$ are $2^n=|X_n|$ (Ryser enumerates the whole domain), those of $\det$ are $1$; GF(2) affine rank $2/5/10=(n-1)^2+1$, defect $2n-2$; full enumeration of $66064$ $0/1$ matrices gives $\det\equiv\mathrm{per}\pmod2$ with $0$ violations (P3) — the $\bmod 2$ quotient is the only shared bit and is not enough to fold.
-- **Sufficiency**: a quotient ⟹ a closed form ⟹ P (forward direction; elimination is the witness); no $\bmod 2$ quotient plus an impossible paste (P4, rank deficiency mod 2) ⟹ not in P (reverse direction). Sufficiency is closed by the quotient criterion and does not rest on eliminating candidate closed forms one by one; a "non-cancelling closed form" is not another kind of possible object (the terms of a closed form can merge only through a sign homomorphism, so with no quotient ⟹ term count = support size); Valiant $VP\ne VNP$ is the name of this sentence in the language of arithmetic circuits.
+- **Construct**: the dual-path calculators for $\det$ and $\mathrm{per}$ (elimination vs Ryser) are realised as finite matrix operations, with machine witness dev $\le8.4\times10^{-13}$ (`verify_pvsnp.c` P9/P10); swapping rows flips the sign of $\det$ $(-11\leftrightarrow+11)$ and leaves $\mathrm{per}$ unchanged ($117\leftrightarrow117$); the positive and the negative term counts are $n!/2$ each (P2).
+- **Estimate**: the degrees of freedom of $\mathrm{per}$ are $2^n=|X_n|$ (Ryser enumerates the whole domain), those of $\det$ are $1$; GF(2) affine rank $2/5/10=(n-1)^2+1$, defect $2n-2$; full enumeration of $66064$ $0/1$ matrices checks $\det\equiv\mathrm{per}\pmod2$ with $0$ violations (P3; the congruence is an identity, and the discriminative power sits in the GF(2) affine rank and the defect) — the $\bmod 2$ quotient is the only shared bit and is not enough to fold.
+- **Sufficiency**: a quotient ⟹ a closed form ⟹ P (forward direction; elimination is the witness); no $\bmod 2$ quotient plus an impossible paste (P9, rank deficiency mod 2) ⟹ not in P (reverse direction). Sufficiency is closed by the quotient criterion and does not rest on eliminating candidate closed forms one by one; a "non-cancelling closed form" is not another kind of possible object (the terms of a closed form can merge only through a sign homomorphism, so with no quotient ⟹ term count = support size); Valiant $VP\ne VNP$ is the name of this sentence in the language of arithmetic circuits.
 
 ### 7.1 The key upgrade (where this paper goes beyond the archive draft) — the criterion version
 
@@ -322,11 +326,11 @@ $\mathrm{per}$ has no $\bmod 2$ quotient (Corollary 1.5), and a $\bmod 2$ quotie
 |---|---|
 | $(-1)^{\mathrm{inv}}\equiv\mathrm{Re}e^{i\pi\cdot\mathrm{inv}}$ ($n\le7$, $5912$ permutations) | dev $=0.000\text{e+}00$ |
 | $e^{i\pi}+1$ | $0.000\text{e+}00$ |
-| $\det$ cancellation degree ($n=3\to8$) | $5.44\text{e-}02\to1.65\text{e-}06$, $a\approx-1.9788$ |
+| $\det$ cancellation degree ($n=3\to8$) | $5.44\text{e-}02\to1.65\text{e-}06$, $a\approx-2.0807$ |
 | $\mathrm{per}$ cancellation degree (positive matrices) | $1.0000000000$ (dev $0$) |
 | cancellation on complex matrices ($n=6$, $40$ runs) | $\min C_{\det}=0.005024$ (cancellation can only come from the entries; the sign homomorphism takes no part) |
-| $\mathrm{GF}(2)$ solvability ($n=2..8$) | `YES, NO×6`; true rank $2,5,10,17,26,37,50$ |
-| rank law $\mathrm{rank}=(n-1)^2+1$ | holds throughout $n=3..8$; defect $2n-2$ |
+| $\mathrm{GF}(2)$ solvability ($n=2..10$) | `YES, NO×8`; true rank $2,5,10,17,26,37,50,65,82$ |
+| rank law $\mathrm{rank}=(n-1)^2+1$ | holds throughout $n=3..10$; defect $2n-2$ (two independent implementations cross-checked) |
 | rectangle identity $R(a,b)\oplus R(a,c)=R(b,c)$ | violations $0$ ($n=3..8$ × $2000$ samples) |
 | sign matrices making every rectangle sum $=1$ | $n=3$: $0/512$; $n=4$: $0/65536$ |
 | Gaussian elimination $\det$ vs brute force | max rel dev $1.084\text{e-}14$ |
@@ -341,11 +345,11 @@ $\mathrm{per}$ has no $\bmod 2$ quotient (Corollary 1.5), and a $\bmod 2$ quotie
 ```
 # Independent recomputation (pure C, no external libraries; two parts: GF(2) 17 items + construction layer 9 items)
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o pvsnp.exe code/verify_pvsnp.c && ./pvsnp.exe
-# Expected: subtotals 17 · 9 for the two parts, last line RESULT PASS=26 FAIL=0, EXIT=0
+# Expected: subtotals 18 · 9 for the two parts, last line RESULT PASS=27 FAIL=0, EXIT=0
 
 # Matrix probe (two steps)
-containers(matrix, domain=onestep, out=matrix_onestep_layer_gap_pvsnp.csv)
-containers(matrix, domain=abacus,  out=matrix_abacus_layer_gap.csv)
+containers(matrix, domain=onestep, out=matrix/onestep_layer_gap.csv)
+containers(matrix, domain=abacus,  out=matrix/abacus_layer_gap.csv)
 ```
 
 Paper / code / CSV all live under `D:\lw`.
@@ -379,11 +383,11 @@ This single item decides the whole fork of the paper: **alternating ⟹ a sign e
 
 | $n$ | positive terms in the $\det$ expansion | negative terms | equal? | term count of $\mathrm{per}$ |
 |---|---|---|---|---|
-| 2 | 2 | 2 | ✓ | 4 |
-| 3 | 9 | 9 | ✓ | 18 |
-| 4 | 48 | 48 | ✓ | 96 |
-| 5 | 300 | 300 | ✓ | 600 |
-| 6 | 2160 | 2160 | ✓ | 4320 |
+| 2 | 1 | 1 | ✓ | 2 |
+| 3 | 3 | 3 | ✓ | 6 |
+| 4 | 12 | 12 | ✓ | 24 |
+| 5 | 60 | 60 | ✓ | 120 |
+| 6 | 360 | 360 | ✓ | 720 |
 
 $n!/2$ positive $+$ $n!/2$ negative — **cancellation is a priori in the term counts**; on the `per` side all $n!$ terms are **$+1$**, and not a single one can be cancelled.
 
@@ -393,7 +397,7 @@ Over $\mathbb{F}_2$, $+1=-1$ and the sign vanishes:
 
 $$\det(A)\equiv\mathrm{per}(A)\pmod 2$$
 
-Local **full enumeration**: the $0/1$ matrices for $n=2,3,4$ number $66064$ in total, and the count with $\det\bmod 2\ne\mathrm{per}\bmod 2$ = $\mathbf{0}$.
+Local **full enumeration**: the $0/1$ matrices for $n=2,3,4$ number $66064$ in total, and the count with $\det\bmod 2\ne\mathrm{per}\bmod 2$ = $\mathbf{0}$. Stated plainly: $\mathrm{sgn}\equiv1\pmod2$ makes the congruence hold identically, so this item is a **check**, not a numerical discovery.
 
 This is both good news and bad news: **the mod 2 quotient exists**, so $\mathrm{per}\bmod 2$ belongs to $\mathrm{P}$ (it is just the determinant); but it is **exactly this one bit**: beyond parity, $\mathbb{F}_2$ carries nothing at all.
 
@@ -492,9 +496,9 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o pvsnp.exe code/verify_pvsnp.c && ./pvsnp.
 | Conclusion | Grade | Basis |
 |---|---|---|
 | $(-1)^\sigma=e^{i\pi\sigma}$, $e^{i\pi}+1=0$ | **theorem level (identity)** | machine dev $0$ |
-| decay of the cancellation degree ($a\approx-1.98$) | **theorem level (measured law)** | mean of $40$ independent recomputations |
-| $\mathrm{GF}(2)$ unsolvable for $n\ge3$ | **theorem level** | two paths: elimination + rectangle alternation law |
-| $\mathrm{rank}=(n-1)^2+1$ | **theorem level (measured law)** | holds throughout $n=3..8$, structural source given |
+| decay of the cancellation degree ($a\approx-1.98$) | **reading level (measured law on a finite domain)** | mean of $40$ independent recomputations; **a fitted exponent, no proof** |
+| $\mathrm{GF}(2)$ unsolvable for $n\ge3$ | **theorem level** | two paths: elimination + rectangle alternation law (§5.2 is an identity argument, independent of computation) |
+| $\mathrm{rank}=(n-1)^2+1$ | **reading level (measured law on a finite domain)** | holds throughout $n=3..10$ (two independent implementations cross-checked); §5.3 gives a dimension **explanation**, not a proof for all $n$ |
 | the closed form of $\prod(1+z^{2^i})$ | **theorem level (identity)** | dev $0$ |
 | "anti $\iff$ modulus method" | **structural level (system register)** | the axis structure of the four classes of basic operations |
 | "closed form $\iff$ quotient" | **structural level (Theorem 2.4)** | derived from the closure condition |

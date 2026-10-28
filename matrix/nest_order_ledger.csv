@@ -1,0 +1,30 @@
+item,window,dev,class,mechanism_bound
+"hl P5  2C2 截断积 2*prod(1-1/(q-1)^2)",1000,1.261483e-04,FORCED_trunc,dev<=C/(h^1.0*(lnh)^1.0)
+"hl P5  2C2 截断积 2*prod(1-1/(q-1)^2)",10000,9.806785e-06,FORCED_trunc,dev<=C/(h^1.0*(lnh)^1.0)
+"hl P5  2C2 截断积 2*prod(1-1/(q-1)^2)",100000,8.021576e-07,FORCED_trunc,dev<=C/(h^1.0*(lnh)^1.0)
+"hl P5  2C2 截断积 2*prod(1-1/(q-1)^2)",1000000,6.777476e-08,FORCED_trunc,dev<=C/(h^1.0*(lnh)^1.0)
+"hl P5  2C2 截断积 2*prod(1-1/(q-1)^2)",10000000,5.859900e-09,FORCED_trunc,dev<=C/(h^1.0*(lnh)^1.0)
+"hl P5  2C2 截断积 2*prod(1-1/(q-1)^2)",100000000,4.810790e-10,FORCED_trunc,dev<=C/(h^1.0*(lnh)^1.0)
+"hl P6  e^-gamma 部分积 prod(1-1/p)*lnQ",1000,4.854414e-03,TREND,NA
+"hl P6  e^-gamma 部分积 prod(1-1/p)*lnQ",10000,1.330070e-03,TREND,NA
+"hl P6  e^-gamma 部分积 prod(1-1/p)*lnQ",100000,3.141578e-04,TREND,NA
+"hl P6  e^-gamma 部分积 prod(1-1/p)*lnQ",1000000,3.993756e-05,TREND,NA
+"hl P6  e^-gamma 部分积 prod(1-1/p)*lnQ",10000000,9.671152e-06,TREND,NA
+"hl P6  e^-gamma 部分积 prod(1-1/p)*lnQ",100000000,4.029879e-06,TREND,NA
+"hl P2  一阶系数 c=(S-1)*L  （应=2）",100000000,2.133255e-01,FORCED_trunc,dev<=C/(h^0.0*(lnh)^1.0)
+"hl P2  一阶系数 c=(S-1)*L  （应=2）",10000000000,1.597446e-01,FORCED_trunc,dev<=C/(h^0.0*(lnh)^1.0)
+"hl P2  一阶系数 c=(S-1)*L  （应=2）",1000000000000,1.279790e-01,FORCED_trunc,dev<=C/(h^0.0*(lnh)^1.0)
+"hl P2  一阶系数 c=(S-1)*L  （应=2）",100000000000000,1.068330e-01,FORCED_trunc,dev<=C/(h^0.0*(lnh)^1.0)
+"hl P2  一阶系数 c=(S-1)*L  （应=2）",10000000000000000,9.171464e-02,FORCED_trunc,dev<=C/(h^0.0*(lnh)^1.0)
+"hl P2  一阶系数 c=(S-1)*L  （应=2）",1000000000000000000,8.035849e-02,FORCED_trunc,dev<=C/(h^0.0*(lnh)^1.0)
+"hl P4  焊接口 阶梯 vs Li2 （全区间 T0=2）",1000,8.495945e-02,TREND,NA
+"hl P4  焊接口 阶梯 vs Li2 （全区间 T0=2）",10000,3.002868e-02,TREND,NA
+"hl P4  焊接口 阶梯 vs Li2 （全区间 T0=2）",100000,3.438511e-02,TREND,NA
+"hl P4  焊接口 阶梯 vs Li2 （全区间 T0=2）",1000000,5.140871e-02,TREND,NA
+"hl P4  焊接口 阶梯 vs Li2 （全区间 T0=2）",10000000,7.149606e-02,TREND,NA
+"hl P4b 焊接口 阶梯 vs Li2 （渐近区 T0=1e4）",20000,1.531706e-03,FORCED_trunc,dev<=C/(h^0.5*(lnh)^0.0)
+"hl P4b 焊接口 阶梯 vs Li2 （渐近区 T0=1e4）",30000,1.389704e-03,FORCED_trunc,dev<=C/(h^0.5*(lnh)^0.0)
+"hl P4b 焊接口 阶梯 vs Li2 （渐近区 T0=1e4）",100000,8.889312e-04,FORCED_trunc,dev<=C/(h^0.5*(lnh)^0.0)
+"hl P4b 焊接口 阶梯 vs Li2 （渐近区 T0=1e4）",300000,5.542887e-04,FORCED_trunc,dev<=C/(h^0.5*(lnh)^0.0)
+"hl P4b 焊接口 阶梯 vs Li2 （渐近区 T0=1e4）",1000000,3.156430e-04,FORCED_trunc,dev<=C/(h^0.5*(lnh)^0.0)
+"hl P4b 焊接口 阶梯 vs Li2 （渐近区 T0=1e4）",10000000,9.639428e-05,FORCED_trunc,dev<=C/(h^0.5*(lnh)^0.0)

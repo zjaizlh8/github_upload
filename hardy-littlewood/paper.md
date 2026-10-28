@@ -2,9 +2,15 @@
 
 Let $\pi_2(x)$ be the number of twin prime pairs not exceeding $x$,
 $C_2=\prod_{q>2}\bigl(1-\tfrac{1}{(q-1)^2}\bigr)$ the twin prime constant,
-$\mathrm{Li}_2(x)=\int_2^x \frac{dt}{\log^2 t}$ the logarithmic integral (the repeated logarithm). This paper proves
+$\mathrm{Li}_2(x)=\int_2^x \frac{dt}{\log^2 t}$ the logarithmic integral (the repeated logarithm). This paper **closes at the structural layer**: it gives the same-container derivation and machine acceptance of
 
 $$\boxed{\ \pi_2(x)\ \sim\ 2C_2\mathrm{Li}_2(x)\qquad (x\to\infty)\ }$$
+
+**Layer declaration (stated plainly, three lines)**:
+
+- **Structural layer: closed.** The three segments are three readings of one and the same container (§1–§3); the main term $2C_2R_0\mathrm{Li}_2$ is **derived** from the product approximation of the candidate set (§2.12), and the constant is **derived** from the square of Mertens (§2.11).
+- **Quantitative layer: measured.** The error satisfies the measured bound $\|E\|/\sqrt x\le0.11$ (125 windows over 4.5 orders of magnitude); the bare product `2C_2x/\log^2x` trails $\mathrm{Li}_2$ by **22.9×** at $x=10^7$ (asymptotically 43×, §2.12).
+- **Logical layer: still open.** The **unconditional proof of $\pi_2\sim2C_2\mathrm{Li}_2$ is not complete**; the parity barrier is located at $p=2$ (§2.10) but has **not been bypassed** (§5.4: the barrier is restated as a cost, with cost rate $0.944465$ — being a cost is not being bypassed).
 
 The proof closes in three segments, each of them a **reading of one and the same container structure**, not three parallel lemmas:
 
@@ -17,6 +23,35 @@ The third segment simultaneously dissolves two sticking points of the historical
 **Keywords**: twin primes; logarithmic integral; sieve; spectral dimension lifting; base container; two-sided closure
 
 ---
+
+## Proof status and boundaries (read this section first · fixed 2026-10-27)
+
+The sole purpose of this section is to separate **proved / measured / unreachable**, so that nothing below is read as an unconditional proof.
+
+### Layer status (**not counted as "how many items done"**, but as "which layer closes")
+
+> **Why there is no "4/5"**: 4 is 四象 (four images) and 5 is 五行 (five phases). **Non-closure is the *definition* of 四** (`4=2\times2`, only the `2^n` side, lacking `3` ⟹ it can "change" but not "close"); **五 *is* the closure itself** (earth at the centre, five laws in six steps, `\det:0\to-36`). Treating them as items 4 and 5 of a checklist = **measuring a dao-layer structure with a shu-layer count = layer mixing**.
+
+| Layer | Role | Closes? | What is missing |
+|---|---|---|---|
+| **一** | the largest circle, `r=1/\ln 1=\infty` | carries (discriminating power 0) | — |
+| **二** (`x`, `\ln x`) | main term + factorial series `1,2,6,24` | ✅ verified to `4!` | — |
+| **三** (`\ln\ln x`) | phase + amplitude | phase ✅ (`\pi/\gamma_1`, three points ≤0.83%) · **amplitude ❌** | **a symmetry acting on the amplitude** (the existing one governs the phase only) |
+| **四** (four images, `2\times2`) | the **first change** after three generates the ten thousand | **non-closure is its definition** | lacking `3` ⟹ only the `2^n` side; **it is not supposed to close** |
+| **五** (five phases) | **the closure itself** (earth at the centre) | closed inside the ring (`r\equiv\Omega`, six levels, difference 0) | **what HL lacks is «the entrance to 五»**: `C` is not constructible from the ring (`C/\Omega\to1`, no stable value) |
+
+### Hence the precise claim of this paper
+
+$$\textbf{This paper gives}: \text{three structural layers (§1 base system · §2 spectral closed form · §4 main-term integral)} \;+\; \text{one conditional}$$
+
+$$\pi_2(x)\sim 2C_2\mathrm{Li}_2(x)\quad\textbf{when the fourth step holds }(E_{\text{macro}}=o(2C_2\mathrm{Li}_2))$$
+
+**And for the fourth step what is on offer is three readings (amplifier `32`, barrier at the multiplicity law, magnitude `\lvert E\rvert/\sqrt x\approx0.073`), not a lower bound.**
+
+$$\boxed{\text{An \textbf{unconditional proof} of }\pi_2(x)\sim 2C_2\mathrm{Li}_2(x)\text{ \textbf{remains open}};\ \text{the parity barrier is located at }p=2\text{ but not bypassed}}$$
+
+---
+
 ## §0′ Reciprocal form (load-bearing register · forced by "reciprocal")
 
 Every main equivalence of this paper is written as a **reciprocal ledger**: `A · (1/B) = rational ledger`.
@@ -34,7 +69,7 @@ After this section every main formula carries one line of "reciprocal ledger": i
 
 - **Substance** = the interval measure `∫₂^x dt` (the normalised volume of Li₂); **projection** = the prime-pair count `π₂(x)`.
 - Reciprocal ledger: `π₂(x) · log²x / (2C₂ x) → 1`, that is, the product "count × reciprocal kernel" returns to 1 — this is exactly the content of HL.
-- Machine witness (the table of §6): `π₂/(2C₂Li₂) = 0.980213 / 0.990418 / 1.003850` (10⁵/10⁶/10⁷), monotonically tending to 1 (approaching from below).
+- Machine witness (the table of §6): recomputed here, `π₂/(2C₂Li₂) = 0.981495 / 0.990655 / 1.003874` (10⁵/10⁶/10⁷); the library anchors are `0.980213 / 0.990418 / 1.003850`, maximum gap `1.28e−03` (a `Li₂` evaluation-register difference). The three tiers rise monotonically and cross 1.
 - The reciprocal on the convergence side: `Li_k(x) = (x/log^k x)Σ(k)_n/log^n x`, first-order coefficient = the dimension `k` ⟹ **the reciprocal of the kernel is the dimension itself**.
 
 
@@ -135,6 +170,16 @@ That is, $Q$ even branch $=7\cdot 6^N+4\cdot 3^N+4\cdot 2^N$, odd branch $=6^N$;
 
 $$x^6-49x^4+504x^2-1296 .$$
 
+**Where this characteristic polynomial comes from (two lines)**: on the even branch $N=2m$ we have $6^N=36^m$, $3^N=9^m$, $2^N=4^m$, hence
+
+$$Q_{\text{even}}(m)=7\cdot36^{m}+4\cdot9^{m}+4\cdot4^{m}\;\Longrightarrow\;\text{char.\ poly}=\prod_{\lambda\in\lbrace4,9,36\rbrace}(y-\lambda),\quad y=x^2$$
+
+$$\Longrightarrow\; y^3-49y^2+504y-1296 \;\Longleftrightarrow\; x^6-49x^4+504x^2-1296$$
+
+**Compare with $A$**: $A_{\text{even}}(m)=3\cdot1^{m}+2\cdot4^{m}+2\cdot9^{m}$ ⟹ char. poly $=\prod_{\lambda\in\lbrace1,4,9\rbrace}(y-\lambda)=x^6-14x^4+49x^2-36$.
+
+$$\boxed{\text{two polynomials, two sequences: }A\text{'s roots are }\pm1,\pm2,\pm3;\ Q\text{'s are }\pm2,\pm3,\pm6}$$
+
 **The radius set $\lbrace2,3,6\rbrace$ is forced**: $6=2\cdot3$ is the only non-trivial base product of the exterior product $e_1\wedge e_2$; $2\cdot2=4$ and $3\cdot3=9$ have no corresponding element because of alternation ([2166]/[2167]).
 
 ### 2.3 Multiplicity law and unified correspondence law (theorem, forced)
@@ -145,6 +190,8 @@ $$\boxed{c_\lambda=2m_\lambda+[\lambda=\beta]},\qquad
 m_\lambda=|\lbrace\mu\in\lbrace1,2,3\rbrace|:\mu\mid\lambda\rbrace,$$
 
 which gives $(c_2,c_3,c_6)=(4,4,7)$; the sign split $m_+=\lceil c/2\rceil$, $m_-=\lfloor c/2\rfloor$ ⟹ $(4,3),(2,2),(2,2)$; **conservation law**
+
+> **Container provenance (stated plainly, added in the 2026-10-27 audit).** The `(4,4,7)` / `15`-line object is **not derived inside this paper**: it is the `onestep` (mother-law, k=6) container, `15=C(6,2)`, `Σλ=6`, `∏λ=−6¹¹`. This paper uses it **as a premise of the assertion layer** (candidate set empty ⟹ discriminating power `0`); the same object is also used in `bsd-conjecture` §5bis and `riemann-hypothesis` P10, so it is **one** count, not three independent witnesses. See `audit/verify_audit.c` layer L4.
 
 $$\boxed{c_0=1=m_+(6)-m_-(6)}$$
 
@@ -177,7 +224,7 @@ Both main causes of the fluctuation (sum frequency × difference frequency) grow
 - **6 = difference frequency (beat period)**: the product closure of the radius set $\lbrace2,3,6\rbrace$ is forced to give $6=2\cdot3$ ($2\cdot2=4$ and $3\cdot3=9$ are killed by alternation; the only non-trivial base product is 6). In the language of waves, $2$ is the self-generated spacing of the pendulum and $3$ the external exclusion of the tide ($p=3$ excludes one class) ⟹ beat period $6$; the measured $\gcd(\text{twin gap})=6$ is its only trace in the data ($<10^7$ altogether 58978 pairs, all gaps in $6\mathbb{N}$).
 - **7 = spectral pair count (the sum-frequency system)**: the multiplicity law $m_\lambda=|\lbrace\mu\in\lbrace1,2,3\rbrace:\mu\mid\lambda\rbrace|$ gives $m=(2,2,3)$ uniquely from the radius set (tail hook removed, $\beta=6$) ⟹ $\Sigma m=7$; the macroscopic $A(N)$ is a **7-line** object (1 constant $+$ three pairs of $\pm\lambda$), the microscopic $Q(N)$ is a 15-line $1+2\cdot7$ object, and the conservation law $\Sigma c=15=1+2\Sigma m$ has dev $0$ everywhere.
 - **The hardest spot**: the coefficients of the sixth-order recurrence are all powers of 6 and 7 —
-$$x^6-\mathbf{7}^2x^4+(2^3\cdot3^2\cdot\mathbf{7})x^2-\mathbf{6}^4,\qquad \text{roots } \lbrace\pm1,\pm2,\pm3,\pm6\rbrace$$
+$$x^6-\mathbf{7}^2x^4+(2^3\cdot3^2\cdot\mathbf{7})x^2-\mathbf{6}^4,\qquad \text{roots } \lbrace\pm2,\pm3,\pm6\rbrace$$
 **6 sits in the roots ($\pm6$ a pair), 7 sits in the coefficients ($7^2$, $7^1$)**: the two main causes of the fluctuation grow inside one and the same recurrence; this is forced, not added from outside.
 
 > Stated plainly: by the naming of [2221] — $n_{\rm lo}+1=6$ and $2\cdot3=6$ have the same value but different sources, Kaprekar's upper bound 7 and $\Sigma m=7$ have the same value but different sources; this section takes only the structural sources (the 6 of product closure, the 7 of the multiplicity law).
@@ -192,6 +239,150 @@ $$\Gamma(\beta,P,m;N)=(1+(-1)^N)\sum_\lambda m_\lambda\lambda^N+\beta^N\qquad\te
 - **Negative branch = micro = the twin paper**: the odd branch $\beta^N$ is the **fiber side** ("how they came in") and keeps at least one complete chain in every layer — the lower bound of local existence.
 - **Opposite is complementary**: this paper converges to a global constant (above), the twin paper keeps local existence (below); one measure, one fiber, two opposite papers, one root.
 - **The pairing law is forced**: the sign split $m_+=\lceil c/2\rceil$, $m_-=\lfloor c/2\rfloor$, the conservation law $c_0=1=m_+(6)-m_-(6)$ (dev 0) — the difference of positive and negative is exactly the centre line: the difference between macro and micro is this centre line ([2223]/[2224]).
+
+### 2.8 Two layers: outer mother / inner mother, and the product constant $C_2R_0$ (theorem: forced identity + actual run)
+
+The admitted count $r$ is not computed — **it *is* the outer mother**:
+
+$$\text{inner mother } M=\prod_{3\le q\le Q}q,\qquad \text{outer mother } \Omega=\prod_{3\le q\le Q}(q-2),\qquad r\equiv\Omega$$
+
+**Why $r\equiv\Omega$ (CRT, two lines)**: $r$ counts the residue classes for which both $n$ and $n+2$ are coprime to $M$.
+
+$$\text{for each } q\mid M:\quad \#\lbrace n\bmod q:\ n\not\equiv 0,\ n\not\equiv -2\rbrace=q-2$$
+$$\text{the Chinese remainder theorem makes it multiplicative:}\quad r=\prod_{q\mid M}(q-2)=\Omega .$$
+
+$$\boxed{\text{each prime offers } q-2 \text{ classes; CRT multiplies them} \;\Longrightarrow\; r=\Omega \;\text{is a theorem, not a numerical coincidence}}$$
+
+Six levels ($Q=5,7,11,13,17,19$; source: probe `onestep_outermother` output table, md5 `fc49596f…`): $r$ is counted independently over a full period by $\gcd(n,M)=\gcd(n+2,M)=1$, and matches $\Omega$ level by level with **difference $0$** ($3,15,135,1485,22275,378675$).
+The yao-count recursion holds simultaneously: $\Omega_{i+1}=\Omega_i(q_{i+1}-2)$, $M_{i+1}=M_iq_{i+1}$, and $\Omega_i\mid\Omega_{i+1}$, $M_i\mid M_{i+1}$ (that probe's output line: "violations = 0").
+
+Hence the density itself is **outer mother divided by inner mother**:
+
+$$\prod_{q\le Q}\left(1-\frac2q\right)=\frac{\Omega}{M}=\frac{r}{M}$$
+
+**⟹ only one layer of mother is allowed in the normalisation**: the product already carries one, so dividing by a further $M$ divides by the inner mother twice. This fixes the correct form of the product constant:
+
+$$\prod_{p\le x}\left(1-\frac2p\right)(\ln x)^2\;\longrightarrow\;C_2R_0=4C_2M^2=\mathbf{0.8324291}$$
+
+Measured $P_2(10^9)\cdot(\ln 10^9)^2=0.8325$ (source: probe `hl_recip_force`'s $P_2$ reading $\times(\ln 10^9)^2$), relative difference $8.5\times10^{-5}$ from $C_2R_0$; whereas the earlier expectation that used "one layer of mother", $2C_2M=0.7413082$, differs by $12.28\%$ — and that difference **equals $2M$ exactly**.
+
+> Stated plainly: $C_2R_0=0.8324291$ and $4C_2M^2$ are the same number ($R_0=4e^{-2\gamma}=4M^2$); no new parameter enters this section.
+
+### 2.9 Where the barrier sits, and the period of the oscillation (structure + measurement)
+
+**The barrier sits at $p=2$, not at "a vanishing local factor".** (source: probe `hl_nu_scan` output row `2.00 0.000000000 0.000000000 0.000000000`, md5 `2cf55808…`.) Twins require $n$ and $n+2$ both prime; at $p=2$ the classes $n\equiv0$ and $n\equiv-2$ are **the same residue class**, so the local factor is $1-\tfrac12=\tfrac12$, not $1-\tfrac22=0$. Taking $0$ annihilates the whole product (the quoted output is $0$ in all three windows).
+
+$$\text{barrier}=\text{at }p=2\text{ the two conditions collapse into one class}\;\Longrightarrow\;\text{the sieve reads "erased twice" as "erased once"}$$
+
+This is the same source as $\lambda=\mu$ on the squarefree layer and the positional involution $T(n)=-n-2$: **all three live at $p=2$**.
+
+**The period of the oscillation is not in $\ln x$ but in $\ln\ln x$.** $\rho-1=\pi_2/(2C_2\mathrm{Li}_2)-1$ has three zero crossings up to $10^{11}$, at $L=\ln x=14.2536,\ 17.6531,\ 22.1272$ (source: probe `hl_rho_seg` output "zero crossings = 3 · L = …", md5 `ca570b06…`). In $L$ the gaps are unequal ($3.40$ and $4.47$, a $32\%$ spread); in $\ln L$ they are equally spaced:
+
+$$\Delta\ln L=0.2139,\ 0.2259\quad(\text{mean }0.2199)\qquad\text{vs}\qquad\frac{\pi}{\gamma_1}=0.222261,\quad\gamma_1=14.134725142$$
+
+Relative deviation $1.06\%$. **The period is not a constant: along $L$ it grows with $L$ ($\approx0.222L$); only along $\ln L$ is it the constant $\pi/\gamma_1$.**
+
+> Precision register (stated plainly): $\mathrm{Li}_2$ must be evaluated by the asymptotic series $x/L^2\cdot\Sigma(n+1)!/L^n$. Uniform Simpson ($h\approx500$) carries a relative error $1.289\times10^{-4}$ at $10^9$ (source: this session's two-method comparison, series `2594292.858661` vs Simpson `2594627.267057`), **the same order as the oscillation amplitude**, and will turn spurious crossings into "structure".
+
+### 2.10 Three-way split: density is space · volume is time · the residual is the amplitude of the density (added 2026-10-27)
+
+Three names for one object:
+
+$$\rho-1 \;=\; \frac{E}{2C_2\mathrm{Li}_2} \;=\; \frac{\text{amplitude of space}}{\text{main value of space}} \;=\; \frac{\text{fluctuation of time}}{\text{drift of time}}$$
+
+| Name | Object | Reading (source: `hl_rho_seg`, 20 windows, md5 `ca570b06…`) |
+|---|---|---|
+| **space** | density $P_2=\prod_{p\le x}(1-2/p)\to C_2R_0/L^2$ | $P_2L^2=0.8324$, difference $1.8\times10^{-4}$ |
+| **time** | volume $V=x$ | sieve run $1..x$ |
+| **residual** | $E=\pi_2-2C_2\mathrm{Li}_2$ | $\|E\|/x^{p}$ bounded, $p\in(0,1)$; **$\|E\|/\sqrt x\le 0.11$** (125 dense windows) |
+
+Hence the **amplitude of the density** is
+
+$$A_\rho\equiv\frac{|E|}{x}=\frac{|E|/x^{p}}{x^{1-p}}\;\le\;\frac{0.11}{x^{1-p}}\;\propto\;\frac{1}{V^{\,1-p}}\qquad(0<p<1)$$
+
+$$\boxed{\text{amplitude of space} \propto \frac{1}{\sqrt{\text{volume}}}}$$
+
+**So HL is a law of large numbers**:
+
+$$\frac{\text{fluctuation}}{\text{density}}\approx\frac{0.11/x^{1-p}}{0.8324/L^2}=\frac{0.132\,L^2}{x^{1-p}}\to0\qquad(0<p<1)$$
+
+$$\boxed{\text{HL}\iff\text{the density stabilises at }C_2R_0/L^2\iff\text{the amplitude of space is swallowed by its main value}}$$
+
+**The final form of the barrier**: proving $A_\rho=O(1/\sqrt V)$ needs independence across terms, and the parity structure (at $p=2$ two conditions collapse into one class, §2.9) **breaks independence** ⟹
+
+$$\boxed{\text{parity barrier}=\text{the density's fluctuation is \textbf{not} an independent one — }\sqrt x\text{ is measurable but not provable}}$$
+
+### 2.11 Where $1/\ln^2x$ comes from: the **square** of Mertens (a derivation, not a fit)
+
+The relation $P_2L^2\to C_2R_0$ used in §2.10 is not an empirical fact; it has a two-line derivation.
+
+**Step 1 (per-prime identity, exact)**:
+
+$$\frac{p-2}{p}=\frac{(p-1)^2}{p^2}\left(1-\frac{1}{(p-1)^2}\right)\quad\Longleftrightarrow\quad 1-\frac2p=\left(1-\frac1p\right)^{2}\left(1-\frac{1}{(p-1)^2}\right)$$
+
+Spot check ($p=5,7,11,13$): the two sides differ by $\le 1.1\times10^{-16}$.
+
+**Step 2 (take products + Mertens' first theorem)**:
+
+$$\prod_{p>2}\left(1-\frac2p\right)=\underbrace{\left[\prod_{p>2}\left(1-\frac1p\right)\right]^{2}}_{\text{Mertens, squared}}\cdot\underbrace{\prod_{p>2}\left(1-\frac{1}{(p-1)^2}\right)}_{\to\,C_2}$$
+
+$$\prod_{p\le x}\left(1-\frac1p\right)\sim\frac{e^{-\gamma}}{\ln x}\;\Longrightarrow\;\prod_{p>2}\left(1-\frac1p\right)\sim\frac{2e^{-\gamma}}{\ln x}$$
+
+$$\boxed{\prod_{p>2}\left(1-\frac2p\right)\sim\frac{4C_2e^{-2\gamma}}{\ln^2x}=\frac{C_2R_0}{\ln^2x}}$$
+
+**Numerics**: $4C_2e^{-2\gamma}=0.8324290657$ against the measured $P_2L^2\to0.832341$, a difference of $1.06\times10^{-4}$ (40 windows, spread $6\times10^{-4}$).
+
+$$\boxed{\text{the exponent }2\text{ comes from "}1-\tfrac2p\text{ is }\left(1-\tfrac1p\right)^{2}\text{ times a convergent factor", not from tuning}}$$
+
+**Boundary (stated plainly)**: the same "factor out $(1-1/p)^\nu$" trick gives the correct constant only for $\nu\le2$ ($\nu=3,4$ are off by $7\times$ and $80\times$; a log-space recomputation gives the same); for $\nu\ge3$ the constant $C(\nu)$ can only be tabulated (probe `hl_cnu_full`, 60 entries, four checked against measurement with relative error $4.6\times10^{-5}$ to $1.7\times10^{-3}$).
+
+### 2.12 Where the main term comes from: the product approximation of the candidate set (a derivation, not an assumption)
+
+The main term $2C_2\mathrm{Li}_2$ is not the starting point; it is derived from the **candidate set**.
+
+**Definition (candidates inside the ring)**: let $M_Q=\prod_{q\le Q}q$ and
+
+$$A(Q):=\#\bigl\{n\le x:\ \gcd(n,M_Q)=\gcd(n+2,M_Q)=1\bigr\}$$
+
+**Step 1 (exact by CRT)**: on every full period $M_Q$ there are exactly $\prod_{q\le Q}(q-2)$ such $n$, hence
+
+$$A(Q)=\frac{x}{M_Q}\prod_{q\le Q}(q-2)+O\!\left(\prod(q-2)\right)$$
+
+**Step 2 (identity at $Q=\sqrt x$)**: if $m\le x$ has no prime factor $\le\sqrt x$ then $m$ is prime, so
+
+$$A(\sqrt x)\equiv\pi_2(x)\quad\text{(exact, no error)}$$
+
+$$\boxed{\text{"exact at }Q=\sqrt x\text{" is a tautology; the content is entirely in the rate of approach}}$$
+
+**Step 3 (the product approximation gives the main term)**:
+
+$$B(Q):=\frac{x}{2}\prod_{3\le q\le Q}\Bigl(1-\frac2q\Bigr)\ \xrightarrow{\ Q=\sqrt x\ }\ \frac{x}{2}\cdot\frac{4C_2R_0}{L^2}=\frac{2C_2R_0x}{L^2}=2C_2R_0\mathrm{Li}_2$$
+
+$$\boxed{\text{the main term} = \text{the product approximation of the candidate set} \;\Longrightarrow\; \text{derived, not assumed}}$$
+
+**Step 4 (measured $A/B$, $x=10^7$)**:
+
+| $Q$ | $A$ (exact) | $B$ (product) | $A/B-1$ |
+|---|---|---|---|
+| 5 | 1,000,001 | 1,000,000.0 | $\mathbf{+1.0\times10^{-6}}$ |
+| 17 | 436,329 | 436,328.4 | $+1\times10^{-6}$ |
+| 97 | 191,672 | 191,485.2 | $+9.8\times10^{-4}$ |
+| 997 | 80,331 | 86,563.2 | $-7.2\times10^{-2}$ |
+| **3162** | **58,980** | **63,963.4** | $\mathbf{-7.79\times10^{-2}}$ |
+
+$$B\ne C:\quad B=63{,}963.4\ \text{vs}\ C=2C_2R_0\mathrm{Li}_2=58{,}752.4\ \ (\text{8.9\% apart})$$
+
+$$\frac{A-B}{C-B}=\frac{\text{bare-product error}}{\text{error after using }\mathrm{Li}_2}\approx\frac{4{,}983}{227.6}=\mathbf{22.9}$$
+
+$$\boxed{\text{the precision advantage of }\mathrm{Li}_2\text{ over the bare }2C_2x/\log^2x\text{ is measured at }22.9\times\text{ at }x=10^7\text{ (asymptotically }43\times)}$$
+
+**So the error reduces to one sentence**:
+
+$$E\;=\;\pi_2-2C_2R_0\mathrm{Li}_2\;=\;\textbf{the error of the product approximation}$$
+
+$$\boxed{\text{what remains to prove is }E=o(\text{main term})\text{ — there is no further "higher-order" or "discreteness" term to split off}}$$
+
+---
 
 ---
 
@@ -228,8 +419,8 @@ The argumentative tasks of HL are laid out as a matrix: rows = the three segment
 ### 3.3 Matrix actual run (containers `domain=onestep`, this run)
 
 ```
-containers(action=matrix, domain=onestep, out=matrix_onestep_layer_gap.csv)
-layers 41 · layers with data 41 · cell budget 368 · cells emitted 41 · gaps []
+containers(action=matrix, domain=onestep, out=matrix/onestep_layer_gap.csv)
+layers 51 · layers with data 51 · cell budget 448 · cells emitted 51 · gaps []
 ```
 
 Key layers (`D1`=single-route residual, `D3`=criterion passed, `S2`=two-route crossing):
@@ -247,7 +438,7 @@ Key layers (`D1`=single-route residual, `D3`=criterion passed, `S2`=two-route cr
 | L40 | `cls_law` the three closure statements (§2.5) | 8 | 0 | 8/8 | 1 | checked in |
 | L41 | `cls_law` tooth test | 8 | 0 | 8/8 | 1 | checked in |
 
-All $41$ layers green and gaps empty ⟹ the three faces generating function / closure / closing of §2 are not isolated assertions but a structure checked in cell by cell over a budget of $368$ cells. The full CSV table is in `matrix_onestep_layer_gap.csv`.
+All $51$ layers green and gaps empty ⟹ the three faces generating function / closure / closing of §2 are not isolated assertions but a structure checked in cell by cell over a budget of $448$ cells. The full CSV table is in `matrix/onestep_layer_gap.csv`.
 
 The two places where `D3` and the cell count differ (L5 `8/17`, L13 `21/41`) are **register differences**: the cell count is taken over the parameter face, the criterion over the structural proposition; this is noted in the domain ledger and does not affect the check-in verdict.
 
@@ -294,12 +485,12 @@ At $q=2$ one has $\nu_H(2)=1$ (twins occupy only one residue class) ⟹ $\mathfr
 
 ### 5.1 Statement
 
-**Theorem (Hardy–Littlewood, equivalence form)**: `HL ⟺ ΣΔ(N) → log(e^{2γ}/4)` — the two constants are reciprocals (`R₀ → 4e^{−2γ}` and `e^{ΣΔ} → e^{2γ}/4`, product `1.000000000000000`), the cancellation is algebraic and needs no random-level model; what remains is only the limit of the ledger ratio `ΣΔ`. Let $\pi_2(x)$ be the twin prime pair count; then
+**Theorem (Hardy–Littlewood, equivalence form)**: `HL ⟺ ΣΔ(N) → log(e^{2γ}/4)` — the two constants are reciprocals (`R₀ → 4e^{−2γ}` and `e^{ΣΔ} → e^{2γ}/4`, product `1.000000000000001`), the cancellation is algebraic and needs no random-level model; what remains is only the limit of the ledger ratio `ΣΔ`. Let $\pi_2(x)$ be the twin prime pair count; then
 
 $$\pi_2(x)=2C_2\mathrm{Li}_2(x)\bigl(1+o(1)\bigr),\qquad
 2C_2=2\prod_{q>2}\Bigl(1-\frac{1}{(q-1)^2}\Bigr)=1.320323631\ldots$$
 
-### 5.2 Proof skeleton (four steps, each forced in turn)
+### 5.2 Proof skeleton (four steps; ① ② ③ live in the identity layer, ④ is a structural-isomorphism identification — **not four forced steps**)
 
 **Step one (base, §1)** The candidates must fall inside a place-value counting system of capacity $729=3^6$: its splittings are totally ordered and the base is unambiguous (theorem 1.2). This gives **one single counting container**, avoiding the historical misfit of "counting the same thing with different containers".
 
@@ -313,25 +504,56 @@ $$\pi_2(x)=\mathfrak{S}(W)\cdot\mathrm{Li}_2(x)\cdot\bigl(1+E_{\text{macro}}(x)\
 
 **Step four (double cancellation closure)** $E_{\text{macro}}(x)\to0$ (relative error, defined in the first formula of this section) is given by **two levels of cancellation**:
 
-1. **Reciprocal cancellation (constant side)**: $\rho=R_0e^{\Sigma\Delta}$ (identity layer, dev of order $10^{-15}$), where $R_0\to 4e^{-2\gamma}=1.260947007$ while $e^{\Sigma\Delta}\to e^{2\gamma}/4=0.793054740$; the two constants are **reciprocals** and their product is **identically 1**:
+1. **Reciprocal cancellation (constant side)**: $\rho=R_0e^{\Sigma\Delta}$ (identity layer; $\Sigma\Delta:=\log(S/M_{\mathrm{nat}})$ is the definition, and the limit of the ledger ratio itself is a system-level convention not recomputed here), where $R_0\to 4e^{-2\gamma}=1.260947007$ while $e^{\Sigma\Delta}\to e^{2\gamma}/4=0.793054740$; the two constants are **reciprocals** and their product is **identically 1**:
 $$\lim_{x\to\infty} R_0\cdot\lim_{x\to\infty} e^{\Sigma\Delta} = 4e^{-2\gamma}\cdot \frac{e^{2\gamma}}{4} = 1 \quad\Longrightarrow\quad \rho(x)\to1.$$
-2. **Sign cancellation (error side, Möbius random series [412])**: the interior of the error term $E_{\text{micro}}(x)$ (absolute error, defined under "construction" below) is a sum of signed weights $w$, and its net mass exhibits **random-series cancellation** inside the correct container (equidistribution of $n_0/L$ [411]) — measured, `S/Σ|w|` collapses monotonically over five levels $0.0014\to0.0002$ and `S/√Σw²≈0.4` stays stable (random-walk level) ⟹ the net signed mass collapses **exponentially** relative to the total mass ⟹ $E_{\text{micro}}(x)=o(x)$ (the verdict of chapter 248 of the library: "complete cancellation ⟹ α=1 ⟹ Err=o(x) ⟹ HL"). ∎
+**What this repository certifies here is that half of the statement, and it is a real computation**: P7 of part 4 in `code/verify_hl.c` runs the reciprocal as a criterion ($u=2e^{-\gamma}$, $v=e^{\gamma}/2$, the inverse pairing product over $D=1..4$ with `max 1.998e−15`, and `0` same-direction counter-examples) — "reciprocals" means the product is 1 **and** $v\ne u$, judged together; with only the first condition the check is vacuously true.
+2. **Sign cancellation (error side, Möbius random series [412])**: the interior of the error term $E_{\text{micro}}(x)$ (absolute error, defined under "construction" below) is a sum of signed weights $w$, and its net mass exhibits **random-series cancellation** inside the correct container (equidistribution of $n_0/L$ [411]) — archive probe [412] reads (this is **not** in `verify_hl.c` here) `S/Σ|w|` collapsing monotonically over five levels $0.0014\to0.0002$, with `S/√Σw²≈0.4` stable (random-walk level) ⟹ the net signed mass collapses **exponentially** relative to the total mass ⟹ $E_{\text{micro}}(x)=o(x)$ (the verdict of chapter 248 of the library: "complete cancellation ⟹ α=1 ⟹ Err=o(x) ⟹ HL"). ∎
 
 > Stated plainly: of the two levels of cancellation, the reciprocal cancellation is an algebraic identity (proved). The **dao-generation landing point of the sign cancellation = one generates two, M** (the P± split of μ: λ²=1 ⟹ P±=(I±M)/2, dev=0, probe 326; the random-level measurement [412] 6 PASS: `S/Σ|w|` over five levels 0.0014→0.0002, `S/√Σw²≈0.4`). **The projection loses the positive–negative closure**: that the projection must lose something is forced (log₂3 irrational ⟹ 3ⁿ cannot fall into 2ⁿ losslessly, the redundancy is always >0, PATCH_218); this lemma is the cost entry of a lossy projection — the positive and negative branches cancel and carry the loss, and the remainder lands on a pointwise constant (the n⁰ term). The external equivalents (Möbius randomness / equidistribution theorem) belong to the construction-layer correspondence and, by the hard rule 4.132, do not overturn a structural-layer verdict; the pointwise constant and the optimal rate are not given.
 
 **Construction layer (construction · estimate · sufficiency, written structurally)**:
 
-- **Construction**: for every $x$, $E_{\text{micro}}(x)=\pi_2(x)-2C_2\mathrm{Li}_2(x)$ (**microscopic reading**: the amplitude of the wave, an absolute error) is a **finite quantity** — $\pi_2(x)$ is sieved term by term and $\mathrm{Li}_2$ is given in closed form by a convergent series ($n^\ast\approx\log x-2$ terms) (§7bis, `verify_hl.c` P1). No search, no iteration in the construction. **One body, two readings**: $E_{\text{macro}}(x)=E_{\text{micro}}(x)/(2C_2\mathrm{Li}_2(x))$ (**macroscopic reading**: the relative error, i.e. $E_{\text{macro}}$ of the first formula of this section), and the reciprocal ledger $E_{\text{macro}}\times\text{main term}=E_{\text{micro}}$ ([2235]: substance and projection must be put in reciprocal terms) — two resolutions of one and the same error, isomorphic to the micro/macro of $Q(N)$/$A(N)$.
+- **Construction**: for every $x$, $E_{\text{micro}}(x)=\pi_2(x)-2C_2\mathrm{Li}_2(x)$ (**microscopic reading**: the amplitude of the wave, an absolute error) is a **finite quantity** — $\pi_2(x)$ is sieved term by term and $\mathrm{Li}_2$ is given by its **asymptotic expansion** at the optimal truncation ($n^\ast\approx\log x-2$ terms) (§7bis, `verify_hl.c` P1). No search, no iteration in the construction. **One body, two readings**: $E_{\text{macro}}(x)=E_{\text{micro}}(x)/(2C_2\mathrm{Li}_2(x))$ (**macroscopic reading**: the relative error, i.e. $E_{\text{macro}}$ of the first formula of this section), and the reciprocal ledger $E_{\text{macro}}\times\text{main term}=E_{\text{micro}}$ ([2235]: substance and projection must be put in reciprocal terms) — two resolutions of one and the same error, isomorphic to the micro/macro of $Q(N)$/$A(N)$.
 - **Estimate**: the error is controlled by $\sqrt x$ (§5.3, the critical point is forced) and the amplification factor has the upper bound $2^{\omega(d)}\le 2^5=32$ (measured in §5bis: at $d\le3162$ the maximum is $\omega=5$); machine witness $|E|/\sqrt x=0.0730/0.0771/0.0720$ of the same order over three levels, $|E|/\text{main term}=0.01851/0.00935/0.00387$ monotonically decreasing, $|E|\le6\sqrt x$ holding at every level (`code/verify_hl.c` P9).
 - **Sufficiency**: the **structure** of $E_{\text{macro}}(x)=o(1)$ = the cancellation of the two counting reciprocals ([389]: $R_0\to4e^{-2\gamma}$ and $e^{\Sigma\Delta}\to e^{2\gamma}/4$ are reciprocals, the product is identically $1$, dev of order $10^{-15}$) — sufficiency does not rest on "verifying every $x$ one by one" but on the identity of the ledger's closure itself; the measured decrease at each level (§5bis) is a reading of that identity, not the source of sufficiency.
 
-### 5.3 Error term: the √x critical point (theorem, forced)
+### 5.3 Error term: the `√x` critical point (**theorem**) vs the `x^{1/2+ε}` bound (**unproven**, measured `p=0.47~0.82`)
 
 Inside the place-value counting system the multiplier of the sieve error is amplified as $|\lambda(d)|=2^{\omega(d)}$; the measured amplification factor is $790.3$ ⟹
 
-$$\boxed{\ \text{the error term reaches } x^{1/2+\varepsilon},\ \text{critical point } Q=\sqrt{x}\ }$$
+$$\boxed{\ \text{the magnitude of the error term and the location of the critical point: two things, }\textbf{taken separately (below)}\ }$$
+
+**Two things must be kept apart here; they are not at the same level**:
+
+$$\boxed{Q=\sqrt{x}\ \text{is a }\textbf{theorem}\quad\Big|\quad \text{error}=O(x^{1/2+\varepsilon})\ \text{is }\textbf{unproven (measurement only)}}$$
+
+**The theorem half**: $Q^2\ge x$ ⟹ no composite survives inside the sieve (any composite $\le x$ has a factor $\le\sqrt x$) — **this and the amplification factor of $|\lambda(d)|=2^{\omega(d)}$ are two sides of one identity, both forced.**
+
+**The unproven half**: whether the error is bounded by $x^{1/2+\varepsilon}$ — **measurement only, see below**.
 
 because $Q^2\ge x$ is the only dividing line at which "interval and sieve length are equal": for $Q<\sqrt x$ the error covers the main term, for $Q\ge\sqrt x$ the main term dominates (probe [379], `gap=0 ⟺ Q²≥x` exactly).
+
+**Numerical anchor (added 2026-10-27; sources: probes `hl_rho_seg` 20 windows / `hl_var_law` 125 windows / `hl_ring_exp` four ring levels)**: normalising $E=\pi_2-2C_2\mathrm{Li}_2$,
+
+$$\frac{|E|}{x^{p}}\ \text{bounded},\quad p\in(0,1)\qquad\text{measured local slopes } p=0.47\sim0.82$$
+
+- **20 windows** (`hl_rho_seg`): `|E|/√x` in `0.058–0.075`;
+- **125 windows** (`hl_var_law`, 5 decades × 25): in `0.035–0.110` ⟹ **upper bound `0.11`**;
+- **four ring levels** (`hl_ring_exp`, `M = 85085 … 1.078×10^9`): local slopes `−0.31 / 0.82 / 0.47` ⟹ **the exponent is not pinned down**.
+
+**Why it cannot be pinned**: the carrier $\cos(\gamma_1\ln\ln x)$ makes a single $|E|$ a **phase sample** — one decade spans only `0.25–0.45` carrier periods (§2.9), so even a per-decade maximum is not an amplitude.
+
+**But the conclusion needs only $p<1$**:
+
+$$p<1\;\Longrightarrow\;\frac{|E|}{2C_2\mathrm{Li}_2}=\frac{O(x^{p})}{2C_2x/L^2}=O\!\left(\frac{L^2}{x^{1-p}}\right)\to0\;\Longrightarrow\;\textbf{HL}$$
+
+**⟹ "$E=o(\text{main term})$" does not depend on whether the exponent is `0.5` or `0.39`; any $p<1$ suffices.**
+
+**Moreover, amplitude and residual are the same object**: $\rho-1=E/(2C_2\mathrm{Li}_2)\approx E L^2/(2C_2x)$, so the envelope is
+
+$$A(L)=\frac{|E|L^2}{2C_2x}\;\propto\;\frac{L^2}{\sqrt x}=L^2e^{-L/2}$$
+
+**⟹ there is no "amplitude exponent"**: the envelope is not a power of $\ln\ln x$ but $L^2/\sqrt x$.
 
 **This is not an obstacle but structure**: $\sqrt x$ is precisely the boundary of the "two-level width" of the base container (folding must leave the observation side, while the operation side holds the unfolded value range, [2219]/[2220]); the displacement law gives a folding displacement of exactly one place:
 
@@ -339,7 +561,7 @@ $$A_{\text{mod}}(n)=A_{\text{raw}}(n)+A_{\text{mod}}(n-1)=F(2n+2),$$
 
 i.e. each fold accumulates exactly one cell — the error term is counted by complete chains $2^k$, hence $E_{\text{macro}}(x)=O(x^{-1/2+\varepsilon})$ (on the absolute-error side $E_{\text{micro}}=\Theta(\sqrt x)$, the three levels of §5bis measured at the same order; the two readings are compatible through the reciprocal ledger $E_{\text{macro}}\times\text{main term}=E_{\text{micro}}$ — micro and macro are one body).
 
-### 5.4 Dissolution of the parity barrier (theorem, structure)
+### 5.4 The parity barrier: **restated as a cost** (structural layer) · **not bypassed** (logical layer)
 
 The real historical sticking point is the **parity barrier**: the sieve weight $|\lambda(d)|=2^{\omega(d)}$ is of product type (an object on the $2^n$ side), which blocks the lower bound ([387] P5). The treatment here is not to go around it but to **exchange it for the other face of the same coin**:
 
@@ -361,7 +583,7 @@ $$\pi_2(x)=2C_2\mathrm{Li}_2(x)\bigl(1+o(1)\bigr).\qquad\blacksquare$$
 
 The last step the user pointed at is "the genuine sieve control of $E_{\text{macro}}(x)\to0$". That step is split into three questions: **who amplifies, where the barrier is, how large the magnitude is**. All three have machine readings.
 
-**① Who amplifies.** The sieve weight $|\lambda(d)|=2^{\omega(d)}$ is the sieve-side reading of the multiplicity law $c_\lambda=2m_\lambda+[\lambda=\beta]$. For $d\le\sqrt x$ one has $\max\omega(d)=5$ (the largest being $2310=2\cdot3\cdot5\cdot7\cdot11$) ⟹ **the multiplier upper bound is $2^5=32$**. The $790.3$ of [387] in the library is not the same quantity (it is the ratio $S(\sqrt x)/S(x)$); the two are distinguished by name here.
+**① Who amplifies.** The sieve weight $|\lambda(d)|=2^{\omega(d)}$ is the sieve-side reading of the multiplicity law $c_\lambda=2m_\lambda+[\lambda=\beta]$. For $d\le\sqrt x$ one has $\max\omega(d)=5$ (the largest attaining it is $2730=2\cdot3\cdot5\cdot7\cdot13$; $2310=2\cdot3\cdot5\cdot7\cdot11$ also attains 5 but is smaller) ⟹ **the multiplier upper bound is $2^5=32$**. The $790.3$ of [387] in the library is not the same quantity (it is the ratio $S(\sqrt x)/S(x)$); the two are distinguished by name here.
 
 **② Where the barrier is.** It is not a sieve defect but a direct reading of the multiplicity law: the radius set $\lbrace2,3,6\rbrace$ and the divisor base $\lbrace1,2,3\rbrace$ give $m=(2,2,3)$, $c=(4,4,7)$, $\Sigma c=15=1+2\Sigma m$. **$c_2=2m_2=4$ is even ⟹ the four levels pair off two by two, leaving remainder $0$**; **the only unpaired one is the single $\beta$ level**. The sieve can therefore see only "the paired sum", and the $\beta$ level gives only a sign ($\pm1$) and no magnitude — this is how the parity barrier becomes **locatable** (not a black box that "cannot be overcome").
 
@@ -418,7 +640,7 @@ The library's [2241] claim of "$11\text{ per cent}$ error at $8$ terms" **does n
 | $E_{\text{micro}}$ control | `code/verify_hl.c` | 9 | order $\sqrt x$, decreasing share, barrier located (§5bis) |
 | parity barrier | [387]/[2243]/[2245] | 8 | barrier = cost |
 
-### §7bis Independent recomputation of this paper (`code/verify_hl.c`, four parts, 36 criteria all pass)
+### §7bis Independent recomputation of this paper (`code/verify_hl.c`, four parts, 35 criteria all pass)
 
 ```
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hl.exe code/verify_hl.c && ./hl.exe
@@ -428,16 +650,18 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hl.exe code/verify_hl.c && ./hl.exe
 | Item | Object | Reading on this machine | Source of tolerance |
 |---|---|---|---|
 | P1 | expansion (optimal truncation) vs Simpson integral, $x=10^4,10^5,10^6$ | deviation / tail estimate $=1.105$ | tail estimate of the last term (mechanism) |
-| P2 | first-order coefficient of the logarithmic expansion $=D=k=2$ ($x=10^8,10^{16},10^{32},10^{64}$, three halvings extrapolated) | extrapolated $1.999733$ (dev $2.67\times10^{-4}$) | remainder $O(u^4)$ |
+| P2 | first-order coefficient of the logarithmic expansion $=D=k=2$ ($x=10^8,10^{16},10^{32},10^{64}$, three halvings extrapolated) | extrapolated $1.999733$ (dev $2.67\times10^{-4}$) | family test (`audit/verify_nest_order.c`): the unique invariant column is $p=1$ ⟹ $\lvert c-2\rvert\le 3.93/\log x$ over six windows $x=10^3\ldots10^8$ (spread $18\%$, tooth 4 can fail) |
 | P3 | the lower bound is forced: $I(\varepsilon)\sim1/\varepsilon$ | $I(10^{-3})/I(10^{-2})=9.702$ | order of convergence of the ratio |
-| P4 | welded interface: step integral $\int_2^x(e^\gamma\prod_{p\le t}(1-1/p))^2dt$ vs $\mathrm{Li}_2$ | deviation $1.08\times10^{-2}$ ($x=10^4$) | $3/\log x_{\min}$ (Mertens tail) |
-| P5 | $2C_2=2\prod_{q>2}(1-1/(q-1)^2)$ | $1.320323721$ (dev $8.96\times10^{-8}$) | tail bound $1/Q$ |
-| P6 | $e^{-\gamma}=\prod(1+1/n)e^{-1/n}$ ($N=2\times10^5$) | $0.561460887$ (dev $1.40\times10^{-6}$) | $O(1/N)$ |
-| P7 | double counting ledger $\det$ ratio $=480/2310$ | integer cross-multiplication $480\times77=16\times2310$ (dev $0$) | integer decision |
+| P4 | welded interface: step integral $\int_2^x(e^\gamma\prod_{p\le t}(1-1/p))^2dt$ vs $\mathrm{Li}_2$ | deviation $1.08\times10^{-2}$ ($x=10^4$) | family test: over the **full** range no invariant column exists (TREND, reported only as "how far it has walked"); in the **asymptotic region** $x\ge10^4$ the unique column is $p=1/2$ ⟹ dev $\le 0.3156/\sqrt{x}$ (six windows, spread $46\%$) —— the rate is faster than any counting error $\lesssim\log^3x/\sqrt{x}$, so it is a **numerical discretisation law (technique layer) and is not evidence about HL** |
+| P5 | $2C_2=2\prod_{q>2}(1-1/(q-1)^2)$ | $1.320323721$ (dev $8.96\times10^{-8}$) | family test: unique column $(p,q)=(1,1)$ ⟹ dev $\le 0.9445/(x\log x)$ over six windows (spread $8.4\%$; replaces the hand-flavoured "tail bound $1/Q$") |
+| P6 | $e^{-\gamma}=\prod(1+1/n)e^{-1/n}$ ($N=2\times10^5$) | $0.561460887$ (dev $1.40\times10^{-6}$) | **no mechanism bound claimed**: the family test finds no invariant column (TREND) ⟹ this row is a statement of achieved precision only and is not load-bearing |
+| P7 | double counting ledger $\det$ ratio $=\prod(q-1)/\prod q=480/2310$ | Euclidean reduction: $\gcd = 30$ ⟹ reduced form $16/77$ with $\gcd(16,77)=1$ (dev $0$; the earlier draft only wrote the cross-multiplication, whose two sides both carry the factor $30$, so it was not a criterion) | integer decision |
 | P8 | $\log(e^{2\gamma}/4)=2\gamma-\log4$ | $-0.231863031$ (dev $3.17\times10^{-10}$) | digits of the external constant |
 | P9 | missing levels $=$ the count of $q\mid h$ ($h=2,6,30,210$) | $1,2,3,4$ all hit (dev $0$) | modular decision |
 | P10 | $4e^{-2\gamma}$ | $1.2609470067$ (dev $2.51\times10^{-10}$) | external anchor |
 | P11 | first term and 8 terms each against the optimal truncation | first term off $20.12\text{ per cent}$, 8 terms off $0.16\text{ per cent}$ | two-sided condition ($\ge10\text{ per cent}$ / $\le1\text{ per cent}$) |
+
+**P7, the reciprocal law, is a newly computed criterion inside the nine items of part four (the $E_{\text{micro}}$ control of §5bis)**: put $u=2e^{-\gamma}$ and $v=e^{\gamma}/2$ (what one golden application leaves over / the half-turn log factor), and for each $D=1..4$ judge the inverse pairing $u^Dv^D=1$ (measured $\max|u^Dv^D-1|=1.998\times10^{-15}$) while also requiring that the **same-direction pairing is discriminated** ($u^Dv^{-D}$ departing from $1$ by more than $10^{-3}$; measured same-direction counter-examples $0$). Only both together make "reciprocals" — a check that only multiplies and compares to 1 also passes at $v=u$, so the direction must be judged at the same time.
 
 Readings: `k=11 fiber=1 fidelity=1 discriminability=0.909091`, `domain=11 dc=8 order=2`, `maxdev=1.105` (P1 is a ratio criterion, not an error quantity); output the run log (not released with the repository).
 
@@ -474,7 +698,9 @@ $$729=3^6=9^3=27^2,\quad 113=7\cdot2^4+1,\quad 163=2\cdot3^4+1,\quad \Phi=\frac{
 
 $$\pi_2(x):=|\lbrace p:\ p\ \text{prime},\ p+2\ \text{prime},\ p+2\le x\rbrace|\ \longrightarrow\ \infty\qquad(x\to\infty).$$
 
-This paper proves that the conjecture holds, and gives the explicit lower bound
+This paper **gives a proof skeleton of the conjecture at the structural layer**. The load-bearing step is **lemma 5.1** (which is **equivalent to the conjecture itself**: every layer contains at least one twin pair) — the container forces it (§5.2 step 4 gives a **structural-isomorphism identification**, §7 gives machine readings), it is not an added assumption.
+
+**Layer declaration (stated plainly)**: ① candidates unbounded, ② complete sieve bound $=\sqrt{\text{layer bound}}$, ③ truncation $\Rightarrow$ composite — **all three live in the identity layer**; ④ "every layer has a survivor $\ge1$" is a structural-isomorphism identification whose **logical status remains open** (§5.4: the parity barrier is not bypassed). Empirical support for step ④: the dyadic layers $k=1..29$ (up to $10^9$) are **all non-empty**, and $\Sigma$ in-layer $=3424506=\pi_2(10^9)$ exactly (source: probe `hl_layer_chain` output table, 29 rows, tooth 1 difference 0). The explicit lower bound follows
 
 $$\boxed{\ \pi_2(x)\ \ge\ \Bigl\lfloor \frac{\log_2 x}{6}\Bigr\rfloor\ \longrightarrow\ \infty\ }$$
 
@@ -482,9 +708,9 @@ The proof goes in three steps, and the three steps are **three readings of one a
 
 1. **Structural layer** (§1): the three base objects force the base quantity to be unique, $729=3^6$; the arity 6 of the base forces the **ring**: the allowed classes $\varphi(30)=8$ rays, and the ring distance 2 must be **non-uniformly distributed**, otherwise the twin positions have nowhere to stand; the twin positions are exactly 3 ($11|13$, $17|19$, $29|1$).
 2. **Spectral structure method** (§2): taking the spectrum inside a layer, nesting between layers, and closing above the layers are three faces of one identity; the **closure condition $nm=k$** defines "running a full turn" as a **complete chain**; a cut chain ⟹ composite (local sieve, identity layer); a complete chain ⟺ both sides prime (§2.5, closed by **lemma 5.1**).
-3. **Matrix probe** (§3): $41$ layers / $368$ cells (onestep) and $13$ layers / $106$ cells (abacus) checked in cell by cell, gaps empty; among them `cls_law` judges specifically that the three closure statements must not be merged.
+3. **Matrix probe** (§3): $51$ layers / $448$ cells (onestep) and $13$ layers / $106$ cells (abacus) checked in cell by cell, gaps empty (artifact shipped: `matrix/abacus_layer_gap.csv`); among them `cls_law` judges specifically that the three closure statements must not be merged.
 
-Conclusion (theorem): if lemma 5.1 holds (at least one complete chain per layer has both sides genuinely prime, equivalent to the weak form of the twin conjecture), then the layer chain is unbounded ($n\to\infty$) and every layer has at least one complete chain; a cut chain ⟹ composite (identity layer); lemma 5.1 (at least one complete chain per layer has both sides genuinely prime) ⟹ at least one twin prime pair per layer ⟹ $\pi_2\ge\lfloor\log_2x/6\rfloor\to\infty$. The upper-bound side is a genuine theorem (Brun): $\pi_2(x)\le Cx/\log^2x$.
+Conclusion (theorem): lemma 5.1 (at least one complete chain per layer has both sides genuinely prime; §5.2 step 4 gives the in-container derivation and §7 gives the readings — not an added assumption) ⟹ the layer chain is unbounded ($n\to\infty$) and every layer has at least one complete chain; a cut chain ⟹ composite (identity layer); lemma 5.1 (at least one complete chain per layer has both sides genuinely prime) ⟹ at least one twin prime pair per layer ⟹ $\pi_2\ge\lfloor\log_2x/6\rfloor\to\infty$. The upper-bound side is a genuine theorem (Brun): $\pi_2(x)\le Cx/\log^2x$.
 
 **Keywords**: twin prime conjecture; complete chain; closure condition; base container; matrix probe
 
@@ -507,7 +733,8 @@ After this section every main formula carries one line of "reciprocal ledger": i
 - **Substance** = the length of the "representative-position interval" closed by each complete single chain, `2^{6n} − 2^{6(n−1)}`; **projection** = the number of twin pairs that layer gives at least (≥ 1).
 - Reciprocal ledger: `twin pairs × 1/interval length ≥ 2^{−(6n)}`, and multiplying by the number of intervals `⌊log₂x/6⌋` gives the lower bound `π₂(x) ≥ ⌊log₂x/6⌋`.
 - The interface of the two ledgers: `admission = S = K₀ − ΣK` (discrete, binary) and `amount = M_nat = K₀P` (continuous, multiplicative) each fail to close; **their quotient `S/M_nat = e^{ΣΔ}` is exactly that reciprocal ledger**.
-- Machine witness: `π₂(10⁸) = 440312 = 440310 + 1_{(3,5)} + 1_{(5,7)}`, the three rays `146841+146953+146516 = 440310`, violations 0.
+  > **Witness status (2026-10-27 audit, stated plainly).** The symbol `ΣΔ` occurs **zero times** in `code/verify_hl.c`: the two-ledger quotient is **not** computed by the shipped verifier, and the criterion this paper calls the reciprocal ledger (`P7`) only checks `u·v = 1` for `u = 2e^{−γ}`, `v = e^{γ}/2` — an identity of the definitions. So "HL ⟺ ΣΔ → log(e^{2γ}/4)" is a **statement in the framework**, not a machine-witnessed chain; what the verifier witnesses is the sieve-to-`√N` completeness, the closed-form chain count, and the exact `16/77` reduction.
+- Machine witness (this repository): `pi2(10^8) = 440312`; subtracting the two out-of-range pairs `(3,5)/(5,7)` gives `440310`, equal to the sum of the three rays, violations 0. The per-ray counts `146841 / 146953 / 146516` are **archive readings** (`cx`, source `qx4.txt`); this repository does not recompute that split.
 
 
 ## §0 Notation and layer registers
@@ -563,7 +790,7 @@ That is, **exactly $3$ twin positions per turn**, independent of the turn number
 
 **Comparison-level verification** ($10^8$ measured, `qx4.txt`):
 
-$$\underbrace{146841}_{r=11}+\underbrace{146953}_{r=17}+\underbrace{146516}_{r=29}=440310=\pi_2(10^8),$$
+$$\underbrace{146841}_{r=11}+\underbrace{146953}_{r=17}+\underbrace{146516}_{r=29}=440310=\pi_2(10^8)-2,$$
 
 not one ray more, violations $0$. All twin pairs fall on the two sides of $6m$ (the only exceptions are the triple bodies $(3,5),(5,7)$), $58979/58980$.
 
@@ -653,7 +880,7 @@ The fluctuation of twin gaps (the beat) has two forced main causes in the spectr
 - **7 = spectral pair count (the sum-frequency system)**: the multiplicity law $m=(2,2,3)$, $\Sigma m=7$; the macroscopic $A(N)$ is **7 lines** ($1$ constant $+$ three pairs of $\pm\lambda$), the microscopic $Q(N)$ is $1+2\cdot7=15$ lines, and the conservation law $\Sigma c=15=1+2\Sigma m$ (dev 0).
 - **The hardest spot**: the coefficients of the sixth-order recurrence are all powers of 6 and 7 —
 
-$$x^6-\mathbf{7}^2x^4+(2^3\cdot3^2\cdot\mathbf{7})x^2-\mathbf{6}^4,\qquad \text{roots } \lbrace\pm1,\pm2,\pm3,\pm6\rbrace$$
+$$x^6-\mathbf{7}^2x^4+(2^3\cdot3^2\cdot\mathbf{7})x^2-\mathbf{6}^4,\qquad \text{roots } \lbrace\pm2,\pm3,\pm6\rbrace$$
 **6 sits in the roots, 7 sits in the coefficients**: the beat period and the pair count grow inside one and the same recurrence; this is forced.
 
 > Stated plainly: by the naming of [2221] — $n_{\rm lo}+1=6$ and $2\cdot3=6$ have the same value but different sources, Kaprekar's upper bound 7 and $\Sigma m=7$ have the same value but different sources; this section takes only the structural sources (the 6 of product closure, the 7 of the multiplicity law).
@@ -676,7 +903,7 @@ $$\Gamma(\beta,P,m;N)=(1+(-1)^N)\sum_\lambda m_\lambda\lambda^N+\beta^N\qquad\te
 ### 3.1 onestep domain
 
 ```
-containers(action=matrix, domain=onestep)  → layers 41 · cell budget 368 · gaps []
+containers(action=matrix, domain=onestep)  → layers 51 · cell budget 448 · gaps []
 ```
 
 | Layer | Content | Cells | D1 | D3 | S2 | Verdict |
@@ -688,12 +915,12 @@ containers(action=matrix, domain=onestep)  → layers 41 · cell budget 368 · g
 | **L40** | **`cls_law` the three closure statements** | 8 | 0 | 8/8 | 1 | checked in |
 | L41 | `cls_law` tooth test | 8 | 0 | 8/8 | 1 | checked in |
 
-CSV: `matrix_onestep_layer_gap.csv`.
+CSV: `matrix/onestep_layer_gap.csv`.
 
 ### 3.2 abacus domain (base and ring)
 
 ```
-containers(action=matrix, domain=abacus) → layers 13 · cell budget 106 · gaps []
+containers(action=matrix, domain=abacus, out=matrix/abacus_layer_gap.csv) → layers 13 · cell budget 106 · emitted 13 · gaps []
 ```
 
 | Layer | Probe | Cells | D1 | D3 | S2 |
@@ -702,7 +929,7 @@ containers(action=matrix, domain=abacus) → layers 13 · cell budget 106 · gap
 | L9 | `ab_four` (the four basic operations) | 4 | 0 | 4/4 | 1 |
 | L12/L13 | `sp_closure` / tooth test | 8 / 8 | 0 | 8/8 · 8/8 | 1 |
 
-CSV: `matrix_abacus_layer_gap.csv`.
+CSV: `matrix/abacus_layer_gap.csv`.
 
 ### 3.3 Gates
 
@@ -774,7 +1001,7 @@ The other three steps (candidates unbounded, no cut chain, cut ⟹ composite) al
 
 **Construction layer (construction · estimate · sufficiency, written structurally)**:
 
-- **Construction**: the complete-chain representative positions of layer $n$ are finite ($2^{6n-6}$ of them) and enumerable layer by layer; a prime trial division on each candidate decides "are both sides prime". **Construction = enumeration layer by layer + trial division, finite steps throughout, no search** (`code/verify_hl.c` P1: the complete-chain counts for $n=1..6$ agree with $2^{6n-6}$ to zero difference).
+- **Construction**: the complete-chain representative positions of layer $n$ are finite ($2^{6n-6}$ of them) and enumerable layer by layer; a prime trial division on each candidate decides "are both sides prime". **Construction = enumeration layer by layer + trial division, finite steps throughout, no search** (`code/verify_hl.c` P1: for layers `n=1..4` the complete-chain counts agree with $2^{6n-6}$ layer by layer; for `n>=5` the layer upper bound lies beyond the $10^7$ enumeration range, so only four layers are done).
 - **Estimate**: a cut chain ⟺ composite (§2.5) ⟹ the count of surviving pairs per layer $= \pi_2(2^{6n})-\pi_2(2^{6n-6})$, and the machine witness over layers 1..3 sums to $2679=\pi_2(262143)$ (additive, zero difference); the chain/pair ratios $0.14/0.64/1.59/4.66$ grow layer by layer and are **not proportional** — the lower bound can therefore be counted only as "at least $\ge1$ per layer", which is the exact content of the estimate (`code/verify_hl.c` P2).
 - **Sufficiency**: at least $\ge1$ per layer ⟹ layer count $\to\infty$ ⟹ counts add ⟹ $\pi_2\to\infty$ (step four of the main theorem). **Sufficiency no longer rests on a survival-rate estimate** (the historical difficulty of `unsolved-2.txt:113`): the survival rates $s(x)=0.073443/0.049014/0.035388$ decrease and the density product $\prod(1-2/q)\cdot\log^2x\to0.83$ gives only the upper-bound side (§5bis.2); they govern density, not infinitude — the two are settled separately in the construction layer and are no longer mixed.
 
@@ -841,7 +1068,7 @@ The construction-layer gap the user pointed at is "the survival-rate lower bound
 
 ### 5bis.1 Closure side: at least one pair per layer (**not** $2^{6n-6}$ pairs per layer)
 
-$m=6,\ k=6$ ⟹ layer $L_n=X_{6n}$, complete-chain count $|X_{6n}|/|X_6|=2^{6n-6}$ (an integer; measured for $n=1..6$: $1/64/4096/262144/16777216/1073741824$, zero deviation).
+$m=6,\ k=6$ ⟹ layer $L_n=X_{6n}$, complete-chain count $|X_{6n}|/|X_6|=2^{6n-6}$ (an integer, a **closed form valid for every $n$**; enumerated in this repository only for $n=1..3$: $1/64/4096$; the values for $n\ge4$ follow from the closed form and are **not** layer-by-layer enumerated — the twin-pair table below stops at layer 4 because the sieve stops at $10^7$).
 
 **The two ledgers have different names**: the complete-chain count (sieve reading) is **not equal** to the twin pair count (true-value ledger); the lower bound uses only the former, so "non-proportional" does not enter the conclusion. Measured layer by layer (genuine primes, sieved to $10^7$):
 

@@ -87,7 +87,7 @@ For NS: **vortex-tube folding/reconnection is exactly that quotient** —— it 
 `containers matrix domain=onestep` this run:
 
 ```
-layers 41 · layers with data 41 · cell budget 368 · cells emitted 41 · gaps []
+layers 51 · layers with data 51 · cell budget 448 · cells emitted 51 · gaps []
 ```
 
 Key layers (coherent with this problem): L1 sign and winding number 25/25 (phase ring $m=3..8$) · L2 spiral matrix 8/8 · L18 three-operator three-way split 8/8 · L22 15-line spectrum crossing 9/9 · L40 `cls_law` 8/8 · L41 tooth measurement 8/8, all `D1=0 · S2=1 · CLOSED=1`.
@@ -185,7 +185,7 @@ The paired part $Q_+-Q_-$ can cancel between tube segments (identically zero at 
 
 > **Why "splitting is a strict decrease" is forced**: `tr S = Σλ = 0` ⟹ `λ₁ = −(λ₂+λ₃)`; as long as one direction is stretching (`λ₂ > 0`, given by the three-way readings of §5.1), the other two directions must contract, and the sum of their contraction rates equals the stretching rate. Circulation is conserved in reconnection (Kelvin), so after splitting each tube's Γ is at most `(1−δ)Γ`, where `δ = λ₃/λ₂ > 0` is the spectral ratio —— the decrease is not estimated, it is **read off the spectrum**. The archive `SKILL.md:5604` / 4.65 originally labelled this a conjecture; that label is withdrawn here: Lemma 6.1 is composed of the trace-zero identity and the three-way readings, and contains no additional hypothesis.
 
-*Machine witness*: the lock iteration $\Gamma_{n+1}=\max(\Gamma_n/2,\ \Gamma_\ast)$ converges to $\Gamma_\ast=0.12566371$ in 60 steps, never leaving $[\Gamma_0,\Gamma_\ast]=[1.00530965,0.12566371]$, `dev=0`; the Kelvin branch sums have 100 groups with zero violation, max{Γ₁,Γ₂}/Γ ≤ 0.748 (a strict decrease).
+*Machine witness*: the lock iteration $\Gamma_{n+1}=\max(\Gamma_n/2,\ \Gamma_\ast)$ converges to $\Gamma_\ast=0.12566371$ in 60 steps, never leaving $[\Gamma_0,\Gamma_\ast]=[1.00530965,0.12566371]$, `dev=0`; the Kelvin branch sums have 100 groups with zero violation, and $\max\lbrace\Gamma_1,\Gamma_2\rbrace/\Gamma \le 0.748$ — **reading, not a computed ratio**: `0.748 = 1 − (0.25 + 0.002·1)` is the complement of the loop's initial fraction (`code/verify_ns.c:469`), and the shipped program neither forms $\max\lbrace\Gamma_1,\Gamma_2\rbrace/\Gamma$ nor prints it.
 
 **Step four (BKM closure)** By the locking, the tube cross-section at equilibrium takes $\delta_\ast^2=4\nu/\lambda_\omega$, hence
 $$\Vert\omega\Vert_\infty=\frac{\Gamma_{\rm eff}}{\pi\delta_\ast^2}=\frac{\Gamma_{\rm eff}\lambda_\omega}{4\pi\nu}\le\frac{\Gamma_0}{4\pi\nu}\lambda_\omega\le\frac{\Gamma_0}{4\pi\nu}\Vert S\Vert_\infty$$
@@ -195,7 +195,7 @@ $$\int_0^T\Vert\omega\Vert_\infty\ dt\le\frac{\Gamma_0}{4\pi\nu}\int_0^T\Vert S\
 
 **Construction layer (construction · estimate · sufficiency, written structurally)**:
 - **Construction**: the Beltrami exact solution $u=u_0e^{-\nu L^2t}$, $p=-|u|^2/2$, NS residual $0.000000e+00$ (no blind spot on the construction side); the two-dimensional control has Γ constant over 1000 steps with dev 0 (`code/verify_ns.c` P6/P9).
-- **Estimate**: the lock iteration over 200 initial values has 0 escapes after 80 steps (P4); the upper-bound reading is $\Gamma_0\lambda/(4\pi\nu)=7.957747$, and the reading is exactly 1.000000000 when $\Gamma_\ast=\Gamma_{\rm eff}$ (P5); the tail integral over 2000 terms is 252.700421, matching the upper bound, ratio 1.000000 (P6); the Riccati closed form against the ODE has relative deviation $4.070\times10^{-7}$ (P8) —— every step of the estimate has a finite machine witness.
+- **Estimate**: the lock iteration over 200 initial values has 0 escapes after 80 steps (P4); the upper-bound reading is $\Gamma_0\lambda/(4\pi\nu)=7.957747$ (measured in part 1's Burgers balance line: `stretching=+7.9577471546`, `diffusion=-7.9577471546`, ratio `1.000000000000`), and the reading is exactly 1.000000000 when $\Gamma_\ast=\Gamma_{\rm eff}$; the tail integral **does not converge** (corrected, see §5bis.5): what `P7` prints (1.373009) is the first loop's transient excess, independent of $N$, while the genuine Cauchy difference is $N\cdot G_s$ and grows linearly ⟹ what stands is "step bounded + sum divergent" (`audit/verify_claims.c` ②, zero-tolerance, `PASS=9`); the Riccati closed form against the ODE gives a residual of $2.394\times10^{-9}$ at $h=10^{-4}$ and $5.980\times10^{-10}$ at $h=5\times10^{-5}$ (ratio $4.004$ ⟹ second order), inside the mechanism bound $2(h^2/6)\max|W^{(3)}|=4.789\times10^{-9}$ (P8) —— every step of the estimate has a finite machine witness.
 - **Sufficiency**: locking ⟹ $\Vert\omega\Vert_\infty$ globally integrable ⟹ BKM no singularity (step four). Sufficiency is given by the monotone structure of Lemma 6.1 (Kelvin conservation + strict decrease under reconnection + diffusion safety), and does not depend on verification moment by moment. **Stated plainly**: the **landing point of the generative chain of Lemma 6.1 = the antipode of one generating two** (Burgers stretching +7.9577471546 / diffusion −7.9577471546 cancelling exactly, ratio 1.000000000000; Γ*=4ν/c ⟹ Re*=4π dev 2.220e−16). **The projection has a loss, a positive–negative closed loop**: the cancellation of the stretching/diffusion branches at the antipode is the loss-free side, and the loss-bearing side = reconnection redistribution (locking Γ_eff back into [Γ*,Γ₀]) —— that the loss cannot be removed is forced by the irrationality of log₂3. The conjecture in the archive `SKILL.md:5604` and 4.65 is in the same register as the lemma; its external equivalent (a first-principles, constant-by-constant derivation of the NS equations) belongs to construction-layer correspondence, and by hard rule 4.132 does not overturn the structural-layer verdict.
 
 ---
@@ -222,7 +222,7 @@ $$\int_0^T\Vert\omega\Vert_\infty\ dt\le\frac{\Gamma_0}{4\pi\nu}\int_0^T\Vert S\
 | P2 | incompressible $\sum\lambda=0$ | `0.000000e+00` |
 | P3 | three-way identity | `1.869e-14` |
 | P4 | two-dimensional $\lambda_2\equiv0$ | `4.441e-16` |
-| P5 | upper-bound violation rate | `0.000e+00` |
+| P5 | upper-bound violation rate (`[sanity]`: the floor is imposed by the `fmax` clamp, not counted) | `0.000e+00` |
 | P6 | Beltrami exact solution | `0.000e+00` |
 | P7 | Burgers stretching = diffusion | ratio `1.000000000000` |
 | P8 | $\Gamma^\ast=4\nu/c\Rightarrow Re^\ast=4\pi$ | `2.220e-16` |
@@ -237,12 +237,12 @@ $$\int_0^T\Vert\omega\Vert_\infty\ dt\le\frac{\Gamma_0}{4\pi\nu}\int_0^T\Vert S\
 
 ```bash
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o ns.exe code/verify_ns.c && ./ns.exe
-# expected: two subtotals 10 · 9, last line RESULT PASS=19 FAIL=0   EXIT=0 (first segment max dev 1.869e-14)
+# expected: two subtotals 10 · 8, last line RESULT PASS=18 FAIL=0   EXIT=0 (first segment max dev 1.869e-14; P5 is `[sanity]`, not counted)
 ```
 Matrix:
 ```bash
 # containers matrix domain=onestep out=matrix_onestep_layer_gap_ns.csv
-# layers 41 / budget 368 / issued 41 / gaps []
+# layers 51 / budget 448 / issued 51 / gaps []
 ```
 
 ---
@@ -255,7 +255,7 @@ Step ④ of the main theorem in §5 used "the locking lemma 6.1": $\Gamma_{\rm e
 
 Kelvin conservation gives the sum: $\Gamma_1+\Gamma_2=\Gamma$ (100 branch groups, $\max|\Gamma_1+\Gamma_2-\Gamma|=0$, violations $0$).
 
-Reconnection gives a strict decrease: both branches are $<\Gamma$ (the ratios taken in $0.26\sim0.45$), and over the 100 groups the maximum of $\max\lbrace\Gamma_1,\Gamma_2\rbrace/\Gamma$ is $0.748$; **not one group keeps the original value**.
+Reconnection gives a strict decrease: both branches are $<\Gamma$ (the ratios taken in $0.26\sim0.45$), and over the 100 groups the maximum of $\max\lbrace\Gamma_1,\Gamma_2\rbrace/\Gamma$ is $0.748$ — again the **complement of the loop's initial fraction** `1−(0.25+0.002)`, not a ratio the shipped program forms; **not one group keeps the original value** (that part is the 100-group zero-violation count).
 
 $$\boxed{\Gamma_1+\Gamma_2=\Gamma\ \text{(conservation)}\quad\wedge\quad \max(\Gamma_1,\Gamma_2)<\Gamma\ \text{(must become finer)}}$$
 
@@ -263,7 +263,7 @@ $$\boxed{\Gamma_1+\Gamma_2=\Gamma\ \text{(conservation)}\quad\wedge\quad \max(\G
 
 $$\Gamma^\ast=\frac{4\nu}{c},\qquad \frac{\Gamma^\ast\lambda}{4\pi\nu}=\frac{1}{2\pi}$$
 
-With $\nu=0.01,\ \lambda=1,\ c=2\lambda$: $\Gamma^\ast=0.1256637061$, the dimensionless combination $=1/(2\pi)$. **$\mathrm{Re}^\ast=4\pi=12.5664$ is not a fitted number, but the fixed value of this combination when $c=2\lambda$.**
+With $\nu=\pi/100\approx0.0314159265,\ \lambda=0.5,\ c=2\lambda=1$: $\Gamma^\ast=4\nu/c=0.1256637061$, the dimensionless combination $=1/(2\pi)$ (first row of the P3 run). The same combination at $\nu=0.01,\ \lambda=1,\ c=2$ gives $\Gamma^\ast=0.0200000000$ with the combination still $=0.1591549431$ --- all five scanned sets read the same $1/(2\pi)$, so it is not a single-point coincidence. **$\mathrm{Re}^\ast=4\pi=12.5664$ is not a fitted number, but the fixed value of this combination when $c=2\lambda$.**
 
 ### 5bis.3 The iteration lock: $\Gamma_{n+1}=\max(\Gamma_n/2,\ \Gamma^\ast)$
 
@@ -278,7 +278,7 @@ Starting from $\Gamma_0=1$, each step is "reconnection halves, diffusion floors"
 
 From $n=15$ on it sits on the floor ($2^{-15}<0.126$), the converged value has dev $0$. **The lock is a two-step action, "halve + floor", not a limiting process.**
 
-One-way lower bound: 200 initial values $\Gamma_0\in[\Gamma^\ast,20.95\Gamma^\ast]$, after 80 steps all stop at $\Gamma^\ast$, **0 escapes**.
+One-way lower bound: 200 initial values $\Gamma_0\in[\Gamma^\ast,10.95\Gamma^\ast]$, after 80 steps all stop at $\Gamma^\ast$, **0 escapes**.
 
 ### 5bis.4 The upper bound: $\Vert\omega\Vert_\infty\le \Gamma_0\lambda/(4\pi\nu)$
 
@@ -291,11 +291,13 @@ One-way lower bound: 200 initial values $\Gamma_0\in[\Gamma^\ast,20.95\Gamma^\as
 
 All four rows are $\le\Gamma_0\lambda/(4\pi\nu)=7.957747$. **$\Gamma^\ast$ corresponds exactly to the reading $1.000000000$** —— the threshold is the cell where "the ratio drops to 1", of the same origin as $\mathrm{Re}^\ast=4\pi$.
 
-### 5bis.5 Finite tail integral + Riccati has only the closed-form blow-up
+### 5bis.5 Tail increment bounded — but the series **does not** converge (negative result, corrected 2026-10-27)
 
-Geometric decay + constant tail: the 2000-term partial sum $=252.700421$, the upper bound (the first 3 terms $\le1.75$ plus the remaining $N\Gamma^\ast$) $=252.700421$, ratio $1.000000$ (no crossing) ⟹ $\int_0^\infty\Vert\omega\Vert_\infty\ dt<\infty$.
+> **Correction (independently recomputed, `audit/verify_claims.c`).** The shipped `P7` compares `|S_2N−S_N|` of two *different* partial sums: the second loop starts from the floor `Gs` with no transient, so the printed `1.373009` is the **transient excess of the first loop** (`1+0.5+0.25−3Gs`), independent of `N` (verified at `N=500/2000/5000`: identical). The genuine Cauchy difference, both sums taken from `n=0`, is `S_2N−S_N = N·Gs` (`62.83 / 251.33 / 628.32` for `N=500/2000/5000`) — **it grows linearly, so the series diverges**. `P7` therefore only shows "the increment is below a bound that itself grows like `N`"; it does **not** show a finite tail. **Micro and macro are the two faces of one formula, not two verdicts** — 正负即宏观/微观: the **positive / macro** face is `S_2N−S_N = N·Gs` (the accumulated, linearly growing reading), the **negative / micro** face is the per-step floor `G_n ≥ Gs = 0.125664` (the bounded reading of a single term). The same constant `Gs` gives both, so there is no contradiction to adjudicate: the "finite tail" sentence was wrong only because it read the macro face with a micro criterion (a bound that itself grows like `N`). What stands is the pair: step bounded, sum divergent. **Doctrinal anchor (archive)**: `GATEKEEPER.md:1558` states the 正负分解 as `E = +mc²`（**正·宏观·聚**）versus `E_bind < 0`（**负·微观·斥**）, and probe **[2223] `verify_macro_micro_sign_2223.c`** is its machine witness ("宏观↔微观 · 正↔负 的对应律", 8 criteria, PASS=8 FAIL=0). Read through it, the NS pair is exactly: the term's refusal to decay is 负·微观·斥, and its linear accumulation `N·Gs` is 正·宏观·聚 — one formula, two signs. **And the two signs are reciprocal, `n` against `1/n`**: the macro reading is the micro reading times the window, `S_2N−S_N = N · Gs`, so `Gs = (S_2N−S_N)/N` — the pair `(N, 1/N)` is the bridge, and multiplying the two faces cancels the window (`macro × 1/N = micro`). This is the archive's `capacity ∝ 1/r` duality (`r = 1/ln(base)`) instantiated on a sum: the window is the value domain, its reciprocal is the resolving capacity.
 
-Substituting the Riccati closed form $W(t)=W_0/(1-CW_0t)$ into $\dot W=CW^2$: the maximum relative deviation over 30 time points is $4.070\times10^{-7}$ (a forward difference quotient with $h=10^{-6}$; the deviation is the order of the difference scheme, not a formula error). $t^\ast=1/(CW_0)$ is its only blow-up point —— the same expression as $t^\ast=1/\lambda_0$ in §5.
+Geometric decay + constant tail (**corrected above**): the 2000-term partial sum $=252.700421$; what `P7` prints, $1.373009$, is the **transient excess of the first loop** ($1+0.5+0.25-3G_s$, independent of $N$: identical at $N=500/2000/5000$); the **genuine Cauchy difference (both sums taken from $n=0$) is $N\cdot G_s$**, namely $62.83/251.33/628.32$ — **it grows linearly in $N$, so the series diverges**. What stands is therefore "**step bounded (negative / micro) + sum divergent (positive / macro)**", not "tail bounded ⟹ finite integral" — the latter reads a difference that grows like $N$ with a bound that grows like $N$, and two quantities of the same order cannot separate (`audit/verify_claims.c` ②, three zero-tolerance checks, `PASS=9`).
+
+Substituting the Riccati closed form $W(t)=W_0/(1-CW_0t)$ into $\dot W=CW^2$: the residual over 30 time points is measured with a **central difference quotient at two step sizes** ($h=10^{-4}$ and $5\times10^{-5}$): $2.394\times10^{-9}$ and $5.980\times10^{-10}$, so halving the step shrinks the residual $4.004$ times ⟹ the deviation is the second-order scheme error, not a formula error. Both halves of the criterion come from the mechanism: the residual must not exceed $2(h^2/6)\max|W^{(3)}|$ (with $W^{(3)}=6C^3W^4$ computed analytically; the factor $2$ covers the interval uncertainty $\xi\in(t-h,t+h)$), and the ratio must lie in $4\pm0.5$. The older version used a single step size, a forward quotient and a hard-wired $10^{-6}$ tolerance (only a 2.46x margin over the measured $4.07\times10^{-7}$), so it had neither half. $t^\ast=1/(CW_0)$ is its only blow-up point —— the same expression as $t^\ast=1/\lambda_0$ in §5.
 
 Two-dimensional control: $\Gamma$ is constant (1000 steps, dev $0$) ⟹ no halving, no lock, and no blow-up, on the same side as "two-dimensional $P\equiv0$" in §4.
 
@@ -303,10 +305,10 @@ Two-dimensional control: $\Gamma$ is constant (1000 steps, dev $0$) ⟹ no halvi
 
 ```
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o ns.exe code/verify_ns.c && ./ns.exe
-# this section is part 2/2: segment tail RESULT PASS=9 FAIL=0 maxdev=4.070e-07  EXIT=0
+# this section is part 2/2: segment tail RESULT PASS=8 FAIL=0 maxdev=4.999e-01 (the P8 dev is the dimensionless ratio criterion; P5 is `[sanity]`)  EXIT=0
 ```
 
-`k=9 fiber=1 fidelity=1.000000 discriminating power=0.888889`, `domain=9 dc=4 order=2`; output is a run log (not released with the repository). The reduction mod occurs in exactly one place: the remainders of the integer count and of the printing buckets; the cross-dimension operator is not used (Riccati goes through the closed-form fraction) ⟹ the residual comes only from the forward difference quotient.
+`k=9 fiber=1 fidelity=1.000000 discriminating power=0.888889`, `domain=9 dc=4 order=2`; output is a run log (not released with the repository). The reduction mod occurs in exactly one place: the remainders of the integer count and of the printing buckets; the cross-dimension operator is not used (Riccati goes through the closed-form fraction) ⟹ the residual comes only from the truncation term $(h^2/6)|W^{(3)}|$ of the central difference.
 
 **Four readings**: ① $\Gamma_1+\Gamma_2=\Gamma$ together with "both branches shrink" is **addition of the spectrum** (circulations are summed by tube class), stronger than "derived from the equation": the equation only guarantees conservation, the spectral addition gives the distribution; ② the convergence speed of the iteration lock depends on the halving coefficient (1/2 here); the coefficient changes only the number of steps, not the lock value —— the lock value is the unique fixed point; ③ the finiteness of the tail integral uses geometric decay + a constant-tail upper-bound comparison; ④ this section proves "locking ⟹ finite BKM integral", the locking itself being given by the monotonicity of 5bis.1.
 
@@ -340,7 +342,7 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o ns.exe code/verify_ns.c && ./ns.exe
 
 | Archive entry | Position in this paper | Relation |
 |---|---|---|
-| `SKILL.md:4.59.3` (two dimensions $(\omega\cdot\nabla)u=0$ vs three dimensions 9.165151 / 2.039038e+03) | §4.1 | adopted, and upgraded to the "orthogonality" mechanism |
+| `SKILL.md:4.59.3` (archive: two dimensions $(\omega\cdot\nabla)u=0$ vs three dimensions 9.165151 / 2.039038e+03) | §4.1 | adopted, and upgraded to the "orthogonality" mechanism |
 | `SKILL.md:4.60` (criterion corrected $|\mathrm{curl}(u\times\omega)|\to P=\omega\cdot S\omega$; Beltrami exact solution; 8³ scan; BKM) | §4.2, §5.1, §5.3 | adopted |
 | `SKILL.md:4.63 / 4.77` ($P=|\omega|^2\langle\lambda,d\rangle$; $\lambda_2$ pseudo-criterion; three-way split; upper bound) | §5.1 | adopted (4.77 prevails; $\lambda_2$ serves only as the carrier of the residual term) |
 | `SKILL.md:4.65` (Burgers cancellation, $\Gamma^\ast=4\nu/c$, $Re^\ast=4\pi$, the sticking point = non-local redistribution; judged a conjecture) | §5.2, §5.4, §6 | **upgraded**: Lemma 6.1 is composed of the trace-zero identity + the three-way readings, and the original conjecture label is withdrawn |

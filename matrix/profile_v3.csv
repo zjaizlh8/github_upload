@@ -1,0 +1,198 @@
+bsd,1,P1  involutionfixed pointunique s=1,0.000e+00,1e-15,lcs,FORCED,object,geo,A,valid,paper:5 > 本文用三件套写 BSD：**结构层**（基础三件�
+bsd,2,P2  constructionidentity w=(−1)^k（k=1;2;3）,6.661e-16,1e-15,pair,FORCED_eps,object,nonzero,X,valid,part1-P2 w=(−1)^k（k=1、2、3）
+bsd,3,P2b w=(−1)^k（整数 s=3 · 交叉乘积精确）,0.000e+00,0e+00,none,,object,geo,A,,
+bsd,4,P3  Λ_k(1)=0 中心零（阶exactly为 k）,0.000e+00,1e-15,lcs,FORCED,object,geo,A,valid,paper:7 > 分级依 `SKILL.md:10560+`（4.132 分层判据硬规，�
+bsd,5,P4  half-turn −1 / full turn +1（倍角recurrence）,0.000e+00,1e-15,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+bsd,6,P5  四元数norm-preserving |ab|²=|a|²|b|²,3.711e-16,1e-14,pair,FORCED_eps,object,nonzero,X,valid,P5 quaternion norm multiplicative [thm:Hurwitz norm;same]
+bsd,7,P5b 四元数范数（整数样本·精确 dev=0）,0.000e+00,0e+00,none,,object,geo,A,,
+bsd,8,P6  八元数norm-preserving（非结合仍norm-preserving）,3.977e-16,1e-13,pair,FORCED_eps,object,nonzero,X,blank,P6 octonion norm multiplicative [thm:Hurwitz norm;same]
+bsd,9,P6b 八元数范数（整数样本·精确 dev=0）,0.000e+00,0e+00,none,,object,geo,A,,
+bsd,10,P7  八元数非结合 [e1;e2;e4] 范数²=4,0.000e+00,1e-14,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+bsd,11,P8  八元数无零因子 min|xy|²≥1,0.000e+00,1e-15,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+bsd,12,P9  CM criterion p≡3(4) ⟹ a_p=0,0.000e+00,0e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+bsd,13,P10 Hasse bound a_p²≤4p,0.000e+00,0e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+bsd,14,P11 伸缩commute / 纯虚不commute,0.000e+00,1e-15,lcs,FORCED,object,geo,A,valid,paper:17 ```
+bsd,15,P12 乘积范数=范数之积（累积=求和）,9.447e-15,1e-13,pair,FORCED_eps,object,nonzero,X,valid,P12 product norm = product of norms [thm:Hurwitz;same]
+bsd,16,Hasse bound 11a1,0.000e+00,0e+00,lcs,FORCED,object,geo,A,valid,paper:36 依据库内三条倒数定律（探针 [2233]/[2234]/[2235]
+bsd,17,Hasse bound 37a1,0.000e+00,0e+00,lcs,FORCED,object,geo,A,valid,paper:37 - **闭合 ⟺ 该侧存在乘性逆，且逆在同一容器
+bsd,18,Hasse bound 389a1,0.000e+00,0e+00,lcs,FORCED,object,geo,A,valid,paper:38 - **膨胀与收缩互为倒数**（乘积恒 1，缺一个�
+bsd,19,32a1 CM：p≡3(4) ⟹ a_p=0,0.000e+00,0e+00,lcs,FORCED,object,geo,A,valid,paper:39 - **本体与投影必谈倒数**：`投影率 × 本体倍�
+bsd,20,Ω 与外部锚一致,1.578e-11,1e-10,lcs,FORCED_eps,object,nonzero,X,valid,part2-Ω 与外部锚一致 〔tol 由机制导出：Ω 积分累加界 ε·NPTS·max
+bsd,21,Tamagawa 积为整数 2（账闭合）,8.230e-11,2e-10,lcs,FORCED_eps,object,nonzero,X,blank,part2-Tamagawa 积为整数 2（账闭合） 〔tol=(16·½·10⁻¹⁰+2·1e-10)/Ω=1.53e-10：锚 10 位截断 + Ω 累加界，两源独立相加〕 〔机制界 1.53e-10，取探针打印精度 %.0e ⟹ 记 2e-10（上界不被缩紧）〕
+bsd,22,倒数账两项相消（残差 ≤ 锚截断界）,4.316e-10,8e-10,lcs,FORCED_eps,object,nonzero,X,blank,part2-倒数账两项相消（residual→0） 〔残差预测 = 16·(L真−L锚) ⟹ 上界 16·½·10⁻¹⁰=8.0e-10；实测 4.316e-10 与预测 4.315e-10 四位吻合 ⟹ 残差全来自锚截断〕
+bsd,23,rank 0：Abel 和非零（> 0.3）,0.000e+00,0e+00,lcs,FORCED,object,geo,A,valid,paper:49 - 倒数账：`L(E;1) · #tors² / (Ω · ∏c_p · #Ш) = 1
+bsd,24,rank 1：Abel 和趋零（|·| < 0.02）,3.943e-03,2e-02,pair,TREND,process,nonzero,X,valid,rank 1：Abel 和趋零（|·|<0.02） 〔rank≥1 的「Abel 和趋零」是过程面（走到哪儿）⟹ 降 TREND；结构面由 part3 整数域判据承担（S1）〕
+bsd,25,rank 2：Abel 和趋零（|·| < 0.02）,7.761e-03,2e-02,pair,TREND,process,nonzero,X,valid,rank 2：Abel 和趋零（|·|<0.02） 〔同 bsd:50〕
+bsd,26,分离度 ≥ 1e1（zerocriterion见血）,0.000e+00,0e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+bsd,27,zero ⟺ rank≥1（三条一致）,0.000e+00,0e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+bsd,28,负结果：|r(37a1) − r(389a1)| < 0.1（秩不可由局部积读）,6.547e-03,1e-01,pair,FLOW,process,nonzero,X,valid,负结果：|r(37a1)−r(389a1)|<0.1（秩不可由局部积读） 〔FLOW 是过程面读数（S1），tol 无结构含义 ⟹ 清 NA〕
+bsd,29,Hasse 零violation（11a1/37a1/389a1 共 2004 次）,0.000e+00,0e+00,lcs,FORCED,object,geo,A,valid,paper:70 **读数边界（本篇新增）**：
+bsd,30,32a1 CM：p≡3(4) ⟹ a_p=0,0.000e+00,0e+00,lcs,FORCED,object,geo,A,valid,paper:71 - Abel 和的**绝对值**受正则核污染（`11a1` 实测
+bsd,31,Ω 与外锚 2Γ(1/4)²/(2√(2π)) 一致,1.578e-11,1e-10,lcs,FORCED_eps,object,nonzero,X,valid,part4-Ω 与外锚 2Γ(1/4)²/(2√(2π)) 一致〔=bsd:42 同一残差〕 〔同 bsd:42〕
+bsd,32,账上 ∏c_p·#Ш 为整数 2（c₂=2、#Ш=1）,8.230e-11,2e-10,lcs,FORCED_eps,object,nonzero,X,valid,part4-账上 ∏c_p·#Ш 为整数 2〔=bsd:44 同一残差〕 〔同 bsd:44〕 〔机制界 1.53e-10，取探针打印精度 %.0e ⟹ 记 2e-10（上界不被缩紧）〕
+bsd,33,常数账相消 L·#tors² − Ω·∏c_p·#Ш,4.316e-10,8e-10,lcs,FORCED_eps,object,nonzero,X,valid,part4-常数账相消 L·#Ш²−Ω·∏c_p·#Ш〔=bsd:46 同一残差〕 〔同 bsd:46〕
+bsd,34,负控制：11a1（rank 0）同测量条件不为零,0.000e+00,0e+00,lcs,FORCED,object,geo,A,valid,paper:79 | 层 | 内容 | 本文对应物 |
+bsd,35,三条分离度 ≥ 1e1,0.000e+00,0e+00,lcs,FORCED,object,geo,A,valid,paper:80 |---|---|---|
+bsd,36,重数向量唯一：15 线 · Σλ=6 · ∏λ=-6^11 ⟹ (4;3;2;2;2;2)（枚举 15504 组，解 1 组）,0.000e+00,0e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+bsd,37,折叠重数 (|2|;|3|;|6|) = (4;4;7),0.000e+00,0e+00,lcs,FORCED,object,geo,A,valid,paper:87 > **阶（order）⟺ 不动点的重数 ⟺ 符号 `w` 的�
+bsd,38,少侧重数 m=(2;2;3)（−3 各 2、−2 各 2、−6 各 3）,0.000e+00,0e+00,lcs,FORCED,object,geo,A,valid,paper:88 > **秩（rank）⟺ 八元数里不塌的独立方向数 �
+bsd,39,Σc = 1 + 2Σm = 15 且号差和 = 1（奇支 6^N 的来源）,0.000e+00,0e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+bsd,40,∏spec = -6^11 = -362797056,0.000e+00,0e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+bsd,41,母律谱 |spec|={1;2;3} 逐点为零（因子基由母律给定）,0.000e+00,0e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+bsd,42,数组嵌套 = 闭式：Q[N] 逐格求和 == 分桶系数数组 {7;4;4} 的展开（N=0..6）,0.000e+00,0e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+bsd,43,P1 秩 + 零化度 = 维数（三容器）,0.000e+00,0e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+bsd,44,P2 ord 检测器（半单两档 -> 2）,0.000e+00,0e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+bsd,45,P3 ★ 同一检测器精确区分 2 与 4,0.000e+00,0e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+bsd,46,P4 圆心外谱 -> ord 为 0,0.000e+00,0e+00,lcs,FORCED,object,geo,A,valid,paper:111 |---|---|---|---|
+bsd,47,P5 正负计数 (8; 7),0.000e+00,0e+00,lcs,FORCED,object,geo,A,valid,paper:113 | 乘法 | 生成 | 守·张 | 欧拉积 `∏_p L_p(s)` |
+bsd,48,P6 阶 = 配对数 (7),0.000e+00,0e+00,lcs,FORCED,object,geo,A,valid,paper:115 | 跨维度 | 换维 | 移·张 | 局部 → 全局（欧拉
+bsd,49,P7 奇块数 (尾钩 = 1),0.000e+00,0e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+bsd,50,P8 ★ 两谱 w 相反而阶相同（parity 不足）,0.000e+00,0e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+bsd,51,P9 Reg^2 = 谱乘性体积 (6^11),0.000e+00,0e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+bsd,52,P10 谱线守恒 15 = 1 + 2*7,0.000e+00,0e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+bsd,53,P1 Gram positive definite,0.000000e+00,0.000000e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+bsd,54,P2 det(U^T G U) = det(U)^2 det(G),0.000000e+00,0.000000e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+bsd,55,P3 h(nP)=n^2 h(P); det scales n^{2r},0.000000e+00,0.000000e+00,lcs,FORCED,object,geo,A,valid,paper:144 于是「阶」这个概念**只能**落在 `s=1`：别处�
+bsd,56,P4 parallelogram law,1.776357e-15,1.000000e-12,pair,FORCED_eps,object,nonzero,R,blank,P4 parallelogram law [thm:inner product space;same]
+bsd,57,P5 ledger rank 0: L*#tors^2 = Omega*c*#Sha,8.237810e-11,1.000000e-09,pair,FORCED_eps,object,nonzero,X,blank,RESULT-maxdev〔非判据·是段汇总数〕
+bsd,58,P7 Delta=2^6 => only p=2 bad; c_p=1 (p!=2),0.000000e+00,0.000000e+00,lcs,FORCED,object,geo,A,oob,NA(addr_dead)
+bsd,59,P8 c*|Sha|=2 with square |Sha| => unique (2;1),0.000000e+00,0.000000e+00,lcs,FORCED,object,geo,A,oob,NA(addr_dead)
+bsd,60,P9 r=0 => Reg=1; r>=1 => Reg>0,0.000000e+00,0.000000e+00,lcs,FORCED,object,geo,A,oob,NA(addr_dead)
+hl,1,P1 展开(最优截断) vs integral：偏差 / 尾estimate ≤ 3,1.105190e+00,3.000e+00,pair,FLOW,process,nonzero,X,valid,part1-P1 展开(最优截断) vs integral：偏差/尾estimate≤3 〔FLOW 是过程面读数（S1），tol 无结构含义 ⟹ 清 NA〕
+hl,2,P2 累加展开一阶系数 = D = k = 2（extrapolation 1.999733）,2.666581e-04,1.000e-03,pair,FLOW,process,nonzero,X,valid,part1-P2 累加展开一阶系数=D=k=2 〔FLOW 是过程面读数（S1），tol 无结构含义 ⟹ 清 NA〕
+hl,3,P3 下限被迫：I(eps)~1/eps，比值 I(1e-3)/I(1e-2),2.978073e-01,5.000e-01,pair,FLOW,process,nonzero,X,valid,part1-P3 下限被迫：I(eps)~1/eps 〔FLOW 是过程面读数（S1），tol 无结构含义 ⟹ 清 NA〕
+hl,4,P4 焊接口：阶梯integral ∫(e^gamma·prod)^2 dt vs Li2,1.075556e-02,3.257e-01,pair,FORCED_trunc,object,nonzero,X,valid,part1-P4 焊接口：阶梯integral ∫(e^γ·prod)²dt vs Li2
+hl,5,P5 2C2 = 2∏(1−1/(q−1)^2) vs 1.3203236316,8.957968e-08,3.000e-06,pair,FORCED_trunc,object,nonzero,X,blank,part1-P5 2C2=2∏(1−1/(q−1)²) vs 1.3203236316
+hl,6,P6 e^-gamma 部分积 vs 0.5614594836,1.403645e-06,1.000e-05,pair,FORCED_trunc,object,nonzero,X,valid,part1-P6 e^-γ 部分积 vs 0.5614594836
+hl,7,P7 ledger ∏(q−1)/∏q 约分后 = 16/77（gcd 30，两条路）,0.000000e+00,0.000e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+hl,8,P8 log(e^2gamma/4) = 2gamma − log4 vs −0.231863031,3.168248e-10,1.000e-09,pair,FORCED_eps,object,nonzero,X,blank,part1-P8 log(e^2γ/4)=2γ−log4 vs −0.231863031
+hl,9,P9 缺步 = q|h 的素数个数（h=2;6;30;210）,0.000000e+00,0.000e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+hl,10,P10 4e^-2gamma = 1.260947007（外部锚）,2.512259e-10,1.000e-09,pair,FORCED_eps,object,nonzero,X,valid,P10 4e^-2gamma = 1.2609470
+hl,11,P11 首项偏差 ≥10% 且 8 项偏差 ≤1%,0.000000e+00,0.000e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+hl,12,P1 π₂(x) 复算对齐 archive 表（1e5/1e6/1e7）,0.000000e+00,0.000e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+hl,13,P2 ρ(x) 三条monotone递增且跨 1（E 由负转正）,0.000000e+00,0.000e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+hl,14,P3 与archive表 ρ 对齐（口径差 ≤5e-3）,1.281874e-03,5.000e-03,pair,FLOW,process,nonzero,X,blank,part2-P3 与 archive 表 ρ 对齐（口径差≤5e-3） 〔FLOW 是过程面读数（S1），tol 无结构含义 ⟹ 清 NA〕
+hl,15,P4 |E|/√x 三条同阶：pole差比 ≤ 2 且 ≤0.1,0.000000e+00,0.000e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+hl,16,P5 放大因子上界 2^{ω(d)}：ω_max=5 ⟹ 32,0.000000e+00,0.000e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+hl,17,P6 屏障定位：c₂ even（配对余 0）且未配对个数 = 1（只 β step）,0.000000e+00,0.000e+00,lcs,FORCED,object,geo,A,valid,paper:60 依据库内三条倒数定律（探针 [2233]/[2234]/[2235]
+hl,18,P7 双账本 ΣΔ = log(S/M_nat)：两档单调下降且未越过 log(e^{2γ}/4),0.000000e+00,0.000e+00,lcs,FORCED,object,geo,A,valid,paper:63 - **本体与投影必谈倒数**：`投影率 × 本体倍�
+hl,19,P8 |E|/主项 三条单调递减,0.000000e+00,0.000e+00,lcs,FORCED,object,geo,A,valid,paper:65 因此判据不是「两边各算一遍、数值接近」，
+hl,20,P9 |E(x)| ≤ 6√x（逐步占比 ≤1）,1.284334e-02,1.000e+00,pair,FLOW,process,nonzero,X,blank,part2-P9 |E(x)|≤6√x（逐步占比≤1） 〔FLOW 是过程面读数（S1），tol 无结构含义 ⟹ 清 NA〕
+hl,21,P1  pi2(100000) = 1224 （公认 1224）,NA,NA,none,,object,implicit,A,,
+hl,22,P2  pi2(1000000) = 8169 （公认 8169）,NA,NA,none,,object,implicit,A,,
+hl,23,P3  pi2(10000000) = 58980 （公认 58980）,NA,NA,none,,object,implicit,A,,
+hl,24,P4  pi2(100000000) = 440312 （公认 440312）,NA,NA,none,,object,implicit,A,,
+hl,25,P5  pi2(1000000000) = 3424506 （公认 3424506）,NA,NA,none,,object,implicit,A,,
+hl,26,P6   非 6m 中心者恒 1（唯 (3;5)）· 五档一致,NA,NA,none,,object,implicit,A,,
+hl,27,P2 每层至少一对孪生成（结构保证 ≥1，非 ≥ 完备链数）,0.000000e+00,0.000e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+hl,28,P3 层区间互不相交：Σ层内计数 = π₂（可加）,0.000000e+00,0.000e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+hl,29,P4 存活率 s(x) 三条单调递减（越来越稀）,0.000000e+00,0.000e+00,lcs,FORCED,object,geo,A,valid,paper:106 **推论 1.1.1**（纯质幂判据，被迫）　容器容�
+hl,30,P5 下界 π₂(x) ≥ ⌊log₂x/6⌋ 三条零violation,0.000000e+00,0.000e+00,lcs,FORCED,object,geo,A,valid,paper:110 *数值见证*：$729=3^6$ 的切法 $d(6)=4$ 种（$1$ 维/
+hl,31,P6 密度积 ×log²X 三条convergence（相对差 ≤2%）,7.039249e-03,2.000e-02,pair,FLOW,process,nonzero,X,valid,part4-P6 密度积×log²X 三条 convergence（相对差≤2%） 〔FLOW 是过程面读数（S1），tol 无结构含义 ⟹ 清 NA〕
+hl,32,P7 首项比 ρ_first 三条单调递减趋 1,0.000000e+00,0.000e+00,lcs,FORCED,object,geo,A,valid,paper:118 $$16;64;81;256;512;625;729;1024;1296;2401;4096;6561;10000;$$
+hl,33,P7b 系数identity (k)_n = k(k+1)…(k+n−1)（k≤4; n≤3）,0.000000e+00,0.000e+00,lcs,FORCED,object,geo,A,valid,paper:131 - 加性：$15+8+20+7=50=$ 基元自身的配额 ⟹ **可�
+hl,34,P8 密度侧/主项系数比 <1（只给上界，不给下界）,0.000000e+00,0.000e+00,lcs,FORCED,object,geo,A,valid,paper:133 两者正交：乘性上基元是不可拼回的，加性上
+hl,35,P9 宽松倍数monotone递增（bound真但松，照实说明记）,0.000000e+00,0.000e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+hodge,1,P1 调和=kernel（∂c=0 两端）,0.000e+00,1e-16,lcs,FORCED,object,geo,A,valid,line15 Hodge class = fixed of circle action [identification; not theorem]
+hodge,2,P2 Hodge 分解正交direct sum,0.000e+00,1e-15,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+hodge,3,P3 圆平均是投影 rank=ΣΛ^{p;p},9.390e-17,1e-15,pair,FORCED_eps,object,nonzero,X,valid,P3 circular mean is a projector [alg:mean of characters;same]
+hodge,4,P4 不动 ⟺ p=q,1.028e-16,1e-14,pair,FORCED_eps,object,nonzero,X,valid,P4 invariant iff p=q [alg:half-turn weight;same]
+hodge,5,P5 half-turn权重 (−1)^{p−q},0.000e+00,1e-15,lcs,FORCED,object,geo,A,valid,line19 closure iff integer winding [thm:winding integrality;same]
+hodge,6,P6 exp 整数化,0.000e+00,1e-14,lcs,FORCED,object,geo,A,valid,line20 involution forces e^{i pi}=-1 [alg:involution;same]; not a criterion
+hodge,7,P7 torsion pointreturn / 非挠脱缰,0.000e+00,1e-15,lcs,FORCED,object,geo,A,valid,line21 Abel-Jacobi image is torsion [thm:Abel-Jacobi;same]
+hodge,8,P9 类数 h(−163)=1 h(−167)=11,0.000e+00,1e-12,lcs,FORCED,object,geo,A,valid,line23 Hodge class = algebraic cycle (THE CONJECTURE ITSELF)
+hodge,9,P10 closure（period整性⊕half-turn+1）,2.998e-15,1e-14,pair,FORCED_eps,object,nonzero,X,valid,P3b circular mean = indicator [alg:character orthogonality;same]
+hodge,10,P1 dim H^{p;p} = C(g;p)^2,0.000000e+00,0.000000e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+hodge,11,P2 sum = C(2g;g),0.000000e+00,0.000000e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+hodge,12,P3 weights: p=q keep; p!=q kill,0.000000e+00,0.000000e+00,lcs,FORCED,object,geo,A,valid,line46 circular mean is idempotent [alg:P^2=P;same]
+hodge,13,P4 torsion returns in k steps,0.000000e+00,0.000000e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+hodge,14,P5 non-torsion: no hit within k<=KMAX (reading; not a proof),0.000000e+00,0.000000e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+hodge,15,P6 sum_p C(g;p)^2 = C(2g;g),0.000000e+00,0.000000e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+hodge,16,P7 Abel-Jacobi additive,0.000000e+00,1.000000e-12,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+hodge,17,P8 type count: dim L^{1;1} = g^2; ends = 2C(g;2),0.000000e+00,0.000000e+00,lcs,FORCED,object,geo,A,valid,paper:67 **第一环是定理（两行）**：Hodge 分解给出圆�
+hodge,18,P9 extreme 163 separates both,0.000000e+00,0.000000e+00,lcs,FORCED,object,geo,A,valid,paper:69 $$\rho(\theta):\ H^{p;q}\longmapsto e^{\;i(p-q)\theta}\;H^{p
+ns,1,P1 二维stretching恒零,0.000e+00,1e-14,lcs,FORCED,object,geo,A,valid,paper:14 - **本体与投影必谈倒数**：`投影率 × 本体倍�
+ns,2,P2 不可压 Σλ=0,0.000e+00,1e-14,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+ns,3,P3 三分恒等,1.869e-14,1e-13,pair,FORCED_eps,object,nonzero,X,valid,P3 三分恒等
+ns,4,P4 二维 λ2≡0,4.441e-16,1e-14,pair,FORCED_eps,object,nonzero,X,valid,P4 二维 λ2≡0
+ns,5,P5 上界 |P|≤√(2/3)|S||ω|²,0.000e+00,1e-12,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+ns,6,P6 Beltrami 精确解,0.000e+00,1e-12,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+ns,7,P7 Burgers stretching=diffusion,0.000e+00,1e-10,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+ns,8,P8 Γ*=4ν/c ⟹ Re*=4π,2.220e-16,1e-15,pair,FORCED_eps,object,nonzero,X,blank,P8 Γ*=4ν/c ⟹ Re*=4π
+ns,9,P9 对齐上界达 λ1,0.000e+00,1e-12,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+ns,10,P10 512 lattice + Γ locking,0.000e+00,1e-12,lcs,FORCED,object,geo,A,valid,paper:23 - **本体** = 应变张量的尺度 `λ_ω`（涡量拉伸�
+ns,11,P1 Kelvin: g1+g2 = G,0.000000e+00,0.000000e+00,lcs,FORCED,object,geo,A,valid,paper:25#P1 - 闭合侧：`Γ_eff ∈ [Γ*; Γ₀]`（下界由扩散胜
+ns,12,P2 reconnection strictly lowers max,0.000000e+00,0.000000e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+ns,13,P3 Gamma* = 4nu/c  (Re* = 4pi),2.775558e-17,1.000000e-15,pair,FORCED_eps,object,nonzero,R,valid,P3 Gamma* = 4nu/c  (Re* = 
+ns,14,P4 locking iteration -> Gamma*,0.000000e+00,0.000000e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+ns,15,P6 ||omega||inf <= Gamma0 lam/(4 pi nu),0.000000e+00,0.000000e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+ns,16,P7 正=宏观 S_2N-S_N=N*Gs · 负=微观 G_n>=Gs,6.219751e-15,1.000000e-12,pair,FORCED_eps,object,nonzero,X,valid,P7 正=宏观 S_2N-S_N=N*G
+ns,17,P8 Riccati closed form + 2nd-order convergence,1.007919e-03,5.000000e-02,pair,FORCED_trunc,object,nonzero,X,blank,P8 Riccati closed form + 2nd-order convergence
+ns,18,P9 2D control: Gamma constant,2.474623e-17,1.000000e-15,pair,FORCED_eps,object,nonzero,X,blank,P9 2D control: Gamma const
+pvsnp,1,P6 秩律 n=2：真 rank = (n−1)²+1 = 2,NA,NA,lcs,FORCED,object,implicit,A,valid,paper:197#n2 | $n$ | 方程 $n!$ | 变量 $n^2$ | 真秩 | $(n-1)^2+1$ | 
+pvsnp,2,P7 可解性 n=2：仅 n=2 可解（仿射换元只差一个符号）,NA,NA,lcs,FORCED,object,implicit,A,valid,paper:197#n3 | $n$ | 方程 $n!$ | 变量 $n^2$ | 真秩 | $(n-1)^2+1$ | 
+pvsnp,3,P6 秩律 n=3：真 rank = (n−1)²+1 = 5,NA,NA,lcs,FORCED,object,implicit,A,valid,paper:197#n4 | $n$ | 方程 $n!$ | 变量 $n^2$ | 真秩 | $(n-1)^2+1$ | 
+pvsnp,4,P7 可解性 n=3：仅 n=2 可解（仿射换元只差一个符号）,NA,NA,lcs,FORCED,object,implicit,A,valid,paper:197#n5 | $n$ | 方程 $n!$ | 变量 $n^2$ | 真秩 | $(n-1)^2+1$ | 
+pvsnp,5,P6 秩律 n=4：真 rank = (n−1)²+1 = 10,NA,NA,lcs,FORCED,object,implicit,A,valid,paper:197#n6 | $n$ | 方程 $n!$ | 变量 $n^2$ | 真秩 | $(n-1)^2+1$ | 
+pvsnp,6,P7 可解性 n=4：仅 n=2 可解（仿射换元只差一个符号）,NA,NA,lcs,FORCED,object,implicit,A,valid,paper:197#n7 | $n$ | 方程 $n!$ | 变量 $n^2$ | 真秩 | $(n-1)^2+1$ | 
+pvsnp,7,P6 秩律 n=5：真 rank = (n−1)²+1 = 17,NA,NA,lcs,FORCED,object,implicit,A,valid,paper:197#n8 | $n$ | 方程 $n!$ | 变量 $n^2$ | 真秩 | $(n-1)^2+1$ | 
+pvsnp,8,P7 可解性 n=5：仅 n=2 可解（仿射换元只差一个符号）,NA,NA,lcs,FORCED,object,implicit,A,valid,paper:211#n2 **$n=2$ 唯一特例；$n\ge3$ 全部不可解。** 缺陷 $
+pvsnp,9,P6 秩律 n=6：真 rank = (n−1)²+1 = 26,NA,NA,lcs,FORCED,object,implicit,A,valid,paper:211#n3 **$n=2$ 唯一特例；$n\ge3$ 全部不可解。** 缺陷 $
+pvsnp,10,P7 可解性 n=6：仅 n=2 可解（仿射换元只差一个符号）,NA,NA,lcs,FORCED,object,implicit,A,valid,paper:211#n4 **$n=2$ 唯一特例；$n\ge3$ 全部不可解。** 缺陷 $
+pvsnp,11,P6 秩律 n=7：真 rank = (n−1)²+1 = 37,NA,NA,lcs,FORCED,object,implicit,A,valid,paper:211#n5 **$n=2$ 唯一特例；$n\ge3$ 全部不可解。** 缺陷 $
+pvsnp,12,P7 可解性 n=7：仅 n=2 可解（仿射换元只差一个符号）,NA,NA,lcs,FORCED,object,implicit,A,valid,paper:211#n6 **$n=2$ 唯一特例；$n\ge3$ 全部不可解。** 缺陷 $
+pvsnp,13,P6 秩律 n=8：真 rank = (n−1)²+1 = 50,NA,NA,lcs,FORCED,object,implicit,A,valid,paper:211#n7 **$n=2$ 唯一特例；$n\ge3$ 全部不可解。** 缺陷 $
+pvsnp,14,P7 可解性 n=8：仅 n=2 可解（仿射换元只差一个符号）,NA,NA,lcs,FORCED,object,implicit,A,valid,paper:211#n8 **$n=2$ 唯一特例；$n\ge3$ 全部不可解。** 缺陷 $
+pvsnp,15,P6b n=9;10：② 得秩 65、82 = (n−1)²+1，亏 16、18 = 2n−2，n≥3 不可解；且两路在 n=2..8 逐 n 相等,NA,NA,lcs,FORCED,object,implicit,A,valid,paper:276#P8a 若能从外贴一个符号矩阵 $S$ 使 $\det(A\circ S)=\m
+pvsnp,16,P8a identity 式 r1^r2=r3 零违规（n=3..8 抽样）· 齿测 & 变异有违规,NA,NA,lcs,FORCED,object,implicit,A,valid,paper:276#P8b 若能从外贴一个符号矩阵 $S$ 使 $\det(A\circ S)=\m
+pvsnp,17,P8b n=3 全枚举无符号矩阵令每一 2×2 矩形和皆 1,NA,NA,lcs,FORCED,object,implicit,A,valid,paper:276#P8c 若能从外贴一个符号矩阵 $S$ 使 $\det(A\circ S)=\m
+pvsnp,18,P8c n=4 全枚举无符号矩阵令每一 2×2 矩形和皆 1,NA,NA,lcs,FORCED,object,implicit,A,valid,P6b 秩律延拓 n=9;10 两路交叉（② 跨字流式 == ① 单字全消元 对 n=2..8;秩 65;82 = (n-1)^2+1;亏 16;18 = 2n-2）
+pvsnp,19,P1 det two paths + anchors,0.000000e+00,1.000000e-09,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+pvsnp,20,P2 per two paths + anchor,0.000000e+00,1.000000e-06,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+pvsnp,21,P3 det alternating / per invariant,0.000000e+00,1.000000e-09,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+pvsnp,22,P4 det signs split equally,0.000000e+00,0.000000e+00,lcs,FORCED,object,geo,A,valid,paper:100 | 面 | 内容 | 判据 |
+pvsnp,23,P5 det = per over GF(2),0.000000e+00,0.000000e+00,lcs,FORCED,object,geo,A,valid,paper:102 | **层内取谱** | $X_k=\mathbb{Z}_2^k$，谱 $\lbrace k-2
+pvsnp,24,P6 det(J)=0 but per(J)=n!,0.000000e+00,0.000000e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+pvsnp,25,P7 parity carries 1 bit only,0.000000e+00,0.000000e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+pvsnp,26,P8 equal rows: det=0; per>0,0.000000e+00,1.000000e-09,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+pvsnp,27,P9 GF(2) affine rank = (n-1)^2+1,0.000000e+00,0.000000e+00,lcs,FORCED,object,geo,A,valid,paper:122 **证明（$\Rightarrow$）**：若 $nm=k$ 且 $fiber=1$，�
+rh,1,P1 Γ 硬锚 Γ(1)=1,1.998401e-15,1.000000e-08,pair,FORCED_eps,object,nonzero,R,blank,P1 Gamma hard anchor [thm:Gamma(1)=1;Gamma(1/2)=sqrt(pi);same]
+rh,2,P2 Γ 递推 Γ(z+1)=zΓ(z),3.608862e-14,1.000000e-08,pair,FORCED_eps,object,nonzero,X,blank,P2 Gamma recurrence [thm:Weierstrass product;same]
+rh,3,P3 ζ 硬锚 ζ(2)/ζ(4)/ζ(3),1.776357e-15,1.000000e-08,pair,FORCED_eps,object,nonzero,R,valid,P3 zeta hard anchor [thm:Euler zeta(2);zeta(4);Apery(3);same]
+rh,4,P4 Λ(s)=Λ(1−s),9.694463e-11,1.000000e-08,lcs,DUP,dup,nonzero,X,valid,P4 Lam(s)=Lam(1-s) 自己读数（max rel dev 9.694e-11 = 输出 line 14）〔dup：与 rh:106 同 dev 同对象 P4，同一判据两处各记一次，不再另计〕
+rh,5,P5 |χ(σ+it)| 七档表,2.220446e-16,1.000000e-08,pair,FORCED_eps,object,nonzero,R,valid,P5 |chi| 两路差自己读数（max over sigma = 2.22e-16 = 输出 line 18-21 的 dev 最大值；tol=1e-15 由 double 舍入 4*eps 给，与 rh:47#P10 同机制）
+rh,6,P6 |χ|=1 的根唯一在 σ=1/2,3.552714e-15,1.000000e-14,lcs,FORCED_eps,object,nonzero,R,blank,P6 |chi|-1 root at 1/2
+rh,7,P7 |χ| 关于 σ 严格单调,0.000000e+00,0.000000e+00,lcs,FORCED,object,geo,A,blank,S2 zeros on line (sub)
+rh,8,P8 Hardy Z 非零处恒实,1.562375e-09,1.000000e-08,pair,FORCED_eps,object,nonzero,X,blank,P8 Hardy Z 实性自己读数（max|Im Z| = 1.562e-09 = 输出 line 43）· 它就是全档阈值的来源（1e-08 = 它的一阶上邻）
+rh,9,P9 前三个零点 |Z|≈0,6.340973e-10,1.000000e-08,pair,FORCED_eps,object,nonzero,X,valid,P9 前三个零自己读数（max|Z| = 6.341e-10 = 输出 line 49，本实现 zeta 下限，与 P8 同源）
+rh,10,P10 involution 不动点 σ=1/2,2.842171e-14,1.000000e-08,pair,FORCED_eps,object,nonzero,X,valid,P10 involution 不动点自己读数（max|sigma*-1/2| = 2.842e-14 = 输出 line 58，二分 200 步累积 + double）· 原文注『P10/P12/P11 dev<=2.2e-16』与实测矛盾，已改
+rh,11,P11 C₀ 迭代阈值精确 1/2,0.000000e+00,0.000000e+00,lcs,FORCED,object,count,A,valid,P11 C0 迭代分类判据（0.49->0 · 0.50->1/2 · 0.51->inf 三类全对，违例 0）· 阈值 1/2 是代数真值 x=2x^2 ⟹ x=1/2，无残差可报
+rh,12,P12 承载锥只在 σ=1/2 被保持,0.000000e+00,0.000000e+00,lcs,FORCED,object,count,A,valid,P12 承载锥分类判据（sigma=1/2 处 delta^2=4.25 精确保持；0.3/0.7 处不保持=判据内容本身，违例 0）· 无残差可报
+rh,13,S1 zeta anchors,2.327170e-10,1.000000e-08,pair,FORCED_eps,object,nonzero,X,valid,S1 zeta anchors [thm:Euler/Apery;same]
+rh,14,S2 zeros on line,3.033332e-10,1.000000e-08,pair,FORCED_eps,object,nonzero,X,blank,S2 zeros on line
+rh,15,S3 argmin sigma = 1/2 at zeros,0.000000e+00,0.000000e+00,lcs,FORCED,object,geo,A,blank,P3/P9/P10 (zero-dev)
+rh,16,S4 weld |zeta|/|zeta(1-s)|=|chi|,1.184800e-09,1.000000e-06,pair,FORCED_eps,object,nonzero,X,valid,S4 weld |z|/|z(1-s)|=|chi|
+rh,17,S5 |chi|=1 root unique at 1/2,3.552714e-15,1.000000e-12,lcs,FORCED_eps,object,nonzero,R,valid,S5 |chi|=1 root unique
+rh,18,S6 Hardy Z real,5.555456e-11,1.000000e-09,pair,FORCED_eps,object,nonzero,X,valid,S6 Hardy Z real [thm:Z(t)=e^{i theta}zeta(1/2+it) real by def;same]
+rh,19,S7 Lambda(s)=Lambda(1-s),9.694463e-11,1.000000e-09,lcs,FORCED_eps,object,nonzero,X,valid,P4/S7 Lambda(s)=Lambda(1-s) [thm:Riemann functional equation;same]
+rh,20,S8 R^2=id and fixed point 1/2,5.551115e-17,1.000000e-15,pair,FORCED_eps,object,nonzero,R,valid,S8] R^2=id [alg:involution R(s)=1-s squared;same]
+rh,21,S9 |chi(s)|*|chi(1-s)|=1,0.000000e+00,1.000000e-09,lcs,FORCED,object,geo,A,blank,P3/P9/P10 (zero-dev)
+rh,22,S10 spectrum 15 lines -> c;m;sign buckets,0.000000e+00,0.000000e+00,lcs,FORCED,object,geo,A,blank,P3/P9/P10 (zero-dev)
+ym,1,P1 |e^{iθ}|≡1 与 2π period,1.132210e-15,1.000000e-12,pair,FORCED_eps,object,nonzero,X,blank,P1 |exp(i theta)|=1 and 2pi period [thm:unit circle;same]
+ym,2,P2 SU(2) 半角double cover U(t+2π)=−U(t),5.551115e-16,1.000000e-15,pair,FORCED_eps,object,nonzero,R,blank,P2 SU(2) half-angle double cover [thm:SU(2)->SO(3) double cover;same]
+ym,3,P3 S³ spectrum λ_l=l(l+2)=重数−1,0.000000e+00,1.000000e-12,lcs,FORCED,object,geo,A,valid,paper:17 3. **矩阵探针**：$51$ 层、$448$ 格预算、$41$ 格�
+ym,4,P4 紧容器有正下界 / 非紧容器无下界,0.000000e+00,1.000000e-12,lcs,FORCED,object,geo,A,valid,line19 three tools give four forced facts [narrative claim]
+ym,5,P5 迹的gauge不变性与循环性（色单态=闭合回路）,0.000000e+00,1.000000e-12,lcs,FORCED,object,geo,A,valid,line21 |exp(i theta)|=1 implies gauge group [thm:unit circle;same]
+ym,6,P6 跑动耦合：欧拉error ∝ 1/N（闭式onestep）,2.043930e-02,5.000000e-02,pair,FORCED_trunc,object,nonzero,X,blank,P6 跑动耦合：欧拉error∝1/N（闭式onestep）
+ym,7,P7 Λ 本性奇点（log 恒等式 + g^10 抑制）,0.000000e+00,1.000000e-11,lcs,FORCED,object,geo,A,valid,paper:38 本节之后每一处主式都跟一行「倒数账」：它
+ym,8,P8 closure ⟺ 整数绕数 number（取模法）,7.347881e-16,1.000000e-15,pair,FORCED_eps,object,nonzero,X,blank,P8 closure iff integer winding [thm:winding number integrality;same]
+ym,9,P9 谱 λ_l=l(l+2) 与 √3 整数夹逼/无有理点（全整数）,0.000000e+00,0.000000e+00,lcs,FORCED,object,geo,A,valid,line47 truncation chain removes open-string E=sigma r [physical claim]
+ym,10,P1 lambda1 L^2 -> (2pi)^2,6.109002e-11,1.000000e-09,pair,FORCED_trunc,object,nonzero,X,valid,P1 lambda1 L²→(2π)²
+ym,11,P2 O(1/N^2) scaling window,0.000000e+00,0.000000e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+ym,12,P3 physical gap a-independent,1.605607e-03,3.212762e-03,pair,TREND,process,nonzero,X,blank,P3 physical gap a-independ 〔tol 取在 dev 的 2 倍附近（无机制手给界）⟹ 降 TREND（R1 机制体检）〕
+ym,13,P4 Delta(L)*L volume-independent,0.000000e+00,1.000000e-12,lcs,FORCED,object,geo,A,valid,paper:89 | 加法 | 守 | 收 | 阴格（体） | 累加 | 谱线相�
+ym,14,P5 singlet projector P^2=P; tr=1,0.000000e+00,1.000000e-12,lcs,FORCED,object,geo,A,valid,paper:91 | 取模 | 移 | 收 | 阴格（用） | 筛除 | 绕数取�
+ym,15,P6 tr(U A U^T) = tr(A),8.881784e-16,1.000000e-14,pair,FORCED_eps,object,nonzero,R,valid,P6 tr(UAU^T)=tr A [thm:trace invariance;same]
+ym,16,P7 area law -logW = (e2/2)RT,0.000000e+00,0.000000e+00,lcs,FORCED,object,geo,A,valid,line99 order-preserving of add/mul/exp-log [alg:monotonicity;same]
+ym,17,P8 E(R) = sigma R,0.000000e+00,0.000000e+00,lcs,FORCED,object,geo,A,blank,NA(addr_dead)
+ym,18,P9 gap in lattice units / a = E2-E1,3.774758e-15,1.000000e-13,pair,FORCED_eps,object,nonzero,R,valid,P9 gap in lattice units [sample: numerical]

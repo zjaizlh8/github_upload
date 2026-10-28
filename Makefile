@@ -35,11 +35,21 @@ $(BIN)/%: %.c
 	$(CC) $(CFLAGS) -o $@ $< $(LDLIBS)
 
 run: all
-	@fail=0; for b in $(BINS); do \
+	@mkdir -p audit/outs; fail=0; for b in $(BINS); do \
+	  p=$$(basename $$b | sed 's/^verify_//'); \
 	  printf '%-40s ' "$$b"; \
 	  if out=$$(./$$b 2>&1); then \
+	    echo "$$out" > audit/outs/$$p.txt; \
 	    echo "$$(printf '%s\n' "$$out" | grep -oE 'RESULT PASS=[0-9]+ FAIL=[0-9]+' | tail -1) OK"; \
 	  else echo "EXIT!=0"; fail=1; fi; \
 	done; exit $$fail
 clean:
 	rm -rf $(BIN)
+
+# ---- 审计器（不在七支之列；EXIT=0 表示被审对象无缺陷且标层完备）----
+# ★ 必须先 `make run`（刷新 audit/outs/），审计器会活读那份实跑输出与台账/README 对账。
+.PHONY: audit
+audit:
+	@mkdir -p $(BIN)
+	$(CC) $(CFLAGS) -o $(BIN)/verify_audit audit/verify_audit.c $(LDLIBS)
+	@$(BIN)/verify_audit matrix/audit_layer_gap.csv

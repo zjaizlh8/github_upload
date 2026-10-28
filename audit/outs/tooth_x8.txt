@@ -1,0 +1,8 @@
+[齿] X8 · tol 有值 ⟺ 对象面（产物 audit/x8_face.awk）
+  [PASS] c1 被咬住（x8_face exit=1 · verify_ledger FAIL 行=12 · X8 187 187 10 9 1 0 1）
+  [PASS] c2 被咬住（x8_face exit=1 · verify_ledger FAIL 行=4 · X8 187 186 10 10 1 0 1）
+  [PASS] c3 被咬住（x8_face exit=1 · verify_ledger FAIL 行=4 · X8 186 186 10 10 1 1 0）
+  [PASS] 真台账放行（X8 187 187 10 10 1 0 0 · RESULT FAIL=0）
+
+RESULT PASS=4 FAIL=0
+EXIT=0

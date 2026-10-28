@@ -1,0 +1,199 @@
+paper,line,class,dev,tol,ratio,slice,invariance,criterion
+bsd,5,FORCED,0.000000e+00,1.0e-15,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,6,FORCED_eps,6.661e-16,1e-15,6.661000e-01,M;y,sample,part1-P2 w=(−1)^k（k=1、2、3）
+bsd,7,FORCED,0.000000e+00,1.0e-15,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,8,FORCED,0.000000e+00,1.0e-15,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,9,FORCED_eps,3.711e-16,1e-14,3.711000e-02,M;y,cited,P5 quaternion norm multiplicative [thm:Hurwitz norm;same]
+bsd,10,FORCED_eps,3.977e-16,1e-13,3.977000e-03,M;y,cited,P6 octonion norm multiplicative [thm:Hurwitz norm;same]
+bsd,11,FORCED,0.000000e+00,1.0e-14,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,12,FORCED,0.000000e+00,1.0e-15,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,14,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,16,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,17,FORCED,0.000000e+00,1.0e-15,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,18,FORCED_eps,9.447e-15,1e-13,9.447000e-02,M;y,cited,P12 product norm = product of norms [thm:Hurwitz;same]
+bsd,36,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,37,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,38,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,39,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,42,FORCED_eps,1.578e-11,1e-08,1.578000e-03,M;y,sample,part2-Ω 与外部锚一致
+bsd,44,FORCED_eps,8.230e-11,1e-09,8.230000e-02,M;y,sample,part2-Tamagawa 积为整数 2（账闭合）
+bsd,46,FORCED_eps,4.316e-10,1e-09,4.316000e-01,M;y,sample,part2-倒数账两项相消（residual→0）
+bsd,49,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,50#dup(sep),DUP,3.943e-03,2e-02,1.971500e-01,M;y,dup,rank 1：Abel 和趋零（|·|<0.02）
+bsd,51#dup(sep),DUP,7.761e-03,2e-02,3.880500e-01,M;y,dup,rank 2：Abel 和趋零（|·|<0.02）
+bsd,53,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,54,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,60,FLOW,6.547e-03,1e-01,6.547000e-02,M;y,sample,负结果：|r(37a1)−r(389a1)|<0.1（秩不可由局部积读）
+bsd,70,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,71,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,72,FORCED_eps,1.578e-11,1e-08,1.578000e-03,M;y,sample,part4-Ω 与外锚 2Γ(1/4)²/(2√(2π)) 一致〔=bsd:42 同一残差〕
+bsd,73,FORCED_eps,8.230e-11,1e-09,8.230000e-02,M;y,sample,part4-账上 ∏c_p·#Ш 为整数 2〔=bsd:44 同一残差〕
+bsd,74,FORCED_eps,4.316e-10,1e-09,4.316000e-01,M;y,sample,part4-常数账相消 L·#Ш²−Ω·∏c_p·#Ш〔=bsd:46 同一残差〕
+bsd,79,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,80,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,84,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,87,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,88,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,89,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,91,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,93,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,96,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,105,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,107,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,109,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,111,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,113,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,115,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,117,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,119,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,121,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,123,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,135,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,139,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,144,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,146,FORCED_eps,1.776357e-15,1.000000e-12,1.776357e-03,M;y,cited,P4 parallelogram law [thm:inner product space;same]
+bsd,149,FORCED_eps,8.237810e-11,1.000000e-09,8.237810e-02,M;y,sample,RESULT-maxdev〔非判据·是段汇总数〕
+bsd,157,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,159,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,161,FORCED,0.000000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+hl,7,FLOW,1.105190e+00,3.000e+00,3.683967e-01,x,sample,part1-P1 展开(最优截断) vs integral：偏差/尾estimate≤3
+hl,9,FLOW,2.666581e-04,1.000e-03,2.666581e-01,x,sample,part1-P2 累加展开一阶系数=D=k=2
+hl,11,FLOW,2.978073e-01,5.000e-01,5.956146e-01,x,sample,part1-P3 下限被迫：I(eps)~1/eps
+hl,15,FORCED_trunc,1.075556e-02,3.257e-01,3.302290e-02,x,sample,part1-P4 焊接口：阶梯integral ∫(e^γ·prod)²dt vs Li2
+hl,18,FORCED_trunc,8.957968e-08,3.000e-06,2.985989e-02,x,sample,part1-P5 2C2=2∏(1−1/(q−1)²) vs 1.3203236316
+hl,20,FORCED_trunc,1.403645e-06,1.000e-05,1.403645e-01,x,sample,part1-P6 e^-γ 部分积 vs 0.5614594836
+hl,22,FORCED,0.000000e+00,0.000e+00,0.000000e+00,x,sample,NA(zero-dev)
+hl,24,FORCED_eps,3.168248e-10,1.000e-09,3.168248e-01,x,sample,part1-P8 log(e^2γ/4)=2γ−log4 vs −0.231863031
+hl,29,FORCED,0.000000e+00,0.000e+00,0.000000e+00,x,sample,NA(zero-dev)
+hl,31,FORCED_eps,2.512259e-10,1.000e-09,2.512259e-01,x,sample,P10 4e^-2gamma = 1.2609470
+hl,33,FORCED,0.000000e+00,0.000e+00,0.000000e+00,x,sample,NA(zero-dev)
+hl,45,FORCED,0.000000e+00,0.000e+00,0.000000e+00,x,sample,NA(zero-dev)
+hl,52,FORCED,0.000000e+00,0.000e+00,0.000000e+00,x,sample,NA(zero-dev)
+hl,54,FLOW,1.281874e-03,5.000e-03,2.563748e-01,x,sample,part2-P3 与 archive 表 ρ 对齐（口径差≤5e-3）
+hl,56,FORCED,0.000000e+00,0.000e+00,0.000000e+00,x,sample,NA(zero-dev)
+hl,58,FORCED,0.000000e+00,0.000e+00,0.000000e+00,x,sample,NA(zero-dev)
+hl,60,FORCED,0.000000e+00,0.000e+00,0.000000e+00,x,sample,NA(zero-dev)
+hl,63,FORCED,0.000000e+00,0.000e+00,0.000000e+00,x,sample,NA(zero-dev)
+hl,65,FORCED,0.000000e+00,0.000e+00,0.000000e+00,x,sample,NA(zero-dev)
+hl,67,FLOW,1.284334e-02,1.000e+00,1.284334e-02,x,sample,part2-P9 |E(x)|≤6√x（逐步占比≤1）
+hl,100,FORCED,0.000000e+00,0.000e+00,0.000000e+00,x,sample,NA(zero-dev)
+hl,102,FORCED,0.000000e+00,0.000e+00,0.000000e+00,x,sample,NA(zero-dev)
+hl,106,FORCED,0.000000e+00,0.000e+00,0.000000e+00,x,sample,NA(zero-dev)
+hl,110,FORCED,0.000000e+00,0.000e+00,0.000000e+00,x,sample,NA(zero-dev)
+hl,114,FLOW,7.039249e-03,2.000e-02,3.519624e-01,x,sample,part4-P6 密度积×log²X 三条 convergence（相对差≤2%）
+hl,118,FORCED,0.000000e+00,0.000e+00,0.000000e+00,x,sample,NA(zero-dev)
+hl,131,FORCED,0.000000e+00,0.000e+00,0.000000e+00,x,sample,NA(zero-dev)
+hl,133,FORCED,0.000000e+00,0.000e+00,0.000000e+00,x,sample,NA(zero-dev)
+hl,135,FORCED,0.000000e+00,0.000e+00,0.000000e+00,x,sample,NA(zero-dev)
+hodge,15,FORCED,0.000000e+00,1.0e-16,0.000000e+00,x;n;M,sample,line15 Hodge class = fixed of circle action [identification; not theorem]
+hodge,16,FORCED,0.000000e+00,1.0e-15,0.000000e+00,x;n;M,na,line16 points to blank/header/separator; not a criterion
+hodge,17,FORCED_eps,9.390e-17,1e-15,9.390000e-02,x;n;M,theorem,P3 circular mean is a projector [alg:mean of characters;same]
+hodge,18,FORCED_eps,1.028e-16,1e-14,1.028000e-02,x;n;M,theorem,P4 invariant iff p=q [alg:half-turn weight;same]
+hodge,19,FORCED,0.000000e+00,1.0e-15,0.000000e+00,x;n;M,theorem,line19 closure iff integer winding [thm:winding integrality;same]
+hodge,20,FORCED,0.000000e+00,1.0e-14,0.000000e+00,x;n;M,theorem,line20 involution forces e^{i pi}=-1 [alg:involution;same]; not a criterion
+hodge,21,FORCED,0.000000e+00,1.0e-15,0.000000e+00,x;n;M,theorem,line21 Abel-Jacobi image is torsion [thm:Abel-Jacobi;same]
+hodge,23,FORCED,0.000000e+00,1.0e-12,0.000000e+00,x;n;M,WALL,line23 Hodge class = algebraic cycle (THE CONJECTURE ITSELF)
+hodge,24,FORCED_eps,2.998e-15,1e-14,2.998000e-01,x;n;M,theorem,P3b circular mean = indicator [alg:character orthogonality;same]
+hodge,38,FORCED,0.000000e+00,0.0e+00,0.000000e+00,x;n;M,na,line38 points to blank/header/separator; not a criterion
+hodge,44,FORCED,0.000000e+00,0.0e+00,0.000000e+00,x;n;M,na,line44 points to blank/header/separator; not a criterion
+hodge,46,FORCED,0.000000e+00,0.0e+00,0.000000e+00,x;n;M,theorem,line46 circular mean is idempotent [alg:P^2=P;same]
+hodge,51,FORCED,0.000000e+00,0.0e+00,0.000000e+00,x;n;M,na,line51 points to blank/header/separator; not a criterion
+hodge,53,FORCED,0.000000e+00,0.0e+00,0.000000e+00,x;n;M,na,line53 points to blank/header/separator; not a criterion
+hodge,59,FORCED,0.000000e+00,0.0e+00,0.000000e+00,x;n;M,na,line59 points to blank/header/separator; not a criterion
+hodge,61,FORCED,0.000000e+00,1.0e-12,0.000000e+00,x;n;M,na,line61 points to blank/header/separator; not a criterion
+hodge,67,FORCED,0.000000e+00,0.0e+00,0.000000e+00,x;n;M,na,line67 points to blank/header/separator; not a criterion
+hodge,69,FORCED,0.000000e+00,0.0e+00,0.000000e+00,x;n;M,na,line69 points to blank/header/separator; not a criterion
+ns,14,FORCED,0.000000e+00,1.0e-14,0.000000e+00,n;x,sample,NA(zero-dev)
+ns,15,FORCED,0.000000e+00,1.0e-14,0.000000e+00,n;x,sample,NA(zero-dev)
+ns,16,FORCED_eps,1.869e-14,1e-13,1.869000e-01,n;x,sample,P3 三分恒等
+ns,17,FORCED_eps,4.441e-16,1e-14,4.441000e-02,n;x,sample,P4 二维 λ2≡0
+ns,18,FORCED,0.000000e+00,1.0e-12,0.000000e+00,n;x,sample,NA(zero-dev)
+ns,19,FORCED,0.000000e+00,1.0e-12,0.000000e+00,n;x,sample,NA(zero-dev)
+ns,20,FORCED,0.000000e+00,1.0e-10,0.000000e+00,n;x,sample,NA(zero-dev)
+ns,21,FORCED_eps,2.220e-16,1e-15,2.220000e-01,n;x,sample,P8 Γ*=4ν/c ⟹ Re*=4π
+ns,22,FORCED,0.000000e+00,1.0e-12,0.000000e+00,n;x,sample,NA(zero-dev)
+ns,23,FORCED,0.000000e+00,1.0e-12,0.000000e+00,n;x,sample,NA(zero-dev)
+pvsnp,89,FORCED,0.000000e+00,1.0e-09,0.000000e+00,n,sample,NA(zero-dev)
+pvsnp,91,FORCED,0.000000e+00,1.0e-06,0.000000e+00,n,sample,NA(zero-dev)
+pvsnp,93,FORCED,0.000000e+00,1.0e-09,0.000000e+00,n,sample,NA(zero-dev)
+pvsnp,100,FORCED,0.000000e+00,0.0e+00,0.000000e+00,n,sample,NA(zero-dev)
+pvsnp,102,FORCED,0.000000e+00,0.0e+00,0.000000e+00,n,sample,NA(zero-dev)
+pvsnp,109,FORCED,0.000000e+00,0.0e+00,0.000000e+00,n,sample,NA(zero-dev)
+pvsnp,115,FORCED,0.000000e+00,0.0e+00,0.000000e+00,n,sample,NA(zero-dev)
+pvsnp,117,FORCED,0.000000e+00,1.0e-09,0.000000e+00,n,sample,NA(zero-dev)
+pvsnp,122,FORCED,0.000000e+00,0.0e+00,0.000000e+00,n,sample,NA(zero-dev)
+rh,93,FORCED_eps,2.327170e-10,1.000000e-08,2.327170e-02,s,theorem,S1 zeta anchors [thm:Euler/Apery;same]
+rh,95,FORCED_eps,3.033332e-10,1.000000e-08,3.033332e-02,s,sample,S2 zeros on line
+rh,98,FORCED,0.000000e+00,0.0e+00,0.000000e+00,s,sample,P3/P9/P10 (zero-dev)
+rh,100,FORCED_eps,1.184800e-09,1.000000e-06,1.184800e-03,s,sample,S4 weld |z|/|z(1-s)|=|chi|
+rh,102,FORCED_eps,3.552714e-15,1.0e-12,3.552714e-03,s,sample,S5 |chi|=1 root unique
+rh,104,FORCED_eps,5.555456e-11,1.000000e-09,5.555456e-02,s,theorem,S6 Hardy Z real [thm:Z(t)=e^{i theta}zeta(1/2+it) real by def;same]
+rh,106,FORCED_eps,9.694463e-11,1.0e-09,9.694463e-02,s,theorem,P4/S7 Lambda(s)=Lambda(1-s) [thm:Riemann functional equation;same]
+rh,108,FORCED_eps,5.551115e-17,1.000000e-15,5.551115e-02,s,theorem,S8] R^2=id [alg:involution R(s)=1-s squared;same]
+rh,110,FORCED,0.000000e+00,1.0e-09,0.000000e+00,s,sample,P3/P9/P10 (zero-dev)
+rh,118,FORCED,0.000000e+00,0.0e+00,0.000000e+00,s,sample,P3/P9/P10 (zero-dev)
+ym,8,FORCED_eps,1.132210e-15,1.000000e-12,1.132210e-03,N,theorem,P1 |exp(i theta)|=1 and 2pi period [thm:unit circle;same]
+ym,10,FORCED_eps,5.551115e-16,1.000000e-15,5.551115e-01,N,theorem,P2 SU(2) half-angle double cover [thm:SU(2)->SO(3) double cover;same]
+ym,17,FORCED,0.000000e+00,1.0e-12,0.000000e+00,N,na,line17 points to probe-budget/method/header/table/blank; not a criterion
+ym,19,FORCED,0.000000e+00,1.0e-12,0.000000e+00,N,sample,line19 three tools give four forced facts [narrative claim]
+ym,21,FORCED,0.000000e+00,1.0e-12,0.000000e+00,N,theorem,line21 |exp(i theta)|=1 implies gauge group [thm:unit circle;same]
+ym,30,FORCED_trunc,2.043930e-02,5.000000e-02,4.087860e-01,N,sample,P6 跑动耦合：欧拉error∝1/N（闭式onestep）
+ym,38,FORCED,0.000000e+00,1.0e-11,0.000000e+00,N,na,line38 points to probe-budget/method/header/table/blank; not a criterion
+ym,40,FORCED_eps,7.347881e-16,1.000000e-15,7.347881e-01,N,theorem,P8 closure iff integer winding [thm:winding number integrality;same]
+ym,47,FORCED,0.000000e+00,0.0e+00,0.000000e+00,N,sample,line47 truncation chain removes open-string E=sigma r [physical claim]
+ym,73,FORCED_trunc,6.109002e-11,1.000000e-09,6.109002e-02,N,sample,P1 lambda1 L²→(2π)²
+ym,79,FORCED,0.000000e+00,0.0e+00,0.000000e+00,N,na,line79 points to probe-budget/method/header/table/blank; not a criterion
+ym,84,TREND,1.605607e-03,NA,NA,N,sample,P3 physical gap a-independ 〔tol 取在 dev 的 2 倍附近（无机制手给界）⟹ 降 TREND（R1 机制体检）〕
+ym,89,FORCED,0.000000e+00,1.0e-12,0.000000e+00,N,na,line89 points to probe-budget/method/header/table/blank; not a criterion
+ym,91,FORCED,0.000000e+00,1.0e-12,0.000000e+00,N,na,line91 points to probe-budget/method/header/table/blank; not a criterion
+ym,93,FORCED_eps,8.881784e-16,1.000000e-14,8.881784e-02,N,theorem,P6 tr(UAU^T)=tr A [thm:trace invariance;same]
+ym,99,FORCED,0.000000e+00,0.0e+00,0.000000e+00,N,theorem,line99 order-preserving of add/mul/exp-log [alg:monotonicity;same]
+ym,106,FORCED,0.000000e+00,0.0e+00,0.000000e+00,N,na,line106 points to probe-budget/method/header/table/blank; not a criterion
+ym,111,FORCED_eps,3.774758e-15,1.000000e-13,3.774758e-02,N,sample,P9 gap in lattice units [sample: numerical]
+bsd,P5b,FORCED,0.000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,P6b,FORCED,0.000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+bsd,P2b,FORCED,0.000e+00,0.0e+00,0.000000e+00,M;y,sample,NA(zero-dev)
+pvsnp,197#n2,FORCED,NA(implicit),NA(implicit),NA(implicit),n,sample,NA(zero-dev)
+pvsnp,197#n3,FORCED,NA(implicit),NA(implicit),NA(implicit),n,sample,NA(zero-dev)
+pvsnp,197#n4,FORCED,NA(implicit),NA(implicit),NA(implicit),n,sample,NA(zero-dev)
+pvsnp,197#n5,FORCED,NA(implicit),NA(implicit),NA(implicit),n,sample,NA(zero-dev)
+pvsnp,197#n6,FORCED,NA(implicit),NA(implicit),NA(implicit),n,sample,NA(zero-dev)
+pvsnp,197#n7,FORCED,NA(implicit),NA(implicit),NA(implicit),n,sample,NA(zero-dev)
+pvsnp,197#n8,FORCED,NA(implicit),NA(implicit),NA(implicit),n,sample,NA(zero-dev)
+pvsnp,211#n2,FORCED,NA(implicit),NA(implicit),NA(implicit),n,sample,NA(zero-dev)
+pvsnp,211#n3,FORCED,NA(implicit),NA(implicit),NA(implicit),n,sample,NA(zero-dev)
+pvsnp,211#n4,FORCED,NA(implicit),NA(implicit),NA(implicit),n,sample,NA(zero-dev)
+pvsnp,211#n5,FORCED,NA(implicit),NA(implicit),NA(implicit),n,sample,NA(zero-dev)
+pvsnp,211#n6,FORCED,NA(implicit),NA(implicit),NA(implicit),n,sample,NA(zero-dev)
+pvsnp,211#n7,FORCED,NA(implicit),NA(implicit),NA(implicit),n,sample,NA(zero-dev)
+pvsnp,211#n8,FORCED,NA(implicit),NA(implicit),NA(implicit),n,sample,NA(zero-dev)
+pvsnp,276#P8a,FORCED,NA(implicit),NA(implicit),NA(implicit),n,sample,NA(zero-dev)
+pvsnp,276#P8b,FORCED,NA(implicit),NA(implicit),NA(implicit),n,sample,NA(zero-dev)
+pvsnp,276#P8c,FORCED,NA(implicit),NA(implicit),NA(implicit),n,sample,NA(zero-dev)
+pvsnp,209#P6b,FORCED,NA(implicit),NA(implicit),NA(implicit),n,sample,P6b 秩律延拓 n=9;10 两路交叉（② 跨字流式 == ① 单字全消元 对 n=2..8;秩 65;82 = (n-1)^2+1;亏 16;18 = 2n-2）
+rh,71#P1,FORCED_eps,1.998401e-15,1.000000e-08,1.998401e-07,s,theorem,P1 Gamma hard anchor [thm:Gamma(1)=1;Gamma(1/2)=sqrt(pi);same]
+rh,71#P2,FORCED_eps,3.608862e-14,1.000000e-08,3.608862e-06,s,theorem,P2 Gamma recurrence [thm:Weierstrass product;same]
+rh,252#P3,FORCED_eps,1.776357e-15,1.000000e-08,1.776357e-07,s,theorem,P3 zeta hard anchor [thm:Euler zeta(2);zeta(4);Apery(3);same]
+rh,103#P4,DUP,9.694463e-11,1.0e-08,9.694463e-03,s,sample,P4 Lam(s)=Lam(1-s) 自己读数（max rel dev 9.694e-11 = 输出 line 14）〔dup：与 rh:106 同 dev 同对象 P4，同一判据两处各记一次，不再另计〕
+rh,45#P5,FORCED_eps,2.220446e-16,1.000000e-08,2.220446e-08,s,sample,P5 |chi| 两路差自己读数（max over sigma = 2.22e-16 = 输出 line 18-21 的 dev 最大值；tol=1e-15 由 double 舍入 4*eps 给，与 rh:47#P10 同机制）
+rh,221#P6,FORCED_eps,3.552714e-15,1.0e-12,3.552714e-03,s,sample,P6 |chi|-1 root at 1/2
+rh,221#P7,FORCED,0.000000e+00,0.0e+00,0.000000e+00,s,sample,S2 zeros on line (sub)
+rh,286#P8,FORCED_eps,1.562375e-09,1.000000e-08,1.562375e-01,s,sample,P8 Hardy Z 实性自己读数（max|Im Z| = 1.562e-09 = 输出 line 43）· 它就是全档阈值的来源（1e-08 = 它的一阶上邻）
+rh,26#P9,FORCED_eps,6.340973e-10,1.000000e-08,6.340973e-02,s,sample,P9 前三个零自己读数（max|Z| = 6.341e-10 = 输出 line 49，本实现 zeta 下限，与 P8 同源）
+rh,47#P10,FORCED_eps,2.842171e-14,1.000000e-08,2.842171e-06,s,theorem,P10 involution 不动点自己读数（max|sigma*-1/2| = 2.842e-14 = 输出 line 58，二分 200 步累积 + double）· 原文注『P10/P12/P11 dev<=2.2e-16』与实测矛盾，已改
+rh,47#P11,FORCED,0.000000e+00,0.0e+00,0.000000e+00,s,theorem,P11 C0 迭代分类判据（0.49->0 · 0.50->1/2 · 0.51->inf 三类全对，违例 0）· 阈值 1/2 是代数真值 x=2x^2 ⟹ x=1/2，无残差可报
+rh,24#P12,FORCED,0.000000e+00,0.0e+00,0.000000e+00,s,theorem,P12 承载锥分类判据（sigma=1/2 处 delta^2=4.25 精确保持；0.3/0.7 处不保持=判据内容本身，违例 0）· 无残差可报
+hl,375#pi2_1e5,FORCED,NA(implicit),NA(implicit),NA(implicit),x,sample,NA(zero-dev)
+hl,376#pi2_1e6,FORCED,NA(implicit),NA(implicit),NA(implicit),x,sample,NA(zero-dev)
+hl,377#pi2_1e7,FORCED,NA(implicit),NA(implicit),NA(implicit),x,sample,NA(zero-dev)
+hl,378#pi2_1e8,FORCED,NA(implicit),NA(implicit),NA(implicit),x,sample,NA(zero-dev)
+hl,379#pi2_1e9,FORCED,NA(implicit),NA(implicit),NA(implicit),x,sample,NA(zero-dev)
+hl,375#center_6m,FORCED,NA(implicit),NA(implicit),NA(implicit),x,sample,NA(zero-dev)
+ns,25#P1,FORCED,0.000000e+00,0.0e+00,0.000000e+00,n;x,sample,NA(zero-dev)
+ns,254#P2,FORCED,0.000000e+00,0.0e+00,0.000000e+00,n;x,sample,NA(zero-dev)
+ns,24#P3,FORCED_eps,2.775558e-17,1.000000e-15,2.775558e-02,n;x,sample,P3 Gamma* = 4nu/c  (Re* = 
+ns,268#P4,FORCED,0.000000e+00,0.0e+00,0.000000e+00,n;x,sample,NA(zero-dev)
+ns,124#P6,FORCED,0.000000e+00,0.0e+00,0.000000e+00,n;x,sample,NA(zero-dev)
+ns,298#P7,FORCED_eps,6.219751e-15,1.000000e-12,6.219751e-03,n;x,sample,P7 正=宏观 S_2N-S_N=N*G
+ns,147#P8,FORCED_trunc,1.007919e-03,5.000000e-02,2.015838e-02,n;x,sample,P8 Riccati closed form + 2nd-order convergence
+ns,101#P9,FORCED_eps,2.474623e-17,1.000000e-15,2.474623e-02,n;x,sample,P9 2D control: Gamma const

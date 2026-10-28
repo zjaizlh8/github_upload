@@ -1,0 +1,139 @@
+判据编号按段重置：各段自有 P1..Pn，跨段同名不同义（论文表格按段引用）。
+==========================================================
+ P vs NP 独立复算见证（纯 C · main 直接层零循环）
+ 四法口径：加法=accumulate · 乘法=generate · 取模=sieve · 跨维度=dimension-change · base=非象
+ 反 = (−1)^σ = e^{iπσ} 的取模（mod 2）reading ⟹ 属取模法（sieve）
+==========================================================
+--- P1 (−1)^inv ≡ Re e^{iπ·inv}（n≤7 共 5912 个permutation）max dev = 0.000e+00 ---
+--- P2 e^{iπ}+1 = 0.000e+00 （identity，非逼近） ---
+
+--- P3/P4 相消度 C = |Σ项| / Σ|项|  (随机正矩阵 40 次均值) ---
+  n     det_C        per_C
+  3   5.442987e-02   1.0000000000
+  4   9.331411e-03   1.0000000000
+  5   1.030110e-03   1.0000000000
+  6   1.118598e-04   1.0000000000
+  7   1.695927e-05   1.0000000000
+  8   1.650412e-06   1.0000000000
+  det 相消度 C(8)/C(3) = 3.032181e-05；由实测端点算 log-slope a = -2.0807（不套常数）
+
+--- P5 复矩阵（n=6, 40 次）det 相消度可低于 1；min C_det = 0.005024 ---
+    照实说明：per 零相消是【正矩阵】性质，非 per 固有（归档口径 min 0.009621）
+
+--- P6/P7 反不可外贴：∃S∈{±1}^{n×n}, ∀A: det(A∘S) = per(A)? ---
+  n   方程n!    变量n²   真秩   (n−1)²+1  可解   亏 n²−秩  矛盾三元组
+  2        2        4      2        2      YES        2      0
+  [PASS] P6 秩律 n=2：真 rank = (n−1)²+1 = 2
+  [PASS] P7 可解性 n=2：仅 n=2 可解（仿射换元只差一个符号）
+  3        6        9      5        5      NO         4      3
+  [PASS] P6 秩律 n=3：真 rank = (n−1)²+1 = 5
+  [PASS] P7 可解性 n=3：仅 n=2 可解（仿射换元只差一个符号）
+  4       24       16     10       10      NO         6      24
+  [PASS] P6 秩律 n=4：真 rank = (n−1)²+1 = 10
+  [PASS] P7 可解性 n=4：仅 n=2 可解（仿射换元只差一个符号）
+  5      120       25     17       17      NO         8      100
+  [PASS] P6 秩律 n=5：真 rank = (n−1)²+1 = 17
+  [PASS] P7 可解性 n=5：仅 n=2 可解（仿射换元只差一个符号）
+  6      720       36     26       26      NO        10      300
+  [PASS] P6 秩律 n=6：真 rank = (n−1)²+1 = 26
+  [PASS] P7 可解性 n=6：仅 n=2 可解（仿射换元只差一个符号）
+  7     5040       49     37       37      NO        12      735
+  [PASS] P6 秩律 n=7：真 rank = (n−1)²+1 = 37
+  [PASS] P7 可解性 n=7：仅 n=2 可解（仿射换元只差一个符号）
+  8    40320       64     50       50      NO        14      1568
+  [PASS] P6 秩律 n=8：真 rank = (n−1)²+1 = 50
+  [PASS] P7 可解性 n=8：仅 n=2 可解（仿射换元只差一个符号）
+--- P6b 秩律延拓 n=9,10：跨字流式实现（②）· 与单字全消元（①）重叠域交叉 ---
+  重叠域 n=2..8：① 与 ② 的秩/可解性逐 n 相等 = 是
+  9    362880       81     65       65      NO        16      3024
+  10   3628800      100     82       82      NO        18      5400
+  [PASS] P6b n=9,10：② 得秩 65、82 = (n−1)²+1，亏 16、18 = 2n−2，n≥3 不可解；且两路在 n=2..8 逐 n 相等
+--- P8 矩形交替律（恒等论证 · 不依赖计算） ---
+  恒等式 r1 ^ r2 = r3 的violation（n=3..8，每 n 抽 2000 个符号矩阵）：0
+  齿测：把 ⊕ 换成 ∧ 后的 violation = 4096999（必须 > 0，否则说明抽样没跑）
+  exhaustive全体符号矩阵使【每个 2×2 矩形和皆 = 1】：n=3 → 0 / 512；n=4 → 0 / 65536
+  结论：n≥3 时【三列两line】必不可同时satisfies ⟹ 约束系统自相矛盾 ⟹ 反不可外贴
+  [PASS] P8a identity 式 r1^r2=r3 零违规（n=3..8 抽样）· 齿测 & 变异有违规
+  [PASS] P8b n=3 全枚举无符号矩阵令每一 2×2 矩形和皆 1
+  [PASS] P8c n=4 全枚举无符号矩阵令每一 2×2 矩形和皆 1
+
+--- P9/P10 高斯消元 det vs 暴力：max rel dev = 4.931e-14 ---
+           Ryser per   vs 暴力：max rel dev = 1.851e-14 ---
+
+--- P11 ∏(1+z^{2^i}) = (1−z^{2^n})/(1−z) 系数全 1：max dev = 0.000e+00（n=2..7） ---
+    structure：超递增（二进制）给闭式；per 无此结构 ⟹ 2^n 一项不少
+
+--- P12 monotone算术电路乘法下界 n(2^{n−1}−1) vs det 立方（Jerrum–Snir 1982，外部锚） ---
+   n   monotone下界      n³     反超?
+   5         75     125     no
+   7        441     343     YES
+   8       1016     512     YES
+   9       2295     729     YES
+  10       5110    1000     YES
+  11      11253    1331     YES
+  12      24564    1728     YES
+
+----------------------------------------------------------
+ 读数归拢（照实说明）
+  · det 相消度随 n 指数衰减；per（正矩阵）恒 1.000000 ⟹ 无反即无消
+  · GF(2) 符号系统 n=2 唯一可解，n≥3 全部不可解 ⟹「反」贴不上去
+  · 真秩 = (n−1)²+1（Birkhoff 多面体仿射dimension +1），defect = 2n−2
+  · 矩形交替律：三列两line上 1+1=0 ≠ 1，恒等论证不依赖计算
+  · 高斯消元 O(n³) 与暴力 det 一致；Ryser 2^n 与暴力 per 一致
+----------------------------------------------------------
+结印：P 与 NP 之bound，一负号而已。反在式内者，相消而成闭式（P）；
+      反不在式内者，全加而至于二之 n（#P）；反不可外贴（n≥3 GF(2) 无解）。
+==========================================================
+
+RESULT PASS=18 FAIL=0  (GF(2) 判据 18 项；数值判据另由此前 max dev 把门)
+EXIT=0
+== [part 2/2] construction layer —— per 为什么没有闭式（mod 2 商）==
+   [土S锚定]   [火F虚化]   [金M坍缩]   [水W渗透]   [木D扩展]   [土S闭环]
+
+  [P1] det 3x3 = -3.000000 (expect -3)   det 4x4 bareiss -62.000000 vs laplace -62.000000
+  PASS P1 det two paths + anchors             dev=0.000000e+00 tol=1.000000e-09
+  [P2] per 3x3 = 463.000000 (expect 463)   per 4x4 ryser 2.000000 vs enum 2.000000
+  PASS P2 per two paths + anchor              dev=0.000000e+00 tol=1.000000e-06
+  [P3] det(A)=-11.000000 det(swapped)=11.000000  per(A)=117.000000 per(swapped)=117.000000
+  PASS P3 det alternating / per invariant     dev=0.000000e+00 tol=1.000000e-09
+  [P4] n | det(+,-) | per terms
+        2 | 1,1 equal | 2
+        3 | 3,3 equal | 6
+        4 | 12,12 equal | 24
+        5 | 60,60 equal | 120
+        6 | 360,360 equal | 720
+  PASS P4 det signs split equally             dev=0.000000e+00 tol=0.000000e+00
+  [P5] 0/1 matrices enumerated = 66064   det mod 2 != per mod 2 count = 0
+  PASS P5 det = per over GF(2)                dev=0.000000e+00 tol=0.000000e+00
+  [P6] n | det(J) | per(J) | n!
+        2 | 0.0 | 2.0 | 2.0
+        3 | 0.0 | 6.0 | 6.0
+        4 | 0.0 | 24.0 | 24.0
+        5 | 0.0 | 120.0 | 120.0
+        6 | 0.0 | 720.0 | 720.0
+  PASS P6 det(J)=0 but per(J)=n!              dev=0.000000e+00 tol=0.000000e+00
+  [P7] n | log2(n!) bits of per | bits from parity
+        3 | 2.585 | 1
+        4 | 4.585 | 1
+        5 | 6.907 | 1
+        6 | 9.492 | 1
+  PASS P7 parity carries 1 bit only           dev=0.000000e+00 tol=0.000000e+00
+  [P8] rows 1=2 all-ones: det = -0.0   per = 12.0 (expect 2*(1+2+3)=12)
+  PASS P8 equal rows: det=0, per>0            dev=0.000000e+00 tol=1.000000e-09
+  [P9] n | rank{vec(P_s)+vec(P_id)} | (n-1)^2+1
+        2 | 2 | 2
+        3 | 5 | 5
+        4 | 10 | 10
+  PASS P9 GF(2) affine rank = (n-1)^2+1       dev=0.000000e+00 tol=0.000000e+00
+
+RESULT PASS=9 FAIL=0 maxdev=0.000e+00
+k=9 fiber=1.000000 fidelity=1.000000 discriminability=0.888889
+res=0.000000e+00 domain=9 dc=6 order=2
+照实说明：P5/P6/P9 是全enumeration（n<=4 / n=3 / n<=4），不是对一切 n 的定理；
+     P4 的「正负各半」是项数计数，不是值的相消；
+     P7 的信息量是下界论证的必要条件，不构成 #P-hard 的证明。
+EXIT=0
+D3=3
+D3_TOTAL=3
+RESULT PASS=27 FAIL=0   (all criteria in this file)
+EXIT=0

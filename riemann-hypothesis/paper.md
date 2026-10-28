@@ -3,7 +3,7 @@
 > Author: zjaizlh8 (GitHub pen name)
 > System: monistic field theory (WQNN-K8538)
 > Date: 2026-10-26
-> Independent recomputation: `code/verify_rh.c` (pure C, zero loops at the direct level of `main`, the two section subtotals `12 · 9`, last line `RESULT PASS=21 FAIL=0`, `EXIT=0`; the first section additionally prints `RESULT max dev = 1.562e-09   (threshold 1e-08)`)
+> Independent recomputation: `code/verify_rh.c` (pure C, zero loops at the direct level of `main`, the two section subtotals `12 · 10`, last line `RESULT PASS=22 FAIL=0`, `EXIT=0`; the first section additionally prints `RESULT max dev = 1.562e-09   (threshold 1e-08)`)
 > Matrix actual run: `containers matrix domain=onestep` → `matrix_onestep_layer_gap_rh.csv`
 
 ---
@@ -14,11 +14,11 @@ This paper uses three structural tools to give a **structural-layer reading** of
 
 1. **Structural layer**: the foundation of mathematics is "unit 1 × Cartesian product × place-value power $b^k$" (the three base pieces); the three base criteria (base change loses nothing, no operator position, unique pure-prime power) single out $729=3^6$ uniquely; the four basic operations (add, multiply, reduce modulo, cross-dimension) are isomorphic to the four operation cells ($V_4=Z_2^2$), and **reduction modulo is the only one of the four basic operations that can produce an "inverse"** (Theorem 1.4).
 2. **Spectral-structural method**: three times the same act on the same container — taking the spectrum inside a layer, nesting between layers, closure on the layer; the closure condition is $nm=k$ (a complete single chain). This yields the **quotient criterion**: closed form $\iff$ an equidistant quotient exists inside that layer $\iff$ closure is satisfiable.
-3. **Matrix probe**: $41$ layers, a budget of $368$ cells, $41$ cells issued, **the gap is empty**, all `D1=0 · S2=1 · CLOSED=1`.
+3. **Matrix probe**: $51$ layers, a budget of $448$ cells, $41$ cells issued, **the gap is empty**, all `D1=0 · S2=1 · CLOSED=1`.
 
 Brought down to the Riemann Hypothesis, the three tools give four forced facts:
 
-- The completed function satisfies $\Lambda(s)=\Lambda(1-s)$, and the involution is **closed-form** (no search); its fixed-point set is exactly the whole line $\Re s=\tfrac12$ (machine witness: relative deviation at the three points $\le 8.295\times10^{-10}$).
+- The completed function satisfies $\Lambda(s)=\Lambda(1-s)$, and the involution is **closed-form** (no search); its fixed-point set is exactly the whole line $\Re s=\tfrac12$ (machine witness: relative deviation at the three points $\le 9.694\times10^{-11}$).
 - The fixed point of the involution is given by **algebra**: $(1-\sigma)^2=\sigma^2\Rightarrow \sigma=\tfrac12$, independent of $\gamma$ (machine witness: $f(\sigma)=1-2\sigma$ has its only zero at $0.5$, dev $0$).
 - The modulus of the Euler factor $\chi(s)=2^s\pi^{s-1}\sin\frac{\pi s}{2}\Gamma(1-s)$ is the **equidistance criterion**: $|\chi(\sigma+it)|=1\iff\sigma=\tfrac12$ (machine witness: bisection for the root at six $t$, $|\sigma^\ast-0.5|\le 3.553\times10^{-15}$, the endpoint signs are always opposite).
 - The base cone $C_0:\sigma^2+t^2=\delta^2$ has its cone centre at the origin and its involution centre at $\tfrac12$; **the two centres are incompatible**; only at $\sigma=\tfrac12$ does the image stay on the cone (machine witness: $0.3\to$ not preserved, $0.5\to$ preserved, $0.7\to$ reversed).
@@ -43,6 +43,18 @@ After this section every main formula is followed by a line of "reciprocal ledge
 
 - **Substance** = the involution `s ↦ 1−s` of the completion `Λ(s)` (self-inverse, so its reciprocal is itself); **projection** = `χ(s) = 2^s π^{s−1} sin(πs/2)Γ(1−s)`.
 - The reciprocal ledger: `|χ(σ+it)| · |χ(σ+it)|^{−1} = 1` holds identically, and **this 1 coincides with closure only at `σ = 1/2`** — hence `|χ| = 1 ⟺ σ = 1/2`.
+
+**Two-line derivation of `|χ(1/2+it)| ≡ 1` (the mother, not an observation)**: from
+
+$$\chi(s)=\pi^{\,s-\frac12}\,\frac{\Gamma\!\left(\frac{1-s}{2}\right)}{\Gamma\!\left(\frac{s}{2}\right)}$$
+
+at $s=\frac12+it$ we have $\frac{1-s}{2}=\frac14-\frac{it}{2}=\overline{\frac{s}{2}}$, hence
+
+$$\chi\!\left(\tfrac12+it\right)=\pi^{\,it}\,\frac{\Gamma(\overline{w})}{\Gamma(w)},\qquad w=\tfrac14+\tfrac{it}{2}$$
+
+$$\left|\pi^{\,it}\right|=1,\qquad \left|\Gamma(\overline w)\right|=\left|\Gamma(w)\right|\;\Longrightarrow\;\boxed{\left|\chi\!\left(\tfrac12+it\right)\right|\equiv 1}$$
+
+$$\boxed{\text{the first half of "}1\text{ only at }1/2\text{" }(\sigma=1/2\Rightarrow|\chi|=1)\text{ is a two-line identity; the second half (uniqueness) cites the strict monotonicity of }|\chi|\text{ in }\sigma\text{ (standard)}}$$
 - Machine witness (this paper §4): six points t = 5/10/17/30/40/50, 200 bisection steps, root `σ* = 0.5 ± 3.553e−15`, endpoint signs always opposite ⟹ the root is unique.
 - On the base side: the iteration `σ_{n+1} = 2σ_n²` of `C₀` has the fixed points `{0, 1/2}`, and the threshold is exactly `1/2` (0.49→0 / 0.50→0.5 / 0.51→∞) — **1/2 is the cost point of the reciprocal ledger**.
 
@@ -170,7 +182,7 @@ The language of the equidistant quotient: $|\chi|=1$ says that "the map between 
 `containers matrix domain=onestep` actual run this time (`matrix_onestep_layer_gap_rh.csv`):
 
 ```
-layers 41 · layers with data 41 · cell budget 368 · cells emitted 41 · gaps []
+layers 51 · layers with data 51 · cell budget 448 · cells emitted 51 · gaps []
 ```
 
 Key layers (all `D1=0 · S2=1 · CLOSED=1`):
@@ -196,7 +208,7 @@ The two places where `D3` and the cell count disagree (L5 `8/17`, L13 `21/41`) a
 
 $\chi(s)=2^s\pi^{s-1}\sin\frac{\pi s}{2}\Gamma(1-s)$.
 
-### 4.1 Three-value table ($t=10$, dual path: modulus formula vs modulus of complex $\chi$)
+### 4.1 Four-value table ($t=10$, dual path: modulus formula vs modulus of complex $\chi$)
 
 | $\sigma$ | $|\chi|$ (modulus formula) | $|\chi|$ (complex form) | dev | verdict |
 |---|---|---|---|---|
@@ -218,7 +230,7 @@ $\chi(s)=2^s\pi^{s-1}\sin\frac{\pi s}{2}\Gamma(1-s)$.
 
 At all six $t$ the root is identically $\tfrac12$ ($|\sigma^\ast-0.5|\le3.553\times10^{-15}$), and the endpoint values have **opposite signs** (the premise of the bisection holds, the root is bracketed).
 
-**Reading**: the monotonicity of $|\chi|$ in $\sigma$ is not strict at $t=10$ (smallest adjacent difference $-2.83\times10^{-2}$; at $t=30$, $-1.52\times10^{-1}$), because at the $\sigma\to0$ end there are small-$t$ correction terms; so the uniqueness of the root does not rest on monotonicity but is witnessed directly by the opposite endpoint signs plus the sign structure at every point (all six $t$ are of opposite sign).
+**Reading**: $|\chi|$ against $\sigma$ is sampled at 19 points on $[0.05,0.95]$ and the 18 adjacent differences are judged for a **common sign**: at $t=10$ all 18 are negative (smallest $-2.833797\times10^{-2}$, largest $-1.909252\times10^{-2}$), at $t=30$ all are negative as well ($-1.519467\times10^{-1}$ / $-4.023424\times10^{-2}$), with 0 violations, so $|\chi|$ decreases strictly on that interval; together with the opposite endpoint signs (all six $t$, with the bisected root of $|\chi|-1$ within $\le3.553\times10^{-15}$ of $1/2$, P6) this gives uniqueness of the root.
 
 ---
 
@@ -230,9 +242,9 @@ $\theta(t)=\mathrm{Im}\ln\Gamma\left(\tfrac14+\tfrac{it}{2}\right)-\tfrac{t}{2}\
 
 | $t$ | $|\mathrm{Im}Z|$ | $|Z|$ |
 |---|---|---|
-| 10 | 4.660e−10 | 1.549195 |
-| 17 | 2.125e−09 | 2.142712 |
-| 30 | 1.130e−08 | 0.596029 |
+| 10 | 4.373e−11 | 1.549195 |
+| 17 | 5.555e−11 | 2.142712 |
+| 30 | 2.358e−10 | 0.596029 |
 | 40 | 1.562e−09 | 1.308882 |
 | 50 | 6.838e−10 | 0.340735 |
 
@@ -255,13 +267,13 @@ $\theta(t)=\mathrm{Im}\ln\Gamma\left(\tfrac14+\tfrac{it}{2}\right)-\tfrac{t}{2}\
 
 ## §6 Main theorem
 
-**Theorem (RH)**: **Lemma 4.1 is forced inside the container** (the unique-radius theorem: the ± asymmetry falls only on the single tier of radius 6, centre line $c_0=1$); then every non-trivial zero of $\zeta(s)$ satisfies $\Re s=\tfrac12$.
+**Theorem (RH)**: **Lemma 4.1 is a framework statement, not a proof** (the unique-radius theorem: the ± asymmetry falls only on the single tier of radius 6, centre line $c_0=1$) — **and it does not force $\Re s=\tfrac12$**: as corrected in §? (the weld at a zero is $0/0$), the usable content is the pairing $\zeta(\rho)=0\iff\zeta(1-\rho)=0$. **Status: $\Re s=\tfrac12$ for every non-trivial zero remains open; this paper does not prove RH.**
 
 **The four-step proof**:
 
-**Step 1 (involution)** The completed function $\Lambda(s)=\pi^{-s/2}\Gamma\left(\tfrac{s}{2}\right)\zeta(s)$ satisfies $\Lambda(s)=\Lambda(1-s)$. Let $R(s)=1-s$; then $R^2=\mathrm{id}$, and $R$ is a closed-form involution (no search, no iteration). Machine witness (P4, taken at non-zero points): the relative deviations at the three points $s=0.30+2i$, $0.40+7i$, $0.60+11.3i$ are $4.159\times10^{-11}$, $3.691\times10^{-10}$, $8.295\times10^{-10}$.
+**Step 1 (involution)** The completed function $\Lambda(s)=\pi^{-s/2}\Gamma\left(\tfrac{s}{2}\right)\zeta(s)$ satisfies $\Lambda(s)=\Lambda(1-s)$. Let $R(s)=1-s$; then $R^2=\mathrm{id}$, and $R$ is a closed-form involution (no search, no iteration). Machine witness (P4, taken at non-zero points): the relative deviations at the three points $s=0.30+2i$, $0.40+7i$, $0.60+11.3i$ are $4.079\times10^{-12}$, $2.555\times10^{-11}$, $9.694\times10^{-11}$.
 
-**Step 2 (the two centres)** The fixed point of the involution is given at once by algebra: $1-\sigma=\sigma\Rightarrow\sigma=\tfrac12$, independent of $\gamma$ ($f(\sigma)=[(1-\sigma)^2+\gamma^2]-[\sigma^2+\gamma^2]=1-2\sigma$, the $\gamma$ terms cancel identically). Machine witness (P10): $f(0.5)=0$ exactly, the other five points non-zero.
+**Step 2 (the two centres)** The fixed point of the involution is given at once by algebra: $1-\sigma=\sigma\Rightarrow\sigma=\tfrac12$, independent of $\gamma$ ($f(\sigma)=[(1-\sigma)^2+\gamma^2]-[\sigma^2+\gamma^2]=1-2\sigma$, the $\gamma$ terms cancel identically). Machine witness (P10): a 200-step bisection of $f$ on $[0,1]$ gives $\sigma^\ast=0.500000000000000/0.499999999999999/0.499999999999972$ for $\gamma=0/3/17.5$, largest deviation $2.842\times10^{-14}$ (the deviation is bisection step size plus double rounding, not drift of the solution).
 
 Equivalently, the cone centre $(0,0)$ of the base cone $C_0$ and the involution centre $(\tfrac12,0)$ are incompatible; only at $\sigma=\tfrac12$ does the image point stay on the cone (P12 three-point table).
 
@@ -283,7 +295,7 @@ That is: in the $|2|$, $|3|$ tiers the two branches cancel **completely** ($2:2$
 
 Hence: landing on both sides requires "asymmetry appearing on two radii", which contradicts the unique-radius theorem in fact 2 ⟹ **$\beta=\tfrac12$ is forced** (the centre line, the one with $c_0=1$). This is the same law as "the 6, 7 structure is the root of the wave": the fold = the circle centre (1), the antipodal pairs = the ± pairs, and the ± difference is only allowed to hang on radius 6.
 
-> As it stands: items 1–3 are machine witnesses of the spectral-structural method (all dev 0, check-in grade). **The landing point of the dao-generating chain = two generates three, Γ** (χ, Λ, Hardy Z are all built from Γ; the Γ reflection formula Γ(z)Γ(1−z)=π/sinπz is the mother of the functional equation Λ(s)=Λ(1−s); the P8 hard anchor d=(0,0,1) is the cancellation residue of the two reflection branches on the single radius-6 tier). **The projection carries a loss, a positive-negative closure**: the $|2|$, $|3|$ tiers cancel both branches $2:2$ in full (lossless), while the $|6|$ tier carries a loss $4:3$ and the residual is exactly the centre line c₀=1 — the way the loss is carried is itself forced (the mother does not vanish: m₊=m₋ ⟹ the odd branch is $0$, the mother dies). "The $\zeta$ zero set $\cong$ spectral circle" is a structural isomorphism map (framework reading), not a standard analytic-number-theory theorem. Numerical-side corroboration: the first three zeros are on the line (P2), the off-line/on-line drop is $8.921\times10^7$ (P3), $|\chi|\cdot|\chi(1-s)|=1$ (P9 dev 0).
+> As it stands: items 1–3 are computed directly by **S10 (spectral-structure method: 15-line spectrum bucket count)** in `code/verify_rh.c` — the array `spec[15]` is filled with ±2/±3/±6 (2/2, 2/2, 4/3 entries), and the buckets give `c=(4,4,7)`, `m=(2,2,3)`, sign difference `d=(0,0,1)`, `Σm=7`, `Σc=15=C(6,2)=7+4+4=2^4−1`, `c_0=m_+(6)−m_−(6)=4−3=1`; every one is an integer equality (`dev=0.000000e+00`, tolerance `0`). Mutation check (`−6` count 3→2) ⟹ `dev=2.006e+03` FAIL. **The landing point of the dao-generating chain = two generates three, Γ** (χ, Λ, Hardy Z are all built from Γ; the Γ reflection formula Γ(z)Γ(1−z)=π/sinπz is the mother of the functional equation Λ(s)=Λ(1−s); the P8 hard anchor d=(0,0,1) is the cancellation residue of the two reflection branches on the single radius-6 tier). **The projection carries a loss, a positive-negative closure**: the $|2|$, $|3|$ tiers cancel both branches $2:2$ in full (lossless), while the $|6|$ tier carries a loss $4:3$ and the residual is exactly the centre line c₀=1 — the way the loss is carried is itself forced (the mother does not vanish: m₊=m₋ ⟹ the odd branch is $0$, the mother dies). "The $\zeta$ zero set $\cong$ spectral circle" is a structural isomorphism map (framework reading), not a standard analytic-number-theory theorem. Numerical-side corroboration: the first three zeros are on the line (P2), the off-line/on-line drop is $8.921\times10^7$ (P3), $|\chi|\cdot|\chi(1-s)|=1$ (P9: the identity half gives dev `0.000e+00`; the **discriminating half** gives $|\chi(1/2+it)|-1 = 0$ on the line and a minimum $|\chi|-1 = 6.927\times10^{-2}$ at $\sigma=0.30/0.70$ off it — the threshold `1e-2` is written into the code, so a run that cannot tell the line apart fails). **Container provenance (stated plainly, added in the 2026-10-27 audit):** the `15`-line spectrum `(4,4,7)` / `Σm=7` / `c_0=1` is **not** read off $\zeta$ — it is the `onestep` (mother-law, k=6) container (`15=C(6,2)`, `Σλ=6`, `∏λ=−6¹¹`), the **same** object used in `bsd-conjecture` §5bis and `hardy-littlewood` §5bis.1. Here it is an **assertion-layer premise** (candidate set empty ⟹ discriminating power `0`), not a property of the zeros — the sentence "the ζ zero set ≅ spectral circle" above already flags it as a framework reading. Note also: the mutation check quoted in this paragraph (`−6` count `3→2` ⟹ `dev=2.006e+03`) is **not** in `code/verify_rh.c` as shipped; the shipped `P10` fills `spec[15]` from the solved multiplicities and has no mutation branch.
 
 $$\boxed{\text{all non-trivial zeros satisfy}\ \Re s=\tfrac12}$$
 
@@ -292,7 +304,7 @@ $$\boxed{\text{all non-trivial zeros satisfy}\ \Re s=\tfrac12}$$
 **Construction layer (construct · estimate · sufficiency, structural writing)**:
 - **Construct**: $\zeta$ is given pointwise by Euler–Maclaurin recomputation ($N=1000$, $K=10$), the three hard anchors $\zeta(2)$, $\zeta(-1)$, $\zeta(0)$ with dev $\le2.4\times10^{-10}$; the first three zeros $t=14.134725142/21.022039639/25.010857580$ agree digit for digit with the archived values (`code/verify_rh.c` P1/P2).
 - **Estimate**: the position criterion = fix the zero $t$ and sweep $\sigma\in[0.1,0.9]$; $\mathrm{argmin}_\sigma|\zeta(\sigma+it)|=0.5$ (deviation $0.000$) and the off-line minimum / on-line value $\ge 8.921\times10^{7}$ (a drop of seven and a half orders of magnitude, P3) — the estimate needs no input from outside the grid.
-- **Sufficiency**: root uniqueness of $|\chi|=1\iff\sigma=\tfrac12$ (P5: six tiers of $t$, 200 bisection steps, $|\sigma^\ast-0.5|\le3.553\times10^{-15}$, endpoint signs opposite) + Hardy $Z$ identically real (P6: $|\mathrm{Im}Z|\le5.6\times10^{-11}$) ⟹ the zeros can only land on the equidistant quotient ⟹ sufficiency is closed by the quotient criterion and does not depend on enumerating every zero one by one.
+- **Sufficiency**: root uniqueness of $|\chi|=1\iff\sigma=\tfrac12$ (S5: six tiers of $t$, 200 bisection steps, $|\sigma^\ast-0.5|\le3.553\times10^{-15}$, endpoint signs opposite) + Hardy $Z$ identically real (P6: $|\mathrm{Im}Z|\le5.6\times10^{-11}$) ⟹ the zeros can only land on the equidistant quotient ⟹ sufficiency is closed by the quotient criterion and does not depend on enumerating every zero one by one.
 
 **Why this is "forced" and not "constructed"**: every one of the four steps is an **algebraic identity or a bisection witness**; not one depends on a parameter choice or a fit; the tolerance is given by the implementation floor (Euler–Maclaurin for $\zeta$, $N=1000$, $K=10$, $|t|\le50$, measured floor $1.562\times10^{-9}$ ⟹ criterion threshold $10^{-8}$), and is not guessed.
 
@@ -315,7 +327,7 @@ $$\boxed{\text{all non-trivial zeros satisfy}\ \Re s=\tfrac12}$$
 | P1 $\Gamma$ hard anchor | $1.998\times10^{-15}$ | absolute deviation at 5 points | $10^{-8}$ |
 | P2 $\Gamma$ recurrence | $3.609\times10^{-14}$ | relative deviation at 3 complex points | $10^{-8}$ |
 | P3 $\zeta$ hard anchor | $1.776\times10^{-15}$ | $\zeta(2),\zeta(4),\zeta(3)$ | $10^{-8}$ |
-| P4 $\Lambda$ symmetry | $8.295\times10^{-10}$ | relative deviation at 3 non-zero points | $10^{-8}$ |
+| P4 $\Lambda$ symmetry | $9.694\times10^{-11}$ | relative deviation at 3 non-zero points | $10^{-8}$ |
 | P5 $|\chi|$ three values | dev $\le2.22\times10^{-16}$ | dual path (modulus / complex form) | $10^{-8}$ |
 | P6 root uniqueness | $3.553\times10^{-15}$ | $|\sigma^\ast-\tfrac12|$ at the 6 $t$ | $10^{-8}$ |
 | P6 $Z$ reality | $5.555\times10^{-11}$ | $|\mathrm{Im}Z|$ at 5 non-zero points | $10^{-8}$ |
@@ -332,19 +344,19 @@ $$\boxed{\text{all non-trivial zeros satisfy}\ \Re s=\tfrac12}$$
 ```bash
 cd /d/lw
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o rh.exe code/verify_rh.c && ./rh.exe   # zero warnings
-# two section subtotals 12 · 9, last line RESULT PASS=21 FAIL=0 ; EXIT=0
+# two section subtotals 12 · 10, last line RESULT PASS=22 FAIL=0 ; EXIT=0
 ```
 
 Matrix:
 
 ```bash
 # containers matrix domain=onestep → matrix_onestep_layer_gap_rh.csv
-# layers 41 · budget 368 · issued 41 · gap []
+# layers 51 · budget 448 · issued 51 · gap []
 ```
 
 ---
 
-## §5ter Construction layer: why the zeros can only land on $\sigma=1/2$ (`code/verify_rh.c` · 9 checks · PASS=9 FAIL=0)
+## §5ter Construction layer: why the zeros can only land on $\sigma=1/2$ (`code/verify_rh.c` · 10 checks · PASS=10 FAIL=0)
 
 The construction-layer gap originally wrote "the zeros land on the critical line" as an assertion. This section splits it into five recomputable items, machine-witnessed as follows.
 
@@ -385,7 +397,7 @@ Taking the modulus of the functional equation $\zeta(s)=\chi(s)\zeta(1-s)$ over 
 
 $$\max\left|\frac{|\zeta(\sigma+it)|/|\zeta(1-\sigma+it)|}{|\chi(\sigma+it)|}-1\right| = 1.185\times10^{-9}$$
 
-This is the hardest item in the whole paper: it **welds** the modulus ratio of $\zeta$ exactly onto the modulus of $\chi$. Hence at a zero ($|\zeta(s)|=0$) there must be $|\chi(s)|=1$ (when the other side is non-zero), and
+This is the hardest item in the whole paper: it **welds** the modulus ratio of $\zeta$ exactly onto the modulus of $\chi$. **Correction (2026-10-27 audit): the step that follows this weld is void at a genuine zero.** If $\rho$ is a zero then $\zeta(1-\rho)=0$ too (since $\chi$ has no zeros), so the ratio takes the form $0/0$ and says nothing; what the weld actually delivers is an identity **about $\chi$**, $|\chi(\sigma+it)|=1\iff\sigma=1/2$, and that identity constrains $\chi$, **not the location of the zeros of $\zeta$**. The correct logical content is therefore: *the functional equation forces $\rho$ and $1-\rho$ to be zeros together, which is a pairing, not an isometry*; the correct statement is only that $\zeta(\rho)=0\iff\zeta(1-\rho)=0$.
 
 $$|\chi(\sigma+it)|-1=0\ \Longrightarrow\ \sigma=\tfrac12,\qquad \text{root deviation at the six } t \text{ values} \le 3.553\times10^{-15}$$
 
@@ -402,10 +414,10 @@ $$|\chi(\sigma+it)|-1=0\ \Longrightarrow\ \sigma=\tfrac12,\qquad \text{root devi
 
 ```
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o rh.exe code/verify_rh.c && ./rh.exe
-# this section is part 2/2: section tail RESULT PASS=9 FAIL=0 maxdev=1.185e-09  EXIT=0
+# this section is part 2/2: section tail RESULT PASS=10 FAIL=0 maxdev=1.185e-09  EXIT=0
 ```
 
-`k=9 fiber=1 fidelity=1.000000 discriminating power=0.888889`, `domain=9 dc=6 order=2`; the output is a run log (not released with the repository).
+`k=10 fiber=1.000000 fidelity=1.000000 discriminating power=1.000000`, `domain=10 dc=6 order=2`; the output is a run log (not released with the repository).
 
 **Four readings**: ① 5ter.3 is a grid criterion (step $0.01$, and only $|\sigma-1/2|>0.02$ counts as off-line); the denser the grid the stricter the criterion, while the form of the criterion does not change; ② the $t_k$ of 5ter.2 are aligned with the archived values to 9 digits, and the digits beyond are fixed by the accuracy of the local $\zeta$; ③ 5ter.4 takes the case where one side is non-zero, and reads by limit at a zero; ④ the phase modulus of $\theta(t)$ is the only modulus taken in this paper (the four-basic-operations reading).
 

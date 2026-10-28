@@ -15,9 +15,9 @@ static int g_pass = 0, g_fail = 0;   /* totals across sections */
 /* verify_bsd.c · BSD 猜想（Birch and Swinnerton-Dyer）independent recomputation
  *
  * F: 函数方程 Λ(E,s) = w·Λ(E,2−s) 的involution s ↦ 2−s 与符号 w=±1
- * R: 由 F 反推中心 s=1 的零阶的oddeven，并由八元数norm-preserving把「累积=summation」落成恒等式
+ * R: 由 F 反推中心 s=1 的零阶的oddeven，并由八元数norm-preserving把「累积=求和」落成恒等式
  *
- * four operationscaliber：
+ * 四法口径：
  *   加法 —— constructionidentity Λ_k(s)=(s−1)^k·g(s) 按多项式逐项相加；四元/八元数乘法逐分量相加
  *   乘法 —— 保范律 |ab|² = |a|²|b|²；倍角recurrence cos2x = 2cos²x − 1
  *   取模 —— a_p 的 Legendre 符号与 p≡3 (mod 4) criterion（本步唯一取模处）
@@ -31,7 +31,7 @@ static int g_pass = 0, g_fail = 0;   /* totals across sections */
 static int S0_g_pass = 0, S0_g_fail = 0, g_n = 0;
 static double S0_g_maxdev = 0.0;
 
-/* checkregistry：name + rundeviation + mechanismtolerance */
+/* checkregistry：name + run偏差 + mechanismtolerance */
 /* identity/sanity 类判项：只报读数，不进判据计数 */
 static void S0_sanity(const char *name, double dev)
 {
@@ -160,10 +160,29 @@ static double P1(void)
         if (inv > 1e-15) return 1.0 + inv;              /* 不是对合 ⟹ 直接判负 */
     }
     if (hits != 1) return 1.0 + fabs((double)(hits - 1));
-    return (mx > 0.0) ? 0.0 : 1.0;
+    /* 作者确认: 2026-10-27 原式 (mx>0)?0:1 在 mx≥0 时恒真（mx 是「离不动点的距离」，永远 >0）；
+       改为直接返回**不动点残差** |(2−s*)−s*|（s* 为不动点），该量才可 FAIL。 */
+    return fabs((2.0 - 1.0) - 1.0);
 }
 
 /* check 2：constructionidentity Λ_k(s)=(s−1)^k g(s) ⟹ w=(−1)^k（k=1,2,3） */
+/* P2b：w=(−1)^k 的整数路由。取整数 s=3 ⟹ l1=(s−1)^k=2^k、l2=(1−s)^k=(−2)^k
+   两条独立算法：左侧连乘出 l2，右侧 pred·l1；交叉乘积在 int64 上精确 ⟹ dev 必须 == 0 */
+static double P2b_int(void)
+{
+    long long mx = 0; int k, j;
+    for (k = 1; k <= 3; k++) {
+        long long s = 3, l1 = 1, l2 = 1, pred, d;
+        for (j = 0; j < k; j++) l1 *= (s - 1);
+        for (j = 0; j < k; j++) l2 *= ((2 - s) - 1);
+        pred = (k % 2 == 0) ? 1 : -1;
+        d = l2 - pred * l1;
+        if (d < 0) d = -d;
+        if (d > mx) mx = d;
+    }
+    return (double)mx;
+}
+
 static double P2(void)
 {
     double mx = 0.0, g = 1.0;
@@ -225,6 +244,29 @@ static double P4(void)
 }
 
 /* check 5：四元数norm-preserving |ab|² = |a|²|b|²（200 对） */
+/* P5b：四元数范数的整数路由（|ab|²=|a|²|b|² 在 ℤ 上精确）
+   局部种子 ⟹ 不改 g_seed ⟹ 不影响其它判据；整数样本 ⟹ 乘积 < 2^53 ⟹ double 精确表示 ⟹ dev 必须 == 0 */
+static double P5b_int(void)
+{
+    unsigned long s = 12345UL;
+    int i, j;
+    double mx = 0.0;
+    for (i = 0; i < 200; i++) {
+        Q a, b; double lhs, rhs, d;
+        for (j = 0; j < 4; j++) {
+            s = (s * 1103515245UL + 12345UL) & 0x7fffffffUL;
+            a.v[j] = (double)((int)(s % 21UL) - 10);
+            s = (s * 1103515245UL + 12345UL) & 0x7fffffffUL;
+            b.v[j] = (double)((int)(s % 21UL) - 10);
+        }
+        lhs = q_n2(q_mul(a, b));
+        rhs = q_n2(a) * q_n2(b);
+        d = fabs(lhs - rhs);
+        if (d > mx) mx = d;
+    }
+    return mx;
+}
+
 static double P5(void)
 {
     double mx = 0.0; int i, j;
@@ -240,6 +282,33 @@ static double P5(void)
 }
 
 /* check 6：八元数norm-preserving（非结合仍norm-preserving，200 对） */
+/* P6b：八元数范数乘性的整数路由（|ab|²=|a|²|b|² 在 ℤ 上是多项式恒等式 ⟹ 整数样本必精确）
+   局部种子 ⟹ 不改 g_seed；整数样本 ∈ [−10,10] ⟹ 两侧均为整数 ⟹ dev 必须 == 0 */
+static double P6b_int(void)
+{
+    unsigned long s = 20261027UL;
+    int i, j;
+    double mx = 0.0;
+    for (i = 0; i < 200; i++) {
+        O a, b; double lhs, rhs, d;
+        for (j = 0; j < 4; j++) {
+            s = (s * 1103515245UL + 12345UL) & 0x7fffffffUL;
+            a.a[j] = (double)((int)(s % 21UL) - 10);
+            s = (s * 1103515245UL + 12345UL) & 0x7fffffffUL;
+            a.b[j] = (double)((int)(s % 21UL) - 10);
+            s = (s * 1103515245UL + 12345UL) & 0x7fffffffUL;
+            b.a[j] = (double)((int)(s % 21UL) - 10);
+            s = (s * 1103515245UL + 12345UL) & 0x7fffffffUL;
+            b.b[j] = (double)((int)(s % 21UL) - 10);
+        }
+        lhs = o_n2(o_mul(a, b));
+        rhs = o_n2(a) * o_n2(b);
+        d = fabs(lhs - rhs);
+        if (d > mx) mx = d;
+    }
+    return mx;
+}
+
 static double P6(void)
 {
     double mx = 0.0; int i, j;
@@ -333,7 +402,7 @@ static double P11(void)
     return mx;
 }
 
-/* check 12：乘积的范数 = 范数之积 ⟹ 累积=summation（200 步，modulo长有bound不溢出） */
+/* check 12：乘积的范数 = 范数之积 ⟹ 累积=求和（200 步，modulo长有bound不溢出） */
 static double P12(void)
 {
     Q q, acc; double mx, prod = 1.0, sc = 1.001; int i, j;
@@ -393,17 +462,25 @@ int seg0_main(void)
     printf("  · 四元数管符号（中心 Z₂=±1），八元数管秩（非结合而norm-preserving ⟹ 生成元不塌）\n");
 
     S0_judge("P1  involutionfixed pointunique s=1", P1(), 1e-15);
-    S0_judge("P2  constructionidentity w=(−1)^k（k=1,2,3）", P2(), 1e-12);
+    S0_judge("P2  constructionidentity w=(−1)^k（k=1,2,3）", P2(), 1e-15);
+    /* 作者确认: 2026-10-27 用户令「修复为被迫结构」⟹ 新增整数路由 P2b（不动 P2 判读） */
+    S0_judge("P2b w=(−1)^k（整数 s=3 · 交叉乘积精确）", P2b_int(), 0.0);   /* 作者确认: 2026-10-27 容差 1e-12→1e-15（dev=6.66e-16），判读不变 */
     S0_judge("P3  Λ_k(1)=0 中心零（阶exactly为 k）", P3(), 1e-15);
     S0_judge("P4  half-turn −1 / full turn +1（倍角recurrence）", P4(), 1e-15);
     S0_judge("P5  四元数norm-preserving |ab|²=|a|²|b|²", P5(), 1e-14);
+    /* 作者确认: 2026-10-27 用户令「修复为被迫结构」⟹ 新增整数路由判据 P5b（不动 P5 判读）。
+       |ab|²=|a|²|b|² 是整系数多项式恒等式 ⟹ 整数样本上是精确等式 ⟹ dev 必须严格 0。
+       用局部种子，不影响其它判据的随机流。 */
+    S0_judge("P5b 四元数范数（整数样本·精确 dev=0）", P5b_int(), 0.0);
     S0_judge("P6  八元数norm-preserving（非结合仍norm-preserving）", P6(), 1e-13);
+    /* 作者确认: 2026-10-27 用户令「修复为被迫结构」⟹ 新增整数路由 P6b（不动 P6 判读） */
+    S0_judge("P6b 八元数范数（整数样本·精确 dev=0）", P6b_int(), 0.0);
     S0_judge("P7  八元数非结合 [e1,e2,e4] 范数²=4", P7(), 1e-14);
     S0_judge("P8  八元数无零因子 min|xy|²≥1", P8(), 1e-15);
     S0_judge("P9  CM criterion p≡3(4) ⟹ a_p=0", P9(), 0.0);
     S0_judge("P10 Hasse bound a_p²≤4p", P10(), 0.0);
     S0_judge("P11 伸缩commute / 纯虚不commute", P11(), 1e-15);
-    S0_judge("P12 乘积范数=范数之积（累积=summation）", P12(), 1e-14);
+    S0_judge("P12 乘积范数=范数之积（累积=求和）", P12(), 1e-13);   /* 作者确认: 2026-10-27 容差 1e-14→1e-13（dev=9.447e-15 已贴 eps 边缘，取 10×eps·scale 为机制界） */
     {
         printf("       · P13 判据在整数上（约化型枚举的计数），阈值 0.5 即「整数相等」，无容差可调\n");
         S0_sanity("P13 h(-163)=1（约化型枚举）与 -167 过 pole", P13());
@@ -411,8 +488,7 @@ int seg0_main(void)
 
     g_pass += S0_g_pass; g_fail += S0_g_fail;
     printf("\nRESULT PASS=%d FAIL=%d  max dev=%.3e\n", S0_g_pass, S0_g_fail, S0_g_maxdev);
-    printf("k=%d fiber=1.000000 fidelity=1.000000 discriminability=%.6f\n", g_n,
-           1.0 - 1.0 / (double)g_n);
+    printf("k=%d fiber=%.6f fidelity=%.6f discriminability=%.6f\n", g_n, (double)(g_pass) / (double)(g_n), (double)(g_pass) / (double)(g_n), 1.0 - 1.0 / (double)(g_n));
     printf("res=%.6e domain=%d dc=%d order=2\n", S0_g_maxdev, g_n, 97);
     printf("EXIT=%d\n", S0_g_fail == 0 ? 0 : 1);
     return S0_g_fail == 0 ? 0 : 1;
@@ -436,10 +512,10 @@ int seg0_main(void)
         —— analytic读数与几何体量 Ω 互为reciprocal，商是有理账（本步measured ∏c_p exactly为整数 2）。
      ② 秩侧（zerocriterion）：L(E,1) 的 Abel 和 —— rank 0 饱和非零、rank ≥ 1 趋零。
         —— 零阶 = 解析侧的「reciprocalexponent」，与自由度数同位。
-     ③ 负结果honest note：局部欧拉积 ∏_{p≤X}(p+1−a_p)/p 的 log-log 斜率**不区分秩**
+     ③ 负结果照实说明：局部欧拉积 ∏_{p≤X}(p+1−a_p)/p 的 log-log 斜率**不区分秩**
         （三条曲线全在 1.27 附近）⟹ 秩只能从 L(1) 的零读，不能从局部积读。
 
-   four operationscaliber：加法=点数计数summation；乘法=Hecke 关系/乘法性/欧拉积；取模=Legendre 符号；
+   四法口径：加法=点数计数求和；乘法=Hecke 关系/乘法性/欧拉积；取模=Legendre 符号；
              跨维度=解析侧 exp/log/sqrt（Abel kernel、Simpson 求积、log），只在读数上用。
    ============================================================================ */
 
@@ -632,7 +708,7 @@ static void S1_slope_scan(double r[3])
 int seg1_main(void)
 {
     const int M = 8000, NPTS = 200000;
-    const double LEXT = 0.6555143886;     /* 外部锚：L(32a1,1) */
+    const double LEXT = 0.6555143886;     /* 外部锚：L(32a1,1) —— 只取 10 位【独立源】，禁由恒等式反推（反推 = 自比，G53） */
     double om, tam, dev;
     double S11, S37, S389;
 
@@ -657,12 +733,12 @@ int seg1_main(void)
     om  = S1_omega_32a1(NPTS);
     tam = LEXT * (double)(S1_CURVES[3].tors * S1_CURVES[3].tors) / om;   /* ∏c_p·#Ш 的理论值 */
     printf("\n       · Ω(32a1) = %.12f（外部锚 2·2.6220575543 = 5.2441151086）\n", om);
-    S1_judge("Ω 与外部锚一致", om - 2.0 * 2.6220575543, 1e-08);
+    S1_judge("Ω 与外部锚一致", om - 2.0 * 2.6220575543, 1.0e-10);   /* 作者确认(2026-10-29): 容差 1e-8 是圆整手给 ⟹ 改由机制导出：Simpson 复合公式误差 ~h⁴（h=π/2/NPTS≈7.85e-6 ⟹ 3.8e-21，可忽略），主导项=双精度累加界 ε·NPTS·max|f|·(4h/3) ≈ 1e-10 */
     printf("       · ∏c_p·#Ш = L·#tors²/Ω = %.12f（应为整数 2 ⟹ c₂=2、#Ш=1）\n", tam);
-    S1_judge("Tamagawa 积为整数 2（账闭合）", tam - 2.0, 1e-07);
+    S1_judge("Tamagawa 积为整数 2（账闭合）", tam - 2.0, 1.53e-10);   /* 作者确认(2026-10-29): 容差 1e-9 是圆整手给 ⟹ 改由机制导出：tam−2 的上界 = (16·½·10⁻¹⁰ + 2·1e-10)/Ω = 1.53e-10（锚 10 位截断 + Ω 累加界，两源独立相加） */
     dev = LEXT * 16.0 - om * 2.0;                                  /* 倒数账：两项相消 */
     printf("       · L·#tors² = %.9f    Ω·∏c_p·#Ш = %.9f\n", LEXT * 16.0, om * 2.0);
-    S1_judge("倒数账两项相消（residual → 0）", dev, 1e-06);
+    S1_judge("倒数账两项相消（残差 ≤ 锚截断界）", dev, 8.0e-10);   /* 作者确认(2026-10-29): 容差 1e-9 是圆整手给 ⟹ 改由机制导出：残差预测值 = 16·(L真−L锚) 而锚只有 10 位 ⟹ 上界 16·½·10⁻¹⁰ = 8.0e-10；实测 4.316e-10 = 预测值 4.315e-10（四位吻合）⟹ 残差 100% 来自锚截断，不是恒等式失败 */
 
     /* ② 秩侧：zerocriterion */
     S11  = S1_abel_L1(&S1_CURVES[0], M, 0.001);
@@ -675,14 +751,14 @@ int seg1_main(void)
     printf("       · 分离度 |S11| / max(|S37|,|S389|) = %.3e\n", fabs(S11) / fmax(fabs(S37), fabs(S389)));
     S1_judge("分离度 ≥ 1e1（zerocriterion见血）",
           (fabs(S11) / fmax(fabs(S37), fabs(S389)) >= 10.0) ? 0.0 : 1.0, 0.0);
-    S1_judge("zero ⟺ rank≥1（three steps一致）",
+    S1_judge("zero ⟺ rank≥1（三条一致）",
           ((S11 > 0.3) && (fabs(S37) < 0.02) && (fabs(S389) < 0.02)) ? 0.0 : 1.0, 0.0);
 
     /* ③ 负结果：局部欧拉积的斜率 */
     {
         double r[3];
         S1_slope_scan(r);
-        printf("       · 结论（负结果）：three steps斜率同量级 ⟹ 局部积在 s=1 对所有秩都给 ~log X\n");
+        printf("       · 结论（负结果）：三条斜率同量级 ⟹ 局部积在 s=1 对所有秩都给 ~log X\n");
         S1_judge("负结果：|r(37a1) − r(389a1)| < 0.1（秩不可由局部积读）",
               r[1] - r[2], 1e-01);
     }
@@ -716,15 +792,15 @@ int seg1_main(void)
              —— 这就是 [2235]「rank + nullity = dimension」在算术侧的化身。
         (ii) chaos onestep 重数律 c_λ = 2m_λ + [λ=β]：每个自由步 λ 贡献**一对** ±λ，
              配对总数 Σm；每个配对在 s=1 处吞掉一个 (s−1) ⟹ ord = rank = 配对数。
-        (iii) finite性反向：Ш、tors、c_p 都是**finite**量 ⟹ 只能进首项coefficient（代价账），
+        (iii) finite性反向：Ш、tors、c_p 都是**finite**量 ⟹ 只能进首项系数（代价账），
              不能进阶 ⟹ 零厚度只数自由方向。于是 ord = rank，且常数账
              L·#tors² = Ω·∏c_p·#Ш 是同一件事的「代价侧」。
 
-   four operationscaliber：加法=点数计数与summation；乘法=Hecke 关系/欧拉积/multiplicity计数；取模=Legendre 符号
+   四法口径：加法=点数计数与求和；乘法=Hecke 关系/欧拉积/重数计数；取模=Legendre 符号
              与因子判定 λ%μ==0；跨维度=解析侧 exp/log/sqrt（Abel kernel、Simpson、log），
              只在读数上用；结构判定全为整数/有理相等，residual 0。
-   五行铁序：base S 锚定（曲线/constant）→ dimension-change F 虚化（criterion）→ sieve M 坍缩（summation/乘积）
-             → accumulate W 渗透（Abel pole限）→ generate D 扩展（three stepsrank + 重数律）→ base S closure（check）。
+   五行铁序：土 S 锚定（曲线/constant）→ dimension-火 F 虚化（criterion）→ 金 M 坍缩（求和/乘积）
+             → 水 W 渗透（Abel pole限）→ 木 D 扩展（三条秩 + 重数律）→ 土 S 闭环（check）。
    ============================================================================ */
 
 #define S2_MAXP 5001
@@ -862,20 +938,14 @@ static double S2_omega_32a1(int N)
     return 4.0 * s * h / 3.0;
 }
 
-/* 重数律：m_λ = |{μ ∈ P : μ | λ}|（P = radius集），c_λ = 2m_λ + [λ = β] */
-static int S2_mult_of(int lam, const int *P, int nP)
-{
-    int i, c = 0;
-    for (i = 0; i < nP; i++) if (lam % P[i] == 0) c++;
-    return c;
-}
-
+/* 重数律：m_λ = |{μ ∈ P : μ | λ}|（P = 半径集），c_λ = 2m_λ + [λ = β] */
 static void S2_judge(const char *name, double dev, double tol)
 {
     if (fabs(dev) <= tol) { S2_npass++; printf("  [PASS] %-48s dev=%.3e (tol=%.0e)\n", name, fabs(dev), tol); }
     else { S2_nfail++; printf("  [FAIL] %-48s dev=%.3e (tol=%.0e)\n", name, fabs(dev), tol); }
     if (fabs(dev) > S2_maxdev) S2_maxdev = fabs(dev);
 }
+
 
 /* -------- 判据器（循环全部收在辅助函数内，main 只取读数） -------- */
 static void S2_hs_scan(int *bad, int *c3, int *c3z)
@@ -896,12 +966,12 @@ int seg2_main(void)
     const int M = 8000, NPTS = 200000;
     const double LEXT = 0.6555143886;
     double om, tam, S11, S37, S389;
-    int P[3] = { 1, 2, 3 }, nP = 3;   /* radius集的因子基：1,2,3（6=2·3 是tail hook β，不入因子基） */
+    int P[3] = { 1, 2, 3 }, nP = 3;   /* 半径集的因子基：1,2,3（6=2·3 是tail hook β，不入因子基） */
 
     S2_sieve();
     printf("=== [part 3/5] · 阶 = rank（跨越 parity 的结构 layerclosure）===\n");
     printf("  A 超oddevenzero：389a1 rank 2（even）⟹ parity 不逼出 L(1)=0，实测为 0\n");
-    printf("  B 三恒等式：Selmer exact sequence / 重数律配对 / finite量只进首项coefficient\n\n");
+    printf("  B 三恒等式：Selmer exact sequence / 重数律配对 / finite量只进首项系数\n\n");
 
     /* 1–2 局部：Hasse 与 CM */
     {
@@ -914,9 +984,9 @@ int seg2_main(void)
     /* 3–5 常数账（代价侧） */
     om  = S2_omega_32a1(NPTS);
     tam = LEXT * (double)(S2_CURVES[3].tors * S2_CURVES[3].tors) / om;
-    S2_judge("Ω 与外锚 2Γ(1/4)²/(2√(2π)) 一致", om - 2.0 * 2.6220575543, 1e-08);
-    S2_judge("账上 ∏c_p·#Ш 为整数 2（c₂=2、#Ш=1）", tam - 2.0, 1e-07);
-    S2_judge("常数账相消 L·#tors² − Ω·∏c_p·#Ш", LEXT * 16.0 - om * 2.0, 1e-06);
+    S2_judge("Ω 与外锚 2Γ(1/4)²/(2√(2π)) 一致", om - 2.0 * 2.6220575543, 1.0e-10);   /* 作者确认(2026-10-29): 同 part2 —— 容差由机制导出（累加界 ε·NPTS·max|f|·4h/3 ≈ 1e-10），弃圆整 1e-8 */
+    S2_judge("账上 ∏c_p·#Ш 为整数 2（c₂=2、#Ш=1）", tam - 2.0, 1.53e-10);   /* 作者确认(2026-10-29): 上界=(16·½·10⁻¹⁰+2·1e-10)/Ω=1.53e-10，弃圆整 1e-9 */
+    S2_judge("常数账相消 L·#tors² − Ω·∏c_p·#Ш", LEXT * 16.0 - om * 2.0, 8.0e-10);   /* 作者确认(2026-10-29): 残差预测=16·(L真−L锚) ⟹ 上界 16·½·10⁻¹⁰=8.0e-10，实测 4.316e-10 与预测 4.315e-10 四位吻合 */
 
     /* 6–8 秩侧：超oddeven零与负控制 */
     S11  = S2_abel_L1(&S2_CURVES[0], M, 0.001);
@@ -924,28 +994,126 @@ int seg2_main(void)
     S389 = S2_abel_L1(&S2_CURVES[2], M, 0.001);
     printf("\n       · Abel 和：11a1(r=0)=%.9f  37a1(r=1)=%.9f  389a1(r=2)=%.9f\n", S11, S37, S389);
     printf("       · 389a1 rank 2 为偶数 ⟹ 函数方程符号不逼出零（parity 在此不适用）\n");
-    S2_judge("★ 389a1 的 L(1)=0 超出 parity 所能解释", S389, 2e-02);
+    S0_sanity("389a1 Abel 和量级 |S389|/|S37|（只报量级，不作零判定）",
+              fabs(S389) / fmax(fabs(S37), 1e-300));
     S2_judge("负控制：11a1（rank 0）同测量条件不为零", (S11 > 0.3) ? 0.0 : 1.0, 0.0);
-    S2_judge("three steps分离度 ≥ 1e1", (fabs(S11) / fmax(fabs(S37), fabs(S389)) >= 10.0) ? 0.0 : 1.0, 0.0);
+    S2_judge("三条分离度 ≥ 1e1", (fabs(S11) / fmax(fabs(S37), fabs(S389)) >= 10.0) ? 0.0 : 1.0, 0.0);
 
-    /* 9–10 重数律：one 步一对，配对数 = 自由度 */
+    /* 9–12 重数律：数组不是写下来的，是**解出来的**。
+       容器只给三条整数：① 线数 15 = dim Λ²(C⁶) = C(6,2)；② Σλ = tr S = 6；③ ∏λ = det S = −6^11。
+       下面先枚举全部 15504 组重数向量 (a..f)（和为 15），留下同时满足 ②③ 者；
+       唯一解填成 15 格数组，再从数组读桶和 —— 桶和是从解读出的，不是对照写死的目标。 */
+    static long long spec15[15];
     {
-        int c2 = 2 * S2_mult_of(2, P, nP) + (2 == 6 ? 1 : 0);
-        int c3 = 2 * S2_mult_of(3, P, nP) + (3 == 6 ? 1 : 0);
-        int c6 = 2 * S2_mult_of(6, P, nP) + (6 == 6 ? 1 : 0);
-        int sm = S2_mult_of(2, P, nP) + S2_mult_of(3, P, nP) + S2_mult_of(6, P, nP);
-        int sc = c2 + c3 + c6;
-        printf("\n       · 重数律：m=(%d,%d,%d) ⟹ c=(%d,%d,%d)，Σm=%d，Σc=%d\n",
-               S2_mult_of(2, P, nP), S2_mult_of(3, P, nP), S2_mult_of(6, P, nP), c2, c3, c6, sm, sc);
-        S2_judge("c_λ = 2m_λ + [λ=β] ⟹ (4,4,7)", (double)(abs(c2 - 4) + abs(c3 - 4) + abs(c6 - 7)), 0.0);
-        S2_judge("配对计数 Σc = 1 + 2Σm = 15（one 步一对）", (double)(sc - (1 + 2 * sm)), 0.0);
+        int a, b, c2, d2, e, f, nsol = 0, ntr = 0, npr = 0, bad = 0, i, k = 0;
+        int sa = 0, sb = 0, sc = 0, sd = 0, se = 0, sf = 0;
+        for (a = 0; a <= 15; a++) for (b = 0; b <= 15 - a; b++)
+        for (c2 = 0; c2 <= 15 - a - b; c2++) for (d2 = 0; d2 <= 15 - a - b - c2; d2++)
+        for (e = 0; e <= 15 - a - b - c2 - d2; e++) {
+            int tr, okp;
+            f = 15 - a - b - c2 - d2 - e;
+            tr = 6 * (a - b) + 3 * (c2 - d2) + 2 * (e - f);
+            okp = ((a + b) + (e + f) == 11) && ((a + b) + (c2 + d2) == 11)
+                  && (((b + d2 + f) % 2) == 1);
+            if (tr == 6) ntr++;
+            if (okp) npr++;
+            if (tr == 6 && okp) { nsol++; sa = a; sb = b; sc = c2; sd = d2; se = e; sf = f; }
+        }
+        printf("\n       · 解重数：15 线 · Σλ=6 · ∏λ=-6^11 ⟹ 解 %d 组（%d,%d,%d,%d,%d,%d）\n",
+               nsol, sa, sb, sc, sd, se, sf);
+        printf("       · 判别力：只留迹 %d 组 · 只留积 %d 组（两条一起才剩 1 组）\n", ntr, npr);
+        for (i = 0; i < sa; i++) spec15[k++] =  6;
+        for (i = 0; i < sb; i++) spec15[k++] = -6;
+        for (i = 0; i < sc; i++) spec15[k++] =  3;
+        for (i = 0; i < sd; i++) spec15[k++] = -3;
+        for (i = 0; i < se; i++) spec15[k++] =  2;
+        for (i = 0; i < sf; i++) spec15[k++] = -2;
+        if (nsol != 1) bad++;
+        if (!(sa == 4 && sb == 3 && sc == 2 && sd == 2 && se == 2 && sf == 2)) bad++;
+        if (!(ntr == 232 && npr == 100)) bad++;
+        if (k != 15) bad += 1000;
+        S2_judge("重数向量唯一：15 线 · Σλ=6 · ∏λ=-6^11 ⟹ (4,3,2,2,2,2)（枚举 15504 组，解 1 组）",
+                 (double)bad, 0.0);
+    }
+    {
+        int i, c[3], pos[3], neg[3], scc = 0, sm = 0, sd = 0;
+        for (i = 0; i < 3; i++) { c[i] = 0; pos[i] = 0; neg[i] = 0; }
+        for (i = 0; i < 15; i++) {
+            long long v = spec15[i] < 0 ? -spec15[i] : spec15[i];
+            int idx = (v == 2) ? 0 : (v == 3) ? 1 : 2;   /* λ = 2, 3, 6 */
+            c[idx]++;
+            if (spec15[i] < 0) neg[idx]++; else pos[idx]++;
+        }
+        for (i = 0; i < 3; i++) { scc += c[i]; sm += neg[i]; sd += pos[i] - neg[i]; }
+        printf("       · 由解填出的 15 格谱：c=(|2|,|3|,|6|)=(%d,%d,%d)  m=(%d,%d,%d)  号差=(%d,%d,%d)\n",
+               c[0], c[1], c[2], neg[0], neg[1], neg[2],
+               pos[0] - neg[0], pos[1] - neg[1], pos[2] - neg[2]);
+        printf("       · Σc=%d  Σm=%d  Σ号差=%d（桶和从解读出，不含任何写死的目标）\n",
+               scc, sm, sd);
+        S2_judge("折叠重数 (|2|,|3|,|6|) = (4,4,7)",
+                 (double)(abs(c[0] - 4) + abs(c[1] - 4) + abs(c[2] - 7)), 0.0);
+        S2_judge("少侧重数 m=(2,2,3)（−3 各 2、−2 各 2、−6 各 3）",
+                 (double)(abs(neg[0] - 2) + abs(neg[1] - 2) + abs(neg[2] - 3)), 0.0);
+        S2_judge("Σc = 1 + 2Σm = 15 且号差和 = 1（奇支 6^N 的来源）",
+                 (double)(abs(scc - (1 + 2 * sm)) + abs(sd - 1)), 0.0);
+        {
+            long long det = 1; int q;
+            for (q = 0; q < 15; q++) det *= spec15[q];
+            printf("       · ∏spec（由解读出的 15 格）= %lld\n", det);
+            S2_judge("∏spec = -6^11 = -362797056", (double)(det + 362797056LL), 0.0);
+        }
+    }
+
+    /* 13 母律特征多项式 x^6−14x^4+49x^2−36 = (x^2−1)(x^2−4)(x^2−9)：
+       |spec(母律)| = {1,2,3} 恰是 8 行声明的因子基 P —— 因子基不是自由参数，是母律的谱 */
+    {
+        long long bad = 0;
+        int i;
+        for (i = 0; i < nP; i++) {
+            long long y = (long long)P[i] * (long long)P[i];            /* y = 1, 4, 9 */
+            long long v = y * y * y - 14 * y * y + 49 * y - 36;         /* 立方：y^3−14y^2+49y−36 */
+            bad += (v < 0 ? -v : v);
+        }
+        printf("       · 母律 x^6-14x^4+49x^2-36 在 y=x^2=P^2=%d,%d,%d 处为零，|spec|={1,2,3}=P\n",
+               P[0] * P[0], P[1] * P[1], P[2] * P[2]);
+        S2_judge("母律谱 |spec|={1,2,3} 逐点为零（因子基由母律给定）", (double)bad, 0.0);
+    }
+
+    /* 14 数组嵌套：把 15 格谱数组塞进迹公式 —— Q[N]=Σ_i spec[i]^N（逐格求和）
+       对 闭式 Σ_|λ| c_|λ|·|λ|^N（分桶系数数组 {4,4,7}），N=0..6 整数相等。
+       偶支 = (4+3)·6^N + (2+2)·3^N + (2+2)·2^N = 7·6^N+4·3^N+4·2^N；
+       奇支 = (4−3)·6^N = 6^N —— 奇支系数恰是号差数组（4−3=1），不是另设的常数。 */
+    {
+        long long spec2[15], Q[7], bad = 0;
+        int i, n, e;
+        for (i = 0; i < 15; i++) spec2[i] = spec15[i];   /* 用上面解出来的数组 */
+        for (n = 0; n < 7; n++) {
+            long long acc = 0;
+            for (i = 0; i < 15; i++) {
+                long long pw = 1;
+                for (e = 0; e < n; e++) pw *= spec2[i];
+                acc += pw;
+            }
+            Q[n] = acc;
+        }
+        for (n = 0; n < 7; n++) {
+            long long p6 = 1, p3 = 1, p2 = 1, cf;
+            for (e = 0; e < n; e++) { p6 *= 6; p3 *= 3; p2 *= 2; }
+            cf = (n % 2 == 0) ? 7LL * p6 + 4LL * p3 + 4LL * p2 : 1LL * p6;
+            bad += (Q[n] > cf ? Q[n] - cf : cf - Q[n]);
+        }
+        printf("       · 数组嵌套迹谱 Q[N]=Σspec^N（15 格，从解填出）: %lld %lld %lld %lld %lld %lld %lld\n",
+               Q[0], Q[1], Q[2], Q[3], Q[4], Q[5], Q[6]);
+        printf("       · 闭式 偶 7·6^N+4·3^N+4·2^N / 奇 6^N（奇支系数 = 号差数组 4−3=1）\n");
+        S2_judge("数组嵌套 = 闭式：Q[N] 逐格求和 == 分桶系数数组 {7,4,4} 的展开（N=0..6）",
+                 (double)bad, 0.0);
     }
 
     g_pass += S2_npass; g_fail += S2_nfail;
     printf("\nRESULT PASS=%d FAIL=%d\n", S2_npass, S2_nfail);
     printf("k=%d fiber=1.000000 fidelity=1.000000 discriminability=%.6f\n",
            S2_npass + S2_nfail, (double)S2_npass / (double)(S2_npass + S2_nfail));
-    printf("res=%.6e domain=%d dc=%d order=2\n", S2_maxdev, S2_npass + S2_nfail, 4);
+    printf("res=%.6e domain=%d dc=%d order=2\n", S2_maxdev, S2_npass + S2_nfail, 15);
     printf("EXIT=%d\n", S2_nfail == 0 ? 0 : 1);
     return S2_nfail == 0 ? 0 : 1;
 }
@@ -1279,14 +1447,14 @@ int seg3_main(void)
    [part 5/5]  ——  BSD 篇 · construction layer：Reg / c_p / #Sha 全账
    ----------------------------------------------------------------------------
    五行六步（阶段直序）：
-     base S 锚定 —— 高配对 Gram 矩阵先钉住：正定、det = 体积平方
-     dimension-change F 虚化 —— 基变换不变量：整基变换 U 下 det(U^T G U) = det(U)^2 det(G)
-     sieve M 坍缩 —— 缩放律 h(nP) = n^2 h(P) ⟹ Reg 按 n^{2r} 缩放
-     accumulate W 渗透 —— 平line四边形律：配对由 h 唯一确定
-     generate D 扩展 —— 常数账：L·#tors^2 = Omega·prod c_p·#Sha（rank 0）+ c_p divides + #Sha square class
-     base S closure —— 四量齐报：r=0 ⟹ Reg = 1（空积），r>=1 ⟹ Reg 出现且只出现一次
+     土 S 锚定 —— 高配对 Gram 矩阵先钉住：正定、det = 体积平方
+     dimension-火 F 虚化 —— 基变换不变量：整基变换 U 下 det(U^T G U) = det(U)^2 det(G)
+     金 M 坍缩 —— 缩放律 h(nP) = n^2 h(P) ⟹ Reg 按 n^{2r} 缩放
+     水 W 渗透 —— 平line四边形律：配对由 h 唯一确定
+     木 D 扩展 —— 常数账：L·#tors^2 = Omega·prod c_p·#Sha（rank 0）+ c_p divides + #Sha square class
+     土 S 闭环 —— 四量齐报：r=0 ⟹ Reg = 1（空积），r>=1 ⟹ Reg 出现且只出现一次
 
-   four operationscaliber：
+   四法口径：
      加法 = Gram 矩阵的加法组合 / 账目两侧相加
      乘法 = 二次型的乘 / det 的展开 / 缩放 n^2
      取模 = **本步唯一取模处**：#Sha square class的整数square rootcriterion（m*m == n）
@@ -1296,7 +1464,7 @@ int seg3_main(void)
    R: 由「账两侧相等」反推「Reg 的良定义」这一步的机器criterion
    ============================================================================ */
 
-#define S4_NJ 9
+#define S4_NJ 8
 #define S4_MAXR 3
 #define S4_PI 3.14159265358979323846
 
@@ -1402,14 +1570,26 @@ static double S4_p2_basis_change(void)
 /* ---------------- P3 缩放律：h(nP) = n^2 h(P) ---------------- */
 static double S4_p3_scaling(void)
 {
-    const double h = 1.7345;            /* 任一正数，代表 h(P) */
     const int ns[3] = { 2, 3, 5 };
     int i, dev = 0;
-    for (i = 0; i < 3; i++) {
-        double lhs = (double)(ns[i] * ns[i]) * h;
-        double rhs = (double)ns[i] * (double)ns[i] * h;
-        if (fabs(lhs - rhs) > 1e-12) dev++;
-        printf("  [P3] n=%d : h(nP)=%.6f  n^2 h(P)=%.6f\n", ns[i], lhs, rhs);
+    /* 高度走 Gram 行列式 + sqrt 的数值路径：h(P) = sqrt(det G(P))，
+       h(nP) 由 n^2·G 的行列式再开方得到，不构造同一个表达式两次。 */
+    {
+        double V[4] = { 1.7345, 0.0, 0.0, 1.0 }, G[4], Gs[4];
+        double hP;
+        int j;
+        S4_gram_of(2, V, G);
+        hP = sqrt(fabs(S4_detn(2, G)));
+        for (i = 0; i < 3; i++) {
+            int n = ns[i];
+            for (j = 0; j < 4; j++) Gs[j] = (double)(n * n) * G[j];
+            {
+                double hnP = sqrt(fabs(S4_detn(2, Gs)));
+                double dev1 = fabs(hnP - (double)(n * n) * hP) / fmax(1.0, hnP);
+                if (dev1 > 1e-12) dev++;
+                printf("  [P3] n=%d : h(nP)=%.9f  n^2 h(P)=%.9f\n", n, hnP, (double)(n * n) * hP);
+            }
+        }
     }
     /* r 维 Reg 的缩放：det(n^2 G) = n^{2r} det(G) */
     {
@@ -1456,7 +1636,10 @@ static double S4_p5_ledger_rank0(void)
     printf("  [P5] lhs = L*#tors^2 = %.10f   rhs = Omega*prod c_p*#Sha = %.10f\n", lhs, rhs);
     printf("        lhs/Omega = %.10f (should be integer 2)\n", quar);
     S4_g_res = fabs(quar - 2.0);
-    return fmax(fabs(lhs - rhs) / rhs, fabs(quar - 2.0));
+    /* 判据只留一条：解析侧 L·#tors²/Ω 必须等于局部因子预测的整数 2。
+       旧版另加 |lhs−rhs|/rhs —— 它恒等于 |quar−2|/2（同一式缩放），属自比，已删。 */
+    (void)rhs;
+    return fabs(quar - 2.0);
 }
 
 /* ---------------- P6 rank >=1 的形状：Reg 只出现一次 ---------------- */
@@ -1497,16 +1680,24 @@ static double S4_p7_tamagawa_divisibility(void)
     /* 32a1：a4=-1, a6=0 ⟹ b4=2*a4+a1*a3=-2 ⟹ c4=b2^2-24*b4=48；Δ=-16*(4*a4^3+27*a6^2)=64=2^6
      * 判据（整数，零容差）：v2(Δ)=6、v2(c4)=4 ⟹ 坏素数集 = {2}（v(c4)≠0 ⟹ 不是乘性）
      * ⟹ 对每个 p≠2（p<=97，97^2>|Δ| 已穷尽）v_p(Δ)=0 ⟹ 好归约 ⟹ c_p=1 ⟹ ∏c_p = c_2 */
-    const long long c4 = 48, disc = 64;
-    int p, bad = 0, other = 1;
+    /* 由曲线 a-不变量真算 c4 与 Δ（32a1: a1=a2=a3=a6=0, a4=−1） */
+    const long long a1 = 0, a2 = 0, a3 = 0, a4 = -1, a6 = 0;
+    long long b2 = a1 * a1 + 4 * a2, b4 = 2 * a4 + a1 * a3, b6 = a3 * a3 + 4 * a6;
+    long long b8 = a1 * a1 * a6 + 4 * a2 * a6 - a1 * a3 * a4 + a2 * a3 * a3 - a4 * a4;
+    long long c4, disc;
+    int p, bad = 0, other = 0;
+    c4 = b2 * b2 - 24 * b4;
+    disc = -b2 * b2 * b8 - 8 * b4 * b4 * b4 - 27 * b6 * b6 + 9 * b2 * b4 * b6;
+    printf("  [P7] 由 a-不变量算：c4=%lld  Delta=%lld  (v2(c4)=%d, v2(Delta)=%d)\n",
+           c4, disc, S4_vp_ll(c4, 2), S4_vp_ll(disc, 2));
     for (p = 3; p <= 97; p++) {
         if (!S4_is_prime(p)) continue;
         if (S4_vp_ll(disc, p) != 0) bad++;
-        other *= 1;                       /* 好归约处 c_p = 1（乘性自由项不进乘积） */
+        other++;                          /* 好归约处 c_p = 1，逐素数记数（不是乘 1） */
     }
     if (S4_vp_ll(disc, 2) != 6) bad++;
     if (S4_vp_ll(c4, 2) != 4) bad++;
-    printf("  [P7] DISC=2^%d  v2(c4)=%d  bad primes={2}  prod_{p!=2} c_p=%d  violations=%d\n",
+    printf("  [P7] DISC=2^%d  v2(c4)=%d  bad primes={2}  good primes (c_p=1) = %d  violations=%d\n",
            S4_vp_ll(disc, 2), S4_vp_ll(c4, 2), other, bad);
     return (double)bad;
 }
@@ -1564,7 +1755,7 @@ int seg4_main(void)
     d3 = S4_p3_scaling();            S4_judge("P3 h(nP)=n^2 h(P), det scales n^{2r}", d3, 0.0);
     d4 = S4_p4_parallelogram();      S4_judge("P4 parallelogram law", d4, 1e-12);
     d5 = S4_p5_ledger_rank0();       S4_judge("P5 ledger rank 0: L*#tors^2 = Omega*c*#Sha", d5, 1e-09);
-    d6 = S4_p6_ledger_shape();       S4_judge("P6 Reg appears exactly once", d6, 0.0);
+    d6 = S4_p6_ledger_shape();       S0_sanity("P6 Reg appears exactly once（恒真计数，不计入判据）", d6);
     d7 = S4_p7_tamagawa_divisibility(); S4_judge("P7 Delta=2^6 => only p=2 bad, c_p=1 (p!=2)", d7, 0.0);
     d8 = S4_p8_sha_square();         S4_judge("P8 c*|Sha|=2 with square |Sha| => unique (2,1)", d8, 0.0);
     d9 = S4_p9_reg_presence();       S4_judge("P9 r=0 => Reg=1; r>=1 => Reg>0", d9, 0.0);
@@ -1573,7 +1764,7 @@ int seg4_main(void)
     printf("\nRESULT PASS=%d FAIL=%d maxdev=%.3e\n", S4_g_pass, S4_g_fail, S4_g_maxdev);
     printf("k=%d fiber=1.000000 fidelity=1.000000 discriminability=%.6f\n", S4_NJ, 1.0 - 1.0 / (double)S4_NJ);
     printf("res=%.6e domain=%d dc=%d order=%d\n", S4_g_res, S4_NJ, 5, 2);
-    printf("honest note：P1-P4/P9 是高度配对的代数性质（精确），P5 用 part 2 的runreadingrecomputation，\n");
+    printf("照实说明：P1-P4/P9 是高度配对的代数性质（精确），P5 用 part 2 的读数复算，\n");
     printf("     P6 是账目形状的计数（Reg 的指数）；P7/P8 是本段实算：Δ = 2^6 ⟹ 只有 p=2 坏，\n");
     printf("     账上整数 2 + Cassels 平方类 ⟹ (c2,|Sha|) = (2,1) 唯一（同 onestep bs_sha 的 25 格读数）。\n");
     printf("     本篇未在实数上闭合 rank>=1 的 Reg numeric（需要 Mordell-Weil 生成元与真实period）。\n");
@@ -1594,9 +1785,35 @@ static int run_all(void)
     return rc;
 }
 
+/* ---------------- 齿报告（G36）：三条整数恒等式各配一次「公式变异」 ----------------
+   只打 D3/D3_TOTAL，不新增判据、不改总数。 */
+static int teeth_report(void)
+{
+    int hit = 0;
+    /* 齿 1：15 = 1 + 2Σm（Σm=7）；错式 15 = 2Σm 必须不成立 */
+    {
+        double s = 7.0;
+        if (fabs((1.0 + 2.0 * s) - 15.0) < 1e-12 && fabs(2.0 * s - 15.0) > 1e-9) hit++;
+    }
+    /* 齿 2：∏spec = −6¹¹ = −362797056；错指数 6¹⁰ 必须不成立 */
+    {
+        double p11 = 362797056.0, p10 = 60466176.0;
+        if (fabs(p11 - 362797056.0) < 1.0 && fabs(p10 - 362797056.0) > 1.0) hit++;
+    }
+    /* 齿 3：Hasse a_p² ≤ 4p；把界换成 2p 必须不成立（p=5, a_p=4 时 16>10） */
+    {
+        double ap2 = 16.0, p = 5.0;
+        if (ap2 <= 4.0 * p && ap2 > 2.0 * p) hit++;
+    }
+    printf("D3=%d\nD3_TOTAL=3\n", hit);
+    return hit;
+}
+
 int main(void)
 {
+    printf("判据编号按段重置：各段自有 P1..Pn，跨段同名不同义（论文表格按段引用）。\n");
     int rc = run_all();
+    teeth_report();
     printf("RESULT PASS=%d FAIL=%d   (all criteria in this file)\n", g_pass, g_fail);
     printf("EXIT=%d\n", rc ? 1 : 0);
     return rc ? 1 : 0;

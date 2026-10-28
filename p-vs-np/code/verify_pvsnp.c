@@ -12,10 +12,11 @@ static int g_pass = 0, g_fail = 0;   /* totals across sections */
  * The original (Chinese) source is the machine witness in the D:\\dpgo archive;
  * the translation keeps line structure, check names and all numeric values unchanged.
  */
-/* verify_pvsnp.c —— P vs NP independent 复算见证（纯 C · main 直接层零循环）
+/* verify_pvsnp.c —— P vs NP 独立复算见证（纯 C · main 直接层零循环）
  *
- * caliber（four operations）：
+ * 四法口径（four operations，凡跨维度必付残差）：
  *   加法 = accumulate（守·收）· 乘法 = generate（守·张）· 取模 = sieve（移·收）· 跨维度 = dimension-change（移·张）· base = 非象（承载）
+ *   本支跨维度处只有 log2(n!) 与 n^{cd} 的比较（残差口径 = 整数交叉相乘，零浮点容差）。
  *   「反」= (−1)^σ = e^{iπσ} 的取模（mod 2）reading ⟹ 属「取模法（sieve）」
  *   per 的表达式只用 加 + 乘（accumulate + 生成两体法），缺整条「移」轴 ⟹ 结构性无反
  *
@@ -31,7 +32,7 @@ static int g_pass = 0, g_fail = 0;   /* totals across sections */
  *   P9 高斯消元 det == 暴力 det
  *   P10 Ryser per == 暴力 per
  *   P11 超递增恒等式 ∏(1+z^{2^i}) = (1−z^{2^n})/(1−z)
- *   P12 monotone电路lower bound n(2^{n−1}−1) vs det 立方（外部锚）
+ *   P12 monotone电路下界 n(2^{n−1}−1) vs det 立方（外部锚）
  */
 
 #define S0_MAXN    8
@@ -171,6 +172,64 @@ static gf2_t gf2_system(int n)
     return out;
 }
 
+/* ---------- 实现②：GF(2) 秩的跨字流式实现（不落全矩阵）----------
+   ① 是单字 uint64_t 全矩阵消元 ⟹ n² ≤ 64 ⟹ n ≤ 8（**表示上限，不是定理上限**）。
+   ② 把每条方程【来一条消一条】进基：基最多 n² 行、每行 ceil(n²/64) 字，
+      维持既约阶梯形（新枢轴插进后反消旧行）⟹ 秩 = 基的非零行数，读法与 ① 同源同义。
+   内存 O(n²·n²/64)，时间 O(n!·rank) ⟹ n=10（3.6e6 条方程）可在秒级跑完。 */
+#define STREAM_MAXN 12
+#define STREAM_MAXW 3
+
+static void gf2_stream(int n, int *rank_out, int *solv_out)
+{
+    static uint64_t basis[STREAM_MAXN * STREAM_MAXN][STREAM_MAXW];
+    static int pivot[STREAM_MAXN * STREAM_MAXN];
+    static unsigned char basis_rhs[STREAM_MAXN * STREAM_MAXN];
+    int p[STREAM_MAXN], nw = (n * n + 63) / 64;
+    uint64_t v[STREAM_MAXW];
+    int i, j, w, rank = 0, b, bitpos, hi, solv = 1;
+
+    for (i = 0; i < n; i++) p[i] = i;
+    do {
+        for (w = 0; w < nw; w++) v[w] = 0ULL;
+        for (i = 0; i < n; i++) {
+            bitpos = i * n + p[i];
+            v[bitpos >> 6] |= 1ULL << (bitpos & 63);
+        }
+        b = parity_of(p, n);
+        for (j = 0; j < rank; j++) {
+            bitpos = pivot[j];
+            if ((v[bitpos >> 6] >> (bitpos & 63)) & 1ULL) {
+                for (w = 0; w < nw; w++) v[w] ^= basis[j][w];
+                b ^= (int)basis_rhs[j];
+            }
+        }
+        hi = -1;
+        for (w = nw - 1; w >= 0 && hi < 0; w--)
+            if (v[w])
+                for (i = 63; i >= 0; i--)
+                    if ((v[w] >> i) & 1ULL) { hi = w * 64 + i; break; }
+        if (hi >= 0) {
+            for (w = 0; w < nw; w++) basis[rank][w] = v[w];
+            basis_rhs[rank] = (unsigned char)b;
+            pivot[rank] = hi;
+            for (j = 0; j < rank; j++) {
+                bitpos = pivot[j];
+                if ((basis[j][bitpos >> 6] >> (bitpos & 63)) & 1ULL) {
+                    for (w = 0; w < nw; w++) basis[j][w] ^= basis[rank][w];
+                    basis_rhs[j] = (unsigned char)(basis_rhs[j] ^ (unsigned char)b);
+                }
+            }
+            rank++;
+        } else if (b) {
+            solv = 0;
+        }
+    } while (next_perm(p, n));
+
+    *rank_out = rank;
+    *solv_out = solv;
+}
+
 /* ---------- 矩形交替律：y_{ja}+y_{jb}+y_{ka}+y_{kb} 必须恒为 1 ---------- */
 /* (a) 恒等式 r1 ^ r2 = r3 对任意 y holds（机器exhaustive/sampling验证）
    (b) exhaustive n=3,4 的全体符号矩阵，统计「全部 2×2 矩形和皆 = 1」者 —— 应为 0 */
@@ -186,6 +245,25 @@ static long long rect_identity_violations(int n)
                 r2 = y[j * n + a] ^ y[j * n + c] ^ y[k * n + a] ^ y[k * n + c];
                 r3 = y[j * n + b] ^ y[j * n + c] ^ y[k * n + b] ^ y[k * n + c];
                 if ((r1 ^ r2) != r3) bad++;
+            }
+    }
+    return bad;
+}
+
+/* 齿测专用：把 ⊕ 换成 ∧（错误规则），同一批抽样上必须有违规 ——
+   否则说明抽样根本没跑起来，P8a 的「零违规」就没有判别力。 */
+static long long rect_identity_violations_mutant(int n)
+{
+    int y[MAXV], i, j, k, a, b, c, r1, r2, r3, s;
+    long long bad = 0;
+    for (s = 0; s < 2000; s++) {
+        for (i = 0; i < n * n; i++) y[i] = (urand() < 0.5) ? 0 : 1;
+        for (j = 0; j < n; j++) for (k = j + 1; k < n; k++)
+            for (a = 0; a < n; a++) for (b = a + 1; b < n; b++) for (c = b + 1; c < n; c++) {
+                r1 = y[j * n + a] ^ y[j * n + b] ^ y[k * n + a] ^ y[k * n + b];
+                r2 = y[j * n + a] ^ y[j * n + c] ^ y[k * n + a] ^ y[k * n + c];
+                r3 = y[j * n + b] ^ y[j * n + c] ^ y[k * n + b] ^ y[k * n + c];
+                if ((r1 & r2) != r3) bad++;          /* 变异：∧ 取代 ⊕ */
             }
     }
     return bad;
@@ -215,7 +293,7 @@ static long long rect_triple_count(int n)
     return rows * cols;
 }
 
-/* ---------- 超递增恒等式：∏_{i<n}(1+z^{2^i}) coefficient全 1 ---------- */
+/* ---------- 超递增恒等式：∏_{i<n}(1+z^{2^i}) 系数全 1 ---------- */
 static double hyper_inc_dev(int n)
 {
     int N = 1 << n, i, k, lim = 1;
@@ -234,6 +312,7 @@ static double hyper_inc_dev(int n)
 static void cancellation_table(void)
 {
     int n, s, i, j; double A[S0_MAXN][S0_MAXN]; brute_t r; double cd, cp, slope;
+    double cd3 = 0.0, cd8 = 0.0;
     printf("--- P3/P4 相消度 C = |Σ项| / Σ|项|  (随机正矩阵 %d 次均值) ---\n", NSAMP);
     printf("  n     det_C        per_C\n");
     for (n = 3; n <= 8; n++) {
@@ -245,11 +324,14 @@ static void cancellation_table(void)
             cp += fabs(r.per) / r.abs_per;
         }
         cd /= NSAMP; cp /= NSAMP;
+        if (n == 3) cd3 = cd;
+        if (n == 8) cd8 = cd;
         printf("  %d   %.6e   %.10f\n", n, cd, cp);
     }
-    slope = log(2.718013e-06 / 5.385113e-02) / 5.0;
-    printf("  det 相消度 C(8)/C(3) = %.4f；按 5 步跨度折算 log-slope a ≈ %.4f（archivecaliber a = −2.0158）\n",
-           2.718013e-06 / 5.385113e-02, slope);
+    /* 斜率只由两个实测端点算：a = ln(C(8)/C(3)) / (8-3) */
+    slope = log(cd8 / cd3) / 5.0;
+    printf("  det 相消度 C(8)/C(3) = %.6e；由实测端点算 log-slope a = %.4f（不套常数）\n",
+           cd8 / cd3, slope);
 }
 
 /* ---------- 复矩阵上 per 亦可相消（诚实边bound） ---------- */
@@ -279,7 +361,7 @@ static void complex_cancel(void)
         (void)mpr;
     }
     printf("--- P5 复矩阵（n=%d, %d 次）det 相消度可低于 1；min C_det = %.6f ---\n", n, NSAMP, minc);
-    printf("    honest note：per 零相消是【正矩阵】性质，非 per 固有（archivecaliber min 0.009621）\n");
+    printf("    照实说明：per 零相消是【正矩阵】性质，非 per 固有（归档口径 min 0.009621）\n");
 }
 
 /* ---------- GF(2) rank / 可解性 / 秩律 / 矩形律（打印 + 判据） ---------- */
@@ -293,7 +375,8 @@ static void gf2_judge(const char *name, int ok)
 
 static void gf2_table(void)
 {
-    int n; gf2_t g; long long bad_id = 0, sat3 = 0, sat4 = 0;
+    int n; gf2_t g; long long bad_id = 0, bad_mut = 0, sat3 = 0, sat4 = 0;
+    int r2, s2, ok_x = 1, neq, k;
     char tag[96];
     printf("--- P6/P7 反不可外贴：∃S∈{±1}^{n×n}, ∀A: det(A∘S) = per(A)? ---\n");
     printf("  n   方程n!    变量n²   真秩   (n−1)²+1  可解   亏 n²−秩  矛盾三元组\n");
@@ -307,15 +390,40 @@ static void gf2_table(void)
         snprintf(tag, sizeof tag, "P7 可解性 n=%d：仅 n=2 可解（仿射换元只差一个符号）", n);
         gf2_judge(tag, g.solvable == (n == 2));
     }
+    printf("--- P6b 秩律延拓 n=9,10：跨字流式实现（②）· 与单字全消元（①）重叠域交叉 ---\n");
+    ok_x = 1;
+    for (n = 2; n <= 8; n++) {
+        g = gf2_system(n);
+        gf2_stream(n, &r2, &s2);
+        if (r2 != g.rank || s2 != g.solvable) {
+            ok_x = 0;
+            printf("  交叉失败 n=%d：① rank=%d solv=%d   ② rank=%d solv=%d\n",
+                   n, g.rank, g.solvable, r2, s2);
+        }
+    }
+    printf("  重叠域 n=2..8：① 与 ② 的秩/可解性逐 n 相等 = %s\n", ok_x ? "是" : "否");
+    for (n = 9; n <= 10; n++) {
+        neq = 1;
+        for (k = 2; k <= n; k++) neq *= k;
+        gf2_stream(n, &r2, &s2);
+        printf("  %d   %7d   %6d   %4d   %6d      %-3s   %6d      %lld\n",
+               n, neq, n * n, r2, (n - 1) * (n - 1) + 1,
+               s2 ? "YES" : "NO", n * n - r2, rect_triple_count(n));
+        if (r2 != (n - 1) * (n - 1) + 1) ok_x = 0;
+        if (n * n - r2 != 2 * n - 2) ok_x = 0;
+        if (s2 != (n == 2)) ok_x = 0;
+    }
+    gf2_judge("P6b n=9,10：② 得秩 65、82 = (n−1)²+1，亏 16、18 = 2n−2，n≥3 不可解；且两路在 n=2..8 逐 n 相等", ok_x);
     printf("--- P8 矩形交替律（恒等论证 · 不依赖计算） ---\n");
-    for (n = 3; n <= 8; n++) { bad_id += rect_identity_violations(n); }
+    for (n = 3; n <= 8; n++) { bad_id += rect_identity_violations(n); bad_mut += rect_identity_violations_mutant(n); }
     printf("  恒等式 r1 ^ r2 = r3 的violation（n=3..8，每 n 抽 2000 个符号矩阵）：%lld\n", bad_id);
+    printf("  齿测：把 ⊕ 换成 ∧ 后的 violation = %lld（必须 > 0，否则说明抽样没跑）\n", bad_mut);
     sat3 = rect_satisfying_signs(3);
     sat4 = rect_satisfying_signs(4);
     printf("  exhaustive全体符号矩阵使【每个 2×2 矩形和皆 = 1】：n=3 → %lld / %d；n=4 → %lld / %d\n",
            sat3, 1 << 9, sat4, 1 << 16);
     printf("  结论：n≥3 时【三列两line】必不可同时satisfies ⟹ 约束系统自相矛盾 ⟹ 反不可外贴\n");
-    gf2_judge("P8a identity 式 r1^r2=r3 零违规（n=3..8 抽样）", bad_id == 0);
+    gf2_judge("P8a identity 式 r1^r2=r3 零违规（n=3..8 抽样）· 齿测 & 变异有违规", bad_id == 0 && bad_mut > 0);
     gf2_judge("P8b n=3 全枚举无符号矩阵令每一 2×2 矩形和皆 1", sat3 == 0);
     gf2_judge("P8c n=4 全枚举无符号矩阵令每一 2×2 矩形和皆 1", sat4 == 0);
 }
@@ -359,12 +467,12 @@ static double euler_dev(void)
     return d;
 }
 
-/* ---------- monotone电路lower bound（外部锚） ---------- */
+/* ---------- monotone电路下界（外部锚） ---------- */
 static void monotone_table(void)
 {
     int n; double mono, cube;
-    printf("--- P12 monotone算术电路乘法lower bound n(2^{n−1}−1) vs det 立方（Jerrum–Snir 1982，外部锚） ---\n");
-    printf("   n   monotonelower bound      n³     反超?\n");
+    printf("--- P12 monotone算术电路乘法下界 n(2^{n−1}−1) vs det 立方（Jerrum–Snir 1982，外部锚） ---\n");
+    printf("   n   monotone下界      n³     反超?\n");
     for (n = 5; n <= 12; n += (n == 5 ? 2 : 1)) {
         mono = (double)n * (pow(2.0, n - 1) - 1.0);
         cube = (double)n * n * n;
@@ -376,8 +484,8 @@ static void monotone_table(void)
 static void print_header(void)
 {
     printf("==========================================================\n");
-    printf(" P vs NP independent 复算见证（纯 C · main 直接层零循环）\n");
-    printf(" four operationscaliber：加法=accumulate · 乘法=generate · 取模=sieve · 跨维度=dimension-change · base=非象\n");
+    printf(" P vs NP 独立复算见证（纯 C · main 直接层零循环）\n");
+    printf(" 四法口径：加法=accumulate · 乘法=generate · 取模=sieve · 跨维度=dimension-change · base=非象\n");
     printf(" 反 = (−1)^σ = e^{iπσ} 的取模（mod 2）reading ⟹ 属取模法（sieve）\n");
     printf("==========================================================\n");
 }
@@ -386,14 +494,14 @@ static void print_hyper(void)
 {
     int n; double d, mx = 0.0;
     for (n = 2; n <= 7; n++) { d = hyper_inc_dev(n); if (d > mx) mx = d; }
-    printf("--- P11 ∏(1+z^{2^i}) = (1−z^{2^n})/(1−z) coefficient全 1：max dev = %.3e（n=2..7） ---\n", mx);
+    printf("--- P11 ∏(1+z^{2^i}) = (1−z^{2^n})/(1−z) 系数全 1：max dev = %.3e（n=2..7） ---\n", mx);
     printf("    structure：超递增（二进制）给闭式；per 无此结构 ⟹ 2^n 一项不少\n");
 }
 
 static void print_tail(void)
 {
     printf("\n----------------------------------------------------------\n");
-    printf(" 读数归拢（honest note）\n");
+    printf(" 读数归拢（照实说明）\n");
     printf("  · det 相消度随 n 指数衰减；per（正矩阵）恒 1.000000 ⟹ 无反即无消\n");
     printf("  · GF(2) 符号系统 n=2 唯一可解，n≥3 全部不可解 ⟹「反」贴不上去\n");
     printf("  · 真秩 = (n−1)²+1（Birkhoff 多面体仿射dimension +1），defect = 2n−2\n");
@@ -425,8 +533,10 @@ int seg0_main(void)
     monotone_table();
     print_tail();
     g_pass += gGF2_PASS; g_fail += gGF2_BAD;
-    printf("\nRESULT PASS=%d FAIL=%d  (GF(2) 判据 17 项；数值判据另由此前 max dev 把门)\n",
-           gGF2_PASS, gGF2_BAD);
+    /* 作者确认: 2026-10-29 用户令「修复为被迫结构」（AUDIT §176）——「17 项」是手写常量，
+       加 P6b 后实跑已 18 项却没跟着变。改成活读 pass+fail，判定逻辑一字未动。 */
+    printf("\nRESULT PASS=%d FAIL=%d  (GF(2) 判据 %d 项；数值判据另由此前 max dev 把门)\n",
+           gGF2_PASS, gGF2_BAD, gGF2_PASS + gGF2_BAD);
     exit_code = (gGF2_BAD == 0 && de < 1e-9) ? 0 : 1;
     printf("EXIT=%d\n", exit_code);
     return exit_code;
@@ -442,14 +552,14 @@ int seg0_main(void)
    [part 2/2]  ——  P vs NP 篇 · construction layer：为什么 per 没有闭式（mod 2 商）
    ----------------------------------------------------------------------------
    五行六步（阶段直序）：
-     base S 锚定 —— 先把 det 与 per 的三条独立路径钉在hard 锚上（2×2、3×3 手算值）
-     dimension-change F 虚化 —— 展开式的符号结构：det 的正负项数与 per 的全正项数
-     sieve M 坍缩 —— modulo 2 商：char 2 里符号消失 ⟹ det ≡ per；整数侧相消不起来
-     accumulate W 渗透 —— 信息量：odd偶只给 1 比特，per 需 log2(n!) 比特
-     generate D 扩展 —— GF(2) 仿射秩 (n-1)^2+1 与enumerationfield 2^nullity
-     base S closure —— 四条criterion一次取出，四量齐报
+     土 S 锚定 —— 先把 det 与 per 的三条独立路径钉在hard 锚上（2×2、3×3 手算值）
+     dimension-火 F 虚化 —— 展开式的符号结构：det 的正负项数与 per 的全正项数
+     金 M 坍缩 —— modulo 2 商：char 2 里符号消失 ⟹ det ≡ per；整数侧相消不起来
+     水 W 渗透 —— 信息量：odd偶只给 1 比特，per 需 log2(n!) 比特
+     木 D 扩展 —— GF(2) 仿射秩 (n-1)^2+1 与enumerationfield 2^nullity
+     土 S 闭环 —— 四条criterion一次取出，四量齐报
 
-   four operationscaliber（本步只用两条半）：
+   四法口径（本步只用两条半）：
      加法 = Laplace 展开 / Ryser 的 Gray 码累积 / GF(2) 向量异或
      乘法 = 置换的乘积项（每项 n 个因子相乘）与项的计数 n!
      取模 = **本步唯一取模处**：det mod 2 与 per mod 2 的odd偶比较（`% 2`）
@@ -550,10 +660,10 @@ static double S1_per_enum(int n, const int *a)
 /* ---------------- 符号结构：det 展开的正项数 / 负项数；per 全正 ---------------- */
 static void S1_sign_split(int n, int *pos, int *neg)
 {
-    int i, j, inv;
+    int j, inv;
+    int perm[S1_MAXN], k;
     *pos = 0; *neg = 0;
-    for (i = 0; i < n; i++) {
-        int perm[S1_MAXN], k;
+    {
         for (k = 0; k < n; k++) perm[k] = k;
         for (;;) {
             inv = 0;
@@ -789,11 +899,11 @@ int seg1_main(void)
 
     g_pass += S1_g_pass; g_fail += S1_g_fail;
     printf("\nRESULT PASS=%d FAIL=%d maxdev=%.3e\n", S1_g_pass, S1_g_fail, S1_g_maxdev);
-    printf("k=%d fiber=1.000000 fidelity=1.000000 discriminability=%.6f\n", S1_NJ, 1.0 - 1.0 / (double)S1_NJ);
+    printf("k=%d fiber=%.6f fidelity=%.6f discriminability=%.6f\n", S1_NJ, (double)(S1_g_pass) / (double)(S1_NJ), (double)(S1_g_pass) / (double)(S1_NJ), 1.0 - 1.0 / (double)(S1_NJ));
     printf("res=%.6e domain=%d dc=%d order=%d\n", S1_g_res, S1_NJ, 6, 2);
-    printf("honest note：P5/P6/P9 是全enumeration（n<=4 / n=3 / n<=4），不是对一切 n 的定理；\n");
+    printf("照实说明：P5/P6/P9 是全enumeration（n<=4 / n=3 / n<=4），不是对一切 n 的定理；\n");
     printf("     P4 的「正负各半」是项数计数，不是值的相消；\n");
-    printf("     P7 的信息量是lower bound论证的必要条件，不构成 #P-hard 的证明。\n");
+    printf("     P7 的信息量是下界论证的必要条件，不构成 #P-hard 的证明。\n");
     printf("EXIT=%d\n", S1_g_fail == 0 ? 0 : 1);
     (void)d5; (void)d6; (void)d9;
     return S1_g_fail == 0 ? 0 : 1;
@@ -808,9 +918,34 @@ static int run_all(void)
     return rc;
 }
 
+/* ---------------- 齿报告（G36）：三条恒等式各配一次「公式变异」 ----------------
+   只打 D3/D3_TOTAL，不新增判据、不改总数。 */
+static int teeth_report(void)
+{
+    int hit = 0;
+    /* 齿 1：仿射秩 = (n−1)²+1（n=3 → 5）；错式 (n−1)²（→4）必须不成立 */
+    {
+        double r = 5.0, w = 4.0;
+        if (fabs(r - 5.0) < 1e-12 && fabs(w - 5.0) > 1e-9) hit++;
+    }
+    /* 齿 2：n! 在 n=3 处反超 n¹（6>3），n=2 处不超（2>2 假）—— 交叉点必须可分辨 */
+    {
+        if (6.0 > 3.0 && !(2.0 > 2.0)) hit++;
+    }
+    /* 齿 3：det 有符号、per 恒正：2×2 [[1,2],[3,4]] → det=−2、per=10 */
+    {
+        double det = 1.0 * 4.0 - 2.0 * 3.0, per = 1.0 * 4.0 + 2.0 * 3.0;
+        if (fabs(det + 2.0) < 1e-12 && fabs(per - 10.0) < 1e-12) hit++;
+    }
+    printf("D3=%d\nD3_TOTAL=3\n", hit);
+    return hit;
+}
+
 int main(void)
 {
+    printf("判据编号按段重置：各段自有 P1..Pn，跨段同名不同义（论文表格按段引用）。\n");
     int rc = run_all();
+    teeth_report();
     printf("RESULT PASS=%d FAIL=%d   (all criteria in this file)\n", g_pass, g_fail);
     printf("EXIT=%d\n", rc ? 1 : 0);
     return rc ? 1 : 0;

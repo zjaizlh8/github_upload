@@ -1,0 +1,10 @@
+[齿] X9 · 台账 tol = 输出 tol（产物 audit/x9_tol.awk）
+  [PASS] c1 被 X9 咬住（    [X9] bsd[1] 输出 tol=1e-15 台账 tol=1.0e-03 class=FORCED
+BAD 1 TOT 161 PROC 0 · verify_ledger FAIL 行=2）
+  [PASS] c2 被 X9 咬住（    [X9] bsd[1] 输出 tol=1e-15 台账 tol=1.0e-08 class=FORCED
+BAD 1 TOT 161 PROC 0 · verify_ledger FAIL 行=2）
+  [PASS] c3 不误咬（过程面带数值 tol 合法：BAD 0 TOT 162 PROC 0）
+  [PASS] 真台账放行（BAD 0 TOT 161 PROC 0 · RESULT FAIL=0）
+
+RESULT PASS=4 FAIL=0
+EXIT=0

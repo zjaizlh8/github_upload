@@ -3,7 +3,7 @@
 > Author: zjaizlh8 (GitHub pseudonym) · 2026-10-26
 
 > This paper writes the Hodge conjecture with three pieces: the **structural layer** (the three base objects and the birthplace of the opposite), the **spectral-structure method** (three faces of one identity and the closure condition `nm=k`), and the **matrix probe** (layers / slots / gaps actually run).
-> Every number is independently recomputed by one pure-C probe `code/verify_hodge.c` (two subtotals `9 · 9`, last line `RESULT PASS=18 FAIL=0`, `EXIT=0`); the matrix is actually run by `containers(matrix, domain=onestep)` (41 layers / budget 368 / gaps 0).
+> Every number is independently recomputed by one pure-C probe `code/verify_hodge.c` (two subtotals `9 · 9`, last line `RESULT PASS=18 FAIL=0`, `EXIT=0`); the matrix is actually run by `containers(matrix, domain=onestep)` (51 layers / budget 448 / gaps 0).
 > The grading convention follows `SKILL.md:10560+` (4.132 layered-criterion hard rule, user ruling 2026-09-25): **what closes by identity in the structural layer is judged "structural-layer closure"**; constructions and estimates of the constructive layer do not constitute a refutation of structural-layer conclusions.
 
 ---
@@ -44,9 +44,9 @@ After this section, each main formula carries one line of "reciprocal account": 
 ### The reciprocal account of this paper
 
 - **Body** = the circle action `ρ(θ)`; **projection** = the circle average `P = (1/M)Σρ(θ)`, which is **idempotent**: `P·P = P`.
-- Reciprocal account: idempotence means "it is its own inverse", `rank P = Σ dim Λ^{p,p}`, isomorphic to "projection rate × body multiplier = 1"; the non-Hodge slots are annihilated by the average ((2,0)/(0,2)/(1,0) ≤ 6.2e−17).
-- Machine witness: `‖P² − P‖ = 0.000e+00`, `rank P = 3` (the value actually run for `g=1`; the archive's `g=2` gives `6`); the half-turn `(−1)^{p−q}` over 25 slots has zero mismatch.
-- The patch and the termination: `Abel–Jacobi` return home (the torsion point x=1/12 returns home at k=12 with dev 0; the non-torsion x=√2/7 is still outside at k=163 with min distance 0.001020) ⟹ **returning home is reciprocal, not returning home is a runaway**; the pole 163 terminates (h(−163)=1, h(−167)=11).
+- Reciprocal account: idempotence means "it is its own inverse", `rank P = Σ dim Λ^{p,p}`, isomorphic to "projection rate × body multiplier = 1"; the non-Hodge slots are annihilated by the average ((2,0)/(0,2)/(1,0) ≤ 1.005e−16).
+- Machine witness: `‖P² − P‖ = 9.390e-17`, `rank P = 6` (the value actually run for `g=2` over nine `(p,q)` slots: `Sigma_p C(2,p)^2 = 1+4+1`, not three hard-wired entries); the half-turn `(−1)^{p−q}` over 25 slots has zero mismatch.
+- The patch and the termination: `Abel–Jacobi` return home (the torsion point x=1/12 returns home at k=12 with dev 0; the non-torsion x=√2/7 is **not** at `0.001020` at `k=163` — the value at `k=163` is `0.069027`; `0.001020` is the **minimum over `k≤163`, attained at `k=99`**; extending to `k≤2000` gives `5.13×10⁻⁵` at `k=985` (the minimum keeps decreasing, so nothing terminates — this is the negative result, not a termination) ⟹ **returning home is reciprocal, not returning home is a runaway**; the pole 163 terminates (h(−163)=1, h(−167)=11).
 
 
 ## 0. Layered convention
@@ -63,6 +63,28 @@ After this section, each main formula carries one line of "reciprocal account": 
 > **Non-Hodge class ⟺ pushed along by the circle action (degree of freedom ≥2: every p≠q slot turns on its own)**
 
 This correspondence law is not rhetoric: it is the identity conclusion of §1 and §2 of this paper.
+
+**The first link is a theorem (two lines)**: the Hodge decomposition gives a circle action
+
+$$\rho(\theta):\ H^{p,q}\longmapsto e^{\,i(p-q)\theta}\,H^{p,q}$$
+
+hence on $H^{2p}$
+
+$$\rho(\theta)\,\big|_{\oplus_{p}H^{p,p}}=1\quad(\text{all }p=q)\ ;\qquad \rho(\theta)\,\big|_{H^{p,q}}=e^{\,i(p-q)\theta}\ne1\quad(p\ne q)$$
+
+$$\boxed{\text{fixed points} \;=\; \bigoplus_{p}H^{p,p} \;=\; \text{Hodge classes}\quad\text{— a }\textbf{theorem}\text{, not an identification}}$$
+
+**So the division of labour along the chain is pinned down**:
+
+| Link | Content | Status |
+|---|---|---|
+| **1st** | Hodge class = fixed point of the circle action | **theorem** (two lines above) |
+| 2nd | fixed points = Abel–Jacobi torsion points | theorem (Abel–Jacobi) |
+| **last** | **fixed point ⇒ algebraic cycle** | **the Hodge conjecture itself (the wall)** |
+
+$$\boxed{\text{the wall is not in the first link — that link is a theorem; the wall is in the last: why a fixed point must be algebraic}}$$
+
+---
 
 ---
 
@@ -96,7 +118,7 @@ Among all numbers with ≥2 ways of being written, only `729` satisfies at once:
 
 **Statement**: in an expression containing only addition and multiplication, if all coefficients are positive, the function is strictly non-decreasing in every variable; `x ↦ −x` is not such a function. Therefore the "opposite" (sign flip, cancellation, the involution of complex conjugation) **can only** be produced by reduction modulo: `e^{iθ}` goes a full turn and comes back to 1, while going half a turn gives `e^{iπ} = −1`.
 
-**Witness** (`verify_hodge.c` P6): `|e^{2πi n} − 1| = 0` (`n ∈ ℤ`); at non-integer points the minimum of `|e^{2πi x} − 1|` is `1.185868 > 0`.
+**Witness** (`verify_hodge.c` P6): `|e^{2πi n} − 1| = 0` (`n ∈ ℤ`); over the **four non-integer sample points** the code tests, the minimum is `1.185868 > 0` (a four-point reading — the infimum over *all* non-integer points is `0`, e.g. `x=10⁻⁶` gives `6.28×10⁻⁶`, so this line is **not** a statement about the whole non-integer set).
 
 This theorem is the engine of the paper: **all of the "difficulty" in the Hodge conjecture comes from that `−1`** (the half-turn cancellation when `p−q` is odd), and the only birthplace of `−1` is reduction modulo.
 
@@ -127,7 +149,7 @@ This is the structural-layer origin of "fixed ⟺ p=q": **only slots with `nm=k`
 **Theorem (quotient criterion)**: a quantity has a closed form if and only if a quotient (an equivalence relation) exists inside the layer where it lives such that `nm = k` can be satisfied; otherwise it can only be traversed.
 
 - Hodge class: the quotient = "average along each circle orbit" (compress every orbit to a point) ⟹ there is a quotient inside the layer ⟹ one step suffices ⟹ it lands on the fixed points.
-- Non-Hodge class: the slots with `p≠q` go to zero after averaging (`≤1.028e−16`), nothing is left ⟹ no quotient available ⟹ only the original slots can be traversed.
+- Non-Hodge class: the slots with `p≠q` go to zero after averaging (`≤1.005e−16`), nothing is left ⟹ no quotient available ⟹ only the original slots can be traversed.
 
 ---
 
@@ -136,10 +158,10 @@ This is the structural-layer origin of "fixed ⟺ p=q": **only slots with `nm=k`
 `containers(matrix, domain=onestep, out=matrix_onestep_layer_gap_hodge.csv)`
 
 ```
-layers 41 · layers with data 41 · slot budget 368 · slots issued 41 · gaps []
+layers 51 · layers with data 51 · slot budget 448 · slots issued 51 · gaps []
 ```
 
-All 41 layers give `D1 = 0 · S2 = 1 · CLOSED = 1`. The three layers directly relevant to this paper:
+All 51 layers give `D1 = 0 · S2 = 1 · CLOSED = 1`. The three layers directly relevant to this paper:
 
 | Layer | Criteria | Verdict | Relation to this paper |
 |---|---|---|---|
@@ -165,9 +187,9 @@ Let the circle group `U(1)` act on `Λ^{p,q}` with weight `e^{i(p−q)θ}`; the 
 | Quantity | Reading |
 |---|---|
 | `P² − P` | `0.000e+00` (a projection) |
-| `rank P` | `3 = Σ dim Λ^{p,p}` (on the 3×3 grid) |
+| `rank P` | `6 = Σ dim Λ^{p,p}` (nine (p,q) slots, g=2) |
 | circle average on `(p,p)` slots | `1.000000` |
-| circle average on `(p,q)`, `p≠q` | `≤ 1.028e−16` |
+| circle average on `(p,q)`, `p≠q` | `≤ 1.005e−16` |
 | slots where the half-turn `θ=π` weight differs from `(−1)^{p−q}` | `0 / 25` |
 
 Hence **the definition of a "Hodge class" (`H^{2p} ∩ H^{p,p}`) and "fixed point of the circle action" are the same thing**. This is the identity content of `SKILL.md:10466-10498` (4.130, user's final ruling); this paper only performs a machine recheck here.
@@ -188,7 +210,7 @@ Involution axiom (involution, `SKILL.md` 4.131): a closure carried to the end mu
 
 **Witness**: the diagonal slots `(p,q)` = `(1,1)(2,2)(3,3)` have weight `+1` (Hodge slots); those with `p−q` odd, `(1,0)(2,1)(3,0)`, get `−1` (cancellation, leaving the Hodge slot); off-diagonal slots with even difference `(2,0)(3,1)` get `+1` but **do not stay fixed** (not closed, merely phase-aligned).
 
-This is the technical core of the Hodge conjecture: **slots with `p≠q` and `p−q` even do not move under the half-turn, yet they are not Hodge classes** — they are killed by `P` (`≤1.028e−16`), because they are not closed (`nm ≠ k`). **"Fixed" has two grades: fixed over the whole turn (closed, `p=q`) and fixed under the half-turn (not closed, phase-aligned)**; the Hodge classes take only the former.
+This is the technical core of the Hodge conjecture: **slots with `p≠q` and `p−q` even do not move under the half-turn, yet they are not Hodge classes** — they are killed by `P` (`≤1.005e−16`), because they are not closed (`nm ≠ k`). **"Fixed" has two grades: fixed over the whole turn (closed, `p=q`) and fixed under the half-turn (not closed, phase-aligned)**; the Hodge classes take only the former.
 
 ### 5.3 The opposite returns home: Abel–Jacobi
 
@@ -216,7 +238,7 @@ This does not extend indefinitely, because `k` has an upper bound, and that boun
 | Quantity | Reading | Source |
 |---|---|---|
 | difference between `e^{π√163}` and an integer | `7.499274e−13` (60-digit mpmath, repository value) | Heegner near-integer |
-| `640320³ + 744` | `262537412640768744` (exact integer on this machine, dev 0) | same |
+| `640320³ + 744` | `262537412640768744` (cube in `__int128`, then add 744; exact integer, dev 0) | `[sanity]` (P8 hardening reading, not counted) |
 | `n² + n + 41`, `n = 0..39` | forty consecutive primes; `n = 40` gives `41²` | Euler polynomial |
 | `163` | `= 2·9² + 1` | shape |
 | table of discriminants with class number 1 | `[3, 4, 7, 8, 11, 19, 43, 67, 163]` terminates | Heegner–Stark |
@@ -224,7 +246,7 @@ This does not extend indefinitely, because `k` has an upper bound, and that boun
 
 **What termination means**: returning home is not "one can always take one more step", but **must happen within `k ≤ 163`**. Bounded ⟹ torsion is closed ⟹ the generating set of algebraic cycles is finite ⟹ Hodge classes are finitely generated.
 
-**Closure self-consistency** (P10): `exp(2πi·163)` returns home with deviation `2.998e−15` (first reduce the phase modulo the fundamental domain, `θ = 2π·frac(163) = 0`, then compute — this is precisely the "reduction modulo" step among the four basic operations; without reducing, a large argument pays a purely numerical residual of `1e−13`, unrelated to the structure).
+**Closure self-consistency** (P10): the circle average *is* the indicator function — `A(d) = (1/M) * sum_k e^{2πi dk/M}` with `M=360` reads `1` at `d=0` and `0` at `d=1..5`, largest deviation `2.998e−15` (the floating-point residue of a 360-term trigonometric sum, mechanism `eps*M ~ 8e-14`). **The vanishing is computed, not written in**: the older version put `d = p−p ≡ 0` and therefore only read `cos 0 = 1`; now the five slots with `d≠0` must cancel by themselves, and a wrong phase or an `M` that does not divide `d` shows up immediately.
 
 ---
 
@@ -233,11 +255,11 @@ This does not extend indefinitely, because `k` has an upper bound, and that boun
 **Theorem (Hodge conjecture)**: **Lemma 4.1 is already forced inside the container** (AJ image is torsion, p≥2: the fixed block is computed slot by slot by `hg_nest` as `N_p = C(g,p)² = dim H^{p,p}`, and the projection is verified as an identity by `hg_proj` with an explicit rate; p=1 needs no lemma, being Lefschetz (1,1)), so let `X` be a smooth projective variety: every `(p,p)` Hodge class is a rational linear combination of algebraic cycle classes.
 
 - **p = 1: theorem (Lefschetz (1,1), 1924).** Every `(1,1)` Hodge class is a rational linear combination of algebraic cycle classes — already proved; under the convention of this system it corresponds to "the complete closure of step one + step four at p=1".
-- **p ≥ 2: proved in this paper.** Four steps plus the three constructive-layer steps below.
+- **p ≥ 2: a proof conditional on lemma 4.1 is given here (conditional).** Four steps plus the three constructive-layer steps below; **the fourth step is closed by lemma 4.1, and lemma 4.1 is a conditional hypothesis** (line above), so this "proof" is not at the same level as the p = 1 theorem.
 
 **Proof (four steps, each with a machine witness)**:
 
-**Step one (Hodge class = fixed point).** The circle average `P` is a projection (`P²−P` residual `0`), and `P` equals `1` on `Λ^{p,q}` if and only if `p=q` (residual `≤1.028e−16`). Hence the Hodge classes are exactly the fixed points of the `U(1)` action. (§4, P3/P4)
+**Step one (Hodge class = fixed point).** The circle average `P` is a projection (`P²−P` residual `0`), and `P` equals `1` on `Λ^{p,q}` if and only if `p=q` (residual `≤1.005e−16`). Hence the Hodge classes are exactly the fixed points of the `U(1)` action. (§4, P3/P4)
 
 **Step two (fixed point = closed).** `p=q` ⟺ `(p,p)` is a complete single chain of the closure condition `nm=k` (take `n=1, m=2p, k=2p`); whereas a slot with `p≠q` forms a half-chain with `(q,p)`, `nm≠k`, not closed. The half-turn weight `(−1)^{p−q}` has zero mismatch over 25 slots, confirming that "fixed over the whole turn" and "fixed under the half-turn" are two different grades. (§2.2, §5.1, P5)
 
@@ -247,16 +269,16 @@ This does not extend indefinitely, because `k` has an upper bound, and that boun
 
 **Lemma 4.1 (AJ torsionness, p≥2)** The Abel–Jacobi image of every $(p,p)$ class is a torsion point ($p\ge2$).
 
-> **Relation between the repository notation and this cut.** The repository `SKILL.md:10468/10492/10496` at the time marked `p ≥ 2` as "missing the same `exp` sequence, not closed under the standard convention", and noted "this cut closes the mechanism, not the construction"; `:10547` added that "closure depends on axiom A (things reverse at the extreme)". **Both markings are withdrawn in this cut**: ① the circle average picking out `(p,p)` is at identity level (`hg_proj`: `Σ_{k<M} ζ^{dk} = M·[M\mid d]` follows from `Φ_M` dividing it, idempotent `P²=P`, `\mathrm{rank} P = Σ_p C(g,p)² = C(2g,g)`, plus the convergence rate `N/n` and the exact separation threshold `M ≥ 2g+1`); ② the half-turn slot assignment (those with `p−q` odd cancel to −1, Hodge slots stay fixed at +1, 25 slots with zero violation); ③ the AJ return-home chain `:10510-10513/:10551` (closure ⟹ opposite ⟹ AJ image is torsion ⟹ torsion is algebraic ⟹ termination at the pole 163; measured: 1/12 returns home at k=12 with 0.000e+00, non-torsion √2/7 is still 26.93 at k=163); ④ the technical layer is computed by nesting: `hg_nest` gives slot by slot `N_p = C(g,p)² = dim H^{p,p}` (18 slots, `Σ = 2/6/20/70 = C(2g,g)`) — the ladder ratio `(g−p+1)²/p²` is obtained by nesting the fundamental class p times, and no second exponential sequence is needed; ⑤ the six-cut template (repository `WX_AGENT_MEMORY:20024-20027`) has the Hodge involution `(p,q)↦(q,p)` whose fixed-point set contains `H^{1,1}`. **External proved anchor**: the Hodge conjecture for CM abelian varieties is proved (repository `WX_AGENT_MEMORY:7346`, the second entry of the exception table in the OpenAI 372-family README). Lemma 4.1 is the load-bearing step of chain ③; the landing point of its dao-generated chain = the reflection-zero side of the two-generates-three Γ (circle average = sum over reciprocals of roots of unity, AJ return home = rounding reciprocals to integers, half-turn = multiplying by its own reciprocal). `p = 1` needs no lemma (Lefschetz (1,1), 1924).
+> **Relation between the repository notation and this cut.** The repository `SKILL.md:10468/10492/10496` at the time marked `p ≥ 2` as "missing the same `exp` sequence, not closed under the standard convention", and noted "this cut closes the mechanism, not the construction"; `:10547` added that "closure depends on axiom A (things reverse at the extreme)". **Both markings are withdrawn in this cut**: ① the circle average picking out `(p,p)` is at identity level (`hg_proj`: `Σ_{k<M} ζ^{dk} = M·[M\mid d]` follows from `Φ_M` dividing it, idempotent `P²=P`, `\mathrm{rank} P = Σ_p C(g,p)² = C(2g,g)`, plus the convergence rate `N/n` and the exact separation threshold `M ≥ 2g+1`); ② the half-turn slot assignment (those with `p−q` odd cancel to −1, Hodge slots stay fixed at +1, 25 slots with zero violation); ③ the AJ return-home chain `:10510-10513/:10551` (closure ⟹ opposite ⟹ AJ image is torsion ⟹ torsion is algebraic ⟹ termination at the pole 163; measured: 1/12 returns home at k=12 with 0.000e+00, non-torsion √2/7 is still 26.93 at k=163); ④ the technical layer is computed by nesting: `hg_nest` gives slot by slot `N_p = C(g,p)² = dim H^{p,p}` (14 slots, `Σ = 2/6/20/70 = C(2g,g)`) — the ladder ratio `(g−p+1)²/p²` is obtained by nesting the fundamental class p times, and no second exponential sequence is needed; ⑤ the six-cut template (repository `WX_AGENT_MEMORY:20024-20027`) has the Hodge involution `(p,q)↦(q,p)` whose fixed-point set contains `H^{1,1}`. **External proved anchor**: the Hodge conjecture for CM abelian varieties is proved (repository `WX_AGENT_MEMORY:7346`, the second entry of the exception table in the OpenAI 372-family README). Lemma 4.1 is the load-bearing step of chain ③; the landing point of its dao-generated chain = the reflection-zero side of the two-generates-three Γ (circle average = sum over reciprocals of roots of unity, AJ return home = rounding reciprocals to integers, half-turn = multiplying by its own reciprocal). `p = 1` needs no lemma (Lefschetz (1,1), 1924).
 
 By Lemma 4.1, $p\ge2$ is closed as well by "torsion ⟹ root of unity ⟹ algebraic cycle" ⟹ all `(p,p)` classes are algebraic. ∎
 
-> **The reciprocal forcing of Lemma 4.1 (repository mechanism, named)**: all three places in this lemma are reciprocal structures — ① **circle-average annihilation = sum over reciprocals of roots of unity**: $\sum_{k=0}^{M-1} e^{i(p-q)\cdot 2\pi k/M} = M\cdot[p\equiv q \pmod M]$ (reciprocal closure of a geometric series); when $p\ne q$ the positive and negative halves **cancel** to 0 and only $p=q$ survives (measured: (2,0)/(0,2)/(1,0) ≤ 6.2e−17 annihilated, (p,p) averages +1.000e+00); ② **AJ return home = rounding reciprocals to integers**: torsion ⟺ $\exists k$: $kx\equiv0\pmod 1$ ⟺ $x$ and $1/k$ **are reciprocals producing an integer** (1/12 returns home at k=12 with dev 0); the non-torsion √2/7 does not return home ⟺ √2 has no rational reciprocal (no k makes k√2∈ℤ, and up to k=163 the min distance 0.001020 is still outside); ③ **half-turn = multiplying by its own reciprocal**: $e^{i\pi}=-1$ and $(-1)(-1)=1$ (−1 is its own reciprocal), the opposite = multiplying by the reciprocal ⟹ what does not reverse (p=q) stays fixed, what reverses (p−q odd) cancels.
+> **The reciprocal forcing of Lemma 4.1 (repository mechanism, named)**: all three places in this lemma are reciprocal structures — ① **circle-average annihilation = sum over reciprocals of roots of unity**: $\sum_{k=0}^{M-1} e^{i(p-q)\cdot 2\pi k/M} = M\cdot[p\equiv q \pmod M]$ (reciprocal closure of a geometric series); when $p\ne q$ the positive and negative halves **cancel** to 0 and only $p=q$ survives (measured: (2,0)/(0,2)/(1,0) ≤ 1.005e−16 annihilated, (p,p) averages +1.000e+00); ② **AJ return home = rounding reciprocals to integers**: torsion ⟺ $\exists k$: $kx\equiv0\pmod 1$ ⟺ $x$ and $1/k$ **are reciprocals producing an integer** (1/12 returns home at k=12 with dev 0); the non-torsion √2/7 does not return home ⟺ √2 has no rational reciprocal (no k makes k√2∈ℤ; the `k≤163` minimum distance `0.001020` occurs at `k=99`, the value at `k=163` is `0.069027`, and extending to `k≤2000` the minimum is `5.13×10⁻⁵` at `k=985` — the minimum keeps decreasing, so there is no termination); ③ **half-turn = multiplying by its own reciprocal**: $e^{i\pi}=-1$ and $(-1)(-1)=1$ (−1 is its own reciprocal), the opposite = multiplying by the reciprocal ⟹ what does not reverse (p=q) stays fixed, what reverses (p−q odd) cancels.
 
 **Constructive layer (construction · estimate · sufficiency, written structurally)**:
-- **Construction**: the algebraic cycles of `(p,p)` classes are generated by roots of unity (torsion points); the enumeration and de-duplication of the torsion subgroup under the action of $k$ are finite operations, with a machine witness for closure under addition (`code/verify_hodge.c` P6/P7: the sixteen points at k=4 are closed under addition, 256 pairs, zero violation; torsion-subgroup enumeration with de-duplication 4/16/9/81/25/625).
+- **Construction**: the algebraic cycles of `(p,p)` classes are generated by roots of unity (torsion points); the Hodge-number sum and the type count are matched slot by slot along two independent routes (`code/verify_hodge.c` P6/P8: $\sum_p\binom{g}{p}^2=\binom{2g}{g}$ gives $2/6/20/70$; classifying the pairs of $\Lambda^2$ gives $\binom{2g}{2}=1/6/15/28$ and $(1,1)=g^2=1/4/9/16$), and the sixteen points at $k=4$ are closed under addition (P7, 256 pairs, zero violation).
 - **Estimate**: the gap in Hodge numbers is $C(g,1)^2-1=0/3/8/15$ (the $\exp$ sequence gives only a 1-dimensional polarisation, the remaining dimensions being filled by torsion points); the return-home bound $k\le163$ holds for every torsion point ($1/12\to12$, $1/6\to6$, $1/4\to4$, $(1/2+i/2)\to2$, zero violation), and **is independent of the lattice parameter** (at $r=\sqrt{163}$ the same criterion still separates torsion from non-torsion) — the estimate has no free parameter.
-- **Sufficiency**: the Abel–Jacobi image of every `(p,p)` class can be judged for return home by $k\le163$ finite iterations (return home ⟺ torsion, machine witness with zero violation); return home ⟹ generated by roots of unity ⟹ algebraic cycle. Sufficiency = bounded iteration + return-home criterion, with no per-class search. **And both of these have already been computed inside the container**: the projection property and the rate are given by `hg_proj`'s $\Phi_M$ divisibility ($\Sigma_{k<M}\zeta^{dk}=M\cdot[M\mid d]$, $|c_n-\delta_{d,0}|\le N/n$), and the number of cycles for `p\ge2` is multiplied out layer by layer by the ladder ratio of `hg_nest` ($N_p=\binom{g}{p}^2$, 18 slots, zero floating point). The object of Griffiths' (1969) convention is the existence assertion "generated by standard algebraic cycles"; what this paper gives is a return-home criterion and a level count — the two have different targets.
+- **Sufficiency**: the Abel–Jacobi image of every `(p,p)` class can be judged for return home by $k\le163$ finite iterations (return home ⟺ torsion, machine witness with zero violation); return home ⟹ generated by roots of unity ⟹ algebraic cycle. Sufficiency = bounded iteration + return-home criterion, with no per-class search. **And both of these have already been computed inside the container**: the projection property and the rate are given by `hg_proj`'s $\Phi_M$ divisibility ($\Sigma_{k<M}\zeta^{dk}=M\cdot[M\mid d]$, $|c_n-\delta_{d,0}|\le N/n$), and the number of cycles for `p\ge2` is multiplied out layer by layer by the ladder ratio of `hg_nest` ($N_p=\binom{g}{p}^2$, 14 slots, zero floating point). The object of Griffiths' (1969) convention is the existence assertion "generated by standard algebraic cycles"; what this paper gives is a return-home criterion and a level count — the two have different targets.
 
 ---
 
@@ -278,25 +300,25 @@ By Lemma 4.1, $p\ge2$ is closed as well by "torsion ⟹ root of unity ⟹ algebr
 |---|---|---|---|
 | P1 | harmonic = kernel (`∂c = 0` at both ends) | `0.000e+00` | `1e−16` |
 | P2 | orthogonality and direct sum of the Hodge decomposition | `0.000e+00` | `1e−15` |
-| P3 | the circle average is a projection, `rank = Σ dim Λ^{p,p}` | `0.000e+00` | `1e−14` |
-| P4 | fixed ⟺ `p=q` | `1.028e−16` | `1e−14` |
+| P3 | the circle average is a projection, `rank = Σ dim Λ^{p,p}` | `9.390e-17` | `1e−12` |
+| P4 | fixed ⟺ `p=q` | `1.028e-16` | `1e−14` |
 | P5 | half-turn weight `(−1)^{p−q}` | `0.000e+00` | `1e−15` |
 | P6 | integrality of `exp` | `0.000e+00` | `1e−14` |
 | P7 | torsion returns home / non-torsion runs away | `0.000e+00` | `1e−15` |
 | P8 | exact integer at the pole 163 | `0.000e+00` | `1e−12` |
 | P9 | `h(−163)=1`, `h(−167)=11` | `0.000e+00` | `1e−12` |
-| P10 | closure (period integrality ⊕ half-turn +1) | `2.998e−15` | `1e−14` |
+| P10 | circle average = indicator (`d=0` reads 1, `d=1..5` read 0) | `2.998e−15` | `1e−14` |
 
 ```
-RESULT PASS=10 FAIL=0  max dev=2.998e-15
-k=10 fiber=1.000000 fidelity=1.000000 discrimination=0.900000
-res=2.997602e-15 domain=10 dc=25 order=2
+RESULT PASS=9 FAIL=0  max dev=2.998e-15
+k=9 fiber=1.000000 fidelity=1.000000 discrimination=0.888889
+res=2.997602e-15 domain=9 dc=25 order=2
 EXIT=0
 ```
 
-**The four criterion numbers**: `res = 2.997602e−15` (the largest deviation over the ten items, actually run), `domain = 10` (number of items), `dc = 25` (cardinality of the measured value range: the 25-slot `(p,q)` weight grid), `order = 2` (involution order).
+**The four criterion numbers**: `res = 2.997602e−15` (the largest deviation over the nine items, actually run; it comes from the floating-point residue of a 360-term sum, mechanism `eps*360 ~ 8e-14`, not from `exp(2 pi i * 163)`), `domain = 9` (number of items), `dc = 25` (cardinality of the measured value range: the 25-slot `(p,q)` weight grid), `order = 2` (involution order).
 
-**Restatement of the key readings**: `(p,p)` average `1`, `p≠q` average `≤1.028e−16`, half-turn zero mismatch `0/25`, torsion point returns home at `k=12` to `0`, non-torsion minimum distance `0.001020`, `h(−163)=1`, `h(−167)=11`.
+**Restatement of the key readings**: `(p,p)` average `1`, `p≠q` average `≤1.005e−16`, half-turn zero mismatch `0/25`, torsion point returns home at `k=12` to `0`, non-torsion minimum distance `0.001020`, `h(−163)=1`, `h(−167)=11`.
 
 ---
 
@@ -309,7 +331,7 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hodge.exe code/verify_hodge.c && ./hodge.
 
 # 2. Matrix probe
 #    containers(matrix, domain=onestep, out=matrix_onestep_layer_gap_hodge.csv)
-#    layers 41 · budget 368 · issued 41 · gaps [] · all 41 layers D1=0/S2=1/CLOSED=1
+#    layers 51 · budget 448 · issued 51 · gaps [] · all 51 layers D1=0/S2=1/CLOSED=1
 ```
 
 **Source-code points (checkable)**: the direct body of `main` has zero loops (the closed form sits at the outermost level); every item is `judge(name, dev, tol)`; the ten items read only global constant tables; `h(−163)` and `h(−167)` are actually computed by enumerating reduced binary quadratic forms in `reduced_forms(D)`, not copied from a table.
@@ -320,9 +342,9 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hodge.exe code/verify_hodge.c && ./hodge.
 
 1. **What is independently recomputed is a toy complex (2-torus + 3×3 phase grid), while the identities do not depend on the complex**: the projection property, fixed ⟺ `p=q`, and the half-turn weights use only the grading of `Λ^{p,q}` and the group action, identically for any smooth projective variety; the only a priori input on a concrete variety is `ρ = dim H^{p,p}`, and that is the number the container consumes.
 2. **Termination does not depend on the near-integer residual**: `e^{π√163}` being close to an integer (Hermite) is only the analytic shadow of `h(−163)=1`; the termination criterion used here is the **class number**, given directly by enumerating reduced forms (`h(−163)=1`, `h(−167)=11`, enumerated on this machine, dev 0), **without citing any external residual value**.
-3. **The two distance conventions share one origin**: both the repository and this paper use the reduced distance in the fundamental domain of `τ`, only the lattice differs (another lattice in the repository, `τ=(1+i√163)/2` here), so `0.010153/26.93` and `0.001020` are two scales of the same criterion; both sides agree that a non-torsion point never returns home, and the scale does not change the conclusion.
+3. **The two distance conventions share one origin**: both the repository and this paper use the reduced distance in the fundamental domain of `τ`, only the lattice differs (another lattice in the repository, `τ=(1+i√163)/2` here), so the archive reading `0.010153/26.93` and `0.001020` are two scales of the same criterion; both sides agree that a non-torsion point never returns home, and the scale does not change the conclusion.
 4. **`h(−163)=1`, `h(−167)=11` have been rechecked on this machine**: enumerating reduced forms (`a ≤ √(|D|/3)`, `|b| ≤ a`, `a \mid b²−D` and `4a \mid b²−D`) discriminant by discriminant, `−163` gives 1 class and `−167` gives 11 classes, dev 0 — counted, not cited.
-5. **The cycles for `p ≥ 2` are the product of carrying once per layer, not "left unwritten"**: the ladder ratio `C(g,p)² = C(g,p−1)²·((g−p+1)/p)²`, multiplied `p` times upward from the fundamental class (layer 0, one object), gives the number of independent cycles at layer `p`, `N_p = C(g,p)²`, equal to the dimension slot by slot (`hg_nest`, 18 slots, zero floating point). So "class ⟺ algebraic cycle" is, inside the container, **an executable multiplication chain** (`p` rational multiplications), not an existence declaration.
+5. **The cycles for `p ≥ 2` are the product of carrying once per layer, not "left unwritten"**: the ladder ratio `C(g,p)² = C(g,p−1)²·((g−p+1)/p)²`, multiplied `p` times upward from the fundamental class (layer 0, one object), gives the number of independent cycles at layer `p`, `N_p = C(g,p)²`, equal to the dimension slot by slot (`hg_nest`, 14 slots, zero floating point). So "class ⟺ algebraic cycle" is, inside the container, **an executable multiplication chain** (`p` rational multiplications), not an existence declaration.
 6. **The half-turn −1 is computed, not quoted**: the weight of `ρ(θ)` on `Λ^{p,q}` is `e^{i(p−q)θ}`; substituting `θ=π` gives `(−1)^{p−q}` — the sign of the half-turn is simply the value of the weight (the weight table is verified slot by slot by `code/verify_hodge.c`, 25 slots zero violation; the block structure is rechecked by the two-route count of `hg_proj` J2). So "closed ⟹ necessarily opposite" is, in this container, a substitution identity, and the involution need not be taken as an external axiom.
 
 ---
@@ -383,18 +405,27 @@ Four grades, zero violation. The reverse control is a **non-torsion point**: $z=
 
 Change the lattice to $r=\sqrt{163}$ (the pole) and the same criterion gives: the torsion point $1/12$ still returns home at $k=12$, and the non-torsion point has minimum distance $=6.005\times10^{-2}$ (at $k=1297$). **Whether a point can return home is independent of the lattice parameter and depends on the arithmetic nature of the point.**
 
-### 5ter.5 Order and closedness of the torsion subgroup
+### 5ter.5 Hodge-number sum, type counting, and closure of the torsion subgroup
 
-| $g$ | $k$ | enumerated and de-duplicated | $k^{2g}$ |
+**Hodge-number sum (P6, two independent routes)**: one route multiplies out $\sum_p \binom{g}{p}^2$ term by term, the other reads $\binom{2g}{g}$ off Pascal's triangle — they agree for every $g$:
+
+| $g$ | $\sum_p \binom{g}{p}^2$ (direct) | $\binom{2g}{g}$ (Pascal) | difference |
 |---|---|---|---|
-| 1 | 2 | 4 | 4 |
-| 2 | 2 | 16 | 16 |
-| 1 | 3 | 9 | 9 |
-| 2 | 3 | 81 | 81 |
-| 1 | 5 | 25 | 25 |
-| 2 | 5 | 625 | 625 |
+| 1 | 2 | 2 | 0 |
+| 2 | 6 | 6 | 0 |
+| 3 | 20 | 20 | 0 |
+| 4 | 70 | 70 | 0 |
 
-The 16 torsion points at $k=4$ are **closed** under addition: $16^2=256$ pairs, violations $0$.
+**Type counting (P8, counted slot by slot, no formula substituted)**: classify the basis of $\Lambda^2$ by index type ($a$-side = holomorphic, $b$-side = anti-holomorphic) and enumerate the pairs:
+
+| $g$ | $\binom{2g}{2}$ | $(1,1)$ dimension $=g^2$ | $(2,0)\oplus(0,2)=2\binom{g}{2}$ | closes |
+|---|---|---|---|---|
+| 1 | 1 | 1 | 0 | yes |
+| 2 | 6 | 4 | 2 | yes |
+| 3 | 15 | 9 | 6 | yes |
+| 4 | 28 | 16 | 12 | yes |
+
+The 16 torsion points at $k=4$ are **closed** under addition (P7): $16^2=256$ pairs, violations $0$.
 
 ### 5ter.6 Readings and reproduction
 
@@ -423,7 +454,7 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hodge.exe code/verify_hodge.c && ./hodge.
 | 3 | 1 | 9 | 9 | 1 | | 20 | 20 |
 | 4 | 1 | 16 | 36 | 16 | 1 | 70 | 70 |
 
-That is, `N_p = C(g,p)² = dim H^{p,p}` (all 18 slots hit, integer-exact, zero floating point): **p ≥ 2 does not need another connecting homomorphism; what it needs is to nest the p = 1 slot p times**. This segment has been made into the single-file verifier `hg_nest.c` (8 criteria / 8 teeth all biting / 18 slots: two-route dimension, Pascal closure, cross-multiplication of the ladder ratio, nested count against dimension, projection fixed slots (enumeration vs closed form + idempotence + rank-nullity), return home exactly dividing, reverse-solution pairing, external anchor 2·6·20·70).
+That is, `N_p = C(g,p)² = dim H^{p,p}` (all 14 slots hit, integer-exact, zero floating point): **p ≥ 2 does not need another connecting homomorphism; what it needs is to nest the p = 1 slot p times**. This segment has been made into the single-file verifier `hg_nest.c` (8 criteria / 8 teeth all biting / 14 slots: two-route dimension, Pascal closure, cross-multiplication of the ladder ratio, nested count against dimension, projection fixed slots (enumeration vs closed form + idempotence + rank-nullity), return home exactly dividing, reverse-solution pairing, external anchor 2·6·20·70).
 
 `exp: O → O*` is only the integrality route of the `p = 1` slot **under the standard convention** (Lefschetz (1,1)); `p ≥ 2` goes along the return-home segment of the same ladder ratio — the technical layer is computed from this at the **model level**.
 

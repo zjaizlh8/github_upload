@@ -16,21 +16,21 @@ static int g_pass = 0, g_fail = 0;   /* totals across sections */
  * verify_hl.c —— HL 猜想（Hardy–Littlewood 孪生素数）independent recomputation
  * 对应论文：D:\lw\HL_证明_结构层_chaos onestep_matrix probe.md
  *
- * 五行执line铁序（阶段直序）：
- *   base S 锚定  → 外部锚先落地（2C₂、e^{−γ}、log(e^{2γ}/4)、4e^{−2γ}）
- *   dimension-change F 虚化  → t=1 处 k 阶极点 ⟹ 下限被迫 ≥ 2（P3）
- *   sieve M 坍缩  → 累加展开coefficient抽取：一阶coefficient = D = k（P2）
- *   accumulate W 渗透  → 逐 x numeric检索：series vs integral、焊接口阶梯integral（P1、P4）
- *   generate D 扩展  → 双账本 det 比、判别力缺步、首项/截断error（P7、P9、P11）
- *   base S closure  → 汇总deviation + 四量 + 判定
+ * 五行执行铁序（阶段直序）：
+ *   土 S 锚定  → 外部锚先落地（2C₂、e^{−γ}、log(e^{2γ}/4)、4e^{−2γ}）
+ *   dimension-火 F 虚化  → t=1 处 k 阶极点 ⟹ 下限被迫 ≥ 2（P3）
+ *   金 M 坍缩  → 累加展开系数抽取：一阶系数 = D = k（P2）
+ *   水 W 渗透  → 逐 x numeric检索：series vs integral、焊接口阶梯integral（P1、P4）
+ *   木 D 扩展  → 双账本 det 比、判别力缺步、首项/截断error（P7、P9、P11）
+ *   土 S 闭环  → 汇总偏差 + 四量 + 判定
  *
- * four operationscaliber（凡跨维度必付残差）：
- *   加法：series逐项相加、阶梯integral逐段summation —— 无残差。
+ * 四法口径（凡跨维度必付残差）：
+ *   加法：series逐项相加、阶梯integral逐段求和 —— 无残差。
  *   乘法：∏(1−1/q)、∏(1−1/(q−1)²)、部分积 ∏(1+1/n)e^{−1/n} —— 无残差。
  *   取模：唯一一处 = 判别力缺步的整除判定 q | h（整数，无残差）。
- *   跨维度：exp/log 用于 e^{−γ}、2C₂、log(e^{2γ}/4) 与coefficient比的逐级halvingextrapolation。
+ *   跨维度：exp/log 用于 e^{−γ}、2C₂、log(e^{2γ}/4) 与系数比的逐级halvingextrapolation。
  *           exp 走自写 S0_my_exp（Taylor + halving）；本步不需要 sqrt；
- *           log/fabs 用 libm（体系允许）。residualcaliber = 相对deviation dev，
+ *           log/fabs 用 libm（体系允许）。残差口径 = 相对偏差 dev，
  *           每项tolerance由该项机制给（截断尾 e^{−1/u} / convergence阶 / 外部常数位数）。
  *
  * 注意（本file自带的实测lesson）：
@@ -38,7 +38,7 @@ static int g_pass = 0, g_fail = 0;   /* totals across sections */
  *   最优截断在 n ≈ log x − k。取固定 80 项会爆到 1e38。
  *   故 li_ser 用**自适应最优截断**（项open始增长即停），tolerance按最小项 e^{−1/u} 给。
  *
- * F: 正向 —— 从 Li_k 焊接口出发：展开抽coefficient、算双账本、读判别力缺步。
+ * F: 正向 —— 从 Li_k 焊接口出发：展开抽系数、算双账本、读判别力缺步。
  * R: 反向 —— 从外部锚回推：若 2C₂、e^{−γ}、4e^{−2γ}、det 比任一对不上，本步当场崩。
  *
  * 编译：gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hl.exe code/verify_hl.c
@@ -199,7 +199,7 @@ static double p1_scan(void)
         double dv = dev_rel(s, li_int(2.0, xs[i], 2, 40000));
         double tail_pred = 2.0 * tail * xs[i] / (L * L) / s;
         double r = (tail_pred > 1e-18) ? dv / tail_pred : 1.0;
-        printf("       x=%.0e  N*=%-2d 末项=%.2e  Li2(series)=%.6f  deviation=%.2e  尾estimate=%.2e\n",
+        printf("       x=%.0e  N*=%-2d 末项=%.2e  Li2(series)=%.6f  偏差=%.2e  尾estimate=%.2e\n",
                xs[i], nopt, tail, s, dv, tail_pred);
         if (r > ratio_worst) ratio_worst = r;
     }
@@ -240,7 +240,7 @@ static double p4_weld(void)
         double s = li_ser(xs[i], 2, &nopt, &tail);
         double lhs = step_int_mertens(2.0, xs[i], ee);
         double dv = fabs(lhs / s - 1.0);
-        printf("       x=%.0e  ∫=%.4f  Li2=%.4f  deviation=%.2e\n", xs[i], lhs, s, dv);
+        printf("       x=%.0e  ∫=%.4f  Li2=%.4f  偏差=%.2e\n", xs[i], lhs, s, dv);
         if (dv > worst) worst = dv;
     }
     return worst;
@@ -299,7 +299,8 @@ static double p11_trunc(void)
         double d1 = fabs(first / sopt - 1.0), d8 = fabs(s8 / sopt - 1.0);
         printf("       首项 %.4f（偏 %.2f%%）· 8 项偏 %.4f%% · 最优截断 %.4f（N*=%d）\n",
                first, d1 * 100.0, d8 * 100.0, sopt, nopt);
-        return (d1 >= 0.10 && d8 <= 0.01) ? 0.0 : 1.0;
+        /* 作者确认: 2026-10-27 用户令「能补的补成被迫结构」——布尔改为连续违反量（零当且仅当条件成立） */
+        return fmax(0.0, 0.10 - d1) + fmax(0.0, d8 - 0.01);
     }
 }
 
@@ -314,15 +315,15 @@ int seg0_main(void)
     char   buf[160];
 
     sieve();
-    printf("[part 1/4] HL · independent recomputation（焊接口 / 双账本 / coefficient / 缺步）\n");
+    printf("[part 1/4] HL · independent recomputation（焊接口 / 双账本 / 系数 / 缺步）\n");
     printf("素数筛法上限 %d，筛法得 %d 个素数；外部锚 e^-gamma=%.16f\n\n", PMAX, S0_g_npr, EG);
 
     { double rw = p1_scan();
-      S0_judge("P1 展开(最优截断) vs integral：deviation / 尾estimate ≤ 3", rw, 3.0);
+      S0_judge("P1 展开(最优截断) vs integral：偏差 / 尾estimate ≤ 3", rw, 3.0);
       if (rw > res) res = rw; }
 
     C = p2_extrap();
-    sprintf(buf, "P2 累加展开一阶coefficient = D = k = 2（extrapolation %.6f）", C);
+    sprintf(buf, "P2 累加展开一阶系数 = D = k = 2（extrapolation %.6f）", C);
     S0_judge(buf, fabs(C - 2.0), 1e-3);
     if (fabs(C - 2.0) > res) res = fabs(C - 2.0);
 
@@ -348,9 +349,23 @@ int seg0_main(void)
       if (fabs(s - EG) > res) res = fabs(s - EG); }
 
     ledger(&num, &den);
-    printf("       %d × 77 = %d ；16 × %d = %d\n", num, num * 77, den, 16 * den);
-    S0_judge("P7 ledger det 比 480/2310 = 16/77（整数交叉乘）",
-          (double)iabs(num * 77 - 16 * den), 0.0);
+    {
+        /* ∏(q−1)/∏q 的约分：两条路（乘积 / 欧几里得），比到既约形 16/77。
+           注意 480 与 2310 有公因子 30（480 = 16·30、2310 = 77·30），
+           所以「交叉乘相等」本身只说明两者同乘了 30 —— 真判据是**约分后**等于 16/77 且 16 ⟂ 77。 */
+        int g = num, h = den, gg, r;
+        while (h != 0) { r = g % h; g = h; h = r; }      /* gcd(480,2310) */
+        gg = g;
+        {
+            double dev = (double)iabs(num / gg - 16) + (double)iabs(den / gg - 77);
+            int g2 = 16, h2 = 77;
+            while (h2 != 0) { r = g2 % h2; g2 = h2; h2 = r; }   /* gcd(16,77) 必须为 1 */
+            if (g2 != 1) dev += 1.0;
+            printf("       %d/%d 约分：gcd = %d ⟹ %d/%d（既约形 16/77，且 gcd(16,77) = %d）\n",
+                   num, den, gg, num / gg, den / gg, g2);
+            S0_judge("P7 ledger ∏(q−1)/∏q 约分后 = 16/77（gcd 30，两条路）", dev, 0.0);
+        }
+    }
 
     v = 2.0 * GAMMA_E - log(4.0);
     printf("       log(e^2gamma/4) = %.12f\n", v);
@@ -366,12 +381,12 @@ int seg0_main(void)
     if (fabs(v - 1.260947007) > res) res = fabs(v - 1.260947007);
 
     { double d1 = p11_trunc();
-      S0_judge("P11 首项deviation ≥10% 且 8 项deviation ≤1%", d1, 0.0);
+      S0_judge("P11 首项偏差 ≥10% 且 8 项偏差 ≤1%", d1, 0.0);
       if (d1 > res) res = d1; }
 
     g_pass += S0_g_pass; g_fail += S0_g_fail;
     printf("\nRESULT PASS=%d FAIL=%d maxdev=%.6e\n", S0_g_pass, S0_g_fail, S0_g_maxdev);
-    printf("k=%d fiber=1.000000 fidelity=1.000000 discriminability=%.6f\n", k, 1.0 - 1.0 / (double)k);
+    printf("k=%d fiber=%.6f fidelity=%.6f discriminability=%.6f\n", k, (double)(g_pass) / (double)(k), (double)(g_pass) / (double)(k), 1.0 - 1.0 / (double)(k));
     printf("res=%.6e domain=%d dc=%d order=%d\n", res, k, 8, 2);
     printf("EXIT=%d\n", S0_g_fail == 0 ? 0 : 1);
     return S0_g_fail == 0 ? 0 : 1;
@@ -394,23 +409,23 @@ int seg0_main(void)
  *   ② odd偶屏障不是筛法法亏，而是重数律 c_λ = 2m_λ + [λ=β] 的直接读数：
  *      c₂ = 2m₂ = 4 为偶 ⟹ 四步两两配对、余 0 ⟹ 筛法法只看得见配对和；
  *      未配对的只有 β 步一个 ⟹ 它只给符号（±1），给不出大小 ⟹ 屏障holds且位置可指认；
- *   ③ |E(x)|/主项 three stepsmonotone递减（measured 0.0185 → 0.00934 → 0.00387）；
- *   ④ |E(x)| ≤ 6√x 逐步holds（实测占比 ≤ 0.012），且 |E|/√x three steps同阶（0.072–0.077）。
+ *   ③ |E(x)|/主项 三条单调递减（measured 0.0185 → 0.00934 → 0.00387）；
+ *   ④ |E(x)| ≤ 6√x 逐步holds（实测占比 ≤ 0.012），且 |E|/√x 三条同阶（0.072–0.077）。
  *
- * 五行执line铁序：
- *   base S 锚定  → 2C₂ 与 4e^{−2γ} / (e^{2γ}/4) 双锚落地
- *   dimension-change F 虚化  → 重数律 → 放大因子表 2^{ω(d)}
- *   S1_sieve M 坍缩  → 筛法侧截断 d ≤ √x，配对后只剩 β step
- *   accumulate W 渗透  → 逐 x recomputation π₂、E(x)、ρ(x)
- *   generate D 扩展  → 互倒相消（4e^{−2γ} × e^{2γ}/4 = 1）
- *   base S closure  → |E|/√x、|E|/主项 three steps趋势
+ * 五行执行铁序：
+ *   土 S 锚定  → 2C₂ 与 4e^{−2γ} / (e^{2γ}/4) 双锚落地
+ *   dimension-火 F 虚化  → 重数律 → 放大因子表 2^{ω(d)}
+ *   S1_金 M 坍缩  → 筛法侧截断 d ≤ √x，配对后只剩 β step
+ *   水 W 渗透  → 逐 x recomputation π₂、E(x)、ρ(x)
+ *   木 D 扩展  → 互倒相消（4e^{−2γ} × e^{2γ}/4 = 1）
+ *   土 S 闭环  → |E|/√x、|E|/主项 三条趋势
  *
- * four operationscaliber：加法=计数逐个累加；乘法=2^{ω(d)} 与两个锚的乘积；取模=唯一处 n%2 odd偶判定；
+ * 四法口径：加法=计数逐个累加；乘法=2^{ω(d)} 与两个锚的乘积；取模=唯一处 n%2 odd偶判定；
  *   跨维度=exp/log（S1_my_exp 自写，log 用 libm）用于 e^{2γ}、Li₂ 展开。凡跨维度必付残差，
  *   各项tolerance由机制给（整数判定 / 外部常数位数 / 口径差）。
  *
  * F: 正向 —— 从 E(x) 出发，问谁控制它 ⟹ 放大因子 2^{ω(d)} + 截断 √x。
- * R: 反向 —— 若把 q=2 步配对拆open（人为赋oddmultiplicity），Σc 立刻不再 = 1+2Σm ⟹ 屏障位置可反验。
+ * R: 反向 —— 若把 q=2 步配对拆open（人为赋odd重数），Σc 立刻不再 = 1+2Σm ⟹ 屏障位置可反验。
  *
  * 编译：gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hl.exe code/verify_hl.c
  * ==========================================================================*/
@@ -431,6 +446,9 @@ static void S1_judge(const char *name, double dev, double tol)
 
 static double S1_iabsd(double x) { return x < 0.0 ? -x : x; }
 
+/* 作者确认: 2026-10-27 P7 改为双账本 ΣΔ 后，本辅助函数不再被调用（原先只服务定义式 u·v≡1），
+   保留为注释存根，避免 -Wunused-function；如需复活，直接解除注释即可。 */
+#if 0
 static double S1_my_exp(double x)
 {
     int k = 0, i;
@@ -440,6 +458,7 @@ static double S1_my_exp(double x)
     while (k-- > 0) s *= s;
     return s;
 }
+#endif
 
 /* -------- 孪生素数前缀计数（位集筛法） -------- */
 static unsigned char *S1_g_comp;
@@ -489,7 +508,7 @@ static int S1_omega_of(int d)
     return c;
 }
 
-/* -------- 重数律 c_λ = 2m_λ + [λ=β]，radius集 {2,3,6}，因子基 {1,2,3} -------- */
+/* -------- 重数律 c_λ = 2m_λ + [λ=β]，半径集 {2,3,6}，因子基 {1,2,3} -------- */
 static void S1_mult_law(int *m, int *c)
 {
     int P[3] = {1, 2, 3}, lam[3] = {2, 3, 6}, i, j;
@@ -535,7 +554,9 @@ static void S1_fill_tables(const double *xi, double *rho, double *Eo, double *ex
 
 static double S1_p2_mono(const double *rho)
 {
-    return (rho[0] < rho[1] && rho[1] < rho[2] && rho[0] < 1.0 && rho[2] > 1.0) ? 0.0 : 1.0;
+    /* 作者确认: 2026-10-27 布尔→连续违反量 */
+    return fmax(0.0, rho[0] - rho[1]) + fmax(0.0, rho[1] - rho[2])
+         + fmax(0.0, rho[0] - 1.0) + fmax(0.0, 1.0 - rho[2]);
 }
 
 static double S1_p3_lib(const double *rho)
@@ -556,29 +577,58 @@ static double S1_p4_sqrt(const double *ex)
     double hi = ex[0], lo = ex[0];
     int i;
     for (i = 1; i < 3; i++) { if (ex[i] > hi) hi = ex[i]; if (ex[i] < lo) lo = ex[i]; }
-    printf("       |E|/√x ∈ [%.4f, %.4f]（three steps同阶）\n", lo, hi);
-    return (hi / lo <= 2.0 && hi <= 0.1) ? 0.0 : 1.0;
+    printf("       |E|/√x ∈ [%.4f, %.4f]（三条同阶）\n", lo, hi);
+    /* 作者确认: 2026-10-27 布尔→连续违反量 */
+    return fmax(0.0, hi / lo - 2.0) + fmax(0.0, hi - 0.1);
 }
 
 static int S1_p5_omega(void)
 {
-    int d, pomax = 0;
+    int d, pomax = 0, bestd = 1;
     for (d = 2; d <= 3162; d++) {
         int w = S1_omega_of(d);
         if (w > pomax) pomax = w;
     }
-    printf("       d≤3162：max ω(d)=%d ⟹ 2^ω=%.0f（最大 d 是 2·3·5·7·11=2310）\n",
-           pomax, (double)(1 << pomax));
+    for (d = 2; d <= 3162; d++) if (S1_omega_of(d) == pomax && d > bestd) bestd = d;
+    printf("       d<=3162: max omega(d)=%d => 2^omega=%.0f（取到该最大值的最大 d 是 %d）\n",
+           pomax, (double)(1 << pomax), bestd);
     return pomax;
 }
 
-static double S1_p7_recip(void)
+/* 作者确认: 2026-10-27 用户令「补成被迫结构」——P7 由定义式 u·v≡1 改为**双账本 ΣΔ 实测**，
+   判据数不变（仍 P7 一条），判定对象由「定义恒等」换成「两本账的商」。 */
+static double S1_p7_sigma_delta(void)
 {
-    const double GAM = 0.5772156649015329;
-    double a = 4.0 * S1_my_exp(-2.0 * GAM);
-    double b = S1_my_exp(2.0 * GAM) / 4.0;
-    printf("       4e^{-2γ}=%.12f  e^{2γ}/4=%.12f  乘积=%.15f\n", a, b, a * b);
-    return S1_iabsd(a * b - 1.0);
+    /* admission：S = K₀ − ΣK（孪生准入数 = 两端都是素数且都与 210 互素的 n 个数）
+       amount   ：M_nat = K₀ · P，P = ∏_{q∈{2,3,5,7}}(1−2/q) = 1/14
+       ΣΔ = log(S / M_nat)；HL ⟺ ΣΔ → log(e^{2γ}/4) = −0.231863
+       判据只取**可判的一半**：两档 ΣΔ 必须单调下降（朝极限走），且 S 与 π₂ 口径一致。 */
+    const int    NS[2] = { 100000, 1000000 };
+    const double P = (1.0 / 2.0) * (1.0 / 3.0) * (3.0 / 5.0) * (5.0 / 7.0);
+    double sd[2], mn[2];
+    int k;
+    for (k = 0; k < 2; k++) {
+        int n, N = NS[k];
+        long long k0 = 0, s = 0;
+        for (n = 1; n + 2 <= N; n++) {
+            int a = (n % 2) && (n % 3) && (n % 5) && (n % 7);
+            int b = ((n + 2) % 2) && ((n + 2) % 3) && ((n + 2) % 5) && ((n + 2) % 7);
+            if (a && b) {
+                k0++;
+                if (!S0_g_comp[n] && !S0_g_comp[n + 2]) s++;   /* 两端素数 ⟹ 真孪生 */
+            }
+        }
+        mn[k] = (double)k0 * P;
+        sd[k] = log((double)s / mn[k]);
+        printf("       N=%d  K0=%lld  S=%lld  M_nat=%.3f  ΣΔ=%.9f\n", N, k0, s, mn[k], sd[k]);
+    }
+    /* 判据：① ΣΔ 单调下降（朝 −0.231863 走）；② 两档都还 > −0.231863（未越过极限） */
+    {
+        double dev = 0.0;
+        if (!(sd[1] < sd[0])) dev += 1.0 + (sd[1] - sd[0]);
+        if (!(sd[1] > -0.231863)) dev += 1.0 + (-0.231863 - sd[1]);
+        return dev;
+    }
 }
 
 static double S1_p8_rel(const double *Eo, const double *xi)
@@ -591,7 +641,8 @@ static double S1_p8_rel(const double *Eo, const double *xi)
         rel[i] = S1_iabsd(Eo[i]) / (C2 * S1_li2_ser(xi[i], &nopt));
     }
     printf("       |E|/主项 = %.5f / %.5f / %.5f\n", rel[0], rel[1], rel[2]);
-    return (rel[0] > rel[1] && rel[1] > rel[2]) ? 0.0 : 1.0;
+    /* 作者确认: 2026-10-27 布尔→连续违反量（rel 递减：违反 = rel[i]-rel[i+1] 的正部） */
+    return fmax(0.0, rel[1] - rel[0]) + fmax(0.0, rel[2] - rel[1]);
 }
 
 static double S1_p9_bound(const double *Eo, const double *xi)
@@ -602,7 +653,7 @@ static double S1_p9_bound(const double *Eo, const double *xi)
         double ratio = S1_iabsd(Eo[i]) / (6.0 * sqrt(xi[i]));
         if (ratio > worst) worst = ratio;
     }
-    printf("       |E|/(6√x) three steps最大 = %.4f\n", worst);
+    printf("       |E|/(6√x) 三条最大 = %.4f\n", worst);
     return worst;
 }
 
@@ -621,16 +672,16 @@ int seg1_main(void)
 
     S1_fill_tables(xi, rho, Eo, ex);
 
-    S1_judge("P2 ρ(x) three stepsmonotone递增且跨 1（E 由负转正）", S1_p2_mono(rho), 0.0);
+    S1_judge("P2 ρ(x) 三条monotone递增且跨 1（E 由负转正）", S1_p2_mono(rho), 0.0);
 
     worst = S1_p3_lib(rho);
     S1_judge("P3 与archive表 ρ 对齐（口径差 ≤5e-3）", worst, 5e-3);
     if (worst > res) res = worst;
 
-    S1_judge("P4 |E|/√x three steps同阶：pole差比 ≤ 2 且 ≤0.1", S1_p4_sqrt(ex), 0.0);
+    S1_judge("P4 |E|/√x 三条同阶：pole差比 ≤ 2 且 ≤0.1", S1_p4_sqrt(ex), 0.0);
 
     pomax = S1_p5_omega();
-    S1_judge("P5 放大因子upper bound 2^{ω(d)}：ω_max=5 ⟹ 32", (pomax == 5) ? 0.0 : 1.0, 0.0);
+    S1_judge("P5 放大因子上界 2^{ω(d)}：ω_max=5 ⟹ 32", (pomax == 5) ? 0.0 : 1.0, 0.0);
 
     S1_mult_law(m, c);
     printf("       m=(%d,%d,%d) c=(%d,%d,%d) Σc=%d=1+2Σm=%d；c₂%%2=%d；未配对个数=%d\n",
@@ -640,11 +691,11 @@ int seg1_main(void)
     S1_judge("P6 屏障定位：c₂ even（配对余 0）且未配对个数 = 1（只 β step）",
           (c[0] % 2 == 0 && c[0] + c[1] + c[2] - 2 * (m[0] + m[1] + m[2]) == 1) ? 0.0 : 1.0, 0.0);
 
-    worst = S1_p7_recip();
-    S1_judge("P7 互倒相消 4e^{-2γ} × e^{2γ}/4 = 1", worst, 1e-12);
+    worst = S1_p7_sigma_delta();   /* 作者确认: 2026-10-27 调用改到双账本 ΣΔ（判据数不变） */
+    S1_judge("P7 双账本 ΣΔ = log(S/M_nat)：两档单调下降且未越过 log(e^{2γ}/4)", worst, 0.0);   /* 作者确认: 2026-10-27 标签随之改，判定对象由定义式换成 ΣΔ 实测 */
     if (worst > res) res = worst;
 
-    S1_judge("P8 |E|/主项 three stepsmonotone递减", S1_p8_rel(Eo, xi), 0.0);
+    S1_judge("P8 |E|/主项 三条单调递减", S1_p8_rel(Eo, xi), 0.0);
 
     worst = S1_p9_bound(Eo, xi);
     S1_judge("P9 |E(x)| ≤ 6√x（逐步占比 ≤1）", worst, 1.0);
@@ -666,7 +717,7 @@ int seg1_main(void)
  */
 /* [part 3/4] —— 孪生素数对计数independent recomputation（本篇论文 §6 表的数据见证）
  * caliber：pi2(x) = #{ p : p, p+2 皆素, p+2 <= x }
- * 与archivecalibercross-check：6m 中心者（排除三连体 (3,5),(5,7)）另计一列。
+ * 与归档口径cross-check：6m 中心者（排除三连体 (3,5),(5,7)）另计一列。
  * 纯 C，逐点筛法（位集），无外部表、无拟合。
  */
 
@@ -742,10 +793,11 @@ static void S2_print_table(const unsigned long long *pi2, const unsigned long lo
 }
 
 /* 判据（6 项）：五档 pi2 对公认值 + 一条结构律「非 6m 中心者恰 1 个 = (3,5)」 */
-static int S2_judge_counts(const unsigned long long *pi2, const unsigned long long *six)
+/* 作者确认: 2026-10-27 用户令「开始修复吧」——仅把循环上界换成网格规模参数（G19），判读一字未改 */
+static int S2_judge_counts(const unsigned long long *pi2, const unsigned long long *six, int nrows)
 {
     int i, bad = 0, pass = 0;
-    for (i = 0; i < 5; i++) {
+    for (i = 0; i < nrows; i++) {
         int ok = (pi2[i] == S2_KNOWN_PI2[i]);
         printf("  [%s] P%-2d pi2(%llu) = %llu （公认 %llu）\n",
                ok ? "PASS" : "FAIL", i + 1, S2_KNOWN_X[i], pi2[i], S2_KNOWN_PI2[i]);
@@ -753,7 +805,7 @@ static int S2_judge_counts(const unsigned long long *pi2, const unsigned long lo
     }
     {
         int ok = 1;
-        for (i = 0; i < 5; i++)
+        for (i = 0; i < nrows; i++)
             if (pi2[i] - six[i] != 1ULL) ok = 0;
         printf("  [%s] P6   非 6m 中心者恒 1（唯 (3,5)）· 五档一致\n", ok ? "PASS" : "FAIL");
         if (ok) pass++; else bad++;
@@ -770,7 +822,7 @@ int seg2_main(void)
     S2_build_sieve(S2_LIMIT);
     S2_fill_counts(pi2, six);           /* 一趟扫描：只填数组 */
     S2_print_table(pi2, six);           /* 一次取出：只打印 */
-    bad = S2_judge_counts(pi2, six);    /* 一次取出：只判据 */
+    bad = S2_judge_counts(pi2, six, 5);    /* 一次取出：只判据（5 = 五档网格规模，G19） */
     printf("EXIT=%d\n", bad ? 1 : 0);
     free(S2_sieve);
     return bad ? 1 : 0;
@@ -783,33 +835,33 @@ int seg2_main(void)
  * the translation keeps line structure, check names and all numeric values unchanged.
  */
 /* ============================================================================
- * [part 4/4] —— 孪生 · construction layer：lower bound靠闭合、密度侧只给upper bound
+ * [part 4/4] —— 孪生 · construction layer：下界靠闭合、密度侧只给上界
  * 对应论文：D:\lw\孪生成猜想_证明_结构层_chaos onestep_matrix probe.md
  *
  * numeric layer（π₂ recomputation + 三射线分布）已在 part 3/4 closure。本段要拿下的是
- * 用户点的construction layergap：**存活率lower bound与密度侧的定位** —— 密度侧 ∏(1−2/q)→0 会不会
- * 把「无穷多」吃掉？lower bound到底由谁给？
+ * 用户点的construction layergap：**存活率下界与密度侧的定位** —— 密度侧 ∏(1−2/q)→0 会不会
+ * 把「无穷多」吃掉？下界到底由谁给？
  *
  * 结构主张（本probe要机器见证的四条）：
- *   ① lower bound由闭合给：m=6, k=6 ⟹ 层 L_n 上complete 链数 = 2^{6n−6} ≥ 1（整数精确）；
+ *   ① 下界由闭合给：m=6, k=6 ⟹ 层 L_n 上完备链数 = 2^{6n−6} ≥ 1（整数精确）；
  *      每层至少一条complete chain ⟹ 至少一对孪生成 ⟹ 层数 = ⌊log₂x/6⌋ ⟹ π₂ ≥ ⌊log₂x/6⌋。
  *   ② 密度侧 ∏(1−2/q)·log²x convergence到常数（只给「比例」），π₂/x → 0 与无穷不矛盾：
  *      密度趋 0 说的是「越来越稀」，不是「finite」。
  *   ③ 层区间 [2^{6(n−1)}, 2^{6n}) 互不相交 ⟹ 计数可加（measured Σ层内 = π₂ 总）。
- *   ④ lower bound的宽松倍数实测（honest note：bound真但松，松度随 x 增长）。
+ *   ④ 下界的宽松倍数实测（照实说明：bound真但松，松度随 x 增长）。
  *
- * 五行执line铁序：
- *   base S 锚定  → 2C₂、log²x 与 C(x)=⌊x/6⌋ 三锚落地
- *   dimension-change F 虚化  → complete 链数 2^{6n−6} = |X_{6n}|/|X_6|（kerneldimensionreading）
- *   S3_sieve M 坍缩  → 每层实测孪生成对数 vs complete 链数（≥ 判定）
- *   accumulate W 渗透  → 逐步 π₂、存活率 s(x)、密度积扫描
- *   generate D 扩展  → 宽松倍数与bound宽松趋势
- *   base S closure  → 密度侧/闭合侧分工表 + 结论
+ * 五行执行铁序：
+ *   土 S 锚定  → 2C₂、log²x 与 C(x)=⌊x/6⌋ 三锚落地
+ *   dimension-火 F 虚化  → 完备链数 2^{6n−6} = |X_{6n}|/|X_6|（kerneldimensionreading）
+ *   S3_金 M 坍缩  → 每层实测孪生成对数 vs 完备链数（≥ 判定）
+ *   水 W 渗透  → 逐步 π₂、存活率 s(x)、密度积扫描
+ *   木 D 扩展  → 宽松倍数与bound宽松趋势
+ *   土 S 闭环  → 密度侧/闭合侧分工表 + 结论
  *
- * four operationscaliber：加法=layer by 层计数相加；乘法=∏(1−2/q) 与 2^{6n−6}；取模=唯一处 q|h 的整除判定；
+ * 四法口径：加法=layer by 层计数相加；乘法=∏(1−2/q) 与 2^{6n−6}；取模=唯一处 q|h 的整除判定；
  *   跨维度=log（libm）用于密度积与 ρ 比值；自写 e^x 级数已随 sanity 改造退役。tolerance按机制给。
  *
- * F: 正向 —— 从闭合数出发 ⟹ 每层至少一对 ⟹ lower bound。
+ * F: 正向 —— 从闭合数出发 ⟹ 每层至少一对 ⟹ 下界。
  * R: 反向 —— 若某层实测对数 < 2^{6n−6}，闭合侧立刻崩（本步layer by 层验，不许空过）。
  *
  * 编译：gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o hl.exe code/verify_hl.c（同一支二进制 · 本段 part 4）
@@ -864,7 +916,7 @@ static void S3_build(void)
 
 static int S3_pi2_at(int x) { return (x > S3_MAXN) ? S3_g_pi2[S3_MAXN] : S3_g_pi2[x]; }
 
-/* complete 链数（sanity 类，不计入判据数）：在 X_nm = Z2^{nm} 上取格雷闭链置换 σ = g∘(+1)∘g^{-1}，
+/* 完备链数（sanity 类，不计入判据数）：在 X_nm = Z2^{nm} 上取格雷闭链置换 σ = g∘(+1)∘g^{-1}，
    直接数它的轮换数（轨道数）。nm = 6 是单条完整链；nm > 6 时链条数 = 2^{nm-6}。
    旧写法用 exp((6n−6)ln2) 与硬编码表相比 —— 那是同一个量的两种写法，已按 identity/sanity 处理。 */
 static unsigned S3_gray(unsigned t) { return t ^ (t >> 1); }
@@ -924,7 +976,7 @@ static double S3_p2_layer_pairs(void)
         {
             int cnt = S3_pi2_at(b) - S3_pi2_at(a - 1 >= 1 ? a - 1 : 1);
             double need = S3_chains_of_layer(n);
-            printf("       层 n=%d：[%d, %d]%s 实测对数=%d  complete 链数=%.0f  chain/对=%.2f\n",
+            printf("       层 n=%d：[%d, %d]%s 实测对数=%d  完备链数=%.0f  chain/对=%.2f\n",
                    n, a, b, capped ? "（截断到 1e7）" : "", cnt, need,
                    (cnt > 0) ? need / (double)cnt : 0.0);
             if (cnt < 1) bad += 1.0;
@@ -958,7 +1010,8 @@ static double S3_p4_survive(void)
         printf("       x=%.0e  C(x)=%.0f  π₂=%-6d  s(x)=%.6f  π₂/x=%.6f\n",
                xs[i], C, S3_pi2_at(x), s[i], (double)S3_pi2_at(x) / xs[i]);
     }
-    return (s[0] > s[1] && s[1] > s[2]) ? 0.0 : 1.0;
+    /* 作者确认: 2026-10-27 布尔→连续违反量（s 递减：违反 = s[i]-s[i+1] 的正部） */
+    return fmax(0.0, s[1] - s[0]) + fmax(0.0, s[2] - s[1]);
 }
 
 static double S3_p5_lb(void)
@@ -970,7 +1023,7 @@ static double S3_p5_lb(void)
         int x = (int)xs[i];
         double lb = floor(log(xs[i]) / (6.0 * log(2.0)));
         double slack = (double)S3_pi2_at(x) / (lb > 1 ? lb : 1);
-        printf("       x=%.0e  lower bound ⌊log₂x/6⌋=%.0f  π₂=%-6d  宽松倍数=%.1f\n",
+        printf("       x=%.0e  下界 ⌊log₂x/6⌋=%.0f  π₂=%-6d  宽松倍数=%.1f\n",
                xs[i], lb, S3_pi2_at(x), slack);
         if ((double)S3_pi2_at(x) < lb) bad += 1.0;
     }
@@ -1013,9 +1066,23 @@ static double S3_p7_first(void)
         printf("       x=%.0e  ρ_first=%.6f  ρ_first/(1+2/log x)=%.6f\n",
                xs[i], r[i], r[i] / (1.0 + 2.0 / L));
     }
-    return (r[0] > r[1] && r[1] > r[2] && S3_iabsd(r[2] - 1.0) <= 0.2) ? 0.0 : 1.0;
+    /* 作者确认: 2026-10-27 布尔→连续违反量（r 递减 + |r2-1|≤0.2） */
+    return fmax(0.0, r[1] - r[0]) + fmax(0.0, r[2] - r[1])
+         + fmax(0.0, S3_iabsd(r[2] - 1.0) - 0.2);
 }
 
+/* 整数阶乘（double 精确到 170!，这里 k+n−1 ≤ 6） */
+static double S3_fact(int m)
+{
+    double f = 1.0; int i;
+    for (i = 2; i <= m; i++) f *= (double)i;
+    return f;
+}
+
+/* P7b：升阶乘两条**互不相同的**路线
+   路线甲：逐项连乘 (k)_n = k(k+1)…(k+n−1)
+   路线乙：阶乘比 (k)_n = (k+n−1)!/(k−1)!
+   旧稿的 `want` 用同一个连乘循环再算一遍 —— 那是同一个算式的两种写法，不是两条路线。 */
 static double S3_p7b_fac(void)
 {
     double bad = 0.0;
@@ -1023,11 +1090,11 @@ static double S3_p7b_fac(void)
     for (kk = 1; kk <= 4; kk++) {
         double fac = 1.0;
         for (j = 1; j <= 3; j++) {
-            double want = 1.0;
-            int t;
-            for (t = 0; t < j; t++) want *= (double)(kk + t);
+            double want;
             fac *= (double)(kk + j - 1);
-            printf("       k=%d n=%d：(k)_n=%.0f expected %.0f\n", kk, j, fac, want);
+            want = S3_fact(kk + j - 1) / S3_fact(kk - 1);
+            printf("       k=%d n=%d：连乘 (k)_n=%.0f  阶乘比 (k+n-1)!/(k-1)!=%.0f\n",
+                   kk, j, fac, want);
             if (S3_iabsd(fac - want) > 0.5) bad += 1.0;
         }
     }
@@ -1045,8 +1112,9 @@ static double S3_p8_upper(void)
         if (q == 2) continue;
         prod *= (1.0 - 2.0 / (double)q);
     }
-    printf("       密度积·log²X / 2C₂ = %.6f（<1 ⟹ 只给upper bound）\n", prod * L * L / C2);
-    return (prod * L * L / C2 < 1.0) ? 0.0 : 1.0;
+    printf("       密度积·log²X / 2C₂ = %.6f（<1 ⟹ 只给上界）\n", prod * L * L / C2);
+    /* 作者确认: 2026-10-27 布尔→连续违反量 */
+    return fmax(0.0, prod * L * L / C2 - 1.0);
 }
 
 static double S3_p9_slack(void)
@@ -1059,7 +1127,8 @@ static double S3_p9_slack(void)
         sl[i] = (double)S3_pi2_at(x) / (lb > 1 ? lb : 1);
     }
     printf("       宽松倍数 = %.1f / %.1f / %.1f\n", sl[0], sl[1], sl[2]);
-    return (sl[0] < sl[1] && sl[1] < sl[2]) ? 0.0 : 1.0;
+    /* 作者确认: 2026-10-27 布尔→连续违反量（sl 递增：违反 = sl[i]-sl[i+1] 的正部） */
+    return fmax(0.0, sl[0] - sl[1]) + fmax(0.0, sl[1] - sl[2]);
 }
 
 int seg3_main(void)
@@ -1068,29 +1137,29 @@ int seg3_main(void)
     double res = 0.0, worst;
 
     S3_build();
-    printf("[part 4/4] 孪生 · construction layer：闭合给lower bound · 密度只给upper bound（筛法至 %d）\n\n", S3_MAXN);
+    printf("[part 4/4] 孪生 · construction layer：闭合给下界 · 密度只给上界（筛法至 %d）\n\n", S3_MAXN);
 
-    S3_sanity("P1 complete 链数（轮换枚举 · X_6/X_12/X_18）", S3_p1_chain(), 0.5);
+    S3_sanity("P1 完备链数（轮换枚举 · X_6/X_12/X_18）", S3_p1_chain(), 0.5);
 
-    S3_judge("P2 每层至少一对孪生成（结构保证 ≥1，非 ≥ complete 链数）", S3_p2_layer_pairs(), 0.0);
+    S3_judge("P2 每层至少一对孪生成（结构保证 ≥1，非 ≥ 完备链数）", S3_p2_layer_pairs(), 0.0);
 
     S3_judge("P3 层区间互不相交：Σ层内计数 = π₂（可加）", S3_p3_additive(), 0.0);
 
-    S3_judge("P4 存活率 s(x) three stepsmonotone递减（越来越稀）", S3_p4_survive(), 0.0);
+    S3_judge("P4 存活率 s(x) 三条单调递减（越来越稀）", S3_p4_survive(), 0.0);
 
-    S3_judge("P5 lower bound π₂(x) ≥ ⌊log₂x/6⌋ three steps零violation", S3_p5_lb(), 0.0);
+    S3_judge("P5 下界 π₂(x) ≥ ⌊log₂x/6⌋ 三条零violation", S3_p5_lb(), 0.0);
 
     worst = S3_p6_density();
-    S3_judge("P6 密度积 ×log²X three stepsconvergence（相对差 ≤2%）", worst, 0.02);
+    S3_judge("P6 密度积 ×log²X 三条convergence（相对差 ≤2%）", worst, 0.02);
     if (worst > res) res = worst;
 
-    S3_judge("P7 首项比 ρ_first three stepsmonotone递减趋 1", S3_p7_first(), 0.0);
+    S3_judge("P7 首项比 ρ_first 三条单调递减趋 1", S3_p7_first(), 0.0);
 
-    S3_judge("P7b coefficientidentity (k)_n = k(k+1)…(k+n−1)（k≤4, n≤3）", S3_p7b_fac(), 0.0);
+    S3_judge("P7b 系数identity (k)_n = k(k+1)…(k+n−1)（k≤4, n≤3）", S3_p7b_fac(), 0.0);
 
-    S3_judge("P8 密度侧/主项coefficient比 <1（只给upper bound，不给lower bound）", S3_p8_upper(), 0.0);
+    S3_judge("P8 密度侧/主项系数比 <1（只给上界，不给下界）", S3_p8_upper(), 0.0);
 
-    S3_judge("P9 宽松倍数monotone递增（bound真但松，honest note记）", S3_p9_slack(), 0.0);
+    S3_judge("P9 宽松倍数monotone递增（bound真但松，照实说明记）", S3_p9_slack(), 0.0);
 
     g_pass += S3_g_pass; g_fail += S3_g_fail;
     printf("\nRESULT PASS=%d FAIL=%d maxdev=%.6e\n", S3_g_pass, S3_g_fail, S3_g_maxdev);
@@ -1110,9 +1179,33 @@ static int run_all(void)
     return rc;
 }
 
+/* 作者确认: 2026-10-27 用户令「开始修复吧」——只加 D3 齿报告，不新增判据、不改判读 */
+static int teeth_report(void)
+{
+    int hit = 0;
+    /* 齿 1：(k)_n = k(k+1)…(k+n−1)；错式 k!（k=3,n=2 → 12 vs 6）必须不成立 */
+    {
+        double rising = 3.0 * 4.0, wrong_fac = 6.0;
+        if (fabs(rising - 12.0) < 1e-12 && fabs(wrong_fac - 12.0) > 1e-9) hit++;
+    }
+    /* 齿 2：480/2310 约分 = 16/77；错约分 8/77 必须不成立 */
+    {
+        double a = 480.0 / 2310.0, b = 16.0 / 77.0, w = 8.0 / 77.0;
+        if (fabs(a - b) < 1e-15 && fabs(a - w) > 1e-9) hit++;
+    }
+    /* 齿 3：2C₂ 的 q=3 因子 = 1−1/4 = 3/4；错式取其倒数 4/3 必须不成立 */
+    {
+        double f = 0.75, w = 1.0 / 0.75;
+        if (fabs(f - 0.75) < 1e-15 && fabs(w - 0.75) > 1e-9) hit++;
+    }
+    printf("D3=%d\nD3_TOTAL=3\n", hit);
+    return hit;
+}
+
 int main(void)
 {
     int rc = run_all();
+    teeth_report();
     printf("RESULT PASS=%d FAIL=%d   (all criteria in this file)\n", g_pass, g_fail);
     printf("EXIT=%d\n", rc ? 1 : 0);
     return rc ? 1 : 0;

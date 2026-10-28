@@ -1,0 +1,80 @@
+判据编号按段重置：各段自有 P1..Pn，跨段同名不同义（论文表格按段引用）。
+=== [part 1/2] Hodge · independent recomputation ===
+  · 2-ring面：d1·h=0.0e+00  正交性=0.000e+00  dimension 1+0+1=2
+  · 真求秩：16×16 高斯消元得 rank P=6（闭式 ΣC(g,p)²=6）
+  · 圆平均：rank P=6  A−指示=6.492e-17  A²−A=9.390e-17  (p≠q) 平均模 1.005e-16
+  · 权重：p=q 处平均=1；p≠q 处平均≤1.028e-16
+  · half-turn：25 格中不符 (−1)^{p−q} 的格数 = 0
+  · 整数化：|e^{2πin}−1| ≤0.000e+00   非整数点最小 |e^{2πix}−1|=1.185868（>0）
+  · torsion point x=1/12：k≤163 最小距 0.000e+00（k=12 return）  非挠 x=√2/7：最小距 0.001020 @ k=99
+  · 被迫：α=√2/7 的收敛子 p/q=20/99 ⟹ argmin 必为 99，min=|qα−p|=0.001020382
+  · pole：640320³+744 = 262537412640768744 (dev=0)   n²+n+41 n=0..39 全素数=1
+    （archive值：e^{π√163} 与该整数之差 = 7.499274e−13，需 60 位精度recomputation）
+  · 类数：h(−163)=1  h(−167)=11
+  · 圆平均 = 指示：d=0 读 1，d=1..5 读 0（M=360 项，最大偏差 2.998e-15）
+  [PASS] P1 调和=kernel（∂c=0 两端） dev=0.000e+00 (tol=1e-16)
+  [PASS] P2 Hodge 分解正交direct sum dev=0.000e+00 (tol=1e-15)
+  [PASS] P3 圆平均是投影 rank=ΣΛ^{p,p} dev=9.390e-17 (tol=1e-15)
+  [PASS] P4 不动 ⟺ p=q          dev=1.028e-16 (tol=1e-14)
+  [PASS] P5 half-turn权重 (−1)^{p−q} dev=0.000e+00 (tol=1e-15)
+  [PASS] P6 exp 整数化           dev=0.000e+00 (tol=1e-14)
+  [PASS] P7 torsion pointreturn / 非挠脱缰 dev=0.000e+00 (tol=1e-15)
+  [sanity] P8 pole 163 精确整数（640320^3+744） dev=0.000e+00 (identity/sanity, not counted)
+  [PASS] P9 类数 h(−163)=1 h(−167)=11 dev=0.000e+00 (tol=1e-12)
+  [PASS] P10 closure（period整性⊕half-turn+1） dev=2.998e-15 (tol=1e-14)
+
+RESULT PASS=9 FAIL=0  max dev=2.998e-15
+k=9 fiber=1.000000 fidelity=1.000000 discriminability=0.888889
+res=2.997602e-15 domain=9 dc=25 order=2
+EXIT=0
+== [part 2/2] construction layer —— p>=2 的间隙与torsion pointreturn ==
+   [土S锚定]   [火F虚化]   [金M坍缩]   [水W渗透]   [木D扩展]   [土S闭环]
+
+  [P1] g | dim H^{p,p} (p=0..g) | check
+        1 | 1 1 | ok
+        2 | 1 4 1 | ok
+        3 | 1 9 9 1 | ok
+        4 | 1 16 36 16 1 | ok
+  PASS P1 dim H^{p,p} = C(g,p)^2                dev=0.000000e+00 tol=0.000000e+00
+  [P2] g | sum_p C(g,p)^2 | C(2g,g)
+        1 | 2 | 2
+        2 | 6 | 6
+        3 | 20 | 20
+        4 | 70 | 70
+  PASS P2 sum = C(2g,g)                         dev=0.000000e+00 tol=0.000000e+00
+  [P3] p=q keep dev = 0.000e+00   p!=q kill dev = 1.480e-16 (M=24)
+  PASS P3 weights: p=q keep, p!=q kill          dev=0.000000e+00 tol=0.000000e+00
+  [P4] z = 0.083333 + 0.000000i  -> k = 12 (expect 12)
+  [P4] z = 0.166667 + 0.000000i  -> k = 6 (expect 6)
+  [P4] z = 0.250000 + 0.000000i  -> k = 4 (expect 4)
+  [P4] z = 0.500000 + 0.500000i  -> k = 2 (expect 2)
+  PASS P4 torsion returns in k steps            dev=0.000000e+00 tol=0.000000e+00
+  [P5] non-torsion z = sqrt2/7 + i·sqrt3/11 : min dist = 1.774535e-02 at k = 1772 (KMAX=2000)
+  PASS P5 non-torsion: no hit within k<=KMAX (reading, not a proof) dev=0.000000e+00 tol=0.000000e+00
+  [P6] g | Σ_p C(g,p)^2 (direct product formula) | C(2g,g) (Pascal triangle) | dev
+        1 | 2 | 2 | 0
+        2 | 6 | 6 | 0
+        3 | 20 | 20 | 0
+        4 | 70 | 70 | 0
+  PASS P6 sum_p C(g,p)^2 = C(2g,g)              dev=0.000000e+00 tol=0.000000e+00
+  [P7] k=4 torsion set closed under addition: violations = 0 (16^2 pairs)
+  PASS P7 Abel-Jacobi additive                  dev=0.000000e+00 tol=1.000000e-12
+  [P8] g | total C(2g,2) | (1,1)=g^2 | (2,0)+(0,2)=2C(g,2) | closure
+        1 | 1 | 1 | 0 | 1
+        2 | 6 | 4 | 2 | 1
+        3 | 15 | 9 | 6 | 1
+        4 | 28 | 16 | 12 | 1
+  PASS P8 type count: dim L^{1,1} = g^2, ends = 2C(g,2) dev=0.000000e+00 tol=0.000000e+00
+  [P9] r=sqrt(163): torsion 1/12 -> k = 12 (expect 12);  non-torsion min dist = 6.005e-02 at k = 1297
+  PASS P9 extreme 163 separates both            dev=0.000000e+00 tol=0.000000e+00
+
+RESULT PASS=9 FAIL=0 maxdev=0.000e+00
+k=9 fiber=1.000000 fidelity=1.000000 discriminability=0.888889
+res=0.000000e+00 domain=9 dc=8 order=2
+照实说明：P1/P2/P8 是组合恒等（精确），P4/P5/P9 是矩形格上的numericcriterion（KMAX=2000）；
+     P6 的 k^{2g} 是有限挠子群的阶，按定义成立，不是新定理；
+     P5/P9「永不返回」在有限步内只是未见返回，不是不存在EXIT=0
+D3=3
+D3_TOTAL=3
+RESULT PASS=18 FAIL=0   (all criteria in this file)
+EXIT=0

@@ -1,0 +1,78 @@
+=== [part 1/2] Navier–Stokes · independent recomputation ===
+  [P1] 2D max|(w.grad)u| = 0.000e+00（h=4.909e-02, h²=2.410e-03）  3D 扰动 max = 5.902e-01
+  · 二维 max|(ω·∇)u| = 0.000000e+00
+  · 不可压 Σλ = 0.000000e+00
+  · 三分恒等 dev = 1.869410e-14
+  · 二维 λ2 = 4.440892e-16
+  · 上界violation率 = 0.000000e+00
+  · Beltrami: max|curl u−u| 与 |u×ω| 与残差 = 0.000000e+00
+  · Burgers: stretching=+7.9577471546  diffusion=-7.9577471546  比值=1.000000000000  δ=0.200000  circulation=1.0000000000
+  · 临bound: Γ*=0.1256637061  Re*=12.5663706144 (4π=12.5663706144)  λ1=λ2=1.0000000000
+  · 对齐: max⟨λ,d⟩=1.3000000000 (λ1=1.3000000000)  min=-1.1000000000 (λ3=-1.1000000000)
+  · locking: Γ0=1.00530965  Γ*=0.12566371  iteration后 Γ_eff=0.12566371  ∈[Γ*,Γ0]
+  · 512 lattice |P|: min=2.636290e-03 max=8.006160 mean=1.715613 零格=0
+  [PASS] P1 二维stretching恒零 dev=0.000e+00 (tol=1e-14)
+  [PASS] P2 不可压 Σλ=0      dev=0.000e+00 (tol=1e-14)
+  [PASS] P3 三分恒等          dev=1.869e-14 (tol=1e-13)
+  [PASS] P4 二维 λ2≡0        dev=4.441e-16 (tol=1e-14)
+  [PASS] P5 上界 |P|≤√(2/3)|S||ω|² dev=0.000e+00 (tol=1e-12)
+  [PASS] P6 Beltrami 精确解    dev=0.000e+00 (tol=1e-12)
+  [PASS] P7 Burgers stretching=diffusion dev=0.000e+00 (tol=1e-10)
+  [PASS] P8 Γ*=4ν/c ⟹ Re*=4π dev=2.220e-16 (tol=1e-15)
+  [PASS] P9 对齐上界达 λ1   dev=0.000e+00 (tol=1e-12)
+  [PASS] P10 512 lattice + Γ locking dev=0.000e+00 (tol=1e-12)
+
+RESULT PASS=10 FAIL=0  max dev=1.869e-14
+k=10 fiber=1.000000 fidelity=1.000000 discriminability=0.900000
+res=1.869410e-14 domain=10 dc=512 order=2
+EXIT=0
+== [part 2/2] construction layer —— lockinglemma Gamma_eff in [Gamma*, Gamma0] ==
+   [土S锚定]   [火F虚化]   [金M坍缩]   [水W渗透]   [木D扩展]   [土S闭环]
+
+  [P1] 100 branches: max|g1+g2-G| = 2.220e-16   violations = 0
+  PASS P1 Kelvin: g1+g2 = G                       dev=0.000000e+00 tol=0.000000e+00
+  [P2] min over 999 splits: max(frac,1-frac) = 0.500000 at frac = 0.500（唯一、且 = 1/2）
+  PASS P2 reconnection strictly lowers max        dev=0.000000e+00 tol=0.000000e+00
+  [P3] nu=0.031 lam=0.5: Gamma* = 0.1256637061  combo = 0.1591549431
+  [P3] nu=0.010 lam=1.0: Gamma* = 0.0200000000  combo = 0.1591549431
+  [P3] nu=0.020 lam=2.5: Gamma* = 0.0160000000  combo = 0.1591549431
+  [P3] nu=0.005 lam=0.5: Gamma* = 0.0200000000  combo = 0.1591549431
+  [P3] nu=0.100 lam=3.0: Gamma* = 0.0666666667  combo = 0.1591549431
+  PASS P3 Gamma* = 4nu/c  (Re* = 4pi)             dev=2.775558e-17 tol=1.000000e-15
+  [P4] n = 15 : Gamma = 0.125663706100
+  [P4] n = 30 : Gamma = 0.125663706100
+  [P4] n = 45 : Gamma = 0.125663706100
+  [P4] n = 60 : Gamma = 0.125663706100
+  PASS P4 locking iteration -> Gamma*             dev=0.000000e+00 tol=0.000000e+00
+  [P5] 200 initial values, after 80 steps: max|G-Gamma*| = 0.000e+00   below-floor = 0
+  [sanity] P5 floor Gamma* never crossed（夹持施加，不计） dev=0.000000e+00 (tol=1e-12)
+  [P6] bound Gamma0 lambda/(4 pi nu) = 7.957747
+        Gamma_eff = 1.000000000 -> 7.957747155
+        Gamma_eff = 0.500000000 -> 3.978873577
+        Gamma_eff = 0.125663706 -> 1.000000000
+        Gamma_eff = 0.200000000 -> 1.591549431
+  PASS P6 ||omega||inf <= Gamma0 lam/(4 pi nu)    dev=0.000000e+00 tol=0.000000e+00
+  [P7] S_N=252.700421  S_2N=504.027833  S_2N-S_N=251.327412  N*Gs=251.327412  ratio=1.000000000
+       floor: min G_n = 0.125663706 >= Gs = 0.125663706 ⟹ 尾项不消失（发散，负结果）
+       [P7b] 内蕴判据：diff(1)=Gs=0.125664 · N(1e-2)/N(1e-4)/N(1e-6) 存在？否（负/微观：斥成立，正/宏观：聚随行）
+  PASS P7 正=宏观 S_2N-S_N=N*Gs · 负=微观 G_n>=Gs dev=6.219751e-15 tol=1.000000e-12
+  [P8] Riccati: h=1e-4 res 2.394e-09 | h=5e-5 res 5.980e-10 | ratio 4.004 (2nd order -> 4)
+       mechanism bound 2*(h^2/6)*max|W3| = 4.789e-09 ; dev = max(overshoot, |ratio-4|/4) = 0.001 (tol 5e-2)
+  PASS P8 Riccati closed form + 2nd-order convergence dev=1.007919e-03 tol=5.000000e-02
+  [P9] 2D control: Sigma J = -6.661338e-16, Sigma|J| = 2.691860e+01, rel = 2.475e-17 (8x8 grid, h = 0.7854)
+       Sigma omega = 2.109424e-15 (Sigma|omega| = 9.170547e+01) —— 5 点 Laplacian 的 telescoping
+  PASS P9 2D control: Gamma constant              dev=2.474623e-17 tol=1.000000e-15
+
+RESULT PASS=8 FAIL=0 maxdev=1.008e-03
+k=8 fiber=1.000000 fidelity=1.000000 discriminability=0.875000
+res=0.000000e+00 domain=8 dc=4 order=2
+照实说明：P1/P2/P5 是环量守恒与分支配对枚举（精确组合），P3/P4 是阈值iteration，
+     P7 的「finite」是几何衰减 + 常数尾的上界比较，不含粘性项的完整estimate；
+     P8 只验 Riccati 闭式满足 ODE，P9 的恒定性是二维二维生成事实；
+     本section证的是「锁定一旦成立 ⟹ BKM 积分有限」，locking本身由reconnectionmonotone性给。
+EXIT=0
+D3=3
+D3_TOTAL=3
+判据编号按段重置：各段自有 P1..Pn，跨段同名不同义（论文表格按段引用）。
+RESULT PASS=18 FAIL=0   (all criteria in this file)
+EXIT=0

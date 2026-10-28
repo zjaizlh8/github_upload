@@ -48,6 +48,7 @@ jobs:
             [ -x "$b" ] || continue
             name=$(basename "$b")
             out=$(timeout 600 "$b" 2>&1); rc=$?
+            p=$(basename "$b" | sed 's/^verify_//; s/[.]exe$//'); mkdir -p audit/outs; echo "$out" > "audit/outs/$p.txt"
             sum=$(printf '%s\n' "$out" | grep -oE 'RESULT PASS=[0-9]+' | tail -1 | cut -d= -f2)   # 末尾总帐已含各段小计，避免重复计数
             fails=$(printf '%s\n' "$out" | grep -oE 'FAIL=[0-9]+' | cut -d= -f2 | sort -n | tail -1)
             total=$((total + ${sum:-0}))
@@ -62,6 +63,14 @@ jobs:
           echo "verifiers pass=$pass total_criteria=$total bad=$bad" | tee -a "$GITHUB_STEP_SUMMARY"
           [ "$pass" -eq 7 ] || { echo "::error::期望跑满 7 支，实得 $pass"; bad=1; }
           exit "$bad"
+
+      - name: Audit layer matrix (README ↔ CI ↔ papers ↔ verifiers)
+        run: |
+          set -euo pipefail
+          gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o bin/verify_audit audit/verify_audit.c -lm
+          ./bin/verify_audit matrix/audit_layer_gap.csv | tee audit_run.txt
+          grep -q 'EXIT=0' audit_run.txt || { echo "::error::审计器 EXIT!=0：被审对象仍有未修/未标层项"; exit 1; }
+          { echo ""; echo "### 审计矩阵 / audit layer matrix"; echo ""; echo '```'; cat matrix/audit_layer_gap.csv; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload built binaries
         if: always()
@@ -107,6 +116,7 @@ jobs:
           bad=0; pass=0
           for b in out/verify_*.exe; do
             out=$(timeout 600 "$b" 2>&1); rc=$?
+            p=$(basename "$b" | sed 's/^verify_//; s/[.]exe$//'); mkdir -p audit/outs; echo "$out" > "audit/outs/$p.txt"
             if [ "$rc" -ne 0 ]; then echo "::error file=$b::exit=$rc"; bad=1; else pass=$((pass+1)); fi
             if printf '%s\n' "$out" | grep -qE 'FAIL=[1-9]'; then echo "::error file=$b::FAIL 非零"; bad=1; fi
           done
@@ -141,15 +151,16 @@ jobs:
 
             | # | 猜想 | 验证器 | 判据 |
             |---|---|---|---|
-            | 1 | Birch–Swinnerton-Dyer | `verify_bsd.exe` | 55 |
-            | 2 | Hardy–Littlewood（含孪生） | `verify_hl.exe` | 36 |
-            | 3 | Hodge | `verify_hodge.exe` | 19 |
-            | 4 | Navier–Stokes | `verify_ns.exe` | 19 |
+            | 1 | Birch–Swinnerton-Dyer | `verify_bsd.exe` | 60 |
+            | 2 | Hardy–Littlewood（含孪生） | `verify_hl.exe` | 35 |
+            | 3 | Hodge | `verify_hodge.exe` | 18 |
+            | 4 | Navier–Stokes | `verify_ns.exe` | 18 |
             | 5 | P vs NP | `verify_pvsnp.exe` | 26 |
-            | 6 | Riemann Hypothesis | `verify_rh.exe` | 21 |
+            | 6 | Riemann Hypothesis | `verify_rh.exe` | 22 |
             | 7 | Yang–Mills | `verify_ym.exe` | 18 |
 
-            合计 190 条判据，全部为有限格上的可复算断言；七支 `rc=0`。
+            合计 197 条判据（= 七支末行 `RESULT PASS=` 之和；`audit/verify_audit.c` 的 L1 层逐篇核对
+            README / 本表 / 实跑 三处一致），全部为有限格上的可复算断言；七支 `rc=0`。
             **构建**：`gcc -Wall -Wextra -O2 -D_GNU_SOURCE`，7/7 零告警；资产由 CI 在 windows-latest + MinGW 现场编译，与源码同源。
             **校验**：`SHA256SUMS.txt`（7 行，就地 `sha256sum -c` 全通过；LF + UTF-8 no BOM）。
             **边界**：验证器验的是「各篇所依赖的结构前提在有限格上成立」，不是猜想本身的证明。

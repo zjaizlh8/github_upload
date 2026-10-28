@@ -1,0 +1,177 @@
+判据编号按段重置：各段自有 P1..Pn，跨段同名不同义（论文表格按段引用）。
+=== [part 1/5] BSD · independent recomputation ===
+  · involution s ↦ 2−s 的fixed point s=1；符号 w=(−1)^k 管零阶的oddeven
+  · 四元数管符号（中心 Z₂=±1），八元数管秩（非结合而norm-preserving ⟹ 生成元不塌）
+  [PASS] P1  involutionfixed pointunique s=1      dev=0.000e+00 (tol=1e-15)
+  [PASS] P2  constructionidentity w=(−1)^k（k=1,2,3） dev=6.661e-16 (tol=1e-15)
+  [PASS] P2b w=(−1)^k（整数 s=3 · 交叉乘积精确） dev=0.000e+00 (tol=0e+00)
+  [PASS] P3  Λ_k(1)=0 中心零（阶exactly为 k） dev=0.000e+00 (tol=1e-15)
+  [PASS] P4  half-turn −1 / full turn +1（倍角recurrence） dev=0.000e+00 (tol=1e-15)
+  [PASS] P5  四元数norm-preserving |ab|²=|a|²|b|² dev=3.711e-16 (tol=1e-14)
+  [PASS] P5b 四元数范数（整数样本·精确 dev=0） dev=0.000e+00 (tol=0e+00)
+  [PASS] P6  八元数norm-preserving（非结合仍norm-preserving） dev=3.977e-16 (tol=1e-13)
+  [PASS] P6b 八元数范数（整数样本·精确 dev=0） dev=0.000e+00 (tol=0e+00)
+  [PASS] P7  八元数非结合 [e1,e2,e4] 范数²=4 dev=0.000e+00 (tol=1e-14)
+  [PASS] P8  八元数无零因子 min|xy|²≥1  dev=0.000e+00 (tol=1e-15)
+       · p≡3 (mod 4) prime 51 个，a_p≠0 的 0 个
+  [PASS] P9  CM criterion p≡3(4) ⟹ a_p=0      dev=0.000e+00 (tol=0e+00)
+       · oddprime 95 个，越 Hasse bound 0 个
+  [PASS] P10 Hasse bound a_p²≤4p               dev=0.000e+00 (tol=0e+00)
+  [PASS] P11 伸缩commute / 纯虚不commute     dev=0.000e+00 (tol=1e-15)
+  [PASS] P12 乘积范数=范数之积（累积=求和） dev=9.447e-15 (tol=1e-13)
+       · P13 判据在整数上（约化型枚举的计数），阈值 0.5 即「整数相等」，无容差可调
+       · D=-163 -> h=1（应 1）
+       · D=-167 -> h=11（应 11）
+       · D=-23 -> h=3（应 3）
+       · D=-47 -> h=5（应 5）
+  [sanity] P13 h(-163)=1（约化型枚举）与 -167 过 pole dev=0.000e+00 (identity/sanity, not counted)
+
+RESULT PASS=15 FAIL=0  max dev=9.447e-15
+k=15 fiber=1.000000 fidelity=1.000000 discriminability=0.933333
+res=9.446710e-15 domain=15 dc=97 order=2
+EXIT=0
+=== [part 2/5] BSD · reciprocal forcing ===
+  ① 常数侧倒数账：L·#tors² = Ω·∏c_p·#Ш
+  ② 秩侧零criterion：rank 0 饱和 / rank≥1 趋零
+  ③ 负结果：局部欧拉积 log-log 斜率不区分秩
+
+       · Hasse witnessprime：668 / 668 / 668；32a1 上 p≡3(4) 共 339 个
+  [PASS] Hasse bound 11a1                             dev=0.000e+00 (tol=0e+00)
+  [PASS] Hasse bound 37a1                             dev=0.000e+00 (tol=0e+00)
+  [PASS] Hasse bound 389a1                            dev=0.000e+00 (tol=0e+00)
+  [PASS] 32a1 CM：p≡3(4) ⟹ a_p=0                 dev=0.000e+00 (tol=0e+00)
+
+       · Ω(32a1) = 5.244115108584（外部锚 2·2.6220575543 = 5.2441151086）
+  [PASS] Ω 与外部锚一致                        dev=1.578e-11 (tol=1e-10)
+       · ∏c_p·#Ш = L·#tors²/Ω = 2.000000000082（应为整数 2 ⟹ c₂=2、#Ш=1）
+  [PASS] Tamagawa 积为整数 2（账闭合）       dev=8.230e-11 (tol=2e-10)
+       · L·#tors² = 10.488230218    Ω·∏c_p·#Ш = 10.488230217
+  [PASS] 倒数账两项相消（残差 ≤ 锚截断界） dev=4.316e-10 (tol=8e-10)
+
+       · Abel 和：11a1(r=0)=0.691719550  37a1(r=1)=0.003943185  389a1(r=2)=0.007760701
+  [PASS] rank 0：Abel 和非零（> 0.3）           dev=0.000e+00 (tol=0e+00)
+  [PASS] rank 1：Abel 和趋零（|·| < 0.02）     dev=3.943e-03 (tol=2e-02)
+  [PASS] rank 2：Abel 和趋零（|·| < 0.02）     dev=7.761e-03 (tol=2e-02)
+       · 分离度 |S11| / max(|S37|,|S389|) = 8.913e+01
+  [PASS] 分离度 ≥ 1e1（zerocriterion见血）   dev=0.000e+00 (tol=0e+00)
+  [PASS] zero ⟺ rank≥1（三条一致）          dev=0.000e+00 (tol=0e+00)
+
+       · 11a1   P(60)=  2.344987 P(5000)=  1.393848  斜率=-0.710206
+       · 37a1   P(60)= 17.220676 P(5000)= 43.673137  斜率=1.270509
+       · 389a1  P(60)= 21.882679 P(5000)= 55.230873  斜率=1.263961
+       · 结论（负结果）：三条斜率同量级 ⟹ 局部积在 s=1 对所有秩都给 ~log X
+  [PASS] 负结果：|r(37a1) − r(389a1)| < 0.1（秩不可由局部积读） dev=6.547e-03 (tol=1e-01)
+
+RESULT PASS=13 FAIL=0
+k=13 fiber=1.000000 fidelity=1.000000 discriminability=1.000000
+res=7.760701e-03 domain=13 dc=4 order=2
+EXIT=0
+=== [part 3/5] · 阶 = rank（跨越 parity 的结构 layerclosure）===
+  A 超oddevenzero：389a1 rank 2（even）⟹ parity 不逼出 L(1)=0，实测为 0
+  B 三恒等式：Selmer exact sequence / 重数律配对 / finite量只进首项系数
+
+  [PASS] Hasse 零violation（11a1/37a1/389a1 共 2004 次） dev=0.000e+00 (tol=0e+00)
+  [PASS] 32a1 CM：p≡3(4) ⟹ a_p=0                     dev=0.000e+00 (tol=0e+00)
+  [PASS] Ω 与外锚 2Γ(1/4)²/(2√(2π)) 一致       dev=1.578e-11 (tol=1e-10)
+  [PASS] 账上 ∏c_p·#Ш 为整数 2（c₂=2、#Ш=1） dev=8.230e-11 (tol=2e-10)
+  [PASS] 常数账相消 L·#tors² − Ω·∏c_p·#Ш   dev=4.316e-10 (tol=8e-10)
+
+       · Abel 和：11a1(r=0)=0.691719550  37a1(r=1)=0.003943185  389a1(r=2)=0.007760701
+       · 389a1 rank 2 为偶数 ⟹ 函数方程符号不逼出零（parity 在此不适用）
+  [sanity] 389a1 Abel 和量级 |S389|/|S37|（只报量级，不作零判定） dev=1.968e+00 (identity/sanity, not counted)
+  [PASS] 负控制：11a1（rank 0）同测量条件不为零 dev=0.000e+00 (tol=0e+00)
+  [PASS] 三条分离度 ≥ 1e1                          dev=0.000e+00 (tol=0e+00)
+
+       · 解重数：15 线 · Σλ=6 · ∏λ=-6^11 ⟹ 解 1 组（4,3,2,2,2,2）
+       · 判别力：只留迹 232 组 · 只留积 100 组（两条一起才剩 1 组）
+  [PASS] 重数向量唯一：15 线 · Σλ=6 · ∏λ=-6^11 ⟹ (4,3,2,2,2,2)（枚举 15504 组，解 1 组） dev=0.000e+00 (tol=0e+00)
+       · 由解填出的 15 格谱：c=(|2|,|3|,|6|)=(4,4,7)  m=(2,2,3)  号差=(0,0,1)
+       · Σc=15  Σm=7  Σ号差=1（桶和从解读出，不含任何写死的目标）
+  [PASS] 折叠重数 (|2|,|3|,|6|) = (4,4,7)             dev=0.000e+00 (tol=0e+00)
+  [PASS] 少侧重数 m=(2,2,3)（−3 各 2、−2 各 2、−6 各 3） dev=0.000e+00 (tol=0e+00)
+  [PASS] Σc = 1 + 2Σm = 15 且号差和 = 1（奇支 6^N 的来源） dev=0.000e+00 (tol=0e+00)
+       · ∏spec（由解读出的 15 格）= -362797056
+  [PASS] ∏spec = -6^11 = -362797056                     dev=0.000e+00 (tol=0e+00)
+       · 母律 x^6-14x^4+49x^2-36 在 y=x^2=P^2=1,4,9 处为零，|spec|={1,2,3}=P
+  [PASS] 母律谱 |spec|={1,2,3} 逐点为零（因子基由母律给定） dev=0.000e+00 (tol=0e+00)
+       · 数组嵌套迹谱 Q[N]=Σspec^N（15 格，从解填出）: 15 6 304 216 9460 7776 329764
+       · 闭式 偶 7·6^N+4·3^N+4·2^N / 奇 6^N（奇支系数 = 号差数组 4−3=1）
+  [PASS] 数组嵌套 = 闭式：Q[N] 逐格求和 == 分桶系数数组 {7,4,4} 的展开（N=0..6） dev=0.000e+00 (tol=0e+00)
+
+RESULT PASS=14 FAIL=0
+k=14 fiber=1.000000 fidelity=1.000000 discriminability=1.000000
+res=4.315677e-10 domain=14 dc=15 order=2
+EXIT=0
+=== [part 4/5] · spectral simulator===
+  读法：阶 = 秩稳定的整数读数；Reg = 平方比较；#Sh = 零化度
+
+  [PASS] P1 秩 + 零化度 = 维数（三容器）   dev=0.000e+00 (tol=0e+00)
+       . 半单两档：检测器读出 ord = 2
+  [PASS] P2 ord 检测器（半单两档 -> 2）      dev=0.000e+00 (tol=0e+00)
+       . 幂零块宽 2 -> ord = 2 ；块宽 4 -> ord = 4
+  [PASS] P3 ★ 同一检测器精确区分 2 与 4   dev=0.000e+00 (tol=0e+00)
+       . 谱 {2,3,6}：检测器读出 ord = 0（L(1) 不为零）
+  [PASS] P4 圆心外谱 -> ord 为 0                 dev=0.000e+00 (tol=0e+00)
+       . 15 条谱线：圆心正侧 8 条、负侧 7 条
+  [PASS] P5 正负计数 (8, 7)                       dev=0.000e+00 (tol=0e+00)
+       . 配对数 Σ min = 7（= 每档 m_λ 之和 = 自由方向数）
+  [PASS] P6 阶 = 配对数 (7)                       dev=0.000e+00 (tol=0e+00)
+       . 未配对余数 = 1（尾钩 beta 那一条）
+  [PASS] P7 奇块数 (尾钩 = 1)                    dev=0.000e+00 (tol=0e+00)
+       . 谱 A：od=1 -> w=-1 ；谱 B：od=0 -> w=1 ；两者配对数同为 7
+  [PASS] P8 ★ 两谱 w 相反而阶相同（parity 不足） dev=0.000e+00 (tol=0e+00)
+       . 乘性体积 = 362797056 = 6^11
+  [PASS] P9 Reg^2 = 谱乘性体积 (6^11)            dev=0.000e+00 (tol=0e+00)
+       . 守恒：15 = 1 + 2*7
+  [PASS] P10 谱线守恒 15 = 1 + 2*7                dev=0.000e+00 (tol=0e+00)
+
+RESULT PASS=10 FAIL=0  max dev=0.000e+00
+k=10 fiber=1.000000 保真度=1.000000 判别力=1.000000
+res=0.000000e+00 domain=10 dc=15 order=2
+EXIT=0
+== [part 5/5] construction layer —— Reg / c_p / #Sha 全账 ==
+   [土S锚定]   [火F虚化]   [金M坍缩]   [水W渗透]   [木D扩展]   [土S闭环]
+
+  [P1] r=1 : det(G) = 2.2500000000 (>0), leading minors >0
+  [P1] r=2 : det(G) = 4.0000000000 (>0), leading minors >0
+  [P1] r=3 : det(G) = 1.2633760000 (>0), leading minors >0
+  PASS P1 Gram positive definite                    dev=0.000000e+00 tol=0.000000e+00
+  [P2] U1 : det(U)=1.0  det(U^T G U)=4.0000000000  det(U)^2 det(G)=4.0000000000
+  [P2] U2 : det(U)=-1.0  det(U^T G U)=4.0000000000  det(U)^2 det(G)=4.0000000000
+  [P2] U3 : det(U)=1.0  det(U^T G U)=4.0000000000  det(U)^2 det(G)=4.0000000000
+  PASS P2 det(U^T G U) = det(U)^2 det(G)            dev=0.000000e+00 tol=0.000000e+00
+  [P3] n=2 : h(nP)=6.938000000  n^2 h(P)=6.938000000
+  [P3] n=3 : h(nP)=15.610500000  n^2 h(P)=15.610500000
+  [P3] n=5 : h(nP)=43.362500000  n^2 h(P)=43.362500000
+  [P3] r=2, n=3 : det scaled = 324.000000  vs 81*det = 324.000000
+  PASS P3 h(nP)=n^2 h(P), det scales n^{2r}         dev=0.000000e+00 tol=0.000000e+00
+  [P4] q(P+Q)+q(P-Q) = 7.6800000000   2q(P)+2q(Q) = 7.6800000000
+  PASS P4 parallelogram law                         dev=1.776357e-15 tol=1.000000e-12
+  [P5] lhs = L*#tors^2 = 10.4882302176   rhs = Omega*prod c_p*#Sha = 10.4882302172
+        lhs/Omega = 2.0000000001 (should be integer 2)
+  PASS P5 ledger rank 0: L*#tors^2 = Omega*c*#Sha   dev=8.237810e-11 tol=1.000000e-09
+  [P6] r | Reg exponent (lhs, rhs) | r=0 => Reg=1
+        0 | (0, 0)  empty product = 1
+        1 | (0, 1)
+        2 | (0, 1)
+  [sanity] P6 Reg appears exactly once（恒真计数，不计入判据） dev=0.000e+00 (identity/sanity, not counted)
+  [P7] 由 a-不变量算：c4=48  Delta=64  (v2(c4)=4, v2(Delta)=6)
+  [P7] DISC=2^6  v2(c4)=4  bad primes={2}  good primes (c_p=1) = 24  violations=0
+  PASS P7 Delta=2^6 => only p=2 bad, c_p=1 (p!=2)   dev=0.000000e+00 tol=0.000000e+00
+  [P8] solutions of c*|Sha|=2 with |Sha| a square: 1 -> (c2,|Sha|)=(2,1)
+  PASS P8 c*|Sha|=2 with square |Sha| => unique (2,1) dev=0.000000e+00 tol=0.000000e+00
+  [P9] r=0 : Reg = 1.0 (empty product)   r=1 : Reg = det(G) = 2.250000 > 0
+  PASS P9 r=0 => Reg=1; r>=1 => Reg>0               dev=0.000000e+00 tol=0.000000e+00
+
+RESULT PASS=8 FAIL=0 maxdev=8.238e-11
+k=8 fiber=1.000000 fidelity=1.000000 discriminability=0.875000
+res=8.237810e-11 domain=8 dc=5 order=2
+照实说明：P1-P4/P9 是高度配对的代数性质（精确），P5 用 part 2 的读数复算，
+     P6 是账目形状的计数（Reg 的指数）；P7/P8 是本段实算：Δ = 2^6 ⟹ 只有 p=2 坏，
+     账上整数 2 + Cassels 平方类 ⟹ (c2,|Sha|) = (2,1) 唯一（同 onestep bs_sha 的 25 格读数）。
+     本篇未在实数上闭合 rank>=1 的 Reg numeric（需要 Mordell-Weil 生成元与真实period）。
+EXIT=0
+D3=3
+D3_TOTAL=3
+RESULT PASS=60 FAIL=0   (all criteria in this file)
+EXIT=0

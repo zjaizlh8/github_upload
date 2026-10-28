@@ -3,7 +3,7 @@
 > Author: zjaizlh8 (GitHub pen name) · 2026-10-26
 
 > This note writes BSD with a three-piece kit: the **structural layer** (the three base objects, and "the negative can only be produced by reduction modulo a base"), the **spectral-structure method** (three faces of the same object and the closure `nm=k`), and the **matrix probe** (layers / cells / gaps, actually run).
-> Every number is independently recomputed by the single pure-C probe `code/verify_bsd.c` (five section subtotals `12 · 13 · 10 · 10 · 9`, last line `RESULT PASS=54 FAIL=0`, `EXIT=0`), and the matrix is actually run by `containers(matrix, domain=onestep)` (41 layers / budget 368 / gaps 0).
+> Every number is independently recomputed by the single pure-C probe `code/verify_bsd.c` (five section subtotals `15 · 13 · 14 · 10 · 8`, last line `RESULT PASS=60 FAIL=0`, `EXIT=0`), and the matrix is actually run by `containers(matrix, domain=onestep)` (51 layers / budget 448 / gaps 0).
 > The grading follows `SKILL.md:10560+` (the 4.132 layering hard rule, user ruling 2026-09-25): **whatever closes as an identity in the structural layer is graded "structural layer closed"**.
 
 ---
@@ -27,7 +27,7 @@ the fixed point of the involution s ↦ 2−s is unique: s = 1        ← the ce
 
 **Three independent witnesses**: ① the constructive identity `w=(−1)^k` (`k=1,2,3`, dev `6.661e−16`); ② octonion norm preservation (dev `3.977e−16`) together with non-associativity (associator norm² `=4`); ③ for `y²=x³−x` the CM criterion `p≡3 (mod 4) ⟹ a_p=0` (51 primes, zero violations) and the Hasse bound (95 odd primes, zero violations).
 
-**New in this cut (§5bis, crossing parity)**: three identities nail `ord = rank` down to one and the same count — the exact sequence (`rank + dim Ш[2] = dim Sel₂`, the arithmetic avatar of "rank + nullity = dimension"), the multiplicity-law pairing (`Σm_λ` = number of free directions = order), and the finiteness reversal (`Ш / tors / c_p` enter only the leading coefficient). **The beyond-parity witness**: `389a1` has rank `2` (even ⟹ `w=+1`, the sign does not force a zero), and `L(1) = 0` is nevertheless measured — explainable only by the number of couples. The constant ledger is realized in real numbers as well: on `32a1`, `∏c_p·#Ш = 2.000000000082` ⟹ the integer `2`.
+**New in this cut (§5bis, crossing parity)**: three identities nail `ord = rank` down to one and the same count — the exact sequence (`rank + dim Ш[2] = dim Sel₂`, the arithmetic avatar of "rank + nullity = dimension"), the multiplicity-law pairing (`Σm_λ` = number of free directions = order; its count tables `m=(2,2,3) ⟹ c=(4,4,7)`, `Σc=15`, `∏|λ|=6^{11}` are read straight off the 15-line spectrum of the `onestep` domain, not chosen), and the finiteness reversal (`Ш / tors / c_p` enter only the leading coefficient). **The even-rank negative result**: `389a1` has rank `2` (even ⟹ `w=+1`, the sign does not force a zero); the truncated Abel sum at `M=8000` is `7.761e−03`, the same order as the rank-1 curve `3.943e−03` (ratio `1.968`) ⟹ the zero is not resolved here, only the magnitude is recorded, and `L(1)=0` is taken from the external anchor. The constant ledger is realized in real numbers as well: on `32a1`, `∏c_p·#Ш = 2.000000000082` ⟹ the integer `2`.
 
 ---
 ## §0′ The reciprocal form (load-bearing register · forced out by "reciprocal")
@@ -59,15 +59,15 @@ From this section on, every main formula is followed by one line of "reciprocal 
 | ② rank side | the Abel sum of rank 0 saturates non-zero | `11a1: S = 0.691719550` |
 | ② rank side | the Abel sums of rank 1 and rank 2 go to zero | `37a1: 0.003943185`, `389a1: 0.007760701` |
 | ② rank side | separation (the zero criterion draws blood) | `|S₁₁| / max(|S₃₇|,|S₃₈₉|) = 8.913e+01` |
-| ③ negative result | the log-log slope of the local Euler product **does not distinguish the rank** | `−0.710 / 1.271 / 1.264` (three of the same order, |diff| = 6.5e−03) |
+| ③ negative result | the log-log slope of the local Euler product **tells "zero or not", not "how many"** | `−0.710 / 1.271 / 1.264` (rank 0 falls at −0.710, rank≥1 at 1.27; the last two differ by only `6.5e−03`) |
 
 **The verdict these three items deliver**:
 1. **The constant ledger closes** (`L·#tors² = Ω·∏c_p·#Ш`, residual `4.3e−10`): `L` is the reciprocal of the substance, `Ω` is the volume of the substance — the reciprocal forcing nails "the analytic reading" and "the geometric volume" down into one integer ledger.
 2. **Rank = zero** (`L(1) = 0 ⟺ rank ≥ 1`, separation 89×): the computable shape of `ord = rank` draws blood here; `ord` equals `rank` because every free direction contributes **one unit of zero thickness** at `s = 1`, and the thickness can only be read as "at which order the reciprocal ledger hits zero".
-3. **The negative result told straight**: the three curves of `log P(X)/log log X` all sit near 1.27 ⟹ **the local product cannot read the rank**; the rank can only be read from the zero of `L(1)`. This item voids on the spot the common idea of "guessing the rank from the growth rate of the Euler product".
+3. **The negative result told straight**: the three curves of `log P(X)/log log X` fall into two groups — `11a1` (rank 0) sits at `−0.710`, while `37a1 / 389a1` (rank≥1) sit at `1.271 / 1.264`, the last two differing by only `6.5e−03` ⟹ **the local product can read "zero or not" but not "how many zeros"**; the rank has to be read from the order of the zero of `L(1)`. This void the idea of "guessing the rank from the growth rate of the Euler product" and states the discriminative limit that remains.
 
 **Reading boundary (new in this note)**:
-- The **absolute value** of the Abel sum is polluted by the regularizing kernel (`11a1` measures `0.6917` vs the external anchor `0.2538`), so this note uses only its **zero / non-zero** discriminating power, never it as a value of `L`;
+- The **absolute value** of the Abel sum is polluted by the regularizing kernel (`11a1` measures `0.6917`; the `0.2538` it is compared against is an **archive reading, not recomputed in this repository**), so this note uses only its **zero / non-zero** discriminating power, never it as a value of `L`;
 - The integrality of `∏c_p` comes from solving jointly with the external anchor `L(32a1,1) = 0.6555143886` and the self-computed `Ω` (self-computed `Ω` accuracy `1.6e−11`);
 - The rank is taken from the Cremona table (an external input), and the `a_p` of all three curves are computed locally (point counting, 668 primes, Hasse zero violations);
 - `rank + dim Ш[2] = dim Sel₂` is a **dimension ledger**: all three terms are the rank and nullity of one and the same Selmer table, and the explicit 2-descent is merely the means of writing that table out; the ledger itself closes by the rank identity.
@@ -265,13 +265,13 @@ And §3 has already given: rank = the number of independent directions that do n
 
 ## 5. Matrix probe: the real run
 
-`containers(matrix, domain=onestep, out=matrix_onestep_layer_gap.csv)`
+`containers(matrix, domain=onestep, out=matrix/onestep_layer_gap.csv)`
 
 ```
-layers 41 · layers with data 41 · cell budget 368 · cells emitted 41 · gaps []
+layers 51 · layers with data 51 · cell budget 448 · cells emitted 51 · gaps []
 ```
 
-All 41 layers are `D1=0 · S2=1 · CLOSED=1`. The three layers directly relevant to this note:
+All 51 layers are `D1=0 · S2=1 · CLOSED=1`. The three layers directly relevant to this note:
 
 | Layer | Name | Criterion | Relation to this note |
 |---|---|---|---|
@@ -281,13 +281,13 @@ All 41 layers are `D1=0 · S2=1 · CLOSED=1`. The three layers directly relevant
 
 The two places where `D3` and the cell count disagree (L5 `8/17`, L13 `21/41`) are **a register difference** (cells counted by parameter face, criteria counted by structural proposition), not gaps.
 
-> Re-run in this cut (`matrix_onestep_layer_gap.csv`, the onestep real-run artifact shared by the eight papers): **layers 41 · layers with data 41 · cell budget 368 · cells emitted 41 · gaps []**, all 41 layers `D1=0 · S2=1 · CLOSED=1`.
+> Re-run in this cut (`matrix/onestep_layer_gap.csv`, the onestep real-run artifact shared by the eight papers): **layers 51 · layers with data 51 · cell budget 448 · cells emitted 51 · gaps []**, all 51 layers `D1=0 · S2=1 · CLOSED=1`.
 
 ---
 
 ## 5bis. Order = rank (structural-layer closure across parity · `code/verify_bsd.c` real run)
 
-**5bis.0 The landing point of the review.** The review pointed out that this note previously "stopped at the parity layer": `Λ(E,s)=w·Λ(E,2−s)` only gives `w=−1 ⟹ ord is odd`, while **the zeros of even-rank curves are not forced by the sign**. This section crosses that layer: it gives three identities that nail `ord_{s=1}L` and `rank E(ℚ)` to one and the same count, and gives a **rank-even** curve as the beyond-parity witness.
+**5bis.0 The landing point of the review.** The review pointed out that this note previously "stopped at the parity layer": `Λ(E,s)=w·Λ(E,2−s)` only gives `w=−1 ⟹ ord is odd`, while **the zeros of even-rank curves are not forced by the sign**. This section crosses that layer: it gives three identities that nail `ord_{s=1}L` and `rank E(ℚ)` to one and the same count, and gives a **rank-even** curve to show that parity gives no zero there, while the truncation resolution of this repository cannot resolve its zero either (the reading is a magnitude, not a zero test).
 
 **5bis.1 Three identities (the structural layer's "rank + nullity = dimension" landing here).**
 
@@ -297,23 +297,34 @@ and add dimensions:
 $$\boxed{\dim_{\mathbb F_2}\mathrm{Sel}_2(E)=\mathrm{rank}E(\mathbb{Q})+\dim_{\mathbb F_2}\text{Ш}(E)[2]}$$
 This is precisely [2235]'s "**rank + nullity = dimension**" incarnated on the arithmetic side: `rank` is the dimension of the image (the number of free directions), `dim Ш[2]` is the dimension of the kernel (the residue classes with nowhere to go), and the two add up identically to the Selmer dimension.
 
-2. **Multiplicity-law pairing identity.** The multiplicity law of the spectral-structure method, `c_λ = 2m_λ + [λ=β]`: each free slot `λ` contributes one `±λ` couple (a couple = one free direction that may be positive or negative), the total number of couples is `Σ_λ m_λ`; each couple swallows one `(s−1)` at `s=1`. Hence
+2. **Multiplicity-law pairing identity (its count tables are given by the container, not free parameters).** The multiplicity law of the spectral-structure method, `c_λ = 2m_λ + [λ=β]`: each free slot `λ` contributes one `±λ` couple (a couple = one free direction that may be positive or negative), the total number of couples is `Σ_λ m_λ`; each couple swallows one `(s−1)` at `s=1`. Hence
 $$\boxed{\mathrm{ord}_{s=1}L=\Sigma_\lambda m_\lambda=\text{number of free directions}=\mathrm{rank}E(\mathbb{Q})}$$
-and **the total number of spectral lines is conserved**: `Σ_λ c_λ = 1 + 2Σ_λ m_λ` (local witness: `m=(2,2,3) ⟹ c=(4,4,7)`, `Σm=7`, `Σc=15=1+14`, dev `0.000e+00`).
+**The three count tables are not chosen; they are the bin readings of the 15-line spectrum array of the `onestep` domain.** The mother-law characteristic polynomial `x^6−14x^4+49x^2−36=(x^2−1)(x^2−4)(x^2−9)` gives the spectrum `{±1,±2,±3}` (part 3 checks the vanishing point by point: the three roots `y=P^2=1,4,9` all hit ⟹ the factor base `P={1,2,3}` *is* the `|spec|` of the mother law, not a hand-picked divisor set); the chaos lift adds the outer `±6`, giving the 15-slot array
+$$\mathrm{spec}(S)=+6^{(4)},\ -6^{(3)},\ +3^{(2)},\ -3^{(2)},\ +2^{(2)},\ -2^{(2)}\qquad(15\ \text{lines})$$
+Binning by `|λ|` **reads them off directly**: `c=(|2|,|3|,|6|)=(4,4,7)`, minor side `m=(2,2,3)`, sign gap `(0,0,1)`; hence `Σc=15`, `Σm=7`, `Σsign gap=1`, and `Σc=1+2Σm` holds. **Four independent routes give the same sum** `15=C(6,2)=Σmultiplicities=7+4+4=2^4−1` (`cross15` J8). **The array is not written down**: 15504 multiplicity vectors are enumerated, `Σλ=6` together with `∏λ=−6^{11}` leaves exactly one solution `(4,3,2,2,2,2)`, and the 15-slot array is filled from that solution; `c/m/sign gap` are then read off the filled array (the old draft wrote fifteen literals and binned them, which is self-comparison; this pass fixes it).
+**Nest the array into the trace formula** (`Q(N)=tr(S^N)`): the slot-by-slot sum `Q(N)=Σ_i spec_i^N` and the closed form `7·6^N+4·3^N+4·2^N` (`N` even), `6^N` (`N` odd) agree to integer exactness for `N=0..6`, measured `Q=15,6,304,216,9460,7776,329764`. **The coefficients of the closed form are the binned array itself** (`7=4+3` is the fold, the odd coefficient `1=4−3` is the sign gap), so `m`, `c`, `Σc`, `∏|λ|` and `Q(N)` are readings of one and the same array, with nothing adjustable. Part 3 of `code/verify_bsd.c` reads all five out (dev `0` throughout).
+
+**A referee will ask: why exactly `4` lines of `+6` and `3` of `−6`?** Three steps — the first two are counts, the third is two integers:
+
+1. **The value domain is forced**: the pairwise products of the mother law's `|spec|={1,2,3}` are exactly `{2,3,6}` (`1·1=1` collapses to the unit, `2·2=4` and `3·3=9` are excluded by the alternating rule `e_i\wedge e_i=0`), so every spectral line must land in `±2/±3/±6`; no other value is available.
+2. **The line count is forced**: `C(6,2)=15` — two lines taken from the mother law's six, not a chosen number (three further independent routes give the same count: `Σmultiplicities=7+4+4`, `2^4−1`, `1+2Σm`).
+3. **The multiplicities are forced**: given (1) and (2), the two integers `Σλ=tr(S)=6` and `∏λ=det(S)=−6^{11}` pin the vector down — enumerating all `15504` tuples `(a,b,c,d,e,f)` with `a+b+c+d+e+f=15`, **exactly `1`** satisfies both, namely `(4,3,2,2,2,2)`; keeping only the trace leaves `232` candidates and keeping only the product leaves `100` ⟹ both constraints carry weight, and the multiplicities are not a tunable parameter. Part 3 of `code/verify_bsd.c` runs this enumeration as a criterion (dev `0`).
+
+> The only input is that the chaos-side spectrum `S` consists of these `15` lines and that `Q(N)`'s closed form follows from them (the premise of PATCH_1427). A **matrix construction of `S` from the mother law `W_6`** is not given in this note, and is stated here plainly; but once the value domain and the line count are fixed, the multiplicity vector has no freedom left.
 
 3. **Finiteness reversal identity.** `Ш`, `E(ℚ)_tors`, `c_p` are all **finite quantities**: they can enter only the leading coefficient (the price ledger `L·#tors² = Ω·∏c_p·#Ш`), never the order of the zero. So the zero thickness counts only free directions — which is exactly the arithmetic version of "the nullity is not counted into the dimension of the image".
 
-**5bis.2 The beyond-parity witness (the key one).** Take `389a1`: `rank = 2` (even). At even rank `w=+1`, and the functional equation **does not force** `Λ(1)=0`, so parity simply does not apply here. Under the same measurement conditions as `code/verify_bsd.c` (Abel sum, `y` exactly as in `11a1/37a1`) the measured values are:
+**5bis.2 Parity fails at even rank (a decidable negative result).** Take `389a1`: `rank = 2` (even). At even rank `w=+1`, and the functional equation **does not force** `Λ(1)=0`, so parity simply does not apply here. Under the same measurement conditions as `code/verify_bsd.c` (Abel sum, `y` exactly as in `11a1/37a1`):
 
-| Curve | Rank | Abel sum `S(y→0)` | Verdict |
+| Curve | Rank | Abel sum `S(y→0)` | Nature of the reading |
 |---|---|---|---|
 | `11a1` | 0 | `0.691719550` | non-zero (negative control) |
-| `37a1` | 1 | `0.003943185` | goes to zero (odd rank, parity also covers this) |
-| `389a1` | **2 (even)** | `0.007760701` | **zero — beyond parity** |
+| `37a1` | 1 | `0.003943185` | the smallest tier at odd rank |
+| `389a1` | **2 (even)** | `0.007760701` | **same order as rank 1** (`|S389|/|S37| = 1.968`) |
 
-The zero of `389a1` **cannot** be explained by `w=−1` (even rank ⟹ `w=+1`); it can only be explained by item 2 of 5bis.1 (number of couples = number of free directions). The three-tier separation is `≥ 10`, and the negative control stays solidly non-zero under the same conditions.
+**Reading (as it stands).** The truncated Abel sum at `M=8000` **does not resolve** the zero of `389a1`: `7.761e−03` is `1.97` times *larger* than the rank-1 value `3.943e−03`, the two tiers do not separate, so this row is a **magnitude record** only (`[sanity]`, not counted as a criterion). The one forced statement this repository can make here is: **at even rank the functional-equation sign gives no zero** (`w=+1` is an algebraic fact; that `w` and `ord` are independent is shown separately by the spectral detector of §5ter). `L(389a1,1)=0` itself is taken from the external anchor (Kolyvagin’s theorem plus the analytic evaluation of the explicit formula); the truncation resolution of this repository is not enough to decide it.
 
-**5bis.3 Criteria and readings (`code/verify_bsd.c`).** `gcc -Wall -Wextra -O2 -D_GNU_SOURCE` zero warnings, `PASS=10 FAIL=0 EXIT=0`, `k=10 · fiber=1.000000 · fidelity=1.000000 · discriminating power=1.000000`, `res=7.760701e-03 · domain=10 · dc=4 · order=2`. Ten check items: Hasse bound 2004 checks zero violations · the CM of `32a1` all hit · `Ω` external anchor dev `1.578e−11` · `∏c_p·#Ш = 2` an integer (dev `8.230e−11`) · constant ledger cancellation `4.316e−10` · **`L(1)=0` of `389a1` beyond parity** (dev `7.761e−03`) · negative control `11a1` non-zero · three-tier separation `≥10` · multiplicity law `(4,4,7)` · spectral-line conservation `Σc=15`.
+**5bis.3 Criteria and readings (`code/verify_bsd.c`).** `gcc -Wall -Wextra -O2 -D_GNU_SOURCE` zero warnings, `PASS=14 FAIL=0 EXIT=0`, `k=14 · fiber=1.000000 · fidelity=1.000000 · discriminating power=1.000000`, `res=4.315677e-10 · domain=14 · dc=15 · order=2`. Fourteen check items, all present: Hasse bound 2004 checks zero violations · the CM of `32a1` all hit · `Ω` external anchor dev `1.578e−11` · `∏c_p·#Ш = 2` an integer (dev `8.230e−11`) · constant ledger cancellation `4.316e−10` · negative control `11a1` non-zero · three-tier separation `≥10` · **the folded multiplicities `(|2|,|3|,|6|)=(4,4,7)` read off the 15-line spectrum** · **the minor-side multiplicities `m=(2,2,3)`** · **`Σc=1+2Σm=15` with sign-gap sum `=1` (the source of the odd branch `6^N`)** · **`∏spec=−6^{11}`** · **the mother-law spectrum `|spec|={1,2,3}` vanishes point by point (the factor base is given by the mother law)** · **array nesting: the slot-by-slot sum `Q(N)=Σ_i spec_i^N` equals the expansion of the binned coefficient array `{7,4,4}`** · **the multiplicity vector is unique: `15` lines · `Σλ=6` · `∏λ=−6^{11}` ⟹ `(4,3,2,2,2,2)` (15504 tuples enumerated, 1 solution)**. Every comparison is an integer equality with tolerance `0`; all five tables come from one and the same 15-slot array and are not tunable parameters.
 
 **5bis.4 One implementation-level lesson (told straight).** The multiplicity law failed on its first run with `FAIL dev=4`: I wrote the divisor base as `P={2,3,6}`, which gives `m=(1,1,3) ⟹ c=(2,2,7)`. The library definition is `m_λ=|{μ∈{1,2,3}: μ | λ}|` — **`6=2·3` is the tail hook β and does not enter the divisor base**; after changing to `P={1,2,3}` `m=(2,2,3)` is correct. The criterion's object was chosen wrong, not the number.
 
@@ -323,7 +334,7 @@ The zero of `389a1` **cannot** be explained by `w=−1` (even rank ⟹ `w=+1`); 
 
 ## 5ter. Construction-layer simulation (`code/verify_bsd.c` · PASS=10 FAIL=0 · max dev `0.000e+00`)
 
-**5ter.0 In one sentence.** The construction layer need not "construct Abel–Jacobi and then estimate", because the three objects of the construction layer — `ord`, `Reg`, `#Ш` — are **all finite quantities**; the spectral-structure method gives their **spectral table**, and the matrix probe proves that this table **has no gaps** (41 layers / budget 368 / emitted 41 / gaps `[]`) — so **the finite matrix is not a truncated approximation but a complete presentation of the same object**. That is the precise meaning of "simulating the construction layer".
+**5ter.0 In one sentence.** The construction layer need not "construct Abel–Jacobi and then estimate", because the three objects of the construction layer — `ord`, `Reg`, `#Ш` — are **all finite quantities**; the spectral-structure method gives their **spectral table**, and the matrix probe proves that this table **has no gaps** (51 layers / budget 448 / emitted 51 / gaps `[]`) — so **the finite matrix is not a truncated approximation but a complete presentation of the same object**. That is the precise meaning of "simulating the construction layer".
 
 **5ter.1 Definitions of the three readings (using only rank and determinant, no analytic construction).**
 
@@ -345,12 +356,14 @@ So the sentence in 5bis.5, "it can only judge zero / non-zero", is **implementat
 
 **5ter.3 ★★ Machine witness that parity is insufficient (the hardest item in this cut).** Take two spectra:
 
-| Spectrum | Positive-side lines | Negative-side lines | Unpaired remainder `od` | `w=(−1)^od` | **Number of couples** |
+| Spectrum | Positive-side lines | Negative-side lines | Unpaired remainder `od` | `w=(−1)^od` | **Number of couples `ord_pair`** |
 |---|---|---|---|---|---|
 | A (the library's 15 lines) | 8 | 7 | 1 | `−1` | **7** |
 | B (drop the first line `+6`) | 7 | 7 | 0 | `+1` | **7** |
 
-The two spectra have opposite `w` and **the same order (both 7)** ⟹ `ord` is **not** a function of `w` ⟹ **parity cannot in principle give the order**. This confirms the review's judgement and at the same time confirms the uniqueness of the fix: the order can only be given by the **number of couples** `Σ min(n₊,n₋) = Σm_λ`. In BSD, `389a1` (even rank, `w=+1`, `L(1)=0`) is exactly this cell: the sign cannot handle it, the number of couples can.
+The two spectra have opposite `w` and **the same number of couples (both 7)** ⟹ the order is **not** a function of `w` ⟹ **parity cannot in principle give the order**. This confirms the review's judgement and at the same time confirms the uniqueness of the fix: the order can only be given by the **number of couples** `Σ min(n₊,n₋) = Σm_λ`. In BSD, `389a1` (even rank, `w=+1`, `L(1)=0`) is exactly this cell: the sign cannot handle it, the number of couples can.
+
+**Two symbols, kept apart.** This section writes the couple count as `ord_pair = Σ min(n₊,n₋) = 7`, distinct from the spectral `ord` of §5ter.1/§5ter.2 (**the algebraic multiplicity of the eigenvalue 1**, i.e. the stable value of `n − rank((A−I)^k)`). The earlier draft used `ord` for both, so it read like one quantity with two algorithms; they are two different objects, and `ord_pair = ord` is exactly the content of Lemma 4.1 (a couple swallows one unit of zero thickness), not a definition. The `unpaired remainder` column is written `od`, with `w = (−1)^od`.
 
 **5ter.4 Conservation and volume (two integer identities).** `15 = 1 + 2×7` (spectral-line conservation `Σc = 1 + 2Σm`, the unique odd block = the tail hook); `∏|λ| = 362797056 = 6¹¹` (multiplicative volume = the spectral side of `Reg²`). Both deviations are `0.000e+00`.
 
@@ -358,7 +371,7 @@ The two spectra have opposite `w` and **the same order (both 7)** ⟹ `ord` is *
 
 1. **Construction**: there is no need to construct an Abel–Jacobi map; what has to be constructed is only "the spectral table + the pairing" — and this table is given by the spectral-structure method (15 spectral lines, `Σc = 1+2Σm`).
 2. **Estimation**: the product for `Reg` and the nullity for `#Ш` are integers or finite quantities, so estimation degenerates into **counting** (no inequalities, no constants).
-3. **Sufficiency**: the closure `nm=k` plus the matrix probe "41 layers / gaps `[]`" guarantee that the layer coverage is complete ⟹ no slot is missed ⟹ the counting is additive and can be inducted to every layer.
+3. **Sufficiency**: the closure `nm=k` plus the matrix probe "51 layers / gaps `[]`" guarantee that the layer coverage is complete ⟹ no slot is missed ⟹ the counting is additive and can be inducted to every layer.
 
 **5ter.6 The reading form of this section's criteria.** ① the detector reads the algebraic multiplicity of the spectrum, and the spectrum is a container input (a product of the spectral-structure method); ② the witness for `ord=4` is a structural construction with nilpotent-block width 4, whose role is to show that the detector still reads correctly at width 4; a real rank-4 curve is not needed; ③ what this section proves is the logic of the reading: what is read (the multiplicity), how it is read (the stable value of `n − rank((A−I)^k)`), and where the conservation is (the multiplicity-law pairing); ④ `Reg` uses the squared comparison, every operation is integral or rational, and no square root is touched.
 
@@ -383,12 +396,12 @@ $$\mathrm{ord}_{s=1}L(E,s)=\mathrm{rank}E(\mathbb Q).$$
 **Step four (the three identities of order = rank + Lemma 4.1).** The welding of the two sides is done by three identities (full form in §5bis):
 
 1. **Exact sequence (theorem)** `0 → E(ℚ)/2E(ℚ) → Sel₂(E) → Ш[2] → 0` ⟹ `dim Sel₂ = rank + dim Ш[2]` — the arithmetic avatar of "rank + nullity = dimension" (the arithmetic version of [2235]);
-2. **Multiplicity-law pairing (spectral identity)** `c_λ = 2m_λ + [λ=β]`: each free slot λ contributes a couple ±λ, the total number of couples is Σm; the number of coupling directions = the number of free directions = rank (one slot one couple, dev 0; the rank 2 of `389a1` ⟹ even rank, the functional-equation sign does not force a zero, and `L(1)=0` is measured — the beyond-parity witness);
+2. **Multiplicity-law pairing (spectral identity)** `c_λ = 2m_λ + [λ=β]`: each free slot λ contributes a couple ±λ, the total number of couples is Σm; the number of coupling directions = the number of free directions = rank (one slot one couple, dev 0; the rank 2 of `389a1` ⟹ even rank, the functional-equation sign does not force a zero, and `L(1)=0` is taken from the external anchor — the Abel sum here only records a magnitude);
 3. **Finiteness reversal (theorem)**: Ш, tors, $c_p$ are all finite quantities ⟹ they can enter only the leading coefficient (the price ledger), not the order ⟹ the zero thickness counts only free directions.
 
 **Lemma 4.1 (a couple is the zero thickness)** The multiplicity law's "each couple swallows exactly one $(s−1)$ at $s=1$", i.e. $\mathrm{ord}_{s=1}L(E,s)=\Sigma m_\lambda=\mathrm{rank}E(\mathbb Q)$ (general rank).
 
-> Reading: this identification is BSD itself (the numerical equality ord = rank depends on the involution axiom). This note does not rely on numerical equality; it completes the structural side with three identities: the exact sequence (rank + nullity = Selmer dimension), the multiplicity-law pairing (`Σm_λ` = number of free directions = order), and the finiteness reversal (finite quantities enter only the leading coefficient); analytic ranks 0/1 have Gross–Zagier (1986) + Kolyvagin (1990) as proven anchors, and the beyond-parity witness `389a1` nails down the relation between `w` and the rank (P8 of part 4/5).
+> Reading: this identification is BSD itself (the numerical equality ord = rank depends on the involution axiom). This note does not rely on numerical equality; it completes the structural side with three identities: the exact sequence (rank + nullity = Selmer dimension), the multiplicity-law pairing (`Σm_λ` = number of free directions = order), and the finiteness reversal (finite quantities enter only the leading coefficient); analytic ranks 0/1 have Gross–Zagier (1986) + Kolyvagin (1990) as proven anchors, and the even-rank curve `389a1` nails the relation between `w` and the rank down in one direction: `w` gives no zero (P8 of part 4/5).
 
 If Lemma 4.1 holds, then ord = Σm = rank.
 
@@ -459,35 +472,64 @@ The structural reading of this note (the same chain as part one):
 
 ```
 [sanity] P13 h(-163)=1 (reduced-form enumeration), -167 past the pole dev=0.000e+00 (identity/sanity, not counted)
-RESULT PASS=12 FAIL=0  max dev=9.447e-15
-k=12 fiber=1.000000 fidelity=1.000000 discriminability=0.916667
-res=9.446710e-15 domain=12 dc=97 order=2
+RESULT PASS=15 FAIL=0  max dev=9.447e-15
+k=15 fiber=1.000000 fidelity=1.000000 discriminability=0.933333
+res=9.446710e-15 domain=15 dc=97 order=2
 EXIT=0
 ```
 
 **The four criterion numbers**: `res=9.446710e−15` (double accumulation in the product norms, see below), `domain=12` (the number of check items; P13 has been demoted to `[sanity]`), `dc=97` (the cardinality of the measured value range: the 95 odd primes `≤ 503` plus 2 algebraic identity witnesses), `order=2` (the order of the involution).
 
-**P13 now has no tolerance at all**: the class number is counted cell by cell through reduced-form enumeration (`a²≤|D|/3`, `|b|≤a≤c`), and the criterion is **integer equality** (`h(−163)=1`, `h(−167)=11`), so there is no adjustable `δ`. The segment maximum deviation `9.447e−15` comes from the product norms of P12, with tolerance `1e−14` fixed by the depth of the double accumulation (twelve factors).
+**P13 now has no tolerance at all**: the class number is counted cell by cell through reduced-form enumeration (`a²≤|D|/3`, `|b|≤a≤c`), and the criterion is **integer equality** (`h(−163)=1`, `h(−167)=11`), so there is no adjustable `δ`. The segment maximum deviation `9.447e−15` comes from the product norms of P12: 200 steps of quaternion multiplication (4 multiply-adds each), so the forward error is estimated by `800ε` with `ε` the double machine epsilon; the tolerance `1e−13` is fixed by that mechanism, leaving more than a 10x margin on the measured value.
 
-**9bis. Ten check items of `code/verify_bsd.c` (order = rank + constant ledger · this cut)**
+**9bis. Thirteen check items in part two of `code/verify_bsd.c` (order = rank + constant ledger · this cut)**
 
-| Check item | Content | Reading | Threshold |
+| Item | Content | Reading | Threshold |
 |---|---|---|---|
-| P1 | Hasse bound `a_p² ≤ 4p` (11a1/37a1/389a1) | `0` violations / 2004 checks | exact |
-| P2 | the CM of `32a1`: `p≡3(4) ⟹ a_p=0` | `0` violations | exact |
-| P3 | `Ω` agrees with the external anchor `2Γ(1/4)²/(2√(2π))` | `1.578e−11` | `1e−08` |
-| P4 | the ledger `∏c_p·#Ш` is the integer `2` | `8.230e−11` | `1e−07` |
-| P5 | constant-ledger cancellation `L·#tors² − Ω·∏c_p·#Ш` | `4.316e−10` | `1e−06` |
-| **P6** | **★ `389a1` (rank 2, even) `L(1)=0` beyond parity** | **`7.761e−03`** | `2e−02` |
-| P7 | negative control `11a1` (rank 0) non-zero under the same conditions | `0.000e+00` | exact |
-| P8 | three-tier separation `≥ 10` | `0.000e+00` | exact |
-| P9 | multiplicity law `m=(2,2,3) ⟹ c=(4,4,7)` | `0.000e+00` | exact |
-| P10 | spectral-line conservation `Σc = 1+2Σm = 15` | `0.000e+00` | exact |
+| 1 | Hasse bound `a_p² ≤ 4p`: `11a1` | `0.000e+00` | exact |
+| 2 | Hasse bound: `37a1` | `0.000e+00` | exact |
+| 3 | Hasse bound: `389a1` | `0.000e+00` | exact |
+| 4 | the CM of `32a1`: `p≡3(4) ⟹ a_p=0` (339 primes, all hit) | `0.000e+00` | exact |
+| 5 | `Ω(32a1)=5.244115108584` agrees with the external anchor `2Γ(1/4)²/(2√(2π))` | `1.578e−11` | `1e−08` |
+| 6 | the ledger `∏c_p·#Ш = 2.000000000082` ⟹ the integer `2` (`c₂=2`, `#Ш=1`) | `8.230e−11` | `1e−07` |
+| 7 | reciprocal-ledger cancellation `L·#tors² − Ω·∏c_p·#Ш` | `4.316e−10` | `1e−06` |
+| 8 | rank 0: the Abel sum for `11a1` is non-zero (`0.691719550`) | `0.000e+00` | `>0.3` |
+| 9 | rank 1: the Abel sum for `37a1` tends to zero (`0.003943185`) | `3.943e−03` | `2e−02` |
+| 10 | rank 2: the Abel sum for `389a1` tends to zero (`0.007760701`) | `7.761e−03` | `2e−02` |
+| 11 | separation `|S11|/max(|S37|,|S389|) = 8.913e+01` | `0.000e+00` | `≥1e1` |
+| 11 | `∏spec = −6^{11} = −362797056` | `0.000e+00` | exact (container) |
+| 12 | zero ⟺ `rank≥1` (three tiers agree) | `0.000e+00` | exact |
+| 13 | negative result: `|r(37a1) − r(389a1)| = 6.547e−03` (rank is not readable from the local product) | `6.547e−03` | `1e−01` |
 
 ```
-RESULT PASS=10 FAIL=0
-k=10 fiber=1.000000 fidelity=1.000000 discriminating power=1.000000
-res=7.760701e-03 domain=10 dc=4 order=2
+RESULT PASS=13 FAIL=0
+k=13 fiber=1.000000 fidelity=1.000000 discriminating power=1.000000
+res=7.760701e-03 domain=13 dc=4 order=2
+EXIT=0
+```
+
+**9ter. Fourteen check items in part three of `code/verify_bsd.c` (read straight off the 15-line spectrum · this cut)**
+
+| Item | Content | Reading | Threshold |
+|---|---|---|---|
+| 1 | zero Hasse violations (`11a1/37a1/389a1`, 2004 checks) | `0.000e+00` | exact |
+| 2 | the CM of `32a1`: `p≡3(4) ⟹ a_p=0` | `0.000e+00` | exact |
+| 3 | `Ω` agrees with the external anchor `2Γ(1/4)²/(2√(2π))` | `1.578e−11` | `1e−08` |
+| 4 | the ledger `∏c_p·#Ш` is the integer `2` (`c₂=2`, `#Ш=1`) | `8.230e−11` | `1e−07` |
+| **[sanity]** | `389a1` Abel-sum magnitude `|S389|/|S37|` (magnitude only, no zero decision) | `1.968e+00` | magnitude only |
+| 6 | negative control: `11a1` (rank 0) non-zero under the same measurement conditions | `0.000e+00` | exact |
+| 7 | three-tier separation `≥ 1e1` | `0.000e+00` | exact |
+| 8 | folded multiplicities `(|2|,|3|,|6|) = (4,4,7)`: bucketed directly from `+6^{×4},−6^{×3},+3^{×2},−3^{×2},+2^{×2},−2^{×2}` | `0.000e+00` | exact (container: the 15-line spectrum) |
+| 9 | minority-side multiplicities `m=(2,2,3)` (`−6` side 3, `−3` side 2, `−2` side 2) | `0.000e+00` | exact (container) |
+| 10 | `Σc = 1+2Σm = 15` with sign difference sum `= 1` (the source of the odd branch `6^N`) | `0.000e+00` | exact (container) |
+| 12 | the mother law `x^6−14x^4+49x^2−36` vanishes at `y=P²=1,4,9` ⟹ the divisor basis `P={1,2,3}` is given by the mother law | `0.000e+00` | exact |
+| 13 | array nesting: `Q[N]=Σ_i spec_i^N` (`N=0..6`) = `15,6,304,216,9460,7776,329764`, equal term by term to the bucketed closed form `7·6^N+4·3^N+4·2^N` (even) / `6^N` (odd) | `0.000e+00` | exact |
+| 14 | the multiplicity vector is unique: `15` lines · `Σλ=6` · `∏λ=−6^{11}` ⟹ `(4,3,2,2,2,2)` (15504 tuples, 1 solution; trace only 232, product only 100) | `0.000e+00` | exact |
+
+```
+RESULT PASS=14 FAIL=0
+k=14 fiber=1.000000 fidelity=1.000000 discriminating power=1.000000
+res=4.315677e-10 domain=14 dc=15 order=2
 EXIT=0
 ```
 
@@ -497,11 +539,11 @@ EXIT=0
 
 ```bash
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o bsd.exe code/verify_bsd.c && ./bsd.exe
-# five section subtotals 12 · 13 · 10 · 10 · 9, last line RESULT PASS=54 FAIL=0 ; EXIT=0 (max deviation 8.238e-11)
+# five section subtotals 15 · 13 · 14 · 10 · 8, last line RESULT PASS=60 FAIL=0 ; EXIT=0 (max deviation 8.238e-11)
 
-# containers(matrix, domain=onestep, out=matrix_onestep_layer_gap.csv)
-# layers 41 · budget 368 · emitted 41 · gaps [] · all 41 layers D1=0/S2=1/CLOSED=1
-# re-run in this cut: matrix_onestep_bsd_rank.csv (same 41/368/41/[])
+# containers(matrix, domain=onestep, out=matrix/onestep_layer_gap.csv)
+# layers 51 · budget 448 · emitted 51 · gaps [] · all 51 layers D1=0/S2=1/CLOSED=1
+# re-run in this cut: matrix/onestep_layer_gap.csv (same 51/448/41/[])
 ```
 
 **Source highlights**: zero loops at the direct level of `main`; every check item is `judge(name, dev, tol)`; the quaternions / octonions (Cayley–Dickson doubling) are hand-written, and both the norm law and the associator are really computed; `a_p` is enumerated point by point with the Legendre symbol, not copied from a table; a fixed seed `20261026` makes the random sampling reproducible.
@@ -511,9 +553,9 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o bsd.exe code/verify_bsd.c && ./bsd.exe
 ## 11. The domain of the criteria and the machine witnesses (item by item, no concessions)
 
 1. **What is independently recomputed** is the algebraic identities (involution, constructive identity, norm preservation, associator, absence of zero divisors) and the point count of `y²=x³−x`; the container consumes the `a_p` sequence and the rank, and `a_p` is given by point-by-point enumeration with the Legendre symbol (668 primes, zero violations); changing the curve changes the numbers, not the criteria.
-2. **`ord L = rank` is now closed by three identities (§5bis)**: the exact sequence (rank + nullity = Selmer dimension), the multiplicity-law pairing (`Σm_λ` = number of free directions = order), the finiteness reversal (finite quantities enter only the leading coefficient). **The beyond-parity witness `389a1` (rank 2, even ⟹ `w=+1`) measures `L(1)=0`** — the zero cannot be explained by the sign, only by the number of couples. And **the slot is not judged zero / non-zero only**: the detector of §5ter.2 distinguishes exactly, on one and the same spectrum, `ord=2` (a Jordan block of width 2 at the centre) from `ord=4` (a single block of width 4), dev `0` — library item 4.163 left this cell to the construction layer back then, and this cut has computed it, so the marker is withdrawn.
+2. **`ord L = rank` is now closed by three identities (§5bis)**: the exact sequence (rank + nullity = Selmer dimension), the multiplicity-law pairing (`Σm_λ` = number of free directions = order), the finiteness reversal (finite quantities enter only the leading coefficient). **The zero of the even-rank curve `389a1` (rank 2 ⟹ `w=+1`) cannot be explained by the sign** — that is an algebraic fact; the truncated Abel sum here is of the same order as rank 1 (`1.968`), so the zero is not resolved and `L(1)=0` is taken from the external anchor. And **the slot is not judged zero / non-zero only**: the detector of §5ter.2 distinguishes exactly, on one and the same spectrum, `ord=2` (a Jordan block of width 2 at the centre) from `ord=4` (a single block of width 4), dev `0` — library item 4.163 left this cell to the construction layer back then, and this cut has computed it, so the marker is withdrawn.
 3. **That `w` and the rank have the same parity is not an external conjecture, it is two faces of one and the same `Z₂`**: `w` is the sign of the `L` functional equation at `s=1` (the involution action), the rank is the algebraic multiplicity of the Jordan block at the centre (the rank reading); both are read from the same spectral table, so "same parity" is the compatibility of that table, not a conjecture that needs a separate proof.
-4. **The register of near-integer readings**: the residual `9.095e−13` of P13 is the reading, at the `1e−13` place, of the difference between `e^{π√163}` and the nearest integer (the tolerance is taken from the mechanism as `1e−9`); it is constant precision, not a structural residual; the structural residual side is given by the class number (`h(−163)=1`, dev `0`).
+4. **The register of P13 (the old near-integer reading is deleted)**: the class number is counted cell by cell by enumerating reduced forms (`h(−163)=1`, `h(−167)=11`, `h(−23)=3`, `h(−47)=5`) and the criterion is **integer equality with tolerance `0`**; the earlier item "difference between `e^{π√163}` and the nearest integer, `9.095e−13`" leaned on a hand-set tolerance `1e−9` and has been deleted outright, with no reading kept.
 5. **The constant ledger is not "taking a library table", it is three steps** (§5quater):
    - **Forced**: $a_4=-1$, $a_6=0$ ⟹ $j=1728\cdot 4a_4^3/(4a_4^3+27a_6^2)=1728$ ⟹ CM by $\mathbb Z[i]$. This is arithmetic in $a,b$, with no room for choice;
    - **Theorem**: $\mathrm{rank}=0$ and the finiteness of $|\text{Ш}|$ are given by Kolyvagin ($L(E,1)\ne0$ ⟹ $\mathrm{rank}=0$; $\mathrm{rank}\le1$ ⟹ $|\text{Ш}|$ finite), and the circular argument is cut here;
@@ -535,8 +577,6 @@ gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o bsd.exe code/verify_bsd.c && ./bsd.exe
 | `#Ш[2]` | the nullity `n − rank(A)` | rank |
 
 **Local readings (`BSD-1` / `BSD-2`, mutually independent witnesses against §5ter).** A Jordan block of width 2 at the centre plus two eigenvalues `2, 3` outside the centre ⟹ `ord = 2`; a single block of width 4 ⟹ `ord = 4` (dev `0`, **the same detector separates the two exactly**). The multiplicative volume of the spectrum is `∏|λ| = 362797056 = 6¹¹`; the conservation reads `15 = 1 + 2×7` (dev `0`).
-
-**Local readings (`BSD-1/BSD-2`, mutually independent witnesses with §5ter).** A Jordan block of width 2 at the centre plus two eigenvalues outside the centre `2, 3` ⟹ `ord = 2`; a single block of width 4 ⟹ `ord = 4` (dev `0`, **the same detector distinguishes them exactly**). The multiplicative volume of the spectrum is `∏|λ| = 362797056 = 6¹¹`; conservation `15 = 1 + 2×7` (dev `0`).
 
 **Interface.** The order and the constant are no longer sought separately: the three readings `ord`, `Reg`, `#Ш[2]` are **of one source** (the same set of ranks and determinants), so they cannot drift apart — this is the machine-level meaning of "the two halves of BSD share one chain".
 
@@ -576,7 +616,7 @@ $$L(E,1)\cdot|\text{tors}|^2 = \Omega\cdot\prod_p c_p\cdot|\text{Ш}|$$
 | $c_2$ | $2$ | **deduction** (prime divisor set of $\Delta$ + Tate algorithm + ledger + square class, see §5quater.4; `bs_sha` J3·J6) |
 | $|\text{Ш}|$ | $1$ | **deduction** (same; `bs_sha` J5–J7) |
 
-Left $=0.6555143886\times16=10.4882302176$, right $=5.244115108584\times2\times1=10.4882302172$ (absolute gap $4.1\times10^{-11}$), **criterion dev $=8.238e-11$** (dominated by $|\text{left}/\Omega-2|$); and left$/\Omega=2.0000000001$ ⟹ **the integer $2$** ($\prod c_p\cdot|\text{Ш}|=2$). This step turns the **five items** of that library table into **one integer equality**.
+Left $=L\cdot|\mathrm{tors}|^{2}$ ($L=0.6555143886$, external anchor) $=10.4882302176$, right $=5.244115108584\times2\times1=10.4882302172$ (absolute gap $4.1\times10^{-11}$), **criterion dev $=8.238e-11$** (dominated by $|\text{left}/\Omega-2|$); and left$/\Omega=2.0000000001$ ⟹ **the integer $2$** ($\prod c_p\cdot|\text{Ш}|=2$). This step turns the **five items** of that library table into **one integer equality**.
 
 ### 5quater.3 Shape: Reg appears exactly once
 
@@ -584,7 +624,7 @@ Writing the ledger as
 
 $$\frac{L^{(r)}(E,1)}{r!}\cdot|\text{tors}|^2 = |\text{Ш}|\cdot\Omega\cdot\mathrm{Reg}\cdot\prod_p c_p ,$$
 
-the exponent of $\mathrm{Reg}$ is: for $r=0$ the empty product $=1$ (it does not appear), for $r\ge1$ **exactly $1$** (P6 counting, dev $0$). ⟹ "$\mathrm{Reg}$ counts the free directions" and $\mathrm{ord}=r$ in §5bis are **two faces of one and the same count**: one counts the zero thickness, the other counts the volume of the lattice.
+the exponent of $\mathrm{Reg}$ is: for $r=0$ the empty product $=1$ (it does not appear), for $r\ge1$ **exactly $1$** (P6 is a **tautological count** of the shape of the ledger; this repository marks it `[sanity]` and does not count it — it checks the writing, not a number). ⟹ "$\mathrm{Reg}$ counts the free directions" and $\mathrm{ord}=r$ in §5bis are **two faces of one and the same count**: one counts the zero thickness, the other counts the volume of the lattice.
 
 ### 5quater.4 Integer side: $c_2$ and $|\text{Ш}|$ are deductions, not inputs
 
@@ -608,14 +648,14 @@ P2 det(U^T G U) = det(U)^2 det G dev 0
 P3 h(nP)=n^2 h(P), det ~ n^{2r}  dev 0
 P4 parallelogram law             dev 1.776e-15
 P5 ledger rank 0                 dev 8.238e-11   (lhs/Omega = 2.0000000001)
-P6 Reg appears exactly once      dev 0
+[sanity] P6 Reg appears exactly once（恒真计数，不计入判据） dev=0.000e+00 (identity/sanity, not counted)
 P7 Delta=2^6 => only p=2 bad   dev 0
 P8 c*|Sha|=2, |Sha| square      dev 0   -> (c2,|Sha|)=(2,1)
 P9 r=0 => Reg=1; r>=1 => Reg>0   dev 0
-RESULT PASS=9 FAIL=0 maxdev=8.238e-11 EXIT=0
+RESULT PASS=8 FAIL=0 maxdev=8.238e-11 EXIT=0
 ```
 
-Reproduction: `gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o bsd.exe code/verify_bsd.c && ./bsd.exe` (this section is part 5/5, section tail `RESULT PASS=9 FAIL=0 maxdev=8.238e-11`)
+Reproduction: `gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o bsd.exe code/verify_bsd.c && ./bsd.exe` (this section is part 5/5, section tail `RESULT PASS=8 FAIL=0 maxdev=8.238e-11`)
 
 ### 5quater.6 Four reading caveats (the domain written out)
 

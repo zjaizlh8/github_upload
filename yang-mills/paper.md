@@ -3,18 +3,18 @@
 > Author: zjaizlh8 (GitHub pen name)
 > System: Unary Field Theory (WQNN-K8538)
 > Date: 2026-10-26
-> Independent recomputation: `code/verify_ym.c` (pure C, zero loops at the direct level of `main`, two subtotals `8 · 9`, last line `RESULT PASS=17 FAIL=0`, `EXIT=0`)
+> Independent recomputation: `code/verify_ym.c` (pure C, zero loops at the direct level of `main`, two subtotals `9 · 9`, last line `RESULT PASS=18 FAIL=0`, `EXIT=0`)
 > Matrix run: `containers matrix domain=onestep` → `matrix_onestep_layer_gap_ym.csv`
 
 ---
 
 ## Abstract
 
-This paper uses three structural tools to give a **structural-layer reading** of Yang–Mills existence and the mass gap (the load-bearing Lemma 4.1 is forced: `λ_l = l(l+2)`, `λ₀` simple ⟹ `Δ = √3·Λ` is a subtraction — not an extra assumption):
+This paper uses three structural tools to give a **structural-layer reading** of Yang–Mills existence and the mass gap (the load-bearing Lemma 4.1 is **conditional** — the 4D SU(3) continuum limit; what is proved inside the container is `λ_l = l(l+2)`, `λ₀` simple, and hence `Δ = √λ₁/R`): **note that `Δ = √3·Λ` uses the choice `l = 1`** (`λ₁ = 3`); taking `l = 2` would give `Δ = √8·Λ`, so the `√3` is a **sector choice**, not a forced value — the identification of the `l=1` mode with the physical 4D SU(3) sector is exactly what Lemma 4.1 supplies.
 
 1. **Structural layer**: the foundation of mathematics is "unit 1 × Cartesian product × place-value power $b^k$"; the three base criteria uniquely select $729=3^6$ (a base, not an operation, giving only volume); the four classes of basic operations (addition, multiplication, reduction mod, cross-dimension) are the four operation cells ($V_4$), among which **reduction mod is the only one that can produce "inversion / folding back"** (Theorem 1.4).
 2. **Spectral-structure method**: three instances of the same action on one container — take the spectrum inside a layer, nest between layers, close above the layer; the closure condition is $nm=k$. **A closed form is a closed form, accumulation is stepping**: the difference between the closed form of the running coupling and the Euler accumulation is strictly $O(h)$ (steps $\times10$ ⟹ error $\div10$), and this is the complete individual of "one step for the true value, one step for the error".
-3. **Matrix probe**: $41$ layers, $368$ cell budget, $41$ cells emitted, **gaps empty**, all `D1=0 · S2=1 · CLOSED=1`.
+3. **Matrix probe**: $51$ layers, $448$ cell budget, $51$ cells emitted, **gaps empty**, all `D1=0 · S2=1 · CLOSED=1`.
 
 Brought down to Yang–Mills, the three tools give four forced facts:
 
@@ -158,7 +158,7 @@ Error ratio $10.2096\to10.0204\to10.0020$ ⟹ first order $O(h)$: **a step is a 
 `containers matrix domain=onestep` for this run (`matrix_onestep_layer_gap_ym.csv`):
 
 ```
-layers 41 · layers with data 41 · cell budget 368 · cells emitted 41 · gaps []
+layers 51 · layers with data 51 · cell budget 448 · cells emitted 51 · gaps []
 ```
 
 The key layers relevant to this question (all `D1=0 · S2=1 · CLOSED=1`):
@@ -234,7 +234,7 @@ Dividing by $g^{10}$ still tends to $0$ ⟹ **essential singularity**: $\Lambda$
 
 $$\Delta=\frac{\sqrt{\lambda_1}}{R}=\sqrt3\Lambda .$$
 
-($R$ is the compactification radius, scale $R=1/\Lambda$.) Machine witness (P9): $\Delta/\Lambda=\sqrt3$ is **closed form** ($\Delta=\sqrt{\lambda_1}/R$ with $\lambda_1=3$); what P9 computes is the irrationality of $\sqrt3$ ($17320508^2\le 3\cdot10^{14}<17320509^2$ and $3\cdot10^{14}$ is not a square) plus the rational-point witness $\min|3q^2-p^2|=1$ over `q≤200`.
+($R$ is the compactification radius, scale $R=1/\Lambda$.) Machine witness (P9): $\Delta/\Lambda=\sqrt3$ is **closed form** ($\Delta=\sqrt{\lambda_1}/R$ with $\lambda_1=3$); P9 sweeps no range: it evaluates two lemmas that hold for **all integers** — the complete residue system mod 3 gives $r^2\equiv0\iff r=0$, hence $3\mid p^2\Rightarrow 3\mid p$; the descent identity $(3p_1)^2=9p_1^2$ says a non-zero solution descends forever, so $\sqrt3$ admits no rational point; a witness $|3\cdot1^2-2^2|=1$ then pins $\min_{q\ge1}|3q^2-p^2|=1$, **independent of any range** (the integer bracket $17320508^2\le 3\cdot10^{14}<17320509^2$ is corroboration only).
 
 **External anchor (as it stands)**: $2373=3\cdot7\cdot113$ hard-matches the $2373$ MeV of the $2^{++}$ glueball (archive Q5, background $0.2\text{ per cent}$). Hence, taking $2373$ MeV as the gap anchor, $\Lambda=2373/\sqrt3=1370.05$ MeV.
 
@@ -303,10 +303,10 @@ By Lemma 4.1, $\Delta:=\sqrt3\Lambda>0$ and $\mathrm{spec}(H)=\lbrace0\rbrace\cu
 | P3 $S^3$ spectral identity | $0$ | $\lambda_l-(\text{mult}-1)$ | $10^{-12}$ |
 | P4 compact vs non-compact | $0$ | $S^1$ lower bound $1$; $\mathbb{R}$ three tiers decreasing | $10^{-12}$ |
 | P5 gauge invariance of the trace | $0$ | four points | $10^{-12}$ |
-| P6 Euler error ratio | $2.044\times10^{-2}$ | asymptotic two tiers $\vert$ratio$-10\vert$ | $5\times10^{-2}$ ($=10/N_{\rm first}/2$) |
+| P6 Euler error ratio | $2.044\times10^{-2}$ | asymptotic two tiers $\vert$ratio$-10\vert$ | $5\times10^{-2}$ (set by hand; the first-step ratio $10.2096$ is the $O(h)$ leading term and is excluded, only the asymptotic pair $i\ge1$ is kept) |
 | P7 $\Lambda$ essential singularity | $0$ | log identity + $g^{10}$ suppression | $10^{-11}$ |
-| P8 closure $\iff$ integer winding | $0$ | 4 windings + 1 truncated chain | $10^{-12}$ |
-| P9 $\Delta/\Lambda=\sqrt3$ | $0$ | vs $2373=3\cdot7\cdot113$ | $10^{-12}$ |
+| P8 closure $\iff$ integer winding | $7.348\times10^{-16}$ (the paper previously printed $0$) | 4 windings + 1 truncated chain | $10^{-12}$ |
+| P9 $\Delta/\Lambda=\sqrt3$ | $0$ | spectrum $\lambda_l=l(l+2)$ ($\lambda_1=3$) + all-integer irrationality (residues + descent) | $0$ (integer equality) |
 
 `RESULT PASS=9 FAIL=0 · EXIT=0`.
 
@@ -317,9 +317,9 @@ By Lemma 4.1, $\Delta:=\sqrt3\Lambda>0$ and $\mathrm{spec}(H)=\lbrace0\rbrace\cu
 ```bash
 cd /d/lw
 gcc -Wall -Wextra -O2 -D_GNU_SOURCE -o ym.exe code/verify_ym.c && ./ym.exe   # zero warnings
-# two subtotals 8 · 9, last line RESULT PASS=17 FAIL=0 ; EXIT=0
+# two subtotals 9 · 9, last line RESULT PASS=18 FAIL=0 ; EXIT=0
 # containers matrix domain=onestep → matrix_onestep_layer_gap_ym.csv
-# layers 41 · budget 368 · emitted 41 · gaps []
+# layers 51 · budget 448 · emitted 51 · gaps []
 ```
 
 ---
@@ -361,7 +361,7 @@ $\Delta_{\rm phys}L=\sqrt{\lambda_1}L$:
 | 64 | 0.01562 | 6.2806623139 |
 | 128 | 0.00781 | 6.2825545019 |
 
-The three tiers converge to $2\pi=6.2831853$ (maximum relative difference $1.606\times10^{-3}$, decreasing with $N$) ⟹ **the gap is a constant in physical units, and all drift in lattice units is carried by $a$**. This is exactly the necessary condition for "the continuum limit exists".
+The three tiers converge to $2\pi=6.2831853$ (mathematical constant) (maximum relative difference $1.606\times10^{-3}$, decreasing with $N$) ⟹ **the gap is a constant in physical units, and all drift in lattice units is carried by $a$**. This is exactly the necessary condition for "the continuum limit exists".
 
 ### 5ter.4 Volume scaling: $\Delta(L)L$ independent of $L$
 

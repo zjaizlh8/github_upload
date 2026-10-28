@@ -1,0 +1,198 @@
+bsd,5,valid,> 本文用三件套写 BSD：**结构层**（基础三件�
+bsd,6,valid,> 全部数值由纯 C 探针 `code/verify_bsd.c` 一支独�
+bsd,7,valid,> 分级依 `SKILL.md:10560+`（4.132 分层判据硬规，�
+bsd,8,blank,-
+bsd,9,valid,---
+bsd,10,blank,-
+bsd,11,blank,-
+bsd,12,blank,-
+bsd,14,blank,-
+bsd,16,blank,-
+bsd,17,valid,```
+bsd,18,valid,对合 s ↦ 2−s 的不动点唯一 s = 1              ←
+bsd,36,valid,依据库内三条倒数定律（探针 [2233]/[2234]/[2235]
+bsd,37,valid,- **闭合 ⟺ 该侧存在乘性逆，且逆在同一容器
+bsd,38,valid,- **膨胀与收缩互为倒数**（乘积恒 1，缺一个�
+bsd,39,valid,- **本体与投影必谈倒数**：`投影率 × 本体倍�
+bsd,42,valid,本节之后每一处主式都跟一行「倒数账」：它
+bsd,44,blank,-
+bsd,46,blank,-
+bsd,49,valid,- 倒数账：`L(E;1) · #tors² / (Ω · ∏c_p · #Ш) = 1
+bsd,50#dup(sep),valid,- **秩侧**：`ord_{s=1}L = rank` 的真身是「零点厚�
+bsd,51#dup(sep),valid,- 于是 `[2235]` 的 `秩 + 零化度 = 维数` 在算术�
+bsd,53,blank,-
+bsd,54,blank,-
+bsd,60,valid,| ② 秩侧 | rank 0 的 Abel 和饱和非零 | `11a1: S = 
+bsd,70,valid,**读数边界（本篇新增）**：
+bsd,71,valid,- Abel 和的**绝对值**受正则核污染（`11a1` 实测
+bsd,72,valid,- `∏c_p` 的整数性来自外部锚 `L(32a1;1) = 0.655514
+bsd,73,valid,- 秩取自 Cremona 表（外部输入），三条曲线的 
+bsd,74,valid,- `rank + dim Ш[2] = dim Sel₂` 是**维数账**：三项�
+bsd,79,valid,| 层 | 内容 | 本文对应物 |
+bsd,80,valid,|---|---|---|
+bsd,84,blank,-
+bsd,87,valid,> **阶（order）⟺ 不动点的重数 ⟺ 符号 `w` 的�
+bsd,88,valid,> **秩（rank）⟺ 八元数里不塌的独立方向数 �
+bsd,89,blank,-
+bsd,91,blank,-
+bsd,93,blank,-
+bsd,96,blank,-
+bsd,105,blank,-
+bsd,107,blank,-
+bsd,109,blank,-
+bsd,111,valid,|---|---|---|---|
+bsd,113,valid,| 乘法 | 生成 | 守·张 | 欧拉积 `∏_p L_p(s)` |
+bsd,115,valid,| 跨维度 | 换维 | 移·张 | 局部 → 全局（欧拉
+bsd,117,blank,-
+bsd,119,blank,-
+bsd,121,blank,-
+bsd,123,blank,-
+bsd,135,blank,-
+bsd,139,blank,-
+bsd,144,valid,于是「阶」这个概念**只能**落在 `s=1`：别处�
+bsd,146,blank,-
+bsd,149,blank,-
+bsd,157,blank,-
+bsd,159,blank,-
+bsd,161,valid,|---|---|---|---|
+bsd,P5b,oob,-
+bsd,P6b,oob,-
+bsd,P2b,oob,-
+hl,7,valid,$$\boxed{\ \pi_2(x)\ \sim\ 2C_2\mathrm{Li}_2(x)\qquad (x\to\
+hl,9,valid,的同一容器推导与机器验收。
+hl,11,valid,**层位声明（照实，三句）**：
+hl,15,valid,- **逻辑层：仍开放**——$\pi_2\sim2C_2\mathrm{Li}_2
+hl,18,blank,-
+hl,20,valid,2. **谱结构方法**（§2）：同一容器上的层内�
+hl,22,blank,-
+hl,24,blank,-
+hl,29,blank,-
+hl,31,valid,本节的唯一目的是**把"已证 / 已测 / 不可达"�
+hl,33,blank,-
+hl,45,blank,-
+hl,52,blank,-
+hl,54,blank,-
+hl,56,blank,-
+hl,58,blank,-
+hl,60,valid,依据库内三条倒数定律（探针 [2233]/[2234]/[2235]
+hl,63,valid,- **本体与投影必谈倒数**：`投影率 × 本体倍�
+hl,65,valid,因此判据不是「两边各算一遍、数值接近」，
+hl,67,blank,-
+hl,100,blank,-
+hl,102,blank,-
+hl,106,valid,**推论 1.1.1**（纯质幂判据，被迫）　容器容�
+hl,110,valid,*数值见证*：$729=3^6$ 的切法 $d(6)=4$ 种（$1$ 维/
+hl,114,valid,**定理 1.2**　设容器需同时满足三条：（i）**�
+hl,118,valid,$$16;64;81;256;512;625;729;1024;1296;2401;4096;6561;10000;$$
+hl,131,valid,- 加性：$15+8+20+7=50=$ 基元自身的配额 ⟹ **可�
+hl,133,valid,两者正交：乘性上基元是不可拼回的，加性上
+hl,135,blank,-
+hl,375#pi2_1e5,valid,$$B\ne C:\quad B=63{;}963.4\ \text{vs}\ C=2C_2R_0\mathrm{Li}
+hl,376#pi2_1e6,blank,-
+hl,377#pi2_1e7,valid,$$\frac{A-B}{C-B}=\frac{\text{裸乘积误差}}{\text{用 }\
+hl,378#pi2_1e8,blank,-
+hl,379#pi2_1e9,valid,$$\boxed{\mathrm{Li}_2 \text{ 相对裸乘积 } 2C_2x/\log^2
+hl,375#center_6m,valid,$$B\ne C:\quad B=63{;}963.4\ \text{vs}\ C=2C_2R_0\mathrm{Li}
+hodge,15,valid,本文的答案是：**是 —— 因为「霍奇类 = 圆�
+hodge,16,blank,-
+hodge,17,valid,```
+hodge,18,valid,霍奇类 = 圆作用的不动者（p=q）
+hodge,19,valid,⟺ 闭合（绕一圈回到原位、整数绕数、nm=k）
+hodge,20,valid,⟺ 必反（对合：绕一圈必付 e^{iπ} = −1）
+hodge,21,valid,⟺ 反者归位（Abel–Jacobi 像为挠点）
+hodge,23,valid,⟹ 霍奇类 = 代数闭链类的有理线性组合。
+hodge,24,valid,```
+hodge,38,blank,-
+hodge,44,blank,-
+hodge,46,valid,- **本体** = 圆作用 `ρ(θ)`；**投影** = 圆平均 `
+hodge,51,blank,-
+hodge,53,blank,-
+hodge,59,blank,-
+hodge,61,blank,-
+hodge,67,valid,**第一环是定理（两行）**：Hodge 分解给出圆�
+hodge,69,valid,$$\rho(\theta):\ H^{p;q}\longmapsto e^{\;i(p-q)\theta}\;H^{p
+ns,14,valid,- **本体与投影必谈倒数**：`投影率 × 本体倍�
+ns,15,blank,-
+ns,16,valid,因此判据不是「两边各算一遍、数值接近」，
+ns,17,valid,本节之后每一处主式都跟一行「倒数账」：它
+ns,18,blank,-
+ns,19,blank,-
+ns,20,blank,-
+ns,21,blank,-
+ns,22,blank,-
+ns,23,valid,- **本体** = 应变张量的尺度 `λ_ω`（涡量拉伸�
+ns,25#P1,valid,- 闭合侧：`Γ_eff ∈ [Γ*; Γ₀]`（下界由扩散胜
+ns,254#P2,blank,-
+ns,24#P3,valid,- 倒数账：`Γ* · (1/ν) = 4π`（`Γ* = 4ν/c` ⟹ `Re*
+ns,268#P4,blank,-
+ns,124#P6,blank,-
+ns,298#P7,valid,> **改正（2026-10-27 独立复算，`audit/verify_claims.
+ns,147#P8,blank,-
+ns,101#P9,blank,-
+pvsnp,89,blank,-
+pvsnp,91,blank,-
+pvsnp,93,blank,-
+pvsnp,100,valid,| 面 | 内容 | 判据 |
+pvsnp,102,valid,| **层内取谱** | $X_k=\mathbb{Z}_2^k$，谱 $\lbrace k-2
+pvsnp,109,blank,-
+pvsnp,115,blank,-
+pvsnp,117,blank,-
+pvsnp,122,valid,**证明（$\Rightarrow$）**：若 $nm=k$ 且 $fiber=1$，�
+pvsnp,197#n2,valid,| $n$ | 方程 $n!$ | 变量 $n^2$ | 真秩 | $(n-1)^2+1$ | 
+pvsnp,197#n3,valid,| $n$ | 方程 $n!$ | 变量 $n^2$ | 真秩 | $(n-1)^2+1$ | 
+pvsnp,197#n4,valid,| $n$ | 方程 $n!$ | 变量 $n^2$ | 真秩 | $(n-1)^2+1$ | 
+pvsnp,197#n5,valid,| $n$ | 方程 $n!$ | 变量 $n^2$ | 真秩 | $(n-1)^2+1$ | 
+pvsnp,197#n6,valid,| $n$ | 方程 $n!$ | 变量 $n^2$ | 真秩 | $(n-1)^2+1$ | 
+pvsnp,197#n7,valid,| $n$ | 方程 $n!$ | 变量 $n^2$ | 真秩 | $(n-1)^2+1$ | 
+pvsnp,197#n8,valid,| $n$ | 方程 $n!$ | 变量 $n^2$ | 真秩 | $(n-1)^2+1$ | 
+pvsnp,211#n2,valid,**$n=2$ 唯一特例；$n\ge3$ 全部不可解。** 缺陷 $
+pvsnp,211#n3,valid,**$n=2$ 唯一特例；$n\ge3$ 全部不可解。** 缺陷 $
+pvsnp,211#n4,valid,**$n=2$ 唯一特例；$n\ge3$ 全部不可解。** 缺陷 $
+pvsnp,211#n5,valid,**$n=2$ 唯一特例；$n\ge3$ 全部不可解。** 缺陷 $
+pvsnp,211#n6,valid,**$n=2$ 唯一特例；$n\ge3$ 全部不可解。** 缺陷 $
+pvsnp,211#n7,valid,**$n=2$ 唯一特例；$n\ge3$ 全部不可解。** 缺陷 $
+pvsnp,211#n8,valid,**$n=2$ 唯一特例；$n\ge3$ 全部不可解。** 缺陷 $
+pvsnp,276#P8a,valid,若能从外贴一个符号矩阵 $S$ 使 $\det(A\circ S)=\m
+pvsnp,276#P8b,valid,若能从外贴一个符号矩阵 $S$ 使 $\det(A\circ S)=\m
+pvsnp,276#P8c,valid,若能从外贴一个符号矩阵 $S$ 使 $\det(A\circ S)=\m
+pvsnp,209#P6b,valid,$n=9;10$ 两行**突破了原验证器的 `uint64_t` 位宽�
+rh,93,valid,- **无算子位置**：$729$ 不是四类基本运算中任
+rh,95,blank,-
+rh,98,blank,-
+rh,100,valid,| 四类基本运算 | 守/移 | 收/张 | 四种运算格 |
+rh,102,valid,| 加法 | 守 | 收 | 阴格（体） | 累加 |
+rh,104,valid,| 取模 | 移 | 收 | 阴格（用） | 筛除 |
+rh,106,valid,| ——（不参与运算，只给体量） | — | — | �
+rh,108,valid,四类基本运算复合表 $16$ 格封闭，三非零元阶
+rh,110,blank,-
+rh,118,blank,-
+rh,71#P1,blank,-
+rh,71#P2,blank,-
+rh,252#P3,valid,（Lanczos $\Gamma$ + Euler–Maclaurin $\zeta$，$N=1000$�
+rh,103#P4,valid,| 乘法 | 守 | 张 | 阳格（体） | 生成 |
+rh,45#P5,valid,- 倒数账：`|χ(σ+it)| · |χ(σ+it)|^{−1} = 1` 恒成
+rh,221#P6,blank,-
+rh,221#P7,blank,-
+rh,286#P8,blank,-
+rh,26#P9,valid,四步合起来即：**零点是函数的「账」，账必�
+rh,47#P10,valid,**`|χ(1/2+it)| ≡ 1` 的两行推导（母，不是观测�
+rh,47#P11,valid,**`|χ(1/2+it)| ≡ 1` 的两行推导（母，不是观测�
+rh,24#P12,valid,- 基底锥 $C_0:\sigma^2+t^2=\delta^2$ 的锥心在原点�
+ym,8,blank,-
+ym,10,blank,-
+ym,17,valid,3. **矩阵探针**：$51$ 层、$448$ 格预算、$41$ 格�
+ym,19,valid,落到杨-米尔斯，三件工具给出四个被迫事实�
+ym,21,valid,- 生成侧：「$|e^{i\theta}|\equiv1$」⟹ 规范群流�
+ym,30,blank,-
+ym,38,valid,本节之后每一处主式都跟一行「倒数账」：它
+ym,40,blank,-
+ym,47,valid,- 截断链删除：开弦 `E = σr` 过 `2m_q` 必生对 �
+ym,73,valid,**定理 1.1** 任何可写出的数系必须同时具备：
+ym,79,blank,-
+ym,84,blank,-
+ym,89,valid,| 加法 | 守 | 收 | 阴格（体） | 累加 | 谱线相�
+ym,91,valid,| 取模 | 移 | 收 | 阴格（用） | 筛除 | 绕数取�
+ym,93,valid,| —— | — | — | 非运算 | 基底 | $S_{\rm YM}$ 的
+ym,99,valid,*证明*：加法保序、乘正系数保序、$\exp/\log$ �
+ym,106,blank,-
+ym,111,valid,| 层内 | 取谱 | $X_k=Z_2^k$，谱 $\lbrace k-2j\rbrace$�
